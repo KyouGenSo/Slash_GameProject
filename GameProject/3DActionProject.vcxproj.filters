@@ -90,6 +90,9 @@
     <ClCompile Include="Object\Player\MeleeAttackCollider.cpp">
       <Filter>Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="scene\ClearScene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="Object\Player\MeleeAttackCollider.h">
       <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\ClearScene.h">
+      <Filter>scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

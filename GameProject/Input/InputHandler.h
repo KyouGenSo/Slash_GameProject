@@ -13,7 +13,7 @@ public:
 	~InputHandler();
 
 	void Initialize();
-	void Update(Player* player);
+	void Update();
 	
 	// 入力状態の取得
 	bool IsMoving() const;
@@ -27,8 +27,6 @@ public:
 	Vector2 GetMoveDirection() const;
 
 private:
-	// 入力状態を更新
-	void UpdateInputStates();
 	
 	// 入力状態のキャッシュ
 	bool isMoving_ = false;

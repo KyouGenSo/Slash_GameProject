@@ -166,6 +166,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Player\State\PlayerStateMachine.cpp" />
     <ClCompile Include="Object\Player\State\ShootState.cpp" />
     <ClCompile Include="Object\Player\State\MoveState.cpp" />
+    <ClCompile Include="scene\ClearScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\SampleScene.cpp" />
     <ClCompile Include="scene\SceneFactory.cpp" />
@@ -198,6 +199,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Player\State\PlayerStateMachine.h" />
     <ClInclude Include="Object\Player\State\ShootState.h" />
     <ClInclude Include="Object\Player\State\MoveState.h" />
+    <ClInclude Include="scene\ClearScene.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\SampleScene.h" />
     <ClInclude Include="scene\SceneFactory.h" />

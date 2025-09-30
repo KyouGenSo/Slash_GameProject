@@ -6,25 +6,7 @@
 MeleeAttackCollider::MeleeAttackCollider(Player* player) 
 	: player_(player) {
 	SetTypeID(static_cast<uint32_t>(CollisionTypeId::kPlayerMeleeAttack));
-	SetTrigger(true);
 	SetActive(false);
-}
-
-void MeleeAttackCollider::OnCollision(Collider* other) {
-	if (!other) return;
-	
-#ifdef _DEBUG
-	collisionCount_++;
-#endif
-	
-	uint32_t typeID = other->GetTypeID();
-	
-	if (typeID == static_cast<uint32_t>(CollisionTypeId::kEnemy)) {
-		Boss* enemy = static_cast<Boss*>(other->GetOwner());
-		if (enemy && !detectedEnemy_) {
-			detectedEnemy_ = enemy;
-		}
-	}
 }
 
 void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
@@ -50,12 +32,39 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
 	}
 }
 
+void MeleeAttackCollider::OnCollisionStay(Collider* other) {
+	if (!other) return;
+	
+#ifdef _DEBUG
+	collisionCount_++;
+#endif
+	
+	uint32_t typeID = other->GetTypeID();
+	
+	if (typeID == static_cast<uint32_t>(CollisionTypeId::kEnemy)) {
+		Boss* enemy = static_cast<Boss*>(other->GetOwner());
+		if (enemy && !detectedEnemy_) {
+			detectedEnemy_ = enemy;
+      if (canDamage)
+      {
+        enemy->OnHit(10.0f);
+        canDamage = false;
+      }
+		}
+	}
+}
+
 void MeleeAttackCollider::Reset() {
 	hitEnemies_.clear();
 	detectedEnemy_ = nullptr;
 #ifdef _DEBUG
 	collisionCount_ = 0;
 #endif
+}
+
+void MeleeAttackCollider::Damage()
+{
+  canDamage = true;
 }
 
 bool MeleeAttackCollider::HasHitEnemy(uint32_t enemyId) const {

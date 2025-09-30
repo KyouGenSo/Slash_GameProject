@@ -29,8 +29,8 @@ private:
 	float attackTimer_ = 0.0f;
 	float attackDuration_ = 0.3f;
 	int comboCount_ = 0;
-	int maxCombo_ = 3;
-	float comboWindow_ = 0.3f;
+	int maxCombo_ = 2;
+	float comboWindow_ = 0.8f;
 	bool canCombo_ = false;
 	
 	void SearchForTarget(Player* player);

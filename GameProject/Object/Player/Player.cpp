@@ -19,12 +19,10 @@
 
 #ifdef _DEBUG
 #include "ImGui.h"
-#include "State/AttackState.h"
 #endif
 
 Player::Player()
   : camera_(nullptr)
-  , speed_(1.0f)
   , targetAngle_(0.0f)
   , mode_(false)
 {
@@ -83,7 +81,7 @@ void Player::Update()
   // Inputの更新（StateのHandleInputより前に実行）
   if (inputHandler_)
   {
-    inputHandler_->Update(this);
+    inputHandler_->Update();
   }
 
   // State Machineの更新

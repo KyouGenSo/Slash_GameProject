@@ -79,6 +79,8 @@ void AttackState::Exit(Player* player)
 	if (attackTimer_ >= attackDuration_) {
 		comboCount_ = 0;
 	}
+
+  canCombo_ = false;
 	
 	targetEnemy_ = nullptr;
 }
@@ -89,8 +91,8 @@ void AttackState::HandleInput(Player* player)
 	if (!input) return;
 	
 	// 攻撃実行中のみコンボ受付
-	if (phase_ == ExecuteAttack && canCombo_ && input->IsAttacking()) {
-		comboCount_ = (comboCount_ + 1) % maxCombo_;
+	if (phase_ == ExecuteAttack && canCombo_ && input->IsAttacking() && comboCount_ < maxCombo_) {
+		comboCount_ += 1;
 		Enter(player); // 次の攻撃を開始
 	}
 }
@@ -98,10 +100,7 @@ void AttackState::HandleInput(Player* player)
 void AttackState::SearchForTarget(Player* player)
 {
 	if (!player->GetMeleeAttackCollider()) return;
-	
-	// 衝突判定は GameScene で既に実行されているため、
-	// ここでは検出結果を取得するだけ
-	// 次フレームで衝突判定が実行されて敵が検出される
+
 	targetEnemy_ = player->GetMeleeAttackCollider()->GetDetectedEnemy();
 }
 
@@ -128,6 +127,7 @@ void AttackState::ProcessExecuteAttack(Player* player, float deltaTime)
 	
 	// コンボ受付時間の判定
 	if (attackTimer_ >= attackDuration_ - comboWindow_ && attackTimer_ < attackDuration_) {
+    player->GetMeleeAttackCollider()->Damage();
 		canCombo_ = true;
 	}
 	
