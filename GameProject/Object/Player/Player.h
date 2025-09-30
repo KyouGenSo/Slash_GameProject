@@ -90,6 +90,7 @@ private: // メンバ変数
   float hp_ = 100.f;                ///< 体力
 
   bool mode_ = false;               ///< true: ThirdPersonMode, false: TopDownMode
+  bool isDisModelDebugInfo_ = false;///< モデルデバッグ情報の表示
 
   // システム
   std::unique_ptr<PlayerStateMachine> stateMachine_;

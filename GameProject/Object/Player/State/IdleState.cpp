@@ -62,7 +62,7 @@ void IdleState::HandleInput(Player* player)
 	// 移動
 	if (input->IsMoving())
 	{
-		stateMachine->ChangeState("Walk");
+		stateMachine->ChangeState("Move");
 		return;
 	}
 }

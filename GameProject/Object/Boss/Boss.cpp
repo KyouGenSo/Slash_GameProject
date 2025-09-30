@@ -75,7 +75,6 @@ void Boss::OnHit(float damage)
 void Boss::DrawImGui()
 {
 #ifdef _DEBUG
-	ImGui::Begin("Boss Debug");
 	
 	// ボスの状態
 	ImGui::Text("=== Boss Status ===");
@@ -107,7 +106,6 @@ void Boss::DrawImGui()
 		Vector3 center = bodyCollider_->GetCenter();
 		ImGui::Text("Center: (%.2f, %.2f, %.2f)", center.x, center.y, center.z);
 	}
-	
-	ImGui::End();
+
 #endif
 }

@@ -29,7 +29,7 @@ void DashState::Update(Player* player, float deltaTime)
 			InputHandler* input = player->GetInputHandler();
 			if (input && input->IsMoving())
 			{
-				stateMachine->ChangeState("Walk");
+				stateMachine->ChangeState("Move");
 			}
 			else
 			{

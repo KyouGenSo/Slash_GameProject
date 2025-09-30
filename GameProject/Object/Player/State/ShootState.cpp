@@ -54,7 +54,7 @@ void ShootState::HandleInput(Player* player)
 		{
 			if (input->IsMoving())
 			{
-				stateMachine->ChangeState("Walk");
+				stateMachine->ChangeState("Move");
 			}
 			else
 			{

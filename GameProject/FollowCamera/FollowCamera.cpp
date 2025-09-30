@@ -174,7 +174,6 @@ void FollowCamera::SetTarget2(const Transform* target2) {
 
 void FollowCamera::DrawImGui() {
 #ifdef _DEBUG
-  ImGui::Begin("FollowCamera");
 
   // モード選択
   bool modeChanged = ImGui::Checkbox("FirstPersonMode", &mode_);
@@ -242,7 +241,5 @@ void FollowCamera::DrawImGui() {
       ImGui::Text("Target2: Not Set");
     }
   }
-
-  ImGui::End();
 #endif _DEBUG
 }

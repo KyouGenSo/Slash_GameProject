@@ -18,9 +18,9 @@ void MyGame::Initialize()
 {
   winApp_->SetWindowSize(1920, 1080);
 
-  TakoFramework::Initialize();
-
   winApp_->SetWindowTitle(L"TakoEngine Sample Game");
+
+  TakoFramework::Initialize();
 
 #pragma region 汎用機能初期化-------------------------------------------------------------------------------------------------------------------
   // 入力クラスの初期化
@@ -129,7 +129,7 @@ void MyGame::Draw()
   /// ============================================= ///
   /// ---------最終結果をスワップチェーンに描画---------///
   /// ============================================= ///
-  PostEffectManager::GetInstance()->DrawFinalResult(!GameViewportWindowVisible);
+  PostEffectManager::GetInstance()->DrawFinalResult(!DebugUIManager::GetInstance()->IsWindowVisible("GameViewport"));
 
 
   /// ========================================= ///
