@@ -2,16 +2,21 @@
 #include "TitleScene.h"
 #include "GameScene.h"
 
+#ifdef _DEBUG
+#include "DebugUIManager.h"
+#endif
+
 BaseScene* SceneFactory::CreateScene(const std::string& sceneName)
 {
-	BaseScene* newScene = nullptr;
+  BaseScene* newScene = nullptr;
 
-	if (sceneName == "title") {
-		newScene = new TitleScene();
-	} 
-	else if (sceneName == "game") {
-		newScene = new GameScene();
-	}
+  if (sceneName == "title") {
+    newScene = new TitleScene();
+  } else if (sceneName == "game") {
+    newScene = new GameScene();
+  } else {
+    DebugUIManager::GetInstance()->AddLog("Unknown scene name: " + sceneName, DebugUIManager::LogType::Error);
+  }
 
-	return newScene;
+  return newScene;
 }
