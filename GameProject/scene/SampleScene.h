@@ -33,6 +33,5 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-  bool isDebug_ = false;
 
 };

@@ -122,20 +122,6 @@ void GameScene::Finalize()
 
 void GameScene::Update()
 {
-#ifdef _DEBUG
-  if (Input::GetInstance()->TriggerKey(DIK_F1))
-  {
-    Object3dBasic::GetInstance()->SetDebug(!Object3dBasic::GetInstance()->GetDebug());
-    Draw2D::GetInstance()->SetDebug(!Draw2D::GetInstance()->GetDebug());
-    GPUParticle::GetInstance()->SetIsDebug(!GPUParticle::GetInstance()->GetIsDebug());
-    isDebug_ = !isDebug_;
-  }
-
-  if (isDebug_)
-  {
-    DebugCamera::GetInstance()->Update();
-  }
-#endif
   /// ================================== ///
   ///              更新処理               ///
   /// ================================== ///
@@ -228,7 +214,6 @@ void GameScene::DrawWithoutEffect()
 void GameScene::DrawImGui()
 {
 #ifdef _DEBUG
-  // オブジェクトのデバッグUIはDebugUIManagerが管理
-  // SceneHierarchyでオブジェクトを選択するとInspectorに表示される
+
 #endif // DEBUG
 }
