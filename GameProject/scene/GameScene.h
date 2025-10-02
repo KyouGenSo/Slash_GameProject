@@ -5,7 +5,7 @@
 #include "Sprite.h"
 #include "SkyBox.h"
 #include "BoneTracker.h"
-#include "CharacterEffectPresets.h"
+#include "EmitterManager.h"
 #include "FollowCamera/followCamera.h"
 #include "Object/Player/Player.h"
 #include "Object/Boss/Boss.h"
@@ -51,6 +51,8 @@ private: // メンバ変数
   std::unique_ptr<FollowCamera> followCamera_;
 
   Transform groundUvTransform_{};
+
+  std::unique_ptr<EmitterManager> emitterManager_;
 
   bool isDebug_ = false;
 

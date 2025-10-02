@@ -96,7 +96,8 @@ void GameScene::Initialize()
     true
   );
 
-  ShadowRenderer::GetInstance()->SetMaxShadowDistance(200.f);
+  emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
+  DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
 }
 
 void GameScene::Finalize()
@@ -133,6 +134,7 @@ void GameScene::Update()
   player_->Update();
   boss_->Update();
   followCamera_->Update();
+  emitterManager_->Update();
   
   // 衝突判定の実行
   CollisionManager::GetInstance()->CheckAllCollisions();
