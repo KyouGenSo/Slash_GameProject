@@ -18,7 +18,7 @@
         1.0
       ],
       "frequency": 0.01600000075995922,
-      "frequencyTime": 0.014923645183444023,
+      "frequencyTime": 0.003188773989677429,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -80,7 +80,7 @@
         1.0
       ],
       "frequency": 0.01600000075995922,
-      "frequencyTime": 0.010763883590698242,
+      "frequencyTime": 0.01502891443669796,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -142,7 +142,7 @@
         1.0
       ],
       "frequency": 1.0,
-      "frequencyTime": 0.7024538516998291,
+      "frequencyTime": 0.09072194248437881,
       "isActive": true,
       "isEmitting": false,
       "isNormalize": false,

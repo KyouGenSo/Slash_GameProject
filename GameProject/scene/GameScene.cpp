@@ -48,10 +48,18 @@ void GameScene::Initialize()
     [this]() { if (boss_) boss_->DrawImGui(); });
   DebugUIManager::GetInstance()->RegisterGameObject("FollowCamera",
     [this]() { if (followCamera_) followCamera_->DrawImGui(); });
+
+  emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
+  DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
 #endif
   /// ================================== ///
-  ///              初期化処理              ///
+  ///              初期化処理             ///
   /// ================================== ///
+
+  // タイトルボタンテキストの初期化
+  toTitleText_ = std::make_unique<Sprite>();
+  toTitleText_->Initialize("game_button_text.png");
+  toTitleText_->SetPos(Vector2(WinApp::clientWidth / 2.f - toTitleText_->GetSize().x / 2.f, 200.f));
 
   // SkyBoxの初期化
   skyBox_ = std::make_unique<SkyBox>();
@@ -95,9 +103,6 @@ void GameScene::Initialize()
     static_cast<uint32_t>(CollisionTypeId::kEnemyAttack),
     true
   );
-
-  emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
-  DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
 }
 
 void GameScene::Finalize()
@@ -134,7 +139,8 @@ void GameScene::Update()
   player_->Update();
   boss_->Update();
   followCamera_->Update();
-  emitterManager_->Update();
+  //emitterManager_->Update();
+  toTitleText_->Update();
   
   // 衝突判定の実行
   CollisionManager::GetInstance()->CheckAllCollisions();
@@ -211,6 +217,7 @@ void GameScene::DrawWithoutEffect()
   // スプライト共通描画設定
   SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
+  toTitleText_->Draw();
 }
 
 void GameScene::DrawImGui()
