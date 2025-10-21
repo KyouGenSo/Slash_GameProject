@@ -5,7 +5,6 @@
 #include "Input.h"
 #include "DebugCamera.h"
 #include "Draw2D.h"
-#include "GlobalVariables.h"
 #include "FrameTimer.h"
 #include "GPUParticle.h"
 #include "SceneManager.h"
@@ -56,6 +55,11 @@ void GameScene::Initialize()
   ///              初期化処理             ///
   /// ================================== ///
 
+  // シャドウマッピンの最大描画距離の設定
+  ShadowRenderer::GetInstance()->SetMaxShadowDistance(100.f);
+  // 平行光源の方向の設定
+  Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, -0.05f));
+
   // タイトルボタンテキストの初期化
   toTitleText_ = std::make_unique<Sprite>();
   toTitleText_->Initialize("game_button_text.png");
@@ -86,11 +90,14 @@ void GameScene::Initialize()
   player_->Initialize();
   player_->SetCamera((*Object3dBasic::GetInstance()->GetCamera()));
 
+  // フォローカメラの初期化
   followCamera_ = std::make_unique<FollowCamera>();
   followCamera_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
   followCamera_->SetTarget(&player_->GetTransform());
   followCamera_->SetTarget2(&boss_->GetTransform());
+  followCamera_->PlayStartCameraAnimation();
   
+
   // 衝突マスクの設定（どのタイプ同士が衝突判定を行うか）
   collisionManager->SetCollisionMask(
     static_cast<uint32_t>(CollisionTypeId::kPlayerMeleeAttack),
@@ -131,7 +138,6 @@ void GameScene::Update()
   /// ================================== ///
   ///              更新処理               ///
   /// ================================== ///
-
   player_->SetMode(followCamera_->GetMode());
 
   skyBox_->Update();
