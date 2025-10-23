@@ -12,6 +12,10 @@ class AABBCollider;
 class MeleeAttackCollider;
 class Boss;
 
+/// <summary>
+/// プレイヤーキャラクタークラス
+/// 移動、攻撃、ステート管理などプレイヤーの動作を制御
+/// </summary>
 class Player
 {
 public: // メンバ関数
@@ -47,6 +51,8 @@ public: // メンバ関数
   /// <summary>
   /// ターゲットへ移動
   /// </summary>
+  /// <param name="target">移動先のボスエネミー</param>
+  /// <param name="deltaTime">前フレームからの経過時間</param>
   void MoveToTarget(Boss* target, float deltaTime);
 
   /// <summary>
@@ -55,28 +61,110 @@ public: // メンバ関数
   void DrawImGui();
   
   /// <summary>
-  /// 攻撃関連
+  /// コライダーの初期設定
   /// </summary>
   void SetupColliders();
+
+  /// <summary>
+  /// 攻撃コライダーの更新
+  /// </summary>
   void UpdateAttackCollider();
+
+  /// <summary>
+  /// 近接攻撃ヒット時の処理
+  /// </summary>
+  /// <param name="other">衝突相手のコライダー</param>
   void OnMeleeAttackHit(Collider* other);
 
   //-----------------------------Getters/Setters------------------------------//
+  /// <summary>
+  /// 移動速度を設定
+  /// </summary>
+  /// <param name="speed">新しい移動速度</param>
   void SetSpeed(float speed) { speed_ = speed; }
+
+  /// <summary>
+  /// カメラを設定
+  /// </summary>
+  /// <param name="camera">使用するカメラのポインタ</param>
   void SetCamera(Camera* camera) { camera_ = camera; }
-  void SetMode(bool mode) { mode_ = mode; } // true: FirstPersonMode, false: TopDownMode
+
+  /// <summary>
+  /// カメラモードを設定
+  /// </summary>
+  /// <param name="mode">true: 一人称視点, false: トップダウン視点</param>
+  void SetMode(bool mode) { mode_ = mode; }
+
+  /// <summary>
+  /// 座標変換情報を設定
+  /// </summary>
+  /// <param name="transform">新しい座標変換情報</param>
   void SetTransform(const Transform& transform) { transform_ = transform; }
+
+  /// <summary>
+  /// HPを設定
+  /// </summary>
+  /// <param name="hp">新しいHP値（0未満は0に補正）</param>
   void SetHp(float hp) { hp_ = hp; if (hp_ < 0.f) hp_ = 0.f; }
 
+  /// <summary>
+  /// 移動速度を取得
+  /// </summary>
+  /// <returns>現在の移動速度</returns>
   float GetSpeed() const { return speed_; }
+
+  /// <summary>
+  /// カメラを取得
+  /// </summary>
+  /// <returns>現在のカメラのポインタ</returns>
   Camera* GetCamera() const { return camera_; }
+
+  /// <summary>
+  /// カメラモードを取得
+  /// </summary>
+  /// <returns>true: 一人称視点, false: トップダウン視点</returns>
   bool GetMode() const { return mode_; }
+
+  /// <summary>
+  /// HPを取得
+  /// </summary>
+  /// <returns>現在のHP値</returns>
   float GetHp() const { return hp_; }
+
+  /// <summary>
+  /// 座標変換情報を取得
+  /// </summary>
+  /// <returns>現在の座標変換情報の参照</returns>
   const Transform& GetTransform() const { return transform_; }
+
+  /// <summary>
+  /// 3Dモデルを取得
+  /// </summary>
+  /// <returns>プレイヤーモデルのポインタ</returns>
   Object3d* GetModel() const { return model_.get(); }
+
+  /// <summary>
+  /// ステートマシンを取得
+  /// </summary>
+  /// <returns>プレイヤーステートマシンのポインタ</returns>
   PlayerStateMachine* GetStateMachine() const { return stateMachine_.get(); }
+
+  /// <summary>
+  /// 入力ハンドラーを取得
+  /// </summary>
+  /// <returns>入力ハンドラーのポインタ</returns>
   InputHandler* GetInputHandler() const { return inputHandler_.get(); }
+
+  /// <summary>
+  /// 近接攻撃コライダーを取得
+  /// </summary>
+  /// <returns>近接攻撃コライダーのポインタ</returns>
   MeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
+
+  /// <summary>
+  /// 座標変換情報のポインタを取得
+  /// </summary>
+  /// <returns>座標変換情報への非constポインタ</returns>
   Transform* GetTransformPtr() { return &transform_; }
 
 private: // メンバ変数

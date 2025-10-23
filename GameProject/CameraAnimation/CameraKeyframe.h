@@ -11,27 +11,22 @@ struct CameraKeyframe {
     /// 補間タイプ
     /// </summary>
     enum class InterpolationType {
-        LINEAR,         // 線形補間
-        EASE_IN,        // 緩やかに開始
-        EASE_OUT,       // 緩やかに終了
-        EASE_IN_OUT,    // 両端で緩やか
-        CUBIC_BEZIER    // カスタムベジェカーブ（将来実装）
+        LINEAR,         ///< 線形補間
+        EASE_IN,        ///< 緩やかに開始
+        EASE_OUT,       ///< 緩やかに終了
+        EASE_IN_OUT,    ///< 両端で緩やか
+        CUBIC_BEZIER    ///< カスタムベジェカーブ（将来実装）
     };
 
-    // キーフレームの時刻（秒）
-    float time = 0.0f;
+    float time = 0.0f;                                             ///< キーフレームの時刻（秒）
 
-    // カメラ位置
-    Vector3 position = { 0.0f, 0.0f, 0.0f };
+    Vector3 position = { 0.0f, 0.0f, 0.0f };                      ///< カメラ位置
 
-    // カメラ回転（オイラー角、ラジアン）
-    Vector3 rotation = { 0.0f, 0.0f, 0.0f };
+    Vector3 rotation = { 0.0f, 0.0f, 0.0f };                      ///< カメラ回転（オイラー角、ラジアン）
 
-    // 視野角（ラジアン）
-    float fov = 0.45f;
+    float fov = 0.45f;                                             ///< 視野角（ラジアン）
 
-    // このキーフレームから次への補間方法
-    InterpolationType interpolation = InterpolationType::LINEAR;
+    InterpolationType interpolation = InterpolationType::LINEAR;   ///< このキーフレームから次への補間方法
 
     /// <summary>
     /// デフォルトコンストラクタ

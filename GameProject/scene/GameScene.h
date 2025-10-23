@@ -10,6 +10,10 @@
 #include "Object/Player/Player.h"
 #include "Object/Boss/Boss.h"
 
+/// <summary>
+/// ゲームメインシーンクラス
+/// プレイヤーとボスの戦闘、ゲームプレイの中核を管理
+/// </summary>
 class GameScene : public BaseScene
 {
 public: // メンバ関数
@@ -41,21 +45,21 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-  // SkyBox
-  std::unique_ptr<SkyBox> skyBox_;
-  std::unique_ptr<Object3d> ground_;
+	std::unique_ptr<SkyBox> skyBox_;  ///< スカイボックス（環境マップ）
 
-  std::unique_ptr<Player> player_;
-  std::unique_ptr<Boss> boss_;
+	std::unique_ptr<Object3d> ground_;  ///< 地面オブジェクト
 
-  std::unique_ptr<FollowCamera> followCamera_;
+	std::unique_ptr<Player> player_;  ///< プレイヤーキャラクター
 
-  Transform groundUvTransform_{};
+	std::unique_ptr<Boss> boss_;  ///< ボスキャラクター
 
-  std::unique_ptr<EmitterManager> emitterManager_;
+	std::unique_ptr<FollowCamera> followCamera_;  ///< プレイヤー追従カメラ
 
-  // タイトルボタンテキスト
-  std::unique_ptr<Sprite> toTitleText_;
+	Transform groundUvTransform_{};  ///< 地面のUVトランスフォーム（テクスチャスクロール等に使用）
 
-  bool isDebug_ = false;
+	std::unique_ptr<EmitterManager> emitterManager_;  ///< パーティクルエミッター管理
+
+	std::unique_ptr<Sprite> toTitleText_;  ///< タイトルに戻るボタンテキスト
+
+	bool isDebug_ = false;  ///< デバッグモードフラグ
 };

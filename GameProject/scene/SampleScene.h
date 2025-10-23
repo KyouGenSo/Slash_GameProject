@@ -1,6 +1,10 @@
 #pragma once
 #include "BaseScene.h"
 
+/// <summary>
+/// サンプルシーンクラス
+/// TakoEngineのデフォルトシーンの構成を参考にしてください。
+/// </summary>
 class SampleScene : public BaseScene
 {
 public: // メンバ関数

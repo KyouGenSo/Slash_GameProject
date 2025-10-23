@@ -1,6 +1,10 @@
 #pragma once
 #include "BaseScene.h"
 
+/// <summary>
+/// クリアシーンクラス
+/// ゲームクリア時の演出と結果表示を管理
+/// </summary>
 class ClearScene : public BaseScene
 {
 public: // メンバ関数

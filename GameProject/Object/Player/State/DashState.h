@@ -1,6 +1,10 @@
 #pragma once
 #include "PlayerState.h"
 
+/// <summary>
+/// ダッシュ状態クラス
+/// 短時間の高速移動を制御
+/// </summary>
 class DashState : public PlayerState
 {
 public:
@@ -12,7 +16,7 @@ public:
 	void HandleInput(Player* player) override;
 
 private:
-	float timer_ = 0.0f;
-	float duration_ = 0.05f;
-	float speed_ = 10.0f;
+	float timer_ = 0.0f;        ///< ダッシュ経過時間
+	float duration_ = 0.05f;    ///< ダッシュ持続時間
+	float speed_ = 10.0f;       ///< ダッシュ速度
 };

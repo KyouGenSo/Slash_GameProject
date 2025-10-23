@@ -2,6 +2,10 @@
 #include"TakoFramework.h"
 #include"Vector2.h"
 
+/// <summary>
+/// 3Dアクションゲームのメインクラス
+/// ゲーム全体の初期化、更新、描画処理を管理する
+/// </summary>
 class MyGame : public TakoFramework
 {
 public: // メンバ関数

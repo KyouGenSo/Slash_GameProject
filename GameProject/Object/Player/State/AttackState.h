@@ -1,6 +1,10 @@
 #pragma once
 #include "PlayerState.h"
 
+/// <summary>
+/// 攻撃状態クラス
+/// ターゲット検索、移動、攻撃実行、コンボ管理を制御
+/// </summary>
 class AttackState : public PlayerState
 {
 public:
@@ -12,35 +16,75 @@ public:
 	void HandleInput(Player* player) override;
 
 private:
+	/// <summary>
+	/// 攻撃フェーズ
+	/// </summary>
 	enum AttackPhase {
-		SearchTarget,
-		MoveToTarget,
-		ExecuteAttack,
-		Recovery
+		SearchTarget,    ///< ターゲット検索フェーズ
+		MoveToTarget,    ///< ターゲットへの移動フェーズ
+		ExecuteAttack,   ///< 攻撃実行フェーズ
+		Recovery         ///< 硬直フェーズ
 	};
-	
-	AttackPhase phase_ = SearchTarget;
-	class Boss* targetEnemy_ = nullptr;
-	float searchTimer_ = 0.0f;      // SearchTarget待機時間
-	float maxSearchTime_ = 0.1f;    // 最大検索時間（0.1秒 = 6フレーム@60fps）
-	float moveTimer_ = 0.0f;
-	float maxMoveTime_ = 0.3f;
-	
-	float attackTimer_ = 0.0f;
-	float attackDuration_ = 0.3f;
-	int comboCount_ = 0;
-	int maxCombo_ = 2;
-	float comboWindow_ = 0.8f;
-	bool canCombo_ = false;
-	
+
+	AttackPhase phase_ = SearchTarget;                ///< 現在の攻撃フェーズ
+	class Boss* targetEnemy_ = nullptr;               ///< 攻撃対象のボス
+	float searchTimer_ = 0.0f;                        ///< SearchTarget待機時間
+	float maxSearchTime_ = 0.1f;                      ///< 最大検索時間（0.1秒 = 6フレーム@60fps）
+	float moveTimer_ = 0.0f;                          ///< 移動タイマー
+	float maxMoveTime_ = 0.3f;                        ///< 最大移動時間
+
+	float attackTimer_ = 0.0f;                        ///< 攻撃タイマー
+	float attackDuration_ = 0.3f;                     ///< 攻撃持続時間
+	int comboCount_ = 0;                              ///< 現在のコンボ数
+	int maxCombo_ = 2;                                ///< 最大コンボ数
+	float comboWindow_ = 0.8f;                        ///< コンボ受付時間
+	bool canCombo_ = false;                           ///< コンボ可能フラグ
+
+	/// <summary>
+	/// ターゲット検索処理
+	/// 攻撃範囲内の最も近い敵を検索してターゲットに設定する
+	/// </summary>
+	/// <param name="player">プレイヤーインスタンス</param>
 	void SearchForTarget(Player* player);
+
+	/// <summary>
+	/// ターゲットへの移動処理
+	/// ターゲットに向かって移動し、攻撃範囲内に到達したら攻撃実行フェーズに遷移
+	/// </summary>
+	/// <param name="player">プレイヤーインスタンス</param>
+	/// <param name="deltaTime">前フレームからの経過時間</param>
 	void ProcessMoveToTarget(Player* player, float deltaTime);
+
+	/// <summary>
+	/// 攻撃実行処理
+	/// アニメーション再生、ダメージ判定、コンボ管理を行う
+	/// </summary>
+	/// <param name="player">プレイヤーインスタンス</param>
+	/// <param name="deltaTime">前フレームからの経過時間</param>
 	void ProcessExecuteAttack(Player* player, float deltaTime);
-	
+
 public:
-	// デバッグ用のゲッター
+	/// <summary>
+	/// 現在の攻撃フェーズを取得（デバッグ用）
+	/// </summary>
+	/// <returns>現在の攻撃フェーズ</returns>
 	AttackPhase GetPhase() const { return phase_; }
+
+	/// <summary>
+	/// 現在のターゲット敵を取得（デバッグ用）
+	/// </summary>
+	/// <returns>ターゲット敵のポインタ（nullptrの場合もある）</returns>
 	Boss* GetTargetEnemy() const { return targetEnemy_; }
+
+	/// <summary>
+	/// 攻撃タイマーを取得（デバッグ用）
+	/// </summary>
+	/// <returns>現在の攻撃タイマー値（秒）</returns>
 	float GetAttackTimer() const { return attackTimer_; }
+
+	/// <summary>
+	/// 検索タイマーを取得（デバッグ用）
+	/// </summary>
+	/// <returns>現在の検索タイマー値（秒）</returns>
 	float GetSearchTimer() const { return searchTimer_; }
 };

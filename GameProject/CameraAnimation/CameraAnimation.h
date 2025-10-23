@@ -16,9 +16,9 @@ public:
     /// 再生状態
     /// </summary>
     enum class PlayState {
-        STOPPED,    // 停止中
-        PLAYING,    // 再生中
-        PAUSED      // 一時停止中
+        STOPPED,    ///< 停止中
+        PLAYING,    ///< 再生中
+        PAUSED      ///< 一時停止中
     };
 
     /// <summary>
@@ -245,35 +245,26 @@ private:
     void ClearDeselectState();
 
 private:
-    // アニメーション名
-    std::string animationName_ = "Untitled";
+    std::string animationName_ = "Untitled";  ///< アニメーション名
 
-    // キーフレーム配列
-    std::vector<CameraKeyframe> keyframes_;
+    std::vector<CameraKeyframe> keyframes_;  ///< キーフレーム配列
 
-    // アニメーション対象のカメラ
-    Camera* camera_ = nullptr;
+    Camera* camera_ = nullptr;  ///< アニメーション対象のカメラ
 
-    // 現在の再生時間（秒）
-    float currentTime_ = 0.0f;
+    float currentTime_ = 0.0f;  ///< 現在の再生時間（秒）
 
-    // アニメーションの総時間（秒）
-    float duration_ = 0.0f;
+    float duration_ = 0.0f;  ///< アニメーションの総時間（秒）
 
-    // 再生速度（1.0が標準）
-    float playSpeed_ = 1.0f;
+    float playSpeed_ = 1.0f;  ///< 再生速度（1.0が標準）
 
-    // 再生状態
-    PlayState playState_ = PlayState::STOPPED;
+    PlayState playState_ = PlayState::STOPPED;  ///< 再生状態
 
-    // ループ再生フラグ
-    bool isLooping_ = false;
+    bool isLooping_ = false;  ///< ループ再生フラグ
 
 #ifdef _DEBUG
-    // ImGui用の一時変数
-    int selectedKeyframeIndex_ = -1;
-    bool showTimeline_ = true;
-    bool autoSortKeyframes_ = true;
-    CameraKeyframe tempKeyframe_;  // 編集用の一時キーフレーム
+    int selectedKeyframeIndex_ = -1;  ///< ImGui用：選択中のキーフレームインデックス
+    bool showTimeline_ = true;  ///< ImGui用：タイムライン表示フラグ
+    bool autoSortKeyframes_ = true;  ///< ImGui用：キーフレーム自動ソートフラグ
+    CameraKeyframe tempKeyframe_;  ///< 編集用の一時キーフレーム
 #endif
 };

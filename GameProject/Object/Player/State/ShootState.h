@@ -2,6 +2,10 @@
 #include "PlayerState.h"
 #include "Vector3.h"
 
+/// <summary>
+/// 射撃状態クラス
+/// 遠距離攻撃の照準と発射を制御
+/// </summary>
 class ShootState : public PlayerState
 {
 public:
@@ -13,10 +17,19 @@ public:
 	void HandleInput(Player* player) override;
 
 private:
-	float fireRate_ = 0.2f;
-	float fireRateTimer_ = 0.0f;
-	Vector3 aimDirection_;
-	
+	float fireRate_ = 0.2f;         ///< 発射レート（秒間隔）
+	float fireRateTimer_ = 0.0f;    ///< 発射間隔タイマー
+	Vector3 aimDirection_;           ///< 照準方向ベクトル
+
+	/// <summary>
+	/// 照準方向を計算
+	/// </summary>
+	/// <param name="player">プレイヤーインスタンス</param>
 	void CalculateAimDirection(Player* player);
+
+	/// <summary>
+	/// 弾を発射
+	/// </summary>
+	/// <param name="player">プレイヤーインスタンス</param>
 	void Fire(Player* player);
 };
