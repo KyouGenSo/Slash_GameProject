@@ -222,6 +222,32 @@ void CameraAnimation::Reset() {
 /// </summary>
 void CameraAnimation::SetCurrentTime(float time) {
     currentTime_ = std::clamp(time, 0.0f, duration_);
+
+    // プレビュー/スクラブ時も補間を実行（再生状態に関係なく）
+    if (!camera_ || keyframes_.size() < 2) {
+        return;
+    }
+
+    // キーフレーム間の補間を実行
+    size_t prevIndex = 0, nextIndex = 0;
+    if (FindKeyframeIndices(currentTime_, prevIndex, nextIndex)) {
+        const CameraKeyframe& prev = keyframes_[prevIndex];
+        const CameraKeyframe& next = keyframes_[nextIndex];
+
+        // 補間係数を計算（0.0～1.0）
+        float timeDiff = next.time - prev.time;
+        float t = 0.0f;
+        if (timeDiff > 0.0f) {
+            t = (currentTime_ - prev.time) / timeDiff;
+            t = std::clamp(t, 0.0f, 1.0f);
+
+            // イージング関数を適用
+            t = ApplyEasing(t, prev.interpolation);
+        }
+
+        // キーフレーム間を補間してカメラに適用
+        InterpolateKeyframes(prev, next, t);
+    }
 }
 
 /// <summary>
@@ -609,7 +635,7 @@ void CameraAnimation::DrawImGui() {
     // タイムラインスライダー
     float tempTime = currentTime_;
     if (ImGui::SliderFloat("Timeline", &tempTime, 0.0f, duration_, "%.2f")) {
-        SetCurrentTime(tempTime);
+        //SetCurrentTime(tempTime);
     }
 
     ImGui::Separator();

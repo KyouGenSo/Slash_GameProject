@@ -28,23 +28,28 @@ void CameraAnimationController::Update(float deltaTime) {
 }
 
 bool CameraAnimationController::IsActive() const {
+    // isActive_がtrueなら、アニメーションの有無に関わらずアクティブとする
+    // これによりプレビューモード時に確実にアクティブになる
+    if (isActive_) {
+        return true;
+    }
+
     auto* animation = const_cast<CameraAnimationController*>(this)->GetCurrentAnimation();
     if (!animation) {
         return false;
     }
 
-    // アニメーション再生中または編集中の場合はアクティブ
+    // アニメーション再生中または編集中の場合もアクティブ
     return animation->GetPlayState() == CameraAnimation::PlayState::PLAYING ||
-           animation->IsEditingKeyframe() ||
-           isActive_;
+           animation->IsEditingKeyframe();
 }
 
 void CameraAnimationController::Activate() {
     isActive_ = true;
-    auto* animation = GetCurrentAnimation();
-    if (animation) {
-        animation->Play();
-    }
+    //auto* animation = GetCurrentAnimation();
+    //if (animation) {
+    //    animation->Play();
+    //}
 }
 
 void CameraAnimationController::Deactivate() {
