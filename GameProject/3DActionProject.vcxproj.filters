@@ -33,6 +33,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{B83E8A0D-6A37-4A88-8BC7-D45E82E0C234}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CameraSystem">
+      <UniqueIdentifier>{0312f1a8-e010-49cd-8145-fa5b444de6dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGame\MyGame.cpp">
@@ -94,6 +97,24 @@
       <Filter>scene</Filter>
     </ClCompile>
     <ClCompile Include="CameraAnimation\CameraAnimation.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraAnimationController.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraDebugUI.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraManager.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\FirstPersonController.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\TopDownController.cpp">
+      <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowCamera\FollowCameraRefactored.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,6 +183,30 @@
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="CameraAnimation\CameraKeyframe.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraAnimationController.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraConfig.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraDebugUI.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraManager.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\FirstPersonController.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\ICameraController.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\TopDownController.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowCamera\FollowCameraRefactored.h">
       <Filter>Camera</Filter>
     </ClInclude>
   </ItemGroup>

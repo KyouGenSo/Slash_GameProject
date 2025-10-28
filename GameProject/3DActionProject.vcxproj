@@ -155,7 +155,13 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraAnimation\CameraAnimation.cpp" />
+    <ClCompile Include="CameraSystem\CameraAnimationController.cpp" />
+    <ClCompile Include="CameraSystem\CameraDebugUI.cpp" />
+    <ClCompile Include="CameraSystem\CameraManager.cpp" />
+    <ClCompile Include="CameraSystem\FirstPersonController.cpp" />
+    <ClCompile Include="CameraSystem\TopDownController.cpp" />
     <ClCompile Include="FollowCamera\FollowCamera.cpp" />
+    <ClCompile Include="FollowCamera\FollowCameraRefactored.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame\MyGame.cpp" />
@@ -190,8 +196,16 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="CameraAnimation\CameraAnimation.h" />
     <ClInclude Include="CameraAnimation\CameraKeyframe.h" />
+    <ClInclude Include="CameraSystem\CameraAnimationController.h" />
+    <ClInclude Include="CameraSystem\CameraConfig.h" />
+    <ClInclude Include="CameraSystem\CameraDebugUI.h" />
+    <ClInclude Include="CameraSystem\CameraManager.h" />
+    <ClInclude Include="CameraSystem\FirstPersonController.h" />
+    <ClInclude Include="CameraSystem\ICameraController.h" />
+    <ClInclude Include="CameraSystem\TopDownController.h" />
     <ClInclude Include="Collision\CollisionTypeIdDef.h" />
     <ClInclude Include="FollowCamera\FollowCamera.h" />
+    <ClInclude Include="FollowCamera\FollowCameraRefactored.h" />
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="MyGame\MyGame.h" />
     <ClInclude Include="Object\Boss\Boss.h" />
