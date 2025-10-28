@@ -18,18 +18,6 @@ class CameraAnimationHistory;
 /// </summary>
 class CameraAnimationEditor {
 public:
-
-    /// <summary>
-    /// プレビューモード
-    /// </summary>
-    enum class PreviewMode {
-        NONE,           ///< プレビューなし
-        CURRENT_FRAME,  ///< 現在フレームのみ
-        MOTION_PATH,    ///< モーションパス表示
-        GHOST_FRAMES    ///< ゴースト（オニオンスキン）表示
-    };
-
-public:
     /// <summary>
     /// コンストラクタ
     /// </summary>
@@ -128,10 +116,6 @@ private:
     void DrawPlaybackControls();
 
 
-    /// <summary>
-    /// モーションパスの描画（3D空間）
-    /// </summary>
-    void DrawMotionPath();
 
     /// <summary>
     /// グリッドスナップの処理
@@ -178,7 +162,6 @@ private:
 private:
     // エディター状態
     bool isOpen_ = false;                        ///< エディターが開いているか
-    PreviewMode previewMode_ = PreviewMode::MOTION_PATH; ///< プレビューモード
 
     // 編集対象
     CameraAnimation* animation_ = nullptr;       ///< 編集中のアニメーション
@@ -193,11 +176,9 @@ private:
     // 選択状態
     std::vector<int> selectedKeyframes_;         ///< 選択中のキーフレームインデックス
     int hoveredKeyframe_ = -1;                   ///< ホバー中のキーフレーム
-    bool isMultiSelecting_ = false;              ///< 複数選択中か
 
     // ドラッグ状態
     bool isDragging_ = false;                    ///< ドラッグ中か
-    float dragStartTime_ = 0.0f;                 ///< ドラッグ開始時の時間
     std::vector<float> dragStartTimes_;          ///< ドラッグ開始時の各キーフレーム時間
 
     // タイムライン設定
@@ -206,27 +187,8 @@ private:
     float gridSnapInterval_ = 0.1f;              ///< グリッドスナップ間隔
     bool enableGridSnap_ = true;                 ///< グリッドスナップ有効化
 
-    // プレビュー設定
-    bool showMotionPath_ = true;                 ///< モーションパス表示
-    bool showGhostFrames_ = false;               ///< ゴーストフレーム表示
-    int ghostFrameCount_ = 3;                    ///< ゴーストフレーム数
-    float ghostFrameOpacity_ = 0.3f;             ///< ゴーストフレーム透明度
-
     // コピーバッファ
     std::vector<CameraKeyframe> clipboard_;      ///< コピーしたキーフレーム
-
-
-    // UIレイアウト設定
-    float timelinePanelHeight_ = 200.0f;         ///< タイムラインパネル高さ
-    float inspectorPanelWidth_ = 300.0f;         ///< インスペクターパネル幅
-    float curveEditorHeight_ = 200.0f;           ///< カーブエディター高さ
-    float previewPanelSize_ = 200.0f;            ///< プレビューパネルサイズ
-
-    // 設定フラグ
-    bool autoKeyframe_ = false;                  ///< 自動キーフレーム挿入
-    bool showTimeRuler_ = true;                  ///< 時間ルーラー表示
-    bool showPropertyTracks_ = true;             ///< プロパティトラック表示
-    bool lockTimelineScroll_ = false;            ///< タイムラインスクロールロック
 
     // プレビュー機能
     bool enablePreview_ = false;                  ///< プレビューモード有効化

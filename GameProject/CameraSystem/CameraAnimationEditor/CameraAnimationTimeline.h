@@ -281,7 +281,6 @@ private:
 
     // アニメーション
     float hoverAnimTime_ = 0.0f;                 ///< ホバーアニメーション時間
-    float selectionAnimTime_ = 0.0f;             ///< 選択アニメーション時間
 };
 
 #endif // _DEBUG

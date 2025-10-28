@@ -87,13 +87,6 @@ void CameraAnimationTimeline::Update(float deltaTime) {
     hoverAnimTime_ = 0.0f;
   }
 
-  // 選択アニメーション更新
-  if (!selectedKeyframes_.empty()) {
-    selectionAnimTime_ += deltaTime * 2.0f;
-  } else {
-    selectionAnimTime_ = 0.0f;
-  }
-
   if (isKeyframePreviewActive_)
   {
     animation_->SetCurrentTime(previewTime_);

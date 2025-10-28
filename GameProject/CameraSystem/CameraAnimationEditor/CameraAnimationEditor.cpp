@@ -259,10 +259,8 @@ void CameraAnimationEditor::DrawMenuBar() {
 
   // View menu
   if (ImGui::BeginMenu("View")) {
-    ImGui::MenuItem("Show Motion Path", nullptr, &showMotionPath_);
-    ImGui::MenuItem("Show Ghost Frames", nullptr, &showGhostFrames_);
-    ImGui::MenuItem("Show Time Ruler", nullptr, &showTimeRuler_);
-    ImGui::MenuItem("Show Property Tracks", nullptr, &showPropertyTracks_);
+    // 現在実装済みの機能のみ表示
+    // 将来的に拡張予定
 
     ImGui::EndMenu();
   }
@@ -300,7 +298,6 @@ void CameraAnimationEditor::DrawMenuBar() {
 
     ImGui::Separator();
 
-    ImGui::MenuItem("Auto Keyframe", nullptr, &autoKeyframe_);
     ImGui::MenuItem("Enable Grid Snap", nullptr, &enableGridSnap_);
 
     ImGui::Separator();
@@ -740,13 +737,6 @@ void CameraAnimationEditor::DrawPreviewPanel() {
   ImGui::Text("Camera Preview");
   ImGui::Separator();
 
-  if (showMotionPath_) {
-    ImGui::Text("Motion Path: ON");
-  }
-
-  if (showGhostFrames_) {
-    ImGui::Text("Ghost Frames: %d", ghostFrameCount_);
-  }
 
   // カメラ位置情報
   if (camera_) {
