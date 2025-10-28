@@ -161,7 +161,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="CameraSystem\FirstPersonController.cpp" />
     <ClCompile Include="CameraSystem\TopDownController.cpp" />
     <ClCompile Include="FollowCamera\FollowCamera.cpp" />
-    <ClCompile Include="FollowCamera\FollowCameraRefactored.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame\MyGame.cpp" />
@@ -205,7 +204,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="CameraSystem\TopDownController.h" />
     <ClInclude Include="Collision\CollisionTypeIdDef.h" />
     <ClInclude Include="FollowCamera\FollowCamera.h" />
-    <ClInclude Include="FollowCamera\FollowCameraRefactored.h" />
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="MyGame\MyGame.h" />
     <ClInclude Include="Object\Boss\Boss.h" />

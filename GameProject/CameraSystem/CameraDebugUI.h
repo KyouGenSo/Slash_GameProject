@@ -51,16 +51,10 @@ private:
     /// </summary>
     static void DrawCameraState();
 
-    /// <summary>
-    /// パフォーマンス情報を描画
-    /// </summary>
-    static void DrawPerformanceInfo();
-
     // UI表示フラグ
     static bool showManagerInfo_;
     static bool showControllerInfo_;
     static bool showAnimationInfo_;
-    static bool showPerformanceInfo_;
 };
 
 #endif // _DEBUG

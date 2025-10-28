@@ -108,9 +108,6 @@
     <ClCompile Include="CameraSystem\CameraManager.cpp">
       <Filter>CameraSystem</Filter>
     </ClCompile>
-    <ClCompile Include="FollowCamera\FollowCameraRefactored.cpp">
-      <Filter>Camera</Filter>
-    </ClCompile>
     <ClCompile Include="CameraSystem\CameraAnimationController.cpp">
       <Filter>CameraSystem\Controller</Filter>
     </ClCompile>
@@ -196,9 +193,6 @@
     </ClInclude>
     <ClInclude Include="CameraSystem\CameraManager.h">
       <Filter>CameraSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FollowCamera\FollowCameraRefactored.h">
-      <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="CameraSystem\CameraAnimationController.h">
       <Filter>CameraSystem\Controller</Filter>

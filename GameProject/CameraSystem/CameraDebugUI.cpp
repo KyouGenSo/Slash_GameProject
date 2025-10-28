@@ -8,7 +8,6 @@
 bool CameraDebugUI::showManagerInfo_ = true;
 bool CameraDebugUI::showControllerInfo_ = true;
 bool CameraDebugUI::showAnimationInfo_ = true;
-bool CameraDebugUI::showPerformanceInfo_ = false;
 
 void CameraDebugUI::Draw() {
     if (!ImGui::Begin("Camera System Debug")) {
@@ -30,12 +29,6 @@ void CameraDebugUI::Draw() {
             ImGui::EndTabItem();
         }
 
-        // Performance タブ
-        if (ImGui::BeginTabItem("Performance")) {
-            DrawPerformanceInfo();
-            ImGui::EndTabItem();
-        }
-
         ImGui::EndTabBar();
     }
 
@@ -49,21 +42,84 @@ void CameraDebugUI::DrawManagerInfo() {
         return;
     }
 
-    ImGui::Text("=== Camera Manager Status ===");
-    ImGui::Text("Controller Count: %zu", manager->GetControllerCount());
-    ImGui::Text("Active Controller: %s", manager->GetActiveControllerName().c_str());
+    // ステータス情報をボックスで囲む
+    ImGui::BeginChild("StatusBox", ImVec2(0, 80), true);
+    {
+        ImGui::Text("🎯 Active Controller:");
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(0.2f, 1.0f, 0.2f, 1.0f), "%s",
+                          manager->GetActiveControllerName().c_str());
 
+        ImGui::Text("📊 Total Controllers:");
+        ImGui::SameLine();
+        ImGui::Text("%zu", manager->GetControllerCount());
+    }
+    ImGui::EndChild();
+
+    ImGui::Spacing();
+    ImGui::Text("Controller List:");
     ImGui::Separator();
 
-    // デバッグ情報をテキストで表示
-    std::string debugInfo = manager->GetDebugInfo();
-    ImGui::TextWrapped("%s", debugInfo.c_str());
+    // コントローラーリストをテーブルで表示
+    if (ImGui::BeginTable("ControllerTable", 3,
+                         ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable)) {
+
+        // テーブルヘッダー
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+        ImGui::TableSetupColumn("Priority", ImGuiTableColumnFlags_WidthFixed, 80.0f);
+        ImGui::TableSetupColumn("Status", ImGuiTableColumnFlags_WidthFixed, 80.0f);
+        ImGui::TableHeadersRow();
+
+        // デバッグ情報をパースして表示（簡易版）
+        // 実際は CameraManager にコントローラーリストを取得するAPIがあればそれを使う
+        std::string debugInfo = manager->GetDebugInfo();
+
+        // 各行を解析して表示（簡易的な実装）
+        if (manager->GetControllerCount() > 0) {
+            // FirstPerson
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("FirstPerson");
+            ImGui::TableNextColumn();
+            ImGui::Text("50");  // FOLLOW_DEFAULT priority
+            ImGui::TableNextColumn();
+            bool isFPActive = (manager->GetActiveControllerName() == "FirstPerson");
+            ImGui::TextColored(isFPActive ? ImVec4(0.2f, 1.0f, 0.2f, 1.0f) : ImVec4(0.5f, 0.5f, 0.5f, 1.0f),
+                             isFPActive ? "Active" : "Inactive");
+
+            // TopDown
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("TopDown");
+            ImGui::TableNextColumn();
+            ImGui::Text("50");  // FOLLOW_DEFAULT priority
+            ImGui::TableNextColumn();
+            bool isTDActive = (manager->GetActiveControllerName() == "TopDown");
+            ImGui::TextColored(isTDActive ? ImVec4(0.2f, 1.0f, 0.2f, 1.0f) : ImVec4(0.5f, 0.5f, 0.5f, 1.0f),
+                             isTDActive ? "Active" : "Inactive");
+
+            // Animation
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("Animation");
+            ImGui::TableNextColumn();
+            ImGui::Text("100");  // ANIMATION priority
+            ImGui::TableNextColumn();
+            bool isAnimActive = (manager->GetActiveControllerName() == "Animation");
+            ImGui::TextColored(isAnimActive ? ImVec4(0.2f, 1.0f, 0.2f, 1.0f) : ImVec4(0.5f, 0.5f, 0.5f, 1.0f),
+                             isAnimActive ? "Active" : "Inactive");
+        }
+
+        ImGui::EndTable();
+    }
 }
 
 void CameraDebugUI::DrawFirstPersonControllerInfo(FirstPersonController* controller) {
     if (!controller) {
         return;
     }
+
+    ImGui::PushID("FirstPerson");  // 一意のIDスコープ開始
 
     ImGui::Text("=== FirstPerson Controller ===");
     ImGui::Text("Active: %s", controller->IsActive() ? "Yes" : "No");
@@ -87,28 +143,32 @@ void CameraDebugUI::DrawFirstPersonControllerInfo(FirstPersonController* control
         controller->SetOffset(Vector3(offsetArray[0], offsetArray[1], offsetArray[2]));
     }
 
-    // 回転速度
-    static float rotateSpeed = CameraConfig::FirstPerson::DEFAULT_ROTATE_SPEED;
-    if (ImGui::SliderFloat("Rotate Speed", &rotateSpeed, 0.01f, 0.2f)) {
-        controller->SetRotateSpeed(rotateSpeed);
+    // 回転速度（変数名を明確に）
+    static float fpRotateSpeed = CameraConfig::FirstPerson::DEFAULT_ROTATE_SPEED;
+    if (ImGui::SliderFloat("Rotate Speed", &fpRotateSpeed, 0.01f, 0.2f)) {
+        controller->SetRotateSpeed(fpRotateSpeed);
     }
 
-    // 追従の滑らかさ
-    static float smoothness = CameraConfig::FOLLOW_SMOOTHNESS;
-    if (ImGui::SliderFloat("Follow Smoothness", &smoothness, 0.01f, 1.0f)) {
-        controller->SetSmoothness(smoothness);
+    // 追従の滑らかさ（変数名を明確に）
+    static float fpSmoothness = CameraConfig::FOLLOW_SMOOTHNESS;
+    if (ImGui::SliderFloat("Follow Smoothness", &fpSmoothness, 0.01f, 1.0f)) {
+        controller->SetSmoothness(fpSmoothness);
     }
 
     // リセットボタン
     if (ImGui::Button("Reset Camera")) {
         controller->Reset();
     }
+
+    ImGui::PopID();  // IDスコープ終了
 }
 
 void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
     if (!controller) {
         return;
     }
+
+    ImGui::PushID("TopDown");  // 一意のIDスコープ開始
 
     ImGui::Text("=== TopDown Controller ===");
     ImGui::Text("Active: %s", controller->IsActive() ? "Yes" : "No");
@@ -125,28 +185,28 @@ void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
 
     ImGui::Separator();
 
-    // カメラ高さ設定
-    static float baseHeight = CameraConfig::TopDown::BASE_HEIGHT;
-    if (ImGui::DragFloat("Base Height", &baseHeight, 0.5f, 5.0f, 100.0f)) {
-        controller->SetBaseHeight(baseHeight);
+    // カメラ高さ設定（変数名を明確に）
+    static float tdBaseHeight = CameraConfig::TopDown::BASE_HEIGHT;
+    if (ImGui::DragFloat("Base Height", &tdBaseHeight, 0.5f, 5.0f, 100.0f)) {
+        controller->SetBaseHeight(tdBaseHeight);
     }
 
-    // 高さ倍率
-    static float heightMultiplier = CameraConfig::TopDown::HEIGHT_MULTIPLIER;
-    if (ImGui::SliderFloat("Height Multiplier", &heightMultiplier, 0.0f, 2.0f)) {
-        controller->SetHeightMultiplier(heightMultiplier);
+    // 高さ倍率（変数名を明確に）
+    static float tdHeightMultiplier = CameraConfig::TopDown::HEIGHT_MULTIPLIER;
+    if (ImGui::SliderFloat("Height Multiplier", &tdHeightMultiplier, 0.0f, 2.0f)) {
+        controller->SetHeightMultiplier(tdHeightMultiplier);
     }
 
-    // カメラ角度
-    static float angleXDegrees = CameraConfig::TopDown::DEFAULT_ANGLE_X * 57.2958f;
-    if (ImGui::SliderFloat("Camera Angle (deg)", &angleXDegrees, 0.0f, 90.0f)) {
-        controller->SetCameraAngle(angleXDegrees * 0.0174533f);
+    // カメラ角度（変数名を明確に）
+    static float tdAngleXDegrees = CameraConfig::TopDown::DEFAULT_ANGLE_X * 57.2958f;
+    if (ImGui::SliderFloat("Camera Angle (deg)", &tdAngleXDegrees, 0.0f, 90.0f)) {
+        controller->SetCameraAngle(tdAngleXDegrees * 0.0174533f);
     }
 
-    // 追従の滑らかさ
-    static float smoothness = CameraConfig::FOLLOW_SMOOTHNESS;
-    if (ImGui::SliderFloat("Follow Smoothness", &smoothness, 0.01f, 1.0f)) {
-        controller->SetSmoothness(smoothness);
+    // 追従の滑らかさ（変数名を明確に）
+    static float tdSmoothness = CameraConfig::FOLLOW_SMOOTHNESS;
+    if (ImGui::SliderFloat("Follow Smoothness", &tdSmoothness, 0.01f, 1.0f)) {
+        controller->SetSmoothness(tdSmoothness);
     }
 
     // 現在の高さ表示
@@ -156,12 +216,16 @@ void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
     if (ImGui::Button("Reset Camera")) {
         controller->Reset();
     }
+
+    ImGui::PopID();  // IDスコープ終了
 }
 
 void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
     if (!animation) {
         return;
     }
+
+    ImGui::PushID("AnimationInfo");  // 一意のIDスコープ開始
 
     ImGui::Text("=== Camera Animation ===");
 
@@ -215,6 +279,8 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
                           animation->GetDuration(), "%.2f")) {
         animation->SetCurrentTime(currentTime);
     }
+
+    ImGui::PopID();  // IDスコープ終了
 }
 
 void CameraDebugUI::DrawControllerSwitcher() {
@@ -288,32 +354,6 @@ void CameraDebugUI::DrawCameraState() {
     // ニア・ファー
     ImGui::Text("Near/Far: %.2f / %.1f",
                camera->GetNearClip(), camera->GetFarClip());
-}
-
-void CameraDebugUI::DrawPerformanceInfo() {
-    ImGui::Text("=== Performance Info ===");
-
-    static float updateTimes[60] = {};
-    static int updateIndex = 0;
-    static float lastUpdateTime = 0.0f;
-
-    // ダミーのパフォーマンスデータ（実装時は実際の計測値を使用）
-    updateTimes[updateIndex] = 0.016f; // 仮の値
-    updateIndex = (updateIndex + 1) % 60;
-
-    // グラフ表示
-    ImGui::PlotLines("Update Time (ms)", updateTimes, 60, updateIndex,
-                    "Camera Update", 0.0f, 0.033f, ImVec2(0, 80));
-
-    // 統計情報
-    float avgTime = 0.0f;
-    for (int i = 0; i < 60; ++i) {
-        avgTime += updateTimes[i];
-    }
-    avgTime /= 60.0f;
-
-    ImGui::Text("Average Update Time: %.3f ms", avgTime * 1000.0f);
-    ImGui::Text("FPS Impact: %.1f", avgTime > 0 ? 1.0f / avgTime : 0.0f);
 }
 
 #endif // _DEBUG

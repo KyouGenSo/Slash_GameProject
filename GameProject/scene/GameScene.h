@@ -6,9 +6,14 @@
 #include "SkyBox.h"
 #include "BoneTracker.h"
 #include "EmitterManager.h"
-#include "FollowCamera/followCamera.h"
 #include "Object/Player/Player.h"
 #include "Object/Boss/Boss.h"
+
+// Forward declarations for camera system
+class CameraManager;
+class FirstPersonController;
+class TopDownController;
+class CameraAnimationController;
 
 /// <summary>
 /// ゲームメインシーンクラス
@@ -53,7 +58,12 @@ private: // メンバ変数
 
 	std::unique_ptr<Boss> boss_;  ///< ボスキャラクター
 
-	std::unique_ptr<FollowCamera> followCamera_;  ///< プレイヤー追従カメラ
+	// Camera system components
+	CameraManager* cameraManager_ = nullptr;  ///< カメラシステム管理
+	FirstPersonController* firstPersonController_ = nullptr;  ///< 一人称視点コントローラー
+	TopDownController* topDownController_ = nullptr;  ///< トップダウン視点コントローラー
+	CameraAnimationController* animationController_ = nullptr;  ///< カメラアニメーションコントローラー
+	bool cameraMode_ = false;  ///< カメラモード (true: FirstPerson, false: TopDown)
 
 	Transform groundUvTransform_{};  ///< 地面のUVトランスフォーム（テクスチャスクロール等に使用）
 

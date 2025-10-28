@@ -15,12 +15,19 @@
 #include "CollisionManager.h"
 #include "../Collision/CollisionTypeIdDef.h"
 
+// Camera System includes
+#include "CameraSystem/CameraManager.h"
+#include "CameraSystem/FirstPersonController.h"
+#include "CameraSystem/TopDownController.h"
+#include "CameraSystem/CameraAnimationController.h"
+
 #include <numbers>
 
 #ifdef _DEBUG
 #include"ImGui.h"
 #include "DebugCamera.h"
 #include "DebugUIManager.h"
+#include "CameraSystem/CameraDebugUI.h"
 #endif
 
 void GameScene::Initialize()
@@ -45,8 +52,8 @@ void GameScene::Initialize()
     [this]() { if (player_) player_->DrawImGui(); });
   DebugUIManager::GetInstance()->RegisterGameObject("Boss",
     [this]() { if (boss_) boss_->DrawImGui(); });
-  DebugUIManager::GetInstance()->RegisterGameObject("FollowCamera",
-    [this]() { if (followCamera_) followCamera_->DrawImGui(); });
+  DebugUIManager::GetInstance()->RegisterGameObject("CameraSystem",
+    []() { CameraDebugUI::Draw(); });
 
   emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
   DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
@@ -90,13 +97,37 @@ void GameScene::Initialize()
   player_->Initialize();
   player_->SetCamera((*Object3dBasic::GetInstance()->GetCamera()));
 
-  // フォローカメラの初期化
-  followCamera_ = std::make_unique<FollowCamera>();
-  followCamera_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
-  followCamera_->SetTarget(&player_->GetTransform());
-  followCamera_->SetTarget2(&boss_->GetTransform());
-  followCamera_->PlayStartCameraAnimation();
-  
+  // カメラシステムの初期化
+  cameraManager_ = CameraManager::GetInstance();
+  cameraManager_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
+
+  // FirstPersonControllerを登録
+  auto fpController = std::make_unique<FirstPersonController>();
+  firstPersonController_ = fpController.get();
+  firstPersonController_->SetTarget(&player_->GetTransform());
+  cameraManager_->RegisterController("FirstPerson", std::move(fpController));
+
+  // TopDownControllerを登録
+  auto tdController = std::make_unique<TopDownController>();
+  topDownController_ = tdController.get();
+  topDownController_->SetTarget(&player_->GetTransform());
+  std::vector<const Transform*> additionalTargets = { &boss_->GetTransform() };
+  topDownController_->SetAdditionalTargets(additionalTargets);
+  cameraManager_->RegisterController("TopDown", std::move(tdController));
+
+  // CameraAnimationControllerを登録
+  auto animController = std::make_unique<CameraAnimationController>();
+  animationController_ = animController.get();
+  cameraManager_->RegisterController("Animation", std::move(animController));
+
+  // ゲーム開始アニメーションを再生
+  animationController_->LoadAnimation("game_start.json");
+  animationController_->Play();
+
+  // デフォルトモードを設定（TopDown）
+  cameraMode_ = false;
+  cameraManager_->ActivateController("TopDown");
+
 
   // 衝突マスクの設定（どのタイプ同士が衝突判定を行うか）
   collisionManager->SetCollisionMask(
@@ -128,7 +159,13 @@ void GameScene::Finalize()
   if (boss_) {
     boss_->Finalize();
   }
-  
+
+  // CameraManagerのクリーンアップ
+  if (cameraManager_) {
+    cameraManager_->Finalize();
+    cameraManager_ = nullptr;
+  }
+
   // CollisionManagerのリセット
   CollisionManager::GetInstance()->Reset();
 }
@@ -138,17 +175,32 @@ void GameScene::Update()
   /// ================================== ///
   ///              更新処理               ///
   /// ================================== ///
-  player_->SetMode(followCamera_->GetMode());
+
+  // カメラモード切り替え
+  if (Input::GetInstance()->TriggerKey(DIK_P)) {
+    cameraMode_ = !cameraMode_;
+    cameraManager_->DeactivateAllControllers();
+
+    if (cameraMode_) {
+      cameraManager_->ActivateController("FirstPerson");
+    } else {
+      cameraManager_->ActivateController("TopDown");
+    }
+  }
+
+  player_->SetMode(cameraMode_);
 
   skyBox_->Update();
   ground_->Update();
   player_->Update();
   boss_->Update();
 
-  followCamera_->Update();
+  // カメラシステムの更新
+  cameraManager_->Update(FrameTimer::GetInstance()->GetDeltaTime());
+
   //emitterManager_->Update();
   toTitleText_->Update();
-  
+
   // 衝突判定の実行
   CollisionManager::GetInstance()->CheckAllCollisions();
 
