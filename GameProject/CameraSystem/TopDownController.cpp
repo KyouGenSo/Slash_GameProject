@@ -12,11 +12,22 @@ void TopDownController::Update(float deltaTime) {
         return;
     }
 
+    // 標準FOVを設定
+    if (camera_) {
+      camera_->SetFovY(standardFov_);
+    }
+
     UpdateCameraPosition();
 }
 
 void TopDownController::Activate() {
     isActive_ = true;
+
+    // 標準FOVを設定
+    if (camera_) {
+      camera_->SetFovY(standardFov_);
+    }
+
     if (primaryTarget_) {
         Reset();
     }

@@ -73,6 +73,17 @@ public:
     /// </summary>
     bool IsOpen() const { return isOpen_; }
 
+    /// <summary>
+    /// ターゲットトランスフォームを設定
+    /// </summary>
+    /// <param name="target">ターゲットトランスフォーム</param>
+    /// <param name="name">ターゲット名（表示用）</param>
+    void SetTarget(const Transform* target, const std::string& name = "");
+
+    /// <summary>
+    /// ターゲットトランスフォームを取得
+    /// </summary>
+    const Transform* GetTarget() const { return targetTransform_; }
 
 private:
     /// <summary>
@@ -191,6 +202,10 @@ private:
     // プレビュー機能
     bool enablePreview_ = false;                  ///< プレビューモード有効化
     std::string previousControllerName_;         ///< プレビュー前のコントローラー名
+
+    // ターゲット設定
+    const Transform* targetTransform_ = nullptr;  ///< ターゲットトランスフォーム
+    std::string targetName_ = "None";            ///< ターゲット名（表示用）
 };
 
 #endif // _DEBUG

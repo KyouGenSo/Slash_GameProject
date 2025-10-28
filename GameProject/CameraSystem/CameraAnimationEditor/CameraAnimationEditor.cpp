@@ -6,6 +6,7 @@
 #include "CameraAnimationHistory.h"
 #include "../CameraManager.h"
 #include "CameraSystem/CameraAnimationController.h"
+#include "Vec3Func.h"
 #include <imgui.h>
 // #include <imgui_internal.h> // 不要な場合はコメントアウト
 #include <algorithm>
@@ -54,6 +55,10 @@ void CameraAnimationEditor::Initialize(CameraAnimationController* controller, Ca
 
     history_ = std::make_unique<CameraAnimationHistory>();
     history_->Initialize(animation_);
+
+    // ターゲット情報を取得して設定
+    targetTransform_ = animation_->GetTarget();
+    targetName_ = targetTransform_ ? "Target" : "None";
   }
 }
 
@@ -144,6 +149,21 @@ void CameraAnimationEditor::Update(float deltaTime) {
   // 通常モードのタイムライン更新
   if (timeline_) {
     timeline_->Update(deltaTime);
+  }
+}
+
+void CameraAnimationEditor::SetTarget(const Transform* target, const std::string& name) {
+  targetTransform_ = target;
+  targetName_ = name.empty() ? (target ? "Target" : "None") : name;
+
+  // アニメーションにターゲットを設定
+  if (animation_) {
+    animation_->SetTarget(target);
+  }
+
+  // コントローラーにもターゲットを設定（現在のアニメーションのみ）
+  if (controller_) {
+    controller_->SetCurrentAnimationTarget(target);
   }
 }
 
@@ -556,19 +576,116 @@ void CameraAnimationEditor::DrawInspectorPanel() {
     ImGui::Separator();
   }
 
+  // Start Mode Settings セクション
+  if (ImGui::CollapsingHeader("Start Mode Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
+    // 開始モード選択
+    const char* startModes[] = { "Jump Cut", "Smooth Blend" };
+    int startModeIndex = static_cast<int>(animation_->GetStartMode());
+    if (ImGui::Combo("Start Mode", &startModeIndex, startModes, 2)) {
+      animation_->SetStartMode(static_cast<CameraAnimation::StartMode>(startModeIndex));
+    }
+
+    // 開始モードの説明
+    if (startModeIndex == 0) {
+      ImGui::TextWrapped("Jump Cut: Instantly moves to the first keyframe when playback starts.");
+    } else {
+      ImGui::TextWrapped("Smooth Blend: Smoothly transitions from current camera position to the first keyframe.");
+    }
+
+    // SMOOTH_BLENDの場合、ブレンド時間設定
+    if (animation_->GetStartMode() == CameraAnimation::StartMode::SMOOTH_BLEND) {
+      float blendDuration = animation_->GetBlendDuration();
+      if (ImGui::DragFloat("Blend Duration (sec)", &blendDuration, 0.01f, 0.1f, 2.0f)) {
+        animation_->SetBlendDuration(blendDuration);
+      }
+
+      // ブレンド中の進行状況表示
+      if (animation_->IsBlending()) {
+        ImGui::ProgressBar(animation_->GetBlendProgress(), ImVec2(-1, 0), "Blending...");
+      }
+    }
+
+    ImGui::Separator();
+  }
+
+  // Target Settingsセクション
+  if (ImGui::CollapsingHeader("Target Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
+    // 現在のターゲット表示
+    ImGui::Text("Current Target: ");
+    ImGui::SameLine();
+    if (targetTransform_) {
+      ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.2f, 1.0f), "%s", targetName_.c_str());
+    } else {
+      ImGui::TextColored(ImVec4(0.5f, 0.5f, 0.5f, 1.0f), "None");
+    }
+
+    // ターゲット設定ボタン
+    if (ImGui::Button("Set Target")) {
+      // 実際のターゲット設定はゲーム側から呼び出される
+      // ここではUIの説明のみ
+      ImGui::OpenPopup("TargetSetHelp");
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Clear Target")) {
+      SetTarget(nullptr, "None");
+    }
+
+    // ヘルプポップアップ
+    if (ImGui::BeginPopup("TargetSetHelp")) {
+      ImGui::Text("To set a target:");
+      ImGui::BulletText("Call SetTarget() from game code");
+      ImGui::BulletText("Pass the target's Transform pointer");
+      ImGui::Separator();
+      ImGui::TextWrapped("When Target Relative mode is active, keyframe positions will be interpreted as offsets from the target.");
+      ImGui::EndPopup();
+    }
+
+    // ターゲット相対モードの説明
+    if (targetTransform_) {
+      ImGui::TextWrapped("Target is set. Keyframes with TARGET_RELATIVE coordinate type will use this target as reference.");
+    } else {
+      ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.2f, 1.0f),
+        "No target set. TARGET_RELATIVE keyframes will use world coordinates.");
+    }
+
+    ImGui::Separator();
+  }
+
   // 新規追加：キーフレーム追加セクション
   if (ImGui::CollapsingHeader("Add New Keyframe", ImGuiTreeNodeFlags_DefaultOpen)) {
     static float newKeyTime = 0.0f;
+    static int coordTypeIndex = 0; // 0: WORLD, 1: TARGET_RELATIVE
+
     ImGui::DragFloat("Time (seconds)", &newKeyTime, 0.01f, 0.0f, 10.0f);
+
+    // 座標系タイプ選択
+    const char* coordTypes[] = { "World", "Target Relative" };
+    ImGui::Combo("Coordinate Type", &coordTypeIndex, coordTypes, 2);
+
+    // TARGET_RELATIVEモード選択時の警告
+    if (coordTypeIndex == 1 && !targetTransform_) {
+      ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f),
+        "Warning: No target set. Will use world coordinates.");
+    }
 
     if (ImGui::Button("Add from Current Camera")) {
       if (camera_) {
         CameraKeyframe newKf;
         newKf.time = enableGridSnap_ ? SnapToGrid(newKeyTime) : newKeyTime;
-        newKf.position = camera_->GetTranslate();
+
+        // 座標系タイプに応じて位置を設定
+        if (coordTypeIndex == 1 && targetTransform_) {
+          // TARGET_RELATIVEモード: 現在のカメラ位置からターゲット位置を引いてオフセットを計算
+          newKf.position = Vec3::Subtract(camera_->GetTranslate(), targetTransform_->translate);
+        } else {
+          // WORLDモード: そのまま現在のカメラ位置を使用
+          newKf.position = camera_->GetTranslate();
+        }
+
         newKf.rotation = camera_->GetRotate();
         newKf.fov = camera_->GetFovY();
         newKf.interpolation = CameraKeyframe::InterpolationType::LINEAR;
+        newKf.coordinateType = static_cast<CameraKeyframe::CoordinateType>(coordTypeIndex);
 
         animation_->AddKeyframe(newKf);
         if (history_) {
@@ -586,10 +703,11 @@ void CameraAnimationEditor::DrawInspectorPanel() {
     if (ImGui::Button("Add Default")) {
       CameraKeyframe defaultKf;
       defaultKf.time = enableGridSnap_ ? SnapToGrid(newKeyTime) : newKeyTime;
-      defaultKf.position = Vector3(0.0f, 5.0f, -10.0f);
+      defaultKf.position = Vector3(0.0f, 5.0f, -10.0f); // デフォルト位置（オフセット）
       defaultKf.rotation = Vector3(0.2f, 0.0f, 0.0f);
       defaultKf.fov = 45.0f * 3.14159265f / 180.0f;
       defaultKf.interpolation = CameraKeyframe::InterpolationType::LINEAR;
+      defaultKf.coordinateType = static_cast<CameraKeyframe::CoordinateType>(coordTypeIndex);
 
       animation_->AddKeyframe(defaultKf);
       if (history_) {
@@ -626,8 +744,27 @@ void CameraAnimationEditor::DrawInspectorPanel() {
         changed = true;
       }
 
+      // 座標系タイプ
+      const char* coordTypes[] = { "World", "Target Relative" };
+      int currentCoordType = static_cast<int>(kf.coordinateType);
+      if (ImGui::Combo("Coordinate Type", &currentCoordType, coordTypes, 2)) {
+        kf.coordinateType = static_cast<CameraKeyframe::CoordinateType>(currentCoordType);
+        changed = true;
+      }
+
+      // TARGET_RELATIVEモードの説明
+      if (kf.coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE) {
+        if (targetTransform_) {
+          ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.8f, 1.0f), "Position is offset from target");
+        } else {
+          ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "No target! Using world coordinates");
+        }
+      }
+
       // 位置
-      if (ImGui::DragFloat3("Position", &kf.position.x, 0.1f)) {
+      const char* posLabel = (kf.coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE)
+                            ? "Position (Offset)" : "Position";
+      if (ImGui::DragFloat3(posLabel, &kf.position.x, 0.1f)) {
         changed = true;
       }
 
@@ -672,7 +809,14 @@ void CameraAnimationEditor::DrawInspectorPanel() {
       // 現在のカメラ状態を適用ボタン
       if (ImGui::Button("Apply Current Camera")) {
         if (camera_) {
-          kf.position = camera_->GetTranslate();
+          // 座標系タイプに応じて位置を設定
+          if (kf.coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE && targetTransform_) {
+            // ターゲット相対: オフセットとして計算
+            kf.position = Vec3::Subtract(camera_->GetTranslate(), targetTransform_->translate);
+          } else {
+            // ワールド座標: そのまま使用
+            kf.position = camera_->GetTranslate();
+          }
           kf.rotation = camera_->GetRotate();
           kf.fov = camera_->GetFovY();
           animation_->EditKeyframe(idx, kf);
@@ -882,6 +1026,10 @@ void CameraAnimationEditor::DrawAnimationSelector() {
             timeline_->Initialize(animation_);
             curveEditor_->Initialize(animation_);
             history_->Initialize(animation_);
+
+            // ターゲット情報を更新
+            targetTransform_ = animation_->GetTarget();
+            targetName_ = targetTransform_ ? (name + " Target") : "None";
           }
         }
       }

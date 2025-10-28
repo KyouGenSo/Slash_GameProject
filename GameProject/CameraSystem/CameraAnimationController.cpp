@@ -69,6 +69,35 @@ void CameraAnimationController::SetCamera(Camera* camera) {
     }
 }
 
+void CameraAnimationController::SetAnimationTarget(const Transform* target, bool applyToAll) {
+    if (applyToAll) {
+        // 全てのアニメーションにターゲットを設定
+        for (auto& pair : animations_) {
+            pair.second->SetTarget(target);
+        }
+    } else {
+        // 現在のアニメーションのみにターゲットを設定
+        auto* animation = GetCurrentAnimation();
+        if (animation) {
+            animation->SetTarget(target);
+        }
+    }
+}
+
+void CameraAnimationController::SetAnimationTargetByName(const std::string& animationName, const Transform* target) {
+    auto it = animations_.find(animationName);
+    if (it != animations_.end()) {
+        it->second->SetTarget(target);
+    }
+}
+
+void CameraAnimationController::SetCurrentAnimationTarget(const Transform* target) {
+    auto* animation = GetCurrentAnimation();
+    if (animation) {
+        animation->SetTarget(target);
+    }
+}
+
 bool CameraAnimationController::LoadAnimation(const std::string& filepath) {
     // デフォルトアニメーションに読み込む（後方互換性のため）
     auto* animation = GetCurrentAnimation();
@@ -105,6 +134,23 @@ void CameraAnimationController::Reset() {
     auto* animation = GetCurrentAnimation();
     if (animation) {
         animation->Reset();
+    }
+}
+
+void CameraAnimationController::SetAnimationStartMode(CameraAnimation::StartMode mode, float blendDuration) {
+    auto* animation = GetCurrentAnimation();
+    if (animation) {
+        animation->SetStartMode(mode);
+        animation->SetBlendDuration(blendDuration);
+    }
+}
+
+void CameraAnimationController::SetAnimationStartModeByName(const std::string& animationName,
+                                                           CameraAnimation::StartMode mode, float blendDuration) {
+    auto it = animations_.find(animationName);
+    if (it != animations_.end()) {
+        it->second->SetStartMode(mode);
+        it->second->SetBlendDuration(blendDuration);
     }
 }
 
@@ -190,6 +236,14 @@ bool CameraAnimationController::IsEditingKeyframe() const {
     return false;
 }
 
+const Transform* CameraAnimationController::GetAnimationTarget() const {
+    auto* anim = const_cast<CameraAnimationController*>(this)->GetCurrentAnimation();
+    if (anim) {
+        return anim->GetTarget();
+    }
+    return nullptr;
+}
+
 //==================== アニメーション管理の実装 ====================
 
 CameraAnimation* CameraAnimationController::GetCurrentAnimation() {
@@ -232,10 +286,10 @@ bool CameraAnimationController::SwitchAnimation(const std::string& name) {
         return false;
     }
 
-    // 現在のアニメーションを停止
+    // 現在のアニメーションを停止（FOV復元なし）
     auto* current = GetCurrentAnimation();
     if (current) {
-        current->Stop();
+        current->StopWithoutRestore();
     }
 
     // 切り替え

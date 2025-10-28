@@ -35,6 +35,9 @@ void GameScene::Initialize()
   // CollisionManagerの初期化
   CollisionManager* collisionManager = CollisionManager::GetInstance();
 
+  // EmitterManagerの生成
+  emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
+
 #ifdef _DEBUG
   DebugCamera::GetInstance()->Initialize();
   Object3dBasic::GetInstance()->SetDebug(false);
@@ -65,7 +68,6 @@ void GameScene::Initialize()
         FrameTimer::GetInstance()->GetDeltaTime());
     });
 
-  emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
   DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
 #endif
   /// ================================== ///
@@ -76,6 +78,10 @@ void GameScene::Initialize()
   ShadowRenderer::GetInstance()->SetMaxShadowDistance(100.f);
   // 平行光源の方向の設定
   Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, -0.05f));
+
+  // エミッターマネージャーの初期化
+  emitterManager_->LoadPreset("over1", "over1");
+  emitterManager_->LoadPreset("over2", "over2");
 
   // タイトルボタンテキストの初期化
   toTitleText_ = std::make_unique<Sprite>();
@@ -133,6 +139,11 @@ void GameScene::Initialize()
   // ゲーム開始アニメーションを再生
   animationController_->LoadAnimation("game_start");
   animationController_->Play();
+
+  // game_overアニメーションの設定
+  animationController_->LoadAnimationFromFile("over_anim", "over_anim");
+  animationController_->SetAnimationTargetByName("over_anim", player_->GetTransformPtr());
+
 
   // デフォルトモードを設定（TopDown）
   cameraMode_ = false;
@@ -215,6 +226,12 @@ void GameScene::Update()
 
   // 衝突判定の実行
   CollisionManager::GetInstance()->CheckAllCollisions();
+
+  if (Input::GetInstance()->TriggerKey(DIK_1))
+  {
+    animationController_->SwitchAnimation("over_anim");
+    animationController_->Play();
+  }
 
   // シーン遷移
   if (Input::GetInstance()->TriggerKey(DIK_RETURN))

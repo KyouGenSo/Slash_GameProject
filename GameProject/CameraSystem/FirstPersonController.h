@@ -144,6 +144,7 @@ private:
     float followSmoothness_ = CameraConfig::FOLLOW_SMOOTHNESS;
     float offsetLerpSpeed_ = CameraConfig::OFFSET_LERP_SPEED;
     float rotationLerpSpeed_ = CameraConfig::ROTATION_LERP_SPEED;
+    float standardFov_ = CameraConfig::STANDARD_FOV;
 
     // 状態
     bool isRotating_ = false;

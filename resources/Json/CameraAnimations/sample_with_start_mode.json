@@ -1,0 +1,58 @@
+{
+    "animation_name": "Sample Animation with Start Mode",
+    "duration": 5.0,
+    "loop": false,
+    "play_speed": 1.0,
+    "start_mode": 1,
+    "blend_duration": 0.8,
+    "keyframes": [
+        {
+            "time": 0.0,
+            "position": {
+                "x": 0.0,
+                "y": 10.0,
+                "z": -20.0
+            },
+            "rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "fov": 45.0,
+            "interpolation": "LINEAR",
+            "coordinateType": "WORLD"
+        },
+        {
+            "time": 2.5,
+            "position": {
+                "x": 5.0,
+                "y": 15.0,
+                "z": -15.0
+            },
+            "rotation": {
+                "x": 0.1,
+                "y": 0.5,
+                "z": 0.0
+            },
+            "fov": 50.0,
+            "interpolation": "EASE_IN_OUT",
+            "coordinateType": "WORLD"
+        },
+        {
+            "time": 5.0,
+            "position": {
+                "x": 0.0,
+                "y": 5.0,
+                "z": -10.0
+            },
+            "rotation": {
+                "x": 0.2,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "fov": 40.0,
+            "interpolation": "EASE_OUT",
+            "coordinateType": "TARGET_RELATIVE"
+        }
+    ]
+}

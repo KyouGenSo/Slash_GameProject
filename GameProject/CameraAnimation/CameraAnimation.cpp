@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <cmath>
 
+#include "CameraSystem/CameraConfig.h"
+
 #ifdef _DEBUG
 #include <imgui.h>
 #endif
@@ -15,6 +17,10 @@
 /// </summary>
 CameraAnimation::CameraAnimation() {
     keyframes_.reserve(32); // 予め領域を確保
+
+    // FOV復元用変数の初期化
+    originalFov_ = 45.0f;  // デフォルトFOV
+    hasOriginalFov_ = false;
 }
 
 /// <summary>
@@ -38,6 +44,47 @@ void CameraAnimation::Update(float deltaTime) {
         return;
     }
 
+    // ブレンド中の処理
+    if (isBlending_) {
+        blendProgress_ += deltaTime / blendDuration_;
+
+        if (blendProgress_ >= 1.0f) {
+            // ブレンド完了
+            blendProgress_ = 1.0f;
+            isBlending_ = false;
+        }
+
+        // 最初のキーフレームまで補間
+        if (!keyframes_.empty()) {
+            const CameraKeyframe& firstKf = keyframes_[0];
+            float t = ApplyEasing(blendProgress_, CameraKeyframe::InterpolationType::EASE_IN_OUT);
+
+            // 位置の補間（ターゲット相対の場合も考慮）
+            Vector3 targetPosition = firstKf.position;
+            if (firstKf.coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE && targetTransform_) {
+                targetPosition = Vec3::Add(targetTransform_->translate, firstKf.position);
+            }
+            Vector3 position = Vec3::Lerp(blendStartPosition_, targetPosition, t);
+
+            // 回転の補間（クォータニオンでSlerp）
+            Quaternion q1 = EulerToQuaternion(blendStartRotation_);
+            Quaternion q2 = EulerToQuaternion(firstKf.rotation);
+            Quaternion qResult = Quat::Slerp(q1, q2, t);
+            Vector3 rotation = QuaternionToEuler(qResult);
+
+            // FOVの補間
+            float fov = Vec3::Lerp(blendStartFov_, firstKf.fov, t);
+
+            // カメラに適用
+            camera_->SetTranslate(position);
+            camera_->SetRotate(rotation);
+            camera_->SetFovY(fov);
+        }
+
+        // ブレンド中は通常のアニメーション処理をスキップ
+        return;
+    }
+
     // キーフレームが2つ以上ない場合はアニメーション不可
     if (keyframes_.size() < 2) {
         return;
@@ -55,6 +102,12 @@ void CameraAnimation::Update(float deltaTime) {
             // ワンショット再生の終了
             currentTime_ = duration_;
             playState_ = PlayState::STOPPED;
+
+            // FOVを復元
+            if (hasOriginalFov_ && camera_) {
+                camera_->SetFovY(CameraConfig::STANDARD_FOV);
+                hasOriginalFov_ = false;
+            }
         }
     }
 
@@ -65,6 +118,12 @@ void CameraAnimation::Update(float deltaTime) {
         } else {
             currentTime_ = 0.0f;
             playState_ = PlayState::STOPPED;
+
+            // FOVを復元
+            if (hasOriginalFov_ && camera_) {
+                camera_->SetFovY(CameraConfig::STANDARD_FOV);
+                hasOriginalFov_ = false;
+            }
         }
     }
 
@@ -175,17 +234,36 @@ void CameraAnimation::ClearKeyframes() {
 /// 再生開始
 /// </summary>
 void CameraAnimation::Play() {
-    if (keyframes_.size() < 2) {
-        return; // キーフレームが不足
+    if (keyframes_.empty() || !camera_) {
+        return; // キーフレームが不足またはカメラ未設定
     }
 
     playState_ = PlayState::PLAYING;
 
+    // 元のFOVを保存
+    originalFov_ = camera_->GetFovY();
+    hasOriginalFov_ = true;
+
     // 再生開始時に選択状態を解除（カメラを元に戻す）
     ClearDeselectState();
 
-    // 停止状態から再生する場合は時間をリセット
-    if (currentTime_ >= duration_ || currentTime_ < 0.0f) {
+    // 開始モードに応じた処理
+    if (startMode_ == StartMode::JUMP_CUT) {
+        // 即座に最初のキーフレームに移動
+        currentTime_ = 0.0f;
+        isBlending_ = false;
+
+        // 最初のキーフレームを即座に適用（1つしかない場合も対応）
+        if (!keyframes_.empty()) {
+            ApplyKeyframeDirectly(keyframes_[0]);
+        }
+    } else {
+        // SMOOTH_BLEND: 現在のカメラ状態を保存してブレンド開始
+        blendStartPosition_ = camera_->GetTranslate();
+        blendStartRotation_ = camera_->GetRotate();
+        blendStartFov_ = camera_->GetFovY();
+        blendProgress_ = 0.0f;
+        isBlending_ = true;
         currentTime_ = 0.0f;
     }
 }
@@ -205,6 +283,26 @@ void CameraAnimation::Pause() {
 void CameraAnimation::Stop() {
     playState_ = PlayState::STOPPED;
     currentTime_ = 0.0f;
+
+    // FOVを復元
+    if (hasOriginalFov_ && camera_) {
+        camera_->SetFovY(originalFov_);
+        hasOriginalFov_ = false;
+    }
+
+    // 停止時に選択状態を解除（カメラを元に戻す）
+    ClearDeselectState();
+}
+
+/// <summary>
+/// FOV復元なしで停止（アニメーション切り替え時用）
+/// </summary>
+void CameraAnimation::StopWithoutRestore() {
+    playState_ = PlayState::STOPPED;
+    currentTime_ = 0.0f;
+
+    // FOV復元をスキップ（フラグのみリセット）
+    hasOriginalFov_ = false;
 
     // 停止時に選択状態を解除（カメラを元に戻す）
     ClearDeselectState();
@@ -315,8 +413,19 @@ void CameraAnimation::InterpolateKeyframes(const CameraKeyframe& prev, const Cam
         return;
     }
 
-    // 位置の補間（線形補間）
+    // 位置の補間
     Vector3 position = Vec3::Lerp(prev.position, next.position, t);
+
+    // 座標系タイプを考慮（両方のキーフレームが同じ座標系である必要がある）
+    // 異なる場合は前のキーフレームの座標系を優先
+    CameraKeyframe::CoordinateType coordinateType = prev.coordinateType;
+
+    // TARGET_RELATIVEモードの場合、ターゲット位置を加算
+    if (coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE && targetTransform_) {
+        // positionはオフセットとして扱う
+        position = Vec3::Add(targetTransform_->translate, position);
+    }
+    // ターゲットが設定されていない場合は、ワールド座標として扱う
 
     // 回転の補間（クォータニオンでSlerp）
     Quaternion q1 = EulerToQuaternion(prev.rotation);
@@ -483,6 +592,27 @@ void CameraAnimation::ClearDeselectState() {
 }
 
 /// <summary>
+/// キーフレームをカメラに直接適用（内部用）
+/// </summary>
+void CameraAnimation::ApplyKeyframeDirectly(const CameraKeyframe& kf) {
+    if (!camera_) {
+        return;
+    }
+
+    // 座標系タイプに応じて位置を設定
+    Vector3 position = kf.position;
+    if (kf.coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE && targetTransform_) {
+        // ターゲット相対座標の場合、ターゲット位置にオフセットを加算
+        position = Vec3::Add(targetTransform_->translate, kf.position);
+    }
+
+    // カメラに適用
+    camera_->SetTranslate(position);
+    camera_->SetRotate(kf.rotation);
+    camera_->SetFovY(kf.fov);
+}
+
+/// <summary>
 /// JSONファイルから読み込み
 /// </summary>
 bool CameraAnimation::LoadFromJson(const std::string& filepath) {
@@ -509,6 +639,11 @@ bool CameraAnimation::LoadFromJson(const std::string& filepath) {
         animationName_ = json.value("animation_name", "Untitled");
         isLooping_ = json.value("loop", false);
         playSpeed_ = json.value("play_speed", 1.0f);
+
+        // 開始モード設定を読み込み（後方互換性のためデフォルト値を設定）
+        int startModeInt = json.value("start_mode", static_cast<int>(StartMode::JUMP_CUT));
+        startMode_ = static_cast<StartMode>(startModeInt);
+        blendDuration_ = json.value("blend_duration", 0.5f);
 
         // キーフレームをクリア
         keyframes_.clear();
@@ -546,6 +681,10 @@ bool CameraAnimation::SaveToJson(const std::string& filepath) const {
         json["duration"] = duration_;
         json["loop"] = isLooping_;
         json["play_speed"] = playSpeed_;
+
+        // 開始モード設定を保存
+        json["start_mode"] = static_cast<int>(startMode_);
+        json["blend_duration"] = blendDuration_;
 
         // キーフレーム配列を保存
         json["keyframes"] = nlohmann::json::array();
@@ -656,17 +795,41 @@ void CameraAnimation::DrawImGui() {
             // 手動でキーフレーム追加
             static float newKeyTime = 0.0f;
             static int interpType = 0;
+            static int coordType = 0;
             ImGui::DragFloat("New Keyframe Time", &newKeyTime, 0.1f, 0.0f, FLT_MAX);
             ImGui::Combo("Interpolation", &interpType,
                 "LINEAR\0EASE_IN\0EASE_OUT\0EASE_IN_OUT\0");
+            ImGui::Combo("Coordinate Type", &coordType,
+                "WORLD\0TARGET_RELATIVE\0");
+
+            // ターゲット設定状態の表示
+            if (targetTransform_) {
+                ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.2f, 1.0f), "Target: Set");
+                if (coordType == 1) { // TARGET_RELATIVE
+                    ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.2f, 1.0f),
+                        "Position will be offset from target");
+                }
+            } else {
+                ImGui::TextColored(ImVec4(0.8f, 0.2f, 0.2f, 1.0f), "Target: Not Set");
+                if (coordType == 1) { // TARGET_RELATIVE
+                    ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.2f, 1.0f),
+                        "Warning: Target not set, will use world coordinates");
+                }
+            }
 
             if (ImGui::Button("Add Custom Keyframe")) {
                 CameraKeyframe kf;
                 kf.time = newKeyTime;
-                kf.position = camera_->GetTranslate();
+                // TARGET_RELATIVEモードかつターゲットが設定されている場合、現在位置からオフセットを計算
+                if (coordType == 1 && targetTransform_) {
+                    kf.position = Vec3::Subtract(camera_->GetTranslate(), targetTransform_->translate);
+                } else {
+                    kf.position = camera_->GetTranslate();
+                }
                 kf.rotation = camera_->GetRotate();
                 kf.fov = camera_->GetFovY();
                 kf.interpolation = static_cast<CameraKeyframe::InterpolationType>(interpType);
+                kf.coordinateType = static_cast<CameraKeyframe::CoordinateType>(coordType);
                 AddKeyframe(kf);
             }
         }
@@ -702,7 +865,9 @@ void CameraAnimation::DrawImGui() {
 
                 bool isSelected = (selectedKeyframeIndex_ == static_cast<int>(i));
                 char label[64];
-                snprintf(label, sizeof(label), "KF %zu: %.2fs", i, keyframes_[i].time);
+                const char* coordTypeStr = (keyframes_[i].coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE)
+                    ? "[REL]" : "[WLD]";
+                snprintf(label, sizeof(label), "%s KF %zu: %.2fs", coordTypeStr, i, keyframes_[i].time);
 
                 // Selectableのサイズを制限して削除ボタンのスペースを確保
                 float availWidth = ImGui::GetContentRegionAvail().x;
@@ -766,6 +931,23 @@ void CameraAnimation::DrawImGui() {
             if (ImGui::DragFloat("FOV (deg)", &fovDegrees, 0.5f, 10.0f, 120.0f)) {
                 tempKeyframe_.fov = fovDegrees * 3.14159265f / 180.0f;
                 ApplyKeyframeToCamera(selectedKeyframeIndex_);
+            }
+
+            // 座標系タイプ
+            int coordType = static_cast<int>(tempKeyframe_.coordinateType);
+            if (ImGui::Combo("Coordinate Type", &coordType,
+                "WORLD\0TARGET_RELATIVE\0")) {
+                tempKeyframe_.coordinateType = static_cast<CameraKeyframe::CoordinateType>(coordType);
+                ApplyKeyframeToCamera(selectedKeyframeIndex_);
+            }
+
+            // ターゲット相対モードの場合の説明
+            if (tempKeyframe_.coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE) {
+                ImGui::TextWrapped("Position is relative offset from target");
+                if (!targetTransform_) {
+                    ImGui::TextColored(ImVec4(0.8f, 0.2f, 0.2f, 1.0f),
+                        "Warning: No target set, will use world coordinates");
+                }
             }
 
             int interpType = static_cast<int>(tempKeyframe_.interpolation);

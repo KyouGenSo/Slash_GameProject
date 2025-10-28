@@ -1,8 +1,10 @@
 {
-    "animation_name": "Untitled",
+    "animation_name": "game_start",
+    "blend_duration": 0.5,
     "duration": 3.0,
     "keyframes": [
         {
+            "coordinateType": "WORLD",
             "fov": 0.1745329350233078,
             "interpolation": "EASE_OUT",
             "position": [
@@ -18,6 +20,7 @@
             "time": 0.0
         },
         {
+            "coordinateType": "WORLD",
             "fov": 0.44999998807907104,
             "interpolation": "EASE_IN",
             "position": [
@@ -33,6 +36,7 @@
             "time": 1.5
         },
         {
+            "coordinateType": "WORLD",
             "fov": 0.44999998807907104,
             "interpolation": "EASE_OUT",
             "position": [
@@ -49,5 +53,6 @@
         }
     ],
     "loop": false,
-    "play_speed": 1.0
+    "play_speed": 1.0,
+    "start_mode": 0
 }

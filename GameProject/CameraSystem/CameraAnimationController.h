@@ -58,6 +58,26 @@ public:
     /// <param name="camera">制御対象のカメラ</param>
     void SetCamera(Camera* camera) override;
 
+    /// <summary>
+    /// アニメーションターゲットを設定
+    /// </summary>
+    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    /// <param name="applyToAll">全アニメーションに適用する場合true（デフォルトはfalse）</param>
+    void SetAnimationTarget(const Transform* target, bool applyToAll = false);
+
+    /// <summary>
+    /// 特定のアニメーションにターゲットを設定
+    /// </summary>
+    /// <param name="animationName">アニメーション名</param>
+    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    void SetAnimationTargetByName(const std::string& animationName, const Transform* target);
+
+    /// <summary>
+    /// 現在のアニメーションのみにターゲットを設定
+    /// </summary>
+    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    void SetCurrentAnimationTarget(const Transform* target);
+
     //==================== アニメーション制御 ====================
 
     /// <summary>
@@ -86,6 +106,22 @@ public:
     /// アニメーションリセット
     /// </summary>
     void Reset();
+
+    /// <summary>
+    /// アニメーション開始モードを設定
+    /// </summary>
+    /// <param name="mode">開始モード</param>
+    /// <param name="blendDuration">ブレンド時間（秒）</param>
+    void SetAnimationStartMode(CameraAnimation::StartMode mode, float blendDuration = 0.5f);
+
+    /// <summary>
+    /// 特定のアニメーションの開始モードを設定
+    /// </summary>
+    /// <param name="animationName">アニメーション名</param>
+    /// <param name="mode">開始モード</param>
+    /// <param name="blendDuration">ブレンド時間（秒）</param>
+    void SetAnimationStartModeByName(const std::string& animationName,
+                                      CameraAnimation::StartMode mode, float blendDuration = 0.5f);
 
     //==================== キーフレーム管理 ====================
 
@@ -246,6 +282,12 @@ public:
     /// </summary>
     /// <returns>編集中の場合true</returns>
     bool IsEditingKeyframe() const;
+
+    /// <summary>
+    /// アニメーションターゲットを取得
+    /// </summary>
+    /// <returns>現在のターゲット（設定されていない場合nullptr）</returns>
+    const Transform* GetAnimationTarget() const;
 
 private:
     // カメラアニメーションオブジェクト（複数管理）

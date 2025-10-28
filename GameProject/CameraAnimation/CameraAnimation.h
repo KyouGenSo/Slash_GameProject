@@ -2,6 +2,7 @@
 #include "CameraKeyframe.h"
 #include "Camera.h"
 #include "Quaternion.h"
+#include "Transform.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -22,6 +23,14 @@ public:
     };
 
     /// <summary>
+    /// アニメーション開始モード
+    /// </summary>
+    enum class StartMode {
+        JUMP_CUT,        ///< 即座に最初のキーフレームにジャンプ
+        SMOOTH_BLEND     ///< 現在位置から最初のキーフレームまで補間
+    };
+
+    /// <summary>
     /// コンストラクタ
     /// </summary>
     CameraAnimation();
@@ -36,6 +45,12 @@ public:
     /// </summary>
     /// <param name="camera">アニメーションを適用するカメラ</param>
     void SetCamera(Camera* camera) { camera_ = camera; }
+
+    /// <summary>
+    /// ターゲットトランスフォームのセット
+    /// </summary>
+    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    void SetTarget(const Transform* target) { targetTransform_ = target; }
 
     /// <summary>
     /// 更新処理
@@ -89,6 +104,11 @@ public:
     /// 停止（時間を0にリセット）
     /// </summary>
     void Stop();
+
+    /// <summary>
+    /// FOV復元なしで停止（アニメーション切り替え時用）
+    /// </summary>
+    void StopWithoutRestore();
 
     /// <summary>
     /// 現在時刻をリセット
@@ -161,6 +181,31 @@ public:
     /// </summary>
     [[nodiscard]] int GetSelectedKeyframeIndex() const;
 
+    /// <summary>
+    /// ターゲットトランスフォームを取得
+    /// </summary>
+    [[nodiscard]] const Transform* GetTarget() const { return targetTransform_; }
+
+    /// <summary>
+    /// 開始モードを取得
+    /// </summary>
+    [[nodiscard]] StartMode GetStartMode() const { return startMode_; }
+
+    /// <summary>
+    /// ブレンド時間を取得
+    /// </summary>
+    [[nodiscard]] float GetBlendDuration() const { return blendDuration_; }
+
+    /// <summary>
+    /// ブレンド中かを判定
+    /// </summary>
+    [[nodiscard]] bool IsBlending() const { return isBlending_; }
+
+    /// <summary>
+    /// ブレンド進行度を取得（0.0～1.0）
+    /// </summary>
+    [[nodiscard]] float GetBlendProgress() const { return blendProgress_; }
+
     //-----------------------------------------Setter-----------------------------------------//
 
     /// <summary>
@@ -188,6 +233,18 @@ public:
     /// </summary>
     /// <param name="index">適用するキーフレームのインデックス（省略時は選択中のキーフレーム）</param>
     void ApplyKeyframeToCamera(int index = -1);
+
+    /// <summary>
+    /// 開始モードの設定
+    /// </summary>
+    /// <param name="mode">開始モード</param>
+    void SetStartMode(StartMode mode) { startMode_ = mode; }
+
+    /// <summary>
+    /// ブレンド時間の設定
+    /// </summary>
+    /// <param name="duration">ブレンド時間（秒）</param>
+    void SetBlendDuration(float duration) { blendDuration_ = duration; }
 
 private:
     /// <summary>
@@ -244,12 +301,19 @@ private:
     /// </summary>
     void ClearDeselectState();
 
+    /// <summary>
+    /// キーフレームをカメラに直接適用（内部用）
+    /// </summary>
+    void ApplyKeyframeDirectly(const CameraKeyframe& kf);
+
 private:
     std::string animationName_ = "Untitled";  ///< アニメーション名
 
     std::vector<CameraKeyframe> keyframes_;  ///< キーフレーム配列
 
     Camera* camera_ = nullptr;  ///< アニメーション対象のカメラ
+
+    const Transform* targetTransform_ = nullptr;  ///< ターゲットトランスフォーム（相対座標の基準）
 
     float currentTime_ = 0.0f;  ///< 現在の再生時間（秒）
 
@@ -260,6 +324,20 @@ private:
     PlayState playState_ = PlayState::STOPPED;  ///< 再生状態
 
     bool isLooping_ = false;  ///< ループ再生フラグ
+
+    StartMode startMode_ = StartMode::JUMP_CUT;  ///< 開始モード
+    float blendDuration_ = 0.5f;                 ///< ブレンド時間（秒）
+    float blendProgress_ = 0.0f;                 ///< ブレンド進行度（0.0～1.0）
+    bool isBlending_ = false;                    ///< ブレンド中フラグ
+
+    // ブレンド開始時のカメラ状態
+    Vector3 blendStartPosition_;  ///< ブレンド開始時の位置
+    Vector3 blendStartRotation_;  ///< ブレンド開始時の回転
+    float blendStartFov_;         ///< ブレンド開始時のFOV
+
+    // FOV復元用
+    float originalFov_;           ///< アニメーション開始前の元のFOV値
+    bool hasOriginalFov_;         ///< 元のFOVが保存されているかのフラグ
 
 #ifdef _DEBUG
     int selectedKeyframeIndex_ = -1;  ///< ImGui用：選択中のキーフレームインデックス

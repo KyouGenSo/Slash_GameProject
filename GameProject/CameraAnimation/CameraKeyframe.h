@@ -18,15 +18,25 @@ struct CameraKeyframe {
         CUBIC_BEZIER    ///< カスタムベジェカーブ（将来実装）
     };
 
+    /// <summary>
+    /// 座標系タイプ
+    /// </summary>
+    enum class CoordinateType {
+        WORLD,          ///< ワールド座標系（従来の動作）
+        TARGET_RELATIVE ///< ターゲット相対座標系（ターゲットからのオフセット）
+    };
+
     float time = 0.0f;                                             ///< キーフレームの時刻（秒）
 
-    Vector3 position = { 0.0f, 0.0f, 0.0f };                      ///< カメラ位置
+    Vector3 position = { 0.0f, 0.0f, 0.0f };                      ///< カメラ位置（WORLDモード）またはオフセット（TARGET_RELATIVEモード）
 
     Vector3 rotation = { 0.0f, 0.0f, 0.0f };                      ///< カメラ回転（オイラー角、ラジアン）
 
     float fov = 0.45f;                                             ///< 視野角（ラジアン）
 
     InterpolationType interpolation = InterpolationType::LINEAR;   ///< このキーフレームから次への補間方法
+
+    CoordinateType coordinateType = CoordinateType::WORLD;         ///< 座標系タイプ（デフォルトはワールド座標）
 
     /// <summary>
     /// デフォルトコンストラクタ
@@ -37,14 +47,40 @@ struct CameraKeyframe {
     /// パラメータ指定コンストラクタ
     /// </summary>
     CameraKeyframe(float t, const Vector3& pos, const Vector3& rot, float f,
-                   InterpolationType interp = InterpolationType::LINEAR)
-        : time(t), position(pos), rotation(rot), fov(f), interpolation(interp) {}
+                   InterpolationType interp = InterpolationType::LINEAR,
+                   CoordinateType coordType = CoordinateType::WORLD)
+        : time(t), position(pos), rotation(rot), fov(f), interpolation(interp), coordinateType(coordType) {}
 };
 
 /// <summary>
 /// JSON変換用のヘルパー関数
 /// </summary>
 namespace nlohmann {
+    template <>
+    struct adl_serializer<CameraKeyframe::CoordinateType> {
+        static void to_json(json& j, const CameraKeyframe::CoordinateType& type) {
+            switch (type) {
+                case CameraKeyframe::CoordinateType::WORLD:
+                    j = "WORLD";
+                    break;
+                case CameraKeyframe::CoordinateType::TARGET_RELATIVE:
+                    j = "TARGET_RELATIVE";
+                    break;
+            }
+        }
+
+        static void from_json(const json& j, CameraKeyframe::CoordinateType& type) {
+            std::string str = j.get<std::string>();
+            if (str == "WORLD") {
+                type = CameraKeyframe::CoordinateType::WORLD;
+            } else if (str == "TARGET_RELATIVE") {
+                type = CameraKeyframe::CoordinateType::TARGET_RELATIVE;
+            } else {
+                type = CameraKeyframe::CoordinateType::WORLD; // デフォルト
+            }
+        }
+    };
+
     template <>
     struct adl_serializer<CameraKeyframe::InterpolationType> {
         static void to_json(json& j, const CameraKeyframe::InterpolationType& type) {
@@ -93,7 +129,8 @@ namespace nlohmann {
                 {"position", {keyframe.position.x, keyframe.position.y, keyframe.position.z}},
                 {"rotation", {keyframe.rotation.x, keyframe.rotation.y, keyframe.rotation.z}},
                 {"fov", keyframe.fov},
-                {"interpolation", keyframe.interpolation}
+                {"interpolation", keyframe.interpolation},
+                {"coordinateType", keyframe.coordinateType}
             };
         }
 
@@ -112,6 +149,13 @@ namespace nlohmann {
 
             keyframe.fov = j.at("fov").get<float>();
             keyframe.interpolation = j.at("interpolation").get<CameraKeyframe::InterpolationType>();
+
+            // 後方互換性: coordinateTypeが存在しない場合はWORLDをデフォルトとする
+            if (j.contains("coordinateType")) {
+                keyframe.coordinateType = j.at("coordinateType").get<CameraKeyframe::CoordinateType>();
+            } else {
+                keyframe.coordinateType = CameraKeyframe::CoordinateType::WORLD;
+            }
         }
     };
 }
