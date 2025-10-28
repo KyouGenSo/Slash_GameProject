@@ -235,26 +235,16 @@ void GameScene::Update()
   // 衝突判定の実行
   CollisionManager::GetInstance()->CheckAllCollisions();
 
-  if (Input::GetInstance()->TriggerKey(DIK_O))
+  if (Input::GetInstance()->TriggerKey(DIK_RETURN))
   {
     StartOverAnim();
   }
 
-  if (Input::GetInstance()->TriggerKey(DIK_2))
-  {
-    emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
-  }
-
-  if (Input::GetInstance()->TriggerKey(DIK_1))
-  {
-    emitterManager_->CreateTemporaryEmitterFrom("over1", "over1_temp", 0.1f);
-  }
-
   // シーン遷移
-  if (Input::GetInstance()->TriggerKey(DIK_RETURN))
-  {
-    SceneManager::GetInstance()->ChangeScene("title", "Fade", 0.3f);
-  }
+  //if (Input::GetInstance()->TriggerKey(DIK_RETURN))
+  //{
+  //  SceneManager::GetInstance()->ChangeScene("title", "Fade", 0.3f);
+  //}
 }
 
 void GameScene::Draw()
@@ -345,19 +335,19 @@ void GameScene::UpdateOverAnim()
 {
   if (isOver_) overAnimTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
 
-  if (overAnimTimer_ > 1.5f && !isOver1Emit)
+  if (overAnimTimer_ > 2.0f&& !isOver1Emit)
   {
     emitterManager_->CreateTemporaryEmitterFrom("over1", "over1_temp", 0.5f);
     isOver1Emit = true;
   }
 
-  if (overAnimTimer_ > 2.0f && !isOver2Emit)
+  if (overAnimTimer_ > 2.8f && !isOver2Emit)
   {
     emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
     isOver2Emit = true;
   }
 
-  if (overAnimTimer_ > 2.8f)
+  if (overAnimTimer_ > 3.8f)
   {
     SceneManager::GetInstance()->ChangeScene("title", "Fade", 0.3f);
   }
