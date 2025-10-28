@@ -1,6 +1,9 @@
 #ifdef _DEBUG
 
 #include "CameraDebugUI.h"
+#include "CameraAnimationEditor/CameraAnimationEditor.h"
+#include "CameraSystem/CameraAnimationController.h"
+#include "FrameTimer.h"
 #include <imgui.h>
 #include <sstream>
 
@@ -8,6 +11,8 @@
 bool CameraDebugUI::showManagerInfo_ = true;
 bool CameraDebugUI::showControllerInfo_ = true;
 bool CameraDebugUI::showAnimationInfo_ = true;
+std::unique_ptr<CameraAnimationEditor> CameraDebugUI::animationEditor_ = nullptr;
+bool CameraDebugUI::useAdvancedEditor_ = false;
 
 void CameraDebugUI::Draw() {
     if (!ImGui::Begin("Camera System Debug")) {
@@ -229,6 +234,35 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
 
     ImGui::Text("=== Camera Animation ===");
 
+    // エディター切り替えオプション
+    ImGui::Checkbox("Use Advanced Editor", &useAdvancedEditor_);
+
+    if (useAdvancedEditor_) {
+        // 高度なエディターを使用
+        if (!animationEditor_) {
+            animationEditor_ = std::make_unique<CameraAnimationEditor>();
+            CameraManager* manager = CameraManager::GetInstance();
+            if (manager && manager->GetCamera()) {
+                animationEditor_->Initialize(animation, manager->GetCamera());
+            }
+        }
+
+        if (ImGui::Button("Open Animation Editor")) {
+            animationEditor_->Open();
+        }
+
+        // エディターが開いている場合は描画
+        if (animationEditor_ && animationEditor_->IsOpen()) {
+            animationEditor_->Draw();
+            animationEditor_->Update(0.016f); // 仮の deltaTime
+        }
+
+        ImGui::PopID();
+        return;
+    }
+
+    // 従来のシンプルなUI
+
     // アニメーション情報
     ImGui::Text("Animation: %s", animation->GetAnimationName().c_str());
     ImGui::Text("Duration: %.2f seconds", animation->GetDuration());
@@ -313,13 +347,13 @@ void CameraDebugUI::DrawControllerSwitcher() {
 
     // 各コントローラーの詳細情報
     if (ImGui::CollapsingHeader("FirstPerson Controller Details")) {
-        auto* fpController = static_cast<FirstPersonController*>(
+        auto* fpController = dynamic_cast<FirstPersonController*>(
             manager->GetController("FirstPerson"));
         DrawFirstPersonControllerInfo(fpController);
     }
 
     if (ImGui::CollapsingHeader("TopDown Controller Details")) {
-        auto* tdController = static_cast<TopDownController*>(
+        auto* tdController = dynamic_cast<TopDownController*>(
             manager->GetController("TopDown"));
         DrawTopDownControllerInfo(tdController);
     }
@@ -354,6 +388,62 @@ void CameraDebugUI::DrawCameraState() {
     // ニア・ファー
     ImGui::Text("Near/Far: %.2f / %.1f",
                camera->GetNearClip(), camera->GetFarClip());
+}
+
+void CameraDebugUI::DrawAnimationEditorOnly() {
+    // エディターが未初期化の場合は初期化を試みる
+    if (!animationEditor_) {
+        InitializeAnimationEditor();
+    }
+
+    // エディターが初期化されていれば描画
+    if (animationEditor_) {
+        // エディターが閉じていれば開く
+        if (!animationEditor_->IsOpen()) {
+            animationEditor_->Open();
+        }
+
+        // エディターの描画
+        animationEditor_->Draw();
+    } else {
+        // エディターが初期化できない場合のメッセージ
+        if (ImGui::Begin("Camera Animation Editor")) {
+            ImGui::Text("⚠️ Animation Editor not available");
+            ImGui::TextWrapped("Make sure AnimationController is registered and initialized with a valid CameraAnimation.");
+
+            // 再初期化ボタン
+            if (ImGui::Button("Try Initialize")) {
+                InitializeAnimationEditor();
+            }
+            ImGui::End();
+        }
+    }
+}
+
+void CameraDebugUI::InitializeAnimationEditor() {
+    if (animationEditor_) return;  // 既に初期化済み
+
+    CameraManager* manager = CameraManager::GetInstance();
+    if (!manager) return;
+
+    // AnimationControllerを取得
+    auto* animController = dynamic_cast<CameraAnimationController*>(
+        manager->GetController("Animation"));
+    if (!animController) return;
+
+    // CameraAnimationを取得
+    CameraAnimation* animation = animController->GetAnimation();
+    if (!animation) return;
+
+    // エディターの初期化
+    animationEditor_ = std::make_unique<CameraAnimationEditor>();
+    animationEditor_->Initialize(animation, manager->GetCamera());
+}
+
+void CameraDebugUI::UpdateAnimationEditor(float deltaTime) {
+    if (animationEditor_ && animationEditor_->IsOpen()) {
+        animationEditor_->Update(deltaTime);
+    }
 }
 
 #endif // _DEBUG

@@ -52,8 +52,18 @@ void GameScene::Initialize()
     [this]() { if (player_) player_->DrawImGui(); });
   DebugUIManager::GetInstance()->RegisterGameObject("Boss",
     [this]() { if (boss_) boss_->DrawImGui(); });
+
+  // CameraSystemとCameraAnimationEditorを別々に登録
   DebugUIManager::GetInstance()->RegisterGameObject("CameraSystem",
     []() { CameraDebugUI::Draw(); });
+
+  DebugUIManager::GetInstance()->RegisterGameObject("CameraAnimationEditor",
+    []() {
+      CameraDebugUI::DrawAnimationEditorOnly();
+      // 更新処理も呼び出す（deltaTimeは取得可能）
+      CameraDebugUI::UpdateAnimationEditor(
+        FrameTimer::GetInstance()->GetDeltaTime());
+    });
 
   emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
   DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());

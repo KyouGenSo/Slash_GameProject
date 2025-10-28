@@ -36,6 +36,9 @@
     <Filter Include="CameraSystem">
       <UniqueIdentifier>{0312f1a8-e010-49cd-8145-fa5b444de6dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CameraSystem\CameraAnimationEditor">
+      <UniqueIdentifier>{a1b2c3d4-e5f6-7890-abcd-ef1234567890}</UniqueIdentifier>
+    </Filter>
     <Filter Include="CameraSystem\Controller">
       <UniqueIdentifier>{f57ae9da-7b8a-4870-ae5e-44402f6a7ed3}</UniqueIdentifier>
     </Filter>
@@ -104,6 +107,21 @@
     </ClCompile>
     <ClCompile Include="CameraSystem\CameraDebugUI.cpp">
       <Filter>CameraSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.cpp">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.cpp">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.cpp">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.cpp">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationPresets.cpp">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
     </ClCompile>
     <ClCompile Include="CameraSystem\CameraManager.cpp">
       <Filter>CameraSystem</Filter>
@@ -190,6 +208,21 @@
     </ClInclude>
     <ClInclude Include="CameraSystem\CameraDebugUI.h">
       <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.h">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.h">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.h">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.h">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationPresets.h">
+      <Filter>CameraSystem\CameraAnimationEditor</Filter>
     </ClInclude>
     <ClInclude Include="CameraSystem\CameraManager.h">
       <Filter>CameraSystem</Filter>
