@@ -1,16 +1,16 @@
 #include "CameraAnimation.h"
 #include "Vec3Func.h"
 #include "QuatFunc.h"
+#include "CameraSystem/CameraConfig.h"
+
 #include <algorithm>
 #include <fstream>
 #include <filesystem>
 #include <cmath>
 
-#include "DebugUIManager.h"
-#include "CameraSystem/CameraConfig.h"
-
 #ifdef _DEBUG
 #include <imgui.h>
+#include "DebugUIManager.h"
 #endif
 
 /// <summary>
