@@ -244,12 +244,59 @@ void Player::DrawImGui()
 			if (stateMachine_) {
 				PlayerState* currentState = stateMachine_->GetCurrentState();
 				if (currentState) {
-					// 現在のステート名を強調表示
-					ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Current State: %s", currentState->GetName().c_str());
+					// 現在のアクティブステート名を強調表示
+					ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Active State: %s", currentState->GetName().c_str());
+				}
+
+				ImGui::Separator();
+
+				// 全ステート詳細表示（新機能）
+				if (ImGui::TreeNode("All States Details")) {
+					static std::string selectedStateName = "Idle";  // 選択中のステート名を保持
+
+					// ステート選択コンボボックス
+					auto stateNames = stateMachine_->GetAllStateNames();
+					if (ImGui::BeginCombo("Select State", selectedStateName.c_str())) {
+						for (const auto& name : stateNames) {
+							bool isSelected = (selectedStateName == name);
+
+							// 現在アクティブなステートには★マークを付ける
+							std::string displayName = name;
+							if (currentState && currentState->GetName() == name) {
+								displayName = name + " [ACTIVE]";
+							}
+
+							if (ImGui::Selectable(displayName.c_str(), isSelected)) {
+								selectedStateName = name;
+							}
+							if (isSelected) {
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+
 					ImGui::Separator();
 
-					// ステート固有のデバッグ情報を表示
-					currentState->DrawImGui(this);
+					// 選択されたステートの詳細表示
+					PlayerState* selectedState = stateMachine_->GetState(selectedStateName);
+					if (selectedState) {
+						// 現在のステートなら緑色、そうでなければ青色でヘッダー表示
+						if (currentState && currentState->GetName() == selectedStateName) {
+							ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.1f, 0.4f, 0.1f, 1.0f));
+						} else {
+							ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.3f, 0.4f, 1.0f));
+						}
+
+						if (ImGui::CollapsingHeader((selectedStateName + " State Details").c_str(),
+													ImGuiTreeNodeFlags_DefaultOpen)) {
+							// 選択されたステートのDrawImGuiを呼び出し
+							selectedState->DrawImGui(this);
+						}
+						ImGui::PopStyleColor();
+					}
+
+					ImGui::TreePop();
 				}
 
 				ImGui::Separator();

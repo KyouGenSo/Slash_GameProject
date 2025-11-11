@@ -72,6 +72,12 @@ public:
 	/// <returns>状態ポインタ（見つからない場合はnullptr）</returns>
 	PlayerState* GetState(const std::string& name) const;
 
+	/// <summary>
+	/// 全ての登録済み状態名を取得
+	/// </summary>
+	/// <returns>状態名のベクター（ソート済み）</returns>
+	std::vector<std::string> GetAllStateNames() const;
+
 private:
 	Player* player_;
 	PlayerState* currentState_;
