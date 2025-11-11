@@ -246,8 +246,13 @@ void GameScene::Update()
     // ゲームクリア判定
     if (boss_->IsDead())
     {
-        /// TODO: ゲームクリアシーンを作成したら"title"をそちらに変更
-        SceneManager::GetInstance()->ChangeScene("title", "Fade", 0.3f);
+        SceneManager::GetInstance()->ChangeScene("clear", "Fade", 0.3f);
+    }
+
+    // ゲームオーバー判定
+    if (player_->IsDead())
+    {
+        StartOverAnim();
     }
 
     // カメラモードの更新
@@ -269,11 +274,7 @@ void GameScene::Update()
     UpdateProjectiles(deltaTime);
 
     // ボスからの弾生成リクエストを処理
-    for (const auto& request : boss_->ConsumePendingBullets()) {
-        auto bullet = std::make_unique<BossBullet>();
-        bullet->Initialize(request.position, request.velocity);
-        bossBullets_.push_back(std::move(bullet));
-    }
+    CreateBossBullet();
 
     // プレイヤーの位置にエミッターをセット
     Vector3 playerPos = { .x = player_->GetTransform().translate.x,
@@ -283,57 +284,7 @@ void GameScene::Update()
     emitterManager_->SetEmitterPosition("over1", playerPos);
     emitterManager_->SetEmitterPosition("over2", playerPos);
 
-    // ボスフェーズ2の境界線パーティクル制御
-    if (borderEmittersLoaded_ && boss_) {
-        bool shouldShowBorder = (boss_->GetPhase() == 2);
-
-        if (shouldShowBorder && !borderEmittersActive_) {
-            // フェーズ2突入時：境界線を有効化
-            Vector3 bossPos = boss_->GetTransform().translate;
-
-            // 4辺の境界線を配置（ボスを中心に40x40の正方形）
-            emitterManager_->SetEmitterPosition("boss_border_left",
-                bossPos + Vector3(-20.0f, 0.0f, 0.0f));
-            emitterManager_->SetEmitterPosition("boss_border_right",
-                bossPos + Vector3(20.0f, 0.0f, 0.0f));
-            emitterManager_->SetEmitterPosition("boss_border_front",
-                bossPos + Vector3(0.0f, 0.0f, 20.0f));
-            emitterManager_->SetEmitterPosition("boss_border_back",
-                bossPos + Vector3(0.0f, 0.0f, -20.0f));
-
-            // エミッターを有効化
-            emitterManager_->SetEmitterActive("boss_border_left", true);
-            emitterManager_->SetEmitterActive("boss_border_right", true);
-            emitterManager_->SetEmitterActive("boss_border_front", true);
-            emitterManager_->SetEmitterActive("boss_border_back", true);
-
-            borderEmittersActive_ = true;
-        }
-        else if (!shouldShowBorder && borderEmittersActive_) {
-            // フェーズ1に戻った時：境界線を無効化
-            emitterManager_->SetEmitterActive("boss_border_left", false);
-            emitterManager_->SetEmitterActive("boss_border_right", false);
-            emitterManager_->SetEmitterActive("boss_border_front", false);
-            emitterManager_->SetEmitterActive("boss_border_back", false);
-
-            borderEmittersActive_ = false;
-        }
-        else if (borderEmittersActive_) {
-            // フェーズ2継続中：ボスの移動に追従
-            Vector3 bossPos = Vector3(boss_->GetTransform().translate.x, 0.f, boss_->GetTransform().translate.z);
-
-            emitterManager_->SetEmitterPosition("boss_border_left",
-                bossPos + Vector3(0.0f, 0.0f, -20.0f));
-            emitterManager_->SetEmitterPosition("boss_border_right",
-                bossPos + Vector3(0.0f, 0.0f, 20.0f));
-            emitterManager_->SetEmitterPosition("boss_border_front",
-                bossPos + Vector3(-20.0f, 0.0f, 0.0f));
-            emitterManager_->SetEmitterPosition("boss_border_back",
-                bossPos + Vector3(20.0f, 0.0f, 0.0f));
-
-            boss_->SetTranslate(Vector3(boss_->GetTransform().translate.x, boss_->GetTransform().translate.y, boss_->GetTransform().translate.z - 0.01f));
-        }
-    }
+    UpdateBossBorder();
 
     // エミッターマネージャーの更新
     emitterManager_->Update();
@@ -439,11 +390,16 @@ void GameScene::DrawImGui()
 
 void GameScene::StartOverAnim()
 {
-    isOver_ = true;
+    if (isOver_)
+    {
+        return;
+    }
 
+    cameraManager_->DeactivateAllControllers();
+    cameraManager_->ActivateController("Animation");
     animationController_->SwitchAnimation("over_anim");
     animationController_->Play();
-
+    isOver_ = true;
 }
 
 void GameScene::UpdateOverAnim()
@@ -464,19 +420,23 @@ void GameScene::UpdateOverAnim()
 
     if (overAnimTimer_ > 3.8f)
     {
-        SceneManager::GetInstance()->ChangeScene("title", "Fade", 0.3f);
+        SceneManager::GetInstance()->ChangeScene("over", "Fade", 0.3f);
     }
 }
 
 void GameScene::UpdateCameraMode()
 {
+    if (player_->IsDead())
+    {
+        return;
+    }
+
     if (boss_->GetPhase() == 1)
     {
         cameraMode_ = false;
         // フェーズ1: 動的制限を解除（ステージ全体を移動可能）
         player_->ClearDynamicBounds();
-    }
-    else if (boss_->GetPhase() == 2)
+    } else if (boss_->GetPhase() == 2)
     {
         cameraMode_ = true;
         // フェーズ2: ボス中心の戦闘エリアに移動制限
@@ -493,6 +453,7 @@ void GameScene::UpdateCameraMode()
 
     // カメラモードをPlayerに設定
     player_->SetMode(cameraMode_);
+
 }
 
 void GameScene::UpdateInput()
@@ -534,5 +495,67 @@ void GameScene::UpdateProjectiles(float deltaTime)
             }),
         bossBullets_.end()
     );
+}
+
+void GameScene::UpdateBossBorder()
+{
+    // ボスフェーズ2の境界線パーティクル制御
+    if (borderEmittersLoaded_ && boss_) {
+        bool shouldShowBorder = (boss_->GetPhase() == 2);
+
+        if (shouldShowBorder && !borderEmittersActive_) {
+            // フェーズ2突入時：境界線を有効化
+            Vector3 bossPos = boss_->GetTransform().translate;
+
+            // 4辺の境界線を配置（ボスを中心に40x40の正方形）
+            emitterManager_->SetEmitterPosition("boss_border_left",
+                bossPos + Vector3(-20.0f, 0.0f, 0.0f));
+            emitterManager_->SetEmitterPosition("boss_border_right",
+                bossPos + Vector3(20.0f, 0.0f, 0.0f));
+            emitterManager_->SetEmitterPosition("boss_border_front",
+                bossPos + Vector3(0.0f, 0.0f, 20.0f));
+            emitterManager_->SetEmitterPosition("boss_border_back",
+                bossPos + Vector3(0.0f, 0.0f, -20.0f));
+
+            // エミッターを有効化
+            emitterManager_->SetEmitterActive("boss_border_left", true);
+            emitterManager_->SetEmitterActive("boss_border_right", true);
+            emitterManager_->SetEmitterActive("boss_border_front", true);
+            emitterManager_->SetEmitterActive("boss_border_back", true);
+
+            borderEmittersActive_ = true;
+        } else if (!shouldShowBorder && borderEmittersActive_) {
+            // フェーズ1に戻った時：境界線を無効化
+            emitterManager_->SetEmitterActive("boss_border_left", false);
+            emitterManager_->SetEmitterActive("boss_border_right", false);
+            emitterManager_->SetEmitterActive("boss_border_front", false);
+            emitterManager_->SetEmitterActive("boss_border_back", false);
+
+            borderEmittersActive_ = false;
+        } else if (borderEmittersActive_) {
+            // フェーズ2継続中：ボスの移動に追従
+            Vector3 bossPos = Vector3(boss_->GetTransform().translate.x, 0.f, boss_->GetTransform().translate.z);
+
+            emitterManager_->SetEmitterPosition("boss_border_left",
+                bossPos + Vector3(0.0f, 0.0f, -20.0f));
+            emitterManager_->SetEmitterPosition("boss_border_right",
+                bossPos + Vector3(0.0f, 0.0f, 20.0f));
+            emitterManager_->SetEmitterPosition("boss_border_front",
+                bossPos + Vector3(-20.0f, 0.0f, 0.0f));
+            emitterManager_->SetEmitterPosition("boss_border_back",
+                bossPos + Vector3(20.0f, 0.0f, 0.0f));
+
+            boss_->SetTranslate(Vector3(boss_->GetTransform().translate.x, boss_->GetTransform().translate.y, boss_->GetTransform().translate.z - 0.01f));
+        }
+    }
+}
+
+void GameScene::CreateBossBullet()
+{
+    for (const auto& request : boss_->ConsumePendingBullets()) {
+        auto bullet = std::make_unique<BossBullet>();
+        bullet->Initialize(request.position, request.velocity);
+        bossBullets_.push_back(std::move(bullet));
+    }
 }
 

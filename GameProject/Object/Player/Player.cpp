@@ -83,6 +83,9 @@ void Player::Finalize()
 
 void Player::Update()
 {
+    // 死亡判定
+    if (hp_ <= 0.0f) isDead_ = true;
+
 
     // State Machineの更新
     if (stateMachine_)

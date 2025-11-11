@@ -79,6 +79,16 @@ public: // メンバ関数
     /// </summary>
     void UpdateProjectiles(float deltaTime);
 
+    /// <summary>
+    /// ボスフェーズ2の境界線パーティクル制御
+    /// </summary>
+    void UpdateBossBorder();
+
+    /// <summary>
+    /// ボスの弾の生成処理
+    /// </summary>
+    void CreateBossBullet();
+
 private: // メンバ変数
 
     std::unique_ptr<SkyBox> skyBox_;  ///< スカイボックス（環境マップ）

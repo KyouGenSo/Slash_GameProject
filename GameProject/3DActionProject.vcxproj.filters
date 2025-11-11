@@ -168,6 +168,9 @@
     <ClCompile Include="Object\Projectile\BossBulletCollider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="scene\OverScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="Object\Projectile\BossBulletCollider.h">
       <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\OverScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

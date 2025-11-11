@@ -137,6 +137,12 @@ public: // メンバ関数
     float GetHp() const { return hp_; }
 
     /// <summary>
+    /// 死亡フラグを取得
+    /// </summary>
+    /// <returns>true: 死亡, false: 生存</returns>
+    bool IsDead() const { return isDead_; }
+
+    /// <summary>
     /// 座標変換情報を取得
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
@@ -222,6 +228,7 @@ private: // メンバ変数
     float speed_ = 0.5f;              ///< 移動速度
     float targetAngle_ = 0.f;         ///< 目標角度
     float hp_ = 100.f;                ///< 体力
+    bool isDead_ = false;             ///< 死亡フラグ
 
     bool mode_ = false;               ///< true: ThirdPersonMode, false: TopDownMode
     bool isDisModelDebugInfo_ = false;///< モデルデバッグ情報の表示

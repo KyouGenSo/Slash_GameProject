@@ -1,3 +1,4 @@
+#include "OverScene.h"
 #include "ClearScene.h"
 
 #include "Draw2D.h"
@@ -13,7 +14,7 @@
 #include "DebugCamera.h"
 #endif
 
-void ClearScene::Initialize()
+void OverScene::Initialize()
 {
 #ifdef _DEBUG
     DebugCamera::GetInstance()->Initialize();
@@ -37,7 +38,7 @@ void ClearScene::Initialize()
     backGround_->SetSize(Vector2(static_cast<float>(WinApp::clientWidth), static_cast<float>(WinApp::clientHeight)));
 
     titleText_ = std::make_unique<Sprite>();
-    titleText_->Initialize("gameClear_Text.png");
+    titleText_->Initialize("gameOver_Text.png");
     titleText_->SetPos(Vector2(WinApp::clientWidth / 2.f - 250.f, 300.f));
 
     pressButtonText_ = std::make_unique<Sprite>();
@@ -49,12 +50,12 @@ void ClearScene::Initialize()
 }
 
 
-void ClearScene::Finalize()
+void OverScene::Finalize()
 {
 
 }
 
-void ClearScene::Update()
+void OverScene::Update()
 {
     /// ================================== ///
     ///              更新処理               ///
@@ -74,7 +75,7 @@ void ClearScene::Update()
     }
 }
 
-void ClearScene::Draw()
+void OverScene::Draw()
 {
     /// ================================== ///
     ///              描画処理               ///
@@ -106,7 +107,7 @@ void ClearScene::Draw()
 
 }
 
-void ClearScene::DrawWithoutEffect()
+void OverScene::DrawWithoutEffect()
 {
     /// ================================== ///
     ///              描画処理               ///
@@ -136,7 +137,7 @@ void ClearScene::DrawWithoutEffect()
 
 }
 
-void ClearScene::DrawImGui()
+void OverScene::DrawImGui()
 {
 #ifdef _DEBUG
 
