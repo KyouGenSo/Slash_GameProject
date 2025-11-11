@@ -127,9 +127,23 @@ void Boss::DrawImGui()
     // ボスの状態
     ImGui::Text("=== Boss Status ===");
     ImGui::Text("HP: %.1f", hp_);
+    ImGui::Text("Phase: %d", phase_);
     ImGui::Text("Position: (%.2f, %.2f, %.2f)", transform_.translate.x, transform_.translate.y, transform_.translate.z);
     ImGui::Text("Rotation: (%.2f, %.2f, %.2f)", transform_.rotate.x, transform_.rotate.y, transform_.rotate.z);
     ImGui::Text("Scale: (%.2f, %.2f, %.2f)", transform_.scale.x, transform_.scale.y, transform_.scale.z);
+
+    // フェーズ切り替えボタン（デバッグ用）
+    ImGui::Separator();
+    ImGui::Text("=== Debug Controls ===");
+    if (ImGui::Button("Set Phase 1")) {
+        SetPhase(1);
+        hp_ = maxHp_;  // HPも回復
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Set Phase 2")) {
+        SetPhase(2);
+        hp_ = 100.0f;  // フェーズ2のHP
+    }
 
     // Collider情報
     ImGui::Separator();

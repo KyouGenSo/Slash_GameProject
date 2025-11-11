@@ -68,6 +68,12 @@ public:
     void SetTransform(const Transform& transform) { transform_ = transform; }
 
     /// <summary>
+    /// Translateを設定
+    /// </summary>
+    /// <param name="translate">新しいTranslate値</param>
+    void SetTranslate(Vector3 translate) { transform_.translate = translate; }
+
+    /// <summary>
     /// HPを設定
     /// </summary>
     /// <param name="hp">新しいHP値</param>

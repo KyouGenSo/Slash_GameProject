@@ -101,5 +101,9 @@ private: // メンバ変数
     bool isOver1Emit = false;   ///< ゲームオーバー演出用エミッター発生フラグ
     bool isOver2Emit = false;   ///< ゲームオーバー演出用エミッター発生フラグ
 
+    // ボスフェーズ2境界線パーティクル管理
+    bool borderEmittersLoaded_ = false;  ///< 境界線エミッター読み込み済みフラグ
+    bool borderEmittersActive_ = false;  ///< 境界線エミッターアクティブ状態
+
     bool isDebug_ = false;  ///< デバッグモードフラグ
 };

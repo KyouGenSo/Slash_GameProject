@@ -62,7 +62,7 @@
         0.0010000000474974513
       ]
     },
-    "border1_copy": {
+    "border2": {
       "boxRotation": [
         0.0,
         0.0,
@@ -124,7 +124,7 @@
         0.0010000000474974513
       ]
     },
-    "border1_copy_copy": {
+    "border3": {
       "boxRotation": [
         0.0,
         0.0,
@@ -186,7 +186,7 @@
         0.0010000000474974513
       ]
     },
-    "border1_copy_copy_copy": {
+    "border4": {
       "boxRotation": [
         0.0,
         0.0,
