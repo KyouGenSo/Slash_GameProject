@@ -173,10 +173,10 @@ void GameScene::Initialize()
 
     // ボスフェーズ2用の境界線パーティクルを事前読み込み（初期状態は無効）
     // 4辺の境界線を作成（左右前後）
-    emitterManager_->LoadPreset("boss_vertical_border", "boss_border_left");
-    emitterManager_->LoadPreset("boss_vertical_border", "boss_border_right");
-    emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_front");
-    emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_back");
+    emitterManager_->LoadPreset("boss_vertical_border", "boss_border_front");
+    emitterManager_->LoadPreset("boss_vertical_border", "boss_border_back");
+    emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_left");
+    emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_right");
 
     // 初期状態は無効化（フェーズ2まで非表示）
     emitterManager_->SetEmitterActive("boss_border_left", false);

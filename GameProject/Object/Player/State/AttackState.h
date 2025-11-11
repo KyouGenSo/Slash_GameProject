@@ -31,13 +31,13 @@ private:
 	float searchTimer_ = 0.0f;                        ///< SearchTarget待機時間
 	float maxSearchTime_ = 0.1f;                      ///< 最大検索時間（0.1秒 = 6フレーム@60fps）
 	float moveTimer_ = 0.0f;                          ///< 移動タイマー
-	float maxMoveTime_ = 0.3f;                        ///< 最大移動時間
+	float maxMoveTime_ = 0.1f;                        ///< 最大移動時間
 
 	float attackTimer_ = 0.0f;                        ///< 攻撃タイマー
-	float attackDuration_ = 0.3f;                     ///< 攻撃持続時間
+	float attackDuration_ = 0.1f;                     ///< 攻撃持続時間
 	int comboCount_ = 0;                              ///< 現在のコンボ数
 	int maxCombo_ = 2;                                ///< 最大コンボ数
-	float comboWindow_ = 0.8f;                        ///< コンボ受付時間
+	float comboWindow_ = 1.f;                        ///< コンボ受付時間
 	bool canCombo_ = false;                           ///< コンボ可能フラグ
 
 	/// <summary>
