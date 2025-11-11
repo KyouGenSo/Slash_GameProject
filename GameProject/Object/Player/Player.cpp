@@ -108,6 +108,12 @@ void Player::Update()
     if (hp_ <= 0.0f) isDead_ = true;
 
     hpBarSprite_->SetSize(Vector2(hpBarSize_.x * (hp_ / 100.0f), hpBarSize_.y));
+    hpBarSprite_->SetPos(Vector2(
+        WinApp::clientWidth * 0.35f,
+        WinApp::clientHeight * 0.05f));
+    hpBarBGSprite_->SetPos(Vector2(
+        WinApp::clientWidth * 0.35f,
+        WinApp::clientHeight * 0.05f));
     hpBarSprite_->Update();
     hpBarBGSprite_->Update();
 

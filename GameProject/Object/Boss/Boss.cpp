@@ -106,6 +106,15 @@ void Boss::Update(float deltaTime)
         hpBarSprite1_->SetSize(Vector2(0.0f, hpBarSize1_.y));
         hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x * (hp_ / 100.0f), hpBarSize2_.y));
     }
+    hpBarSprite1_->SetPos(Vector2(
+        WinApp::clientWidth * 0.65f,
+        WinApp::clientHeight * 0.05f));
+    hpBarSprite2_->SetPos(Vector2(
+        WinApp::clientWidth * 0.65f,
+        WinApp::clientHeight * 0.05f));
+    hpBarBGSprite_->SetPos(Vector2(
+        WinApp::clientWidth * 0.65f,
+        WinApp::clientHeight * 0.05f));
 
     hpBarSprite1_->Update();
     hpBarSprite2_->Update();
