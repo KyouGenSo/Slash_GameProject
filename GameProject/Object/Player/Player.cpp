@@ -62,17 +62,19 @@ void Player::Initialize()
     hpBarSprite_->Initialize("white.png");
     hpBarSize_ = Vector2(500.0f, 30.0f);
     hpBarSprite_->SetSize(hpBarSize_);
+    hpBarSprite_->SetAnchorPoint(Vector2(1.0f, 0.0f));
     hpBarSprite_->SetColor({ 0.3f, 1.0f, 0.3f, 1.0f });
     hpBarSprite_->SetPos(Vector2(
-        hpBarSprite_->GetSize().x / 4.f,
-        50.f));
+        WinApp::clientWidth * 0.35f,
+        WinApp::clientHeight * 0.05f));
 
     hpBarBGSprite_ = std::make_unique<Sprite>();
     hpBarBGSprite_->Initialize("white.png");
     hpBarBGSprite_->SetSize(hpBarSize_);
+    hpBarBGSprite_->SetAnchorPoint(Vector2(1.0f, 0.0f));
     hpBarBGSprite_->SetPos(Vector2(
-        hpBarBGSprite_->GetSize().x / 4.f,
-        50.f));
+        WinApp::clientWidth * 0.35f,
+        WinApp::clientHeight * 0.05f));
 
     // State Machineの初期化
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);

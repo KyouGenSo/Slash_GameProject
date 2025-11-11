@@ -379,6 +379,7 @@ void GameScene::DrawWithoutEffect()
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
     player_->DrawSprite();
+    boss_->DrawSprite();
 }
 
 void GameScene::DrawImGui()

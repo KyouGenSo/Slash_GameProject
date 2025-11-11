@@ -3,9 +3,11 @@
 #include <vector>
 
 #include "Transform.h"
+#include "vector2.h"
 #include "Vector4.h"
 #include "Vector3.h"
 
+class Sprite;
 class OBBCollider;
 class Object3d;
 class BossStateMachine;
@@ -50,6 +52,11 @@ public:
     /// 描画
     /// </summary>
     void Draw();
+
+    /// <summary>
+    /// スプライト描画
+    /// </summary>
+    void DrawSprite();
 
     /// <summary>
     /// ImGuiの描画
@@ -179,46 +186,53 @@ public:
     std::vector<BulletSpawnRequest> ConsumePendingBullets();
 
 private:
-    /// ボスの3Dモデルオブジェクト（描画とアニメーション管理）
+    // ボスの3Dモデルオブジェクト（描画とアニメーション管理）
     std::unique_ptr<Object3d> model_;
 
-    /// ボスの座標変換情報（位置、回転、スケール）
+    // ボスの座標変換情報（位置、回転、スケール）
     Transform transform_{};
 
-    /// ステートマシン
+    // ステートマシン
     std::unique_ptr<BossStateMachine> stateMachine_;
 
-    /// プレイヤーへの参照
+    // プレイヤーへの参照
     Player* player_ = nullptr;
 
-    /// 最大HP
+    // 最大HP
     const float maxHp_ = 200.0f;
 
-    /// ボスの現在HP（0になると撃破、初期値200）
+    // ボスの現在HP（0になると撃破、初期値200）
     float hp_ = maxHp_;
 
-    /// ボスのライフ（HPが0になるたびに減少、0でゲームクリア）
-    uint8_t life_ = 2;
+    // ボスのライフ（HPが0になるたびに減少、0でゲームクリア）
+    uint8_t life_ = 1;
 
-    /// 現在の戦闘フェーズ（HP200~100:フェーズ1、HP100~0:フェーズ2）
+    // 現在の戦闘フェーズ（HP200~100:フェーズ1、HP100~0:フェーズ2）
     uint32_t phase_ = 1;
 
-    /// フェーズ変更準備完了フラグ
+    // フェーズ変更準備完了フラグ
     bool isReadyToChangePhase_ = false;
 
-    /// 死亡フラグ
+    // 死亡フラグ
     bool isDead_ = false;
 
-    /// ボス本体の衝突判定用AABBコライダー（矩形境界ボックス）
+    // ボス本体の衝突判定用AABBコライダー（矩形境界ボックス）
     std::unique_ptr<OBBCollider> bodyCollider_;
 
-    /// ヒットエフェクトの再生状態を示すフラグ。
+    // ヒットエフェクトの再生状態を示すフラグ。
     bool isPlayHitEffect_ = false;
 
-    /// ヒットエフェクトのタイマー
+    // ヒットエフェクトのタイマー
     float hitEffectTimer_ = 0.0f;
 
-    /// 弾生成リクエストのキュー（GameSceneが処理）
+    // 弾生成リクエストのキュー（GameSceneが処理）
     std::vector<BulletSpawnRequest> pendingBullets_;
+
+    // HPバースプライト
+    std::unique_ptr<Sprite> hpBarSprite1_;
+    Vector2 hpBarSize1_{};
+    std::unique_ptr<Sprite> hpBarSprite2_;
+    Vector2 hpBarSize2_{};
+    std::unique_ptr<Sprite> hpBarBGSprite_;
 };
 

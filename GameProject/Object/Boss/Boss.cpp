@@ -6,6 +6,8 @@
 #include "CollisionManager.h"
 #include "../../Collision/CollisionTypeIdDef.h"
 #include "FrameTimer.h"
+#include "Sprite.h"
+#include "WinApp.h"
 #include "States/BossStateMachine.h"
 #include "States/BossIdleState.h"
 #include "States/BossDashState.h"
@@ -35,6 +37,32 @@ void Boss::Initialize()
     transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
     model_->SetTransform(transform_);
+
+    // HPバースプライトの初期化
+    hpBarSprite1_ = std::make_unique<Sprite>();
+    hpBarSprite1_->Initialize("white.png");
+    hpBarSize1_ = Vector2(500.0f, 30.0f);
+    hpBarSprite1_->SetSize(hpBarSize1_);
+    hpBarSprite1_->SetColor({ 0.5f, 0.5f, 1.0f, 1.0f });
+    hpBarSprite1_->SetPos(Vector2(
+        WinApp::clientWidth * 0.65f,
+        WinApp::clientHeight * 0.05f));
+
+    hpBarSprite2_ = std::make_unique<Sprite>();
+    hpBarSprite2_->Initialize("white.png");
+    hpBarSize2_ = Vector2(500.0f, 30.0f);
+    hpBarSprite2_->SetSize(hpBarSize2_);
+    hpBarSprite2_->SetColor({ 1.0f, 0.3f, 0.3f, 1.0f });
+    hpBarSprite2_->SetPos(Vector2(
+        WinApp::clientWidth * 0.65f,
+        WinApp::clientHeight * 0.05f));
+
+    hpBarBGSprite_ = std::make_unique<Sprite>();
+    hpBarBGSprite_->Initialize("white.png");
+    hpBarBGSprite_->SetSize(hpBarSize1_);
+    hpBarBGSprite_->SetPos(Vector2(
+        WinApp::clientWidth * 0.65f,
+        WinApp::clientHeight * 0.05f));
 
     // Colliderの初期化
     bodyCollider_ = std::make_unique<OBBCollider>();
@@ -70,6 +98,19 @@ void Boss::Finalize()
 
 void Boss::Update(float deltaTime)
 {
+    // HPバーの更新
+    if (phase_ == 1) {
+        hpBarSprite1_->SetSize(Vector2(hpBarSize1_.x * (hp_ - 100.0f) / 100.0f, hpBarSize1_.y));
+        hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x, hpBarSize2_.y));
+    }else if (phase_ == 2) {
+        hpBarSprite1_->SetSize(Vector2(0.0f, hpBarSize1_.y));
+        hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x * (hp_ / 100.0f), hpBarSize2_.y));
+    }
+
+    hpBarSprite1_->Update();
+    hpBarSprite2_->Update();
+    hpBarBGSprite_->Update();
+
     // フェーズとライフの更新
     UpdatePhaseAndLive();
 
@@ -89,6 +130,13 @@ void Boss::Update(float deltaTime)
 void Boss::Draw()
 {
     model_->Draw();
+}
+
+void Boss::DrawSprite()
+{
+    hpBarBGSprite_->Draw();
+    hpBarSprite2_->Draw();
+    hpBarSprite1_->Draw();
 }
 
 void Boss::OnHit(float damage)
