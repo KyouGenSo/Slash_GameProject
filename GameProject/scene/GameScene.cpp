@@ -378,7 +378,7 @@ void GameScene::DrawWithoutEffect()
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
-    //toTitleSprite_->Draw();
+    player_->DrawSprite();
 }
 
 void GameScene::DrawImGui()

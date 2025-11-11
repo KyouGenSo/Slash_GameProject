@@ -3,7 +3,9 @@
 
 #include "Collider.h"
 #include "Transform.h"
+#include "vector2.h"
 
+class Sprite;
 class OBBCollider;
 class Object3d;
 class PlayerStateMachine;
@@ -41,6 +43,11 @@ public: // メンバ関数
     /// 描画
     /// </summary>
     void Draw();
+
+    /// <summary>
+    /// スプライト描画
+    /// </summary>
+    void DrawSprite();
 
     /// <summary>
     /// 移動
@@ -245,5 +252,10 @@ private: // メンバ変数
     Boss* targetEnemy_ = nullptr;
     bool isAttackHit_ = false;
     float attackMoveSpeed_ = 2.0f;
+
+    // HPバースプライト
+    std::unique_ptr<Sprite> hpBarSprite_;
+    Vector2 hpBarSize_{};
+    std::unique_ptr<Sprite> hpBarBGSprite_;
 };
 

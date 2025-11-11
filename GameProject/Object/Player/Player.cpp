@@ -15,9 +15,11 @@
 #include "CollisionManager.h"
 #include "../../Collision/CollisionTypeIdDef.h"
 #include "../Boss/Boss.h"
-#include <cmath>
 
 #include "FrameTimer.h"
+#include "Sprite.h"
+
+#include <cmath>
 
 #ifdef _DEBUG
 #include "ImGui.h"
@@ -55,6 +57,23 @@ void Player::Initialize()
 
     model_->SetTransform(transform_);
 
+    // HPバースプライトの初期化
+    hpBarSprite_ = std::make_unique<Sprite>();
+    hpBarSprite_->Initialize("white.png");
+    hpBarSize_ = Vector2(500.0f, 30.0f);
+    hpBarSprite_->SetSize(hpBarSize_);
+    hpBarSprite_->SetColor({ 0.3f, 1.0f, 0.3f, 1.0f });
+    hpBarSprite_->SetPos(Vector2(
+        hpBarSprite_->GetSize().x / 4.f,
+        50.f));
+
+    hpBarBGSprite_ = std::make_unique<Sprite>();
+    hpBarBGSprite_->Initialize("white.png");
+    hpBarBGSprite_->SetSize(hpBarSize_);
+    hpBarBGSprite_->SetPos(Vector2(
+        hpBarBGSprite_->GetSize().x / 4.f,
+        50.f));
+
     // State Machineの初期化
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);
     stateMachine_->RegisterState("Idle", std::make_unique<IdleState>());
@@ -86,6 +105,9 @@ void Player::Update()
     // 死亡判定
     if (hp_ <= 0.0f) isDead_ = true;
 
+    hpBarSprite_->SetSize(Vector2(hpBarSize_.x * (hp_ / 100.0f), hpBarSize_.y));
+    hpBarSprite_->Update();
+    hpBarBGSprite_->Update();
 
     // State Machineの更新
     if (stateMachine_)
@@ -117,6 +139,12 @@ void Player::Update()
 void Player::Draw()
 {
     model_->Draw();
+}
+
+void Player::DrawSprite()
+{
+    hpBarBGSprite_->Draw();
+    hpBarSprite_->Draw();
 }
 
 void Player::Move(float speedMultiplier)
