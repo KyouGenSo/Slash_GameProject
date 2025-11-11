@@ -54,6 +54,7 @@ void Boss::Finalize()
 
 void Boss::Update()
 {
+    UpdatePhaseAndLive();
     UpdateHitEffect(Vector4(1.0f, 1.0f, 1.0f, 1.0f), 0.1f);
     model_->SetTransform(transform_);
     model_->Update();
@@ -81,11 +82,33 @@ void Boss::UpdateHitEffect(Vector4 color, float duration)
 
     if (hitEffectTimer_ <= duration) {
         model_->SetMaterialColor(color);
-    }
-    else
+    } else
     {
         isPlayHitEffect_ = false;
         model_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+    }
+}
+
+void Boss::UpdatePhaseAndLive()
+{
+    if (hp_ < 100.f) {
+        phase_ = 2;
+    }
+    else
+    {
+        phase_ = 1;
+    }
+
+
+    if (hp_ <= 0.0f && life_ > 0) {
+        life_--;
+
+        if (life_ == 0) {
+            isDead_ = true;
+            return;
+        }
+
+        hp_ = maxHp_;
     }
 }
 
@@ -95,9 +118,7 @@ void Boss::DrawImGui()
 
     // ボスの状態
     ImGui::Text("=== Boss Status ===");
-    ImGui::Text("ID: %d", id_);
     ImGui::Text("HP: %.1f", hp_);
-    ImGui::Text("Phase: %d / %d", phase_, maxPhase_);
     ImGui::Text("Position: (%.2f, %.2f, %.2f)", transform_.translate.x, transform_.translate.y, transform_.translate.z);
     ImGui::Text("Rotation: (%.2f, %.2f, %.2f)", transform_.rotate.x, transform_.rotate.y, transform_.rotate.z);
     ImGui::Text("Scale: (%.2f, %.2f, %.2f)", transform_.scale.x, transform_.scale.y, transform_.scale.z);

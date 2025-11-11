@@ -17,13 +17,8 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
     if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy) {
-            uint32_t enemyId = enemy->GetID();
 
-            if (hitEnemies_.find(enemyId) == hitEnemies_.end()) {
-                hitEnemies_.insert(enemyId);
-
-                enemy->OnHit(10.0f);
-            }
+            enemy->OnHit(10.0f);
 
             if (!detectedEnemy_) {
                 detectedEnemy_ = enemy;

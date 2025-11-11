@@ -224,6 +224,13 @@ void GameScene::Update()
     }
 #endif
 
+    // ゲームクリア判定
+    if (boss_->IsDead())
+    {
+        /// TODO: ゲームオーバーシーンを作成したら"title"をそちらに変更
+        SceneManager::GetInstance()->ChangeScene("title", "Fade", 0.3f);
+    }
+
     // カメラモードをPlayerに設定
     player_->SetMode(cameraMode_);
 

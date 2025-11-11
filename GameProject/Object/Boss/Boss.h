@@ -49,11 +49,16 @@ public:
     void OnHit(float damage);
 
     /// <summary>
-    /// ダメージされるとき色変わる演出
+    /// ダメージされるとき色変わる演出の更新処理
     /// </summary>
     /// <param name="color">変化後の色</param>
     /// <param name="duration">変化時間</param>
     void UpdateHitEffect(Vector4 color, float duration);
+
+    /// <summary>
+    /// フェーズとlifeの更新処理
+    /// </summary>
+    void UpdatePhaseAndLive();
 
     //-----------------------------Getters/Setters------------------------------//
     /// <summary>
@@ -72,19 +77,13 @@ public:
     /// フェーズを設定
     /// </summary>
     /// <param name="phase">新しいフェーズ番号</param>
-    void SetPhase(uint32_t phase) { phase_ = phase; }
+    void SetPhase(uint32_t phase) { if (phase <= 2 && phase > 0) phase_ = phase; }
 
     /// <summary>
     /// 座標変換情報を取得
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
     const Transform& GetTransform() const { return transform_; }
-
-    /// <summary>
-    /// 座標変換情報のポインタを取得
-    /// </summary>
-    /// <returns>座標変換情報への非constポインタ</returns>
-    Transform* GetTransformPtr() { return &transform_; }
 
     /// <summary>
     /// HPを取得
@@ -99,10 +98,10 @@ public:
     uint32_t GetPhase() const { return phase_; }
 
     /// <summary>
-    /// ユニークIDを取得
+    /// 死亡状態を取得
     /// </summary>
-    /// <returns>ボスのユニークID</returns>
-    uint32_t GetID() const { return id_; }
+    /// <returns> 死亡しているかどうかの真偽値 </returns>
+    bool IsDead() const { return isDead_; }
 
     /// <summary>
     /// コライダーを取得
@@ -117,26 +116,28 @@ private:
     /// ボスの座標変換情報（位置、回転、スケール）
     Transform transform_{};
 
-    /// ボスの現在HP（0になると撃破、初期値200）
-    float hp_ = 200.0f;
+    /// 最大HP
+    const float maxHp_ = 200.0f;
 
-    /// 現在の戦闘フェーズ（1から開始、フェーズごとに行動パターンが変化）
+    /// ボスの現在HP（0になると撃破、初期値200）
+    float hp_ = maxHp_;
+
+    /// ボスのライフ（HPが0になるたびに減少、0でゲームクリア）
+    uint8_t life_ = 1;
+
+    /// 現在の戦闘フェーズ（HP200~100:フェーズ1、HP100~0:フェーズ2）
     uint32_t phase_ = 1;
 
-    /// 最大フェーズ数（5フェーズまで存在、HP減少で遷移）
-    uint32_t maxPhase_ = 5;
+    /// 死亡フラグ
+    bool isDead_ = false;
 
     /// ボス本体の衝突判定用AABBコライダー（矩形境界ボックス）
     std::unique_ptr<OBBCollider> bodyCollider_;
-
-    /// このボスインスタンス固有のユニークID
-    uint32_t id_;
 
     /// ヒットエフェクトの再生状態を示すフラグ。
     bool isPlayHitEffect_ = false;
 
     /// ヒットエフェクトのタイマー
     float hitEffectTimer_ = 0.0f;
-
 };
 
