@@ -2,10 +2,10 @@
 
 #include <algorithm>
 #include "Object3d.h"
-#include "AABBCollider.h"
+#include "OBBCollider.h"
 #include "CollisionManager.h"
-#include "FrameTimer.h"
 #include "../../Collision/CollisionTypeIdDef.h"
+#include "FrameTimer.h"
 
 #ifdef _DEBUG
 #include "ImGui.h"
@@ -33,11 +33,11 @@ void Boss::Initialize()
     model_->SetTransform(transform_);
 
     // Colliderの初期化
-    bodyCollider_ = std::make_unique<AABBCollider>();
+    bodyCollider_ = std::make_unique<OBBCollider>();
     bodyCollider_->SetTransform(&transform_);
-    bodyCollider_->SetSize(Vector3(1.5f, 1.5f, 1.5f));
+    bodyCollider_->SetSize(Vector3(3.2f, 3.2f, 3.2f));
     bodyCollider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
-    bodyCollider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::kEnemy));
+    bodyCollider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::BOSS));
     bodyCollider_->SetOwner(this);
 
     // CollisionManagerに登録
@@ -114,11 +114,6 @@ void Boss::DrawImGui()
 
         Vector3 size = bodyCollider_->GetSize();
         ImGui::Text("Size: (%.2f, %.2f, %.2f)", size.x, size.y, size.z);
-
-        // 実際のAABBの位置
-        AABB aabb = bodyCollider_->GetAABB();
-        ImGui::Text("AABB Min: (%.2f, %.2f, %.2f)", aabb.min.x, aabb.min.y, aabb.min.z);
-        ImGui::Text("AABB Max: (%.2f, %.2f, %.2f)", aabb.max.x, aabb.max.y, aabb.max.z);
 
         Vector3 center = bodyCollider_->GetCenter();
         ImGui::Text("Center: (%.2f, %.2f, %.2f)", center.x, center.y, center.z);

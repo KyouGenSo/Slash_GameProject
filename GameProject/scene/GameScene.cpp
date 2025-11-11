@@ -82,8 +82,7 @@ void GameScene::Initialize()
     Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, -0.05f));
 
     // エミッターマネージャーの初期化
-    emitterManager_->LoadPreset("over1", "over1");
-    emitterManager_->LoadPreset("over2", "over2");
+    emitterManager_->LoadScenePreset("gamescene_preset");
 
     // タイトルボタンテキストの初期化
     toTitleSprite_ = std::make_unique<Sprite>();
@@ -158,14 +157,14 @@ void GameScene::Initialize()
 
     // 衝突マスクの設定（どのタイプ同士が衝突判定を行うか）
     collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::kPlayerMeleeAttack),
-        static_cast<uint32_t>(CollisionTypeId::kEnemy),
+        static_cast<uint32_t>(CollisionTypeId::PLAYER_MELEE_ATTACK),
+        static_cast<uint32_t>(CollisionTypeId::BOSS),
         true
     );
 
     collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::kPlayer),
-        static_cast<uint32_t>(CollisionTypeId::kEnemyAttack),
+        static_cast<uint32_t>(CollisionTypeId::PLAYER),
+        static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
         true
     );
 }
@@ -228,8 +227,20 @@ void GameScene::Update()
     // カメラモードをPlayerに設定
     player_->SetMode(cameraMode_);
 
-    // 入力ハンドラーの更新。カメラアニメーション再生中は入力をリセットし、操作を受け付けない
-    animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING ? inputHandler_->Update() : inputHandler_->ResetInputs();
+    // 入力ハンドラーの更新。カメラアニメーション再生中、デバッグカメラ操作中は入力をリセットし、操作を受け付けない
+    if (animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING
+#ifdef  _DEBUG
+        && !Object3dBasic::GetInstance()->GetDebug()
+#endif
+        )
+    {
+        inputHandler_->Update();
+        
+    }
+    else
+    {
+        inputHandler_->ResetInputs();
+    }
 
     // オブジェクトの更新処理
     skyBox_->Update();
@@ -324,7 +335,7 @@ void GameScene::DrawWithoutEffect()
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
-    toTitleSprite_->Draw();
+    //toTitleSprite_->Draw();
 }
 
 void GameScene::DrawImGui()

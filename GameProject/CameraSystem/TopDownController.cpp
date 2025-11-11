@@ -5,6 +5,8 @@
 
 TopDownController::TopDownController() {
     // 初期化は設定値で行う
+    currentHeight_ = 88.f;
+    currentBackOffset_ = -205.f;
 }
 
 void TopDownController::Update(float deltaTime) {

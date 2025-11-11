@@ -1,0 +1,359 @@
+{
+  "emitters": {
+    "border1": {
+      "boxRotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "boxSize": [
+        200.0,
+        1.0,
+        1.0
+      ],
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.019999999552965164,
+      "frequencyTime": 0.003367999568581581,
+      "isActive": true,
+      "isEmitting": true,
+      "isNormalize": false,
+      "isRandomRotateZ": false,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        1.0,
+        3.0
+      ],
+      "particleCount": 30,
+      "position": [
+        0.0,
+        0.0,
+        -140.0
+      ],
+      "scaleRangeX": [
+        0.5,
+        0.5
+      ],
+      "scaleRangeY": [
+        2.0,
+        2.0
+      ],
+      "startColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "type": 1,
+      "velRangeX": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeY": [
+        0.0,
+        0.0
+      ],
+      "velRangeZ": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
+    "border1_copy": {
+      "boxRotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "boxSize": [
+        200.0,
+        1.0,
+        1.0
+      ],
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.019999999552965164,
+      "frequencyTime": 0.00337926484644413,
+      "isActive": true,
+      "isEmitting": true,
+      "isNormalize": false,
+      "isRandomRotateZ": false,
+      "isTemporary": true,
+      "lifeTimeRange": [
+        1.0,
+        3.0
+      ],
+      "particleCount": 30,
+      "position": [
+        0.0,
+        0.0,
+        60.0
+      ],
+      "scaleRangeX": [
+        0.5,
+        0.5
+      ],
+      "scaleRangeY": [
+        2.0,
+        2.0
+      ],
+      "startColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "type": 1,
+      "velRangeX": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeY": [
+        0.0,
+        0.0
+      ],
+      "velRangeZ": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
+    "border1_copy_copy": {
+      "boxRotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "boxSize": [
+        0.0,
+        1.0,
+        200.0
+      ],
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.019999999552965164,
+      "frequencyTime": 0.00219024159014225,
+      "isActive": true,
+      "isEmitting": true,
+      "isNormalize": false,
+      "isRandomRotateZ": false,
+      "isTemporary": true,
+      "lifeTimeRange": [
+        1.0,
+        3.0
+      ],
+      "particleCount": 30,
+      "position": [
+        -100.0,
+        0.0,
+        -40.0
+      ],
+      "scaleRangeX": [
+        0.5,
+        0.5
+      ],
+      "scaleRangeY": [
+        2.0,
+        2.0
+      ],
+      "startColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "type": 1,
+      "velRangeX": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeY": [
+        0.0,
+        0.0
+      ],
+      "velRangeZ": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
+    "border1_copy_copy_copy": {
+      "boxRotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "boxSize": [
+        0.0,
+        1.0,
+        200.0
+      ],
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.019999999552965164,
+      "frequencyTime": 0.011318933218717575,
+      "isActive": true,
+      "isEmitting": true,
+      "isNormalize": false,
+      "isRandomRotateZ": false,
+      "isTemporary": true,
+      "lifeTimeRange": [
+        1.0,
+        3.0
+      ],
+      "particleCount": 30,
+      "position": [
+        100.0,
+        0.0,
+        -40.0
+      ],
+      "scaleRangeX": [
+        0.5,
+        0.5
+      ],
+      "scaleRangeY": [
+        2.0,
+        2.0
+      ],
+      "startColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "type": 1,
+      "velRangeX": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeY": [
+        0.0,
+        0.0
+      ],
+      "velRangeZ": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
+    "over1": {
+      "endColor": [
+        0.9569584131240845,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "frequency": 0.15000000596046448,
+      "frequencyTime": 0.10752454400062561,
+      "isActive": false,
+      "isEmitting": false,
+      "isNormalize": false,
+      "isRandomRotateZ": true,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        0.0,
+        0.0
+      ],
+      "particleCount": 200,
+      "position": [
+        48.71884536743164,
+        2.5,
+        39.703556060791016
+      ],
+      "radius": 0.10000000149011612,
+      "scaleRangeX": [
+        8.0,
+        8.0
+      ],
+      "scaleRangeY": [
+        0.30000001192092896,
+        0.03999999910593033
+      ],
+      "startColor": [
+        1.0,
+        0.7608799934387207,
+        0.7608799934387207,
+        1.0
+      ],
+      "type": 0,
+      "velRangeX": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeY": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeZ": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
+    "over2": {
+      "endColor": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "frequency": 1.0,
+      "frequencyTime": 0.10836136341094971,
+      "isActive": false,
+      "isEmitting": false,
+      "isNormalize": true,
+      "isRandomRotateZ": false,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        0.0,
+        0.0
+      ],
+      "particleCount": 1000,
+      "position": [
+        48.71884536743164,
+        2.5,
+        39.703556060791016
+      ],
+      "radius": 0.10000000149011612,
+      "scaleRangeX": [
+        0.0,
+        0.0
+      ],
+      "scaleRangeY": [
+        0.0,
+        0.0
+      ],
+      "startColor": [
+        0.9760879874229431,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "type": 0,
+      "velRangeX": [
+        0.0,
+        0.0
+      ],
+      "velRangeY": [
+        0.0,
+        0.0
+      ],
+      "velRangeZ": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "groups": {}
+}

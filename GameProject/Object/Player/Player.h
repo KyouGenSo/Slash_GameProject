@@ -4,11 +4,11 @@
 #include "Collider.h"
 #include "Transform.h"
 
+class OBBCollider;
 class Object3d;
 class PlayerStateMachine;
 class InputHandler;
 class Camera;
-class AABBCollider;
 class MeleeAttackCollider;
 class Boss;
 
@@ -179,6 +179,10 @@ public: // メンバ関数
     InputHandler* GetInputHandler() { return inputHandlerPtr_; };
 
 private: // メンバ変数
+    static float X_MIN;
+    static float X_MAX;
+    static float Z_MIN;
+    static float Z_MAX;
 
     std::unique_ptr<Object3d> model_; ///< モデル
     Camera* camera_ = nullptr;        ///< カメラ
@@ -196,7 +200,7 @@ private: // メンバ変数
     InputHandler* inputHandlerPtr_;
 
     // Colliders
-    std::unique_ptr<AABBCollider> bodyCollider_;
+    std::unique_ptr<OBBCollider> bodyCollider_;
     std::unique_ptr<MeleeAttackCollider> meleeAttackCollider_;
 
     // 攻撃関連

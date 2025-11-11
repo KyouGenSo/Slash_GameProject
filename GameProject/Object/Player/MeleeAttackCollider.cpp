@@ -5,7 +5,7 @@
 
 MeleeAttackCollider::MeleeAttackCollider(Player* player)
     : player_(player) {
-    SetTypeID(static_cast<uint32_t>(CollisionTypeId::kPlayerMeleeAttack));
+    SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_MELEE_ATTACK));
     SetActive(false);
 }
 
@@ -14,7 +14,7 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
 
     uint32_t typeID = other->GetTypeID();
 
-    if (typeID == static_cast<uint32_t>(CollisionTypeId::kEnemy)) {
+    if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy) {
             uint32_t enemyId = enemy->GetID();
@@ -41,7 +41,7 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
 
     uint32_t typeID = other->GetTypeID();
 
-    if (typeID == static_cast<uint32_t>(CollisionTypeId::kEnemy)) {
+    if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy && !detectedEnemy_) {
             detectedEnemy_ = enemy;

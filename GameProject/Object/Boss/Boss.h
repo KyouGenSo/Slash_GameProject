@@ -4,8 +4,8 @@
 #include "Transform.h"
 #include "Vector4.h"
 
+class OBBCollider;
 class Object3d;
-class AABBCollider;
 
 /// <summary>
 /// ボスエネミークラス
@@ -108,7 +108,7 @@ public:
     /// コライダーを取得
     /// </summary>
     /// <returns>ボスのAABBコライダーのポインタ</returns>
-    AABBCollider* GetCollider() const { return bodyCollider_.get(); }
+    OBBCollider* GetCollider() const { return bodyCollider_.get(); }
 
 private:
     /// ボスの3Dモデルオブジェクト（描画とアニメーション管理）
@@ -127,7 +127,7 @@ private:
     uint32_t maxPhase_ = 5;
 
     /// ボス本体の衝突判定用AABBコライダー（矩形境界ボックス）
-    std::unique_ptr<AABBCollider> bodyCollider_;
+    std::unique_ptr<OBBCollider> bodyCollider_;
 
     /// このボスインスタンス固有のユニークID
     uint32_t id_;

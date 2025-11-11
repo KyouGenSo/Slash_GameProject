@@ -6,11 +6,11 @@
 /// オブジェクトのカテゴリを識別して衝突処理を制御
 /// </summary>
 enum class CollisionTypeId : uint32_t {
-	kDefault,           /// デフォルトタイプ
-	kPlayer,            /// プレイヤー本体
-	kPlayerMeleeAttack, /// プレイヤーの近接攻撃
-	kPlayerBullet,      /// プレイヤーの弾丸
-	kEnemy,             /// 敵キャラクター
-	kEnemyAttack,       /// 敵の攻撃
-	kEnvironment,       /// 環境オブジェクト
+	DEFAULT,                /// デフォルトタイプ
+	PLAYER,                 /// プレイヤー本体
+	PLAYER_MELEE_ATTACK,    /// プレイヤーの近接攻撃
+	PLAYER_BULLET,          /// プレイヤーの弾丸
+	BOSS,                   /// 敵キャラクター
+	BOSS_ATTACK,            /// 敵の攻撃
+	ENVIRONMENT,            /// 環境オブジェクト
 };

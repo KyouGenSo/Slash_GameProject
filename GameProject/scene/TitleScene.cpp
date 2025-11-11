@@ -440,7 +440,7 @@ void TitleScene::InitializeSprites()
 void TitleScene::InitializeParticles()
 {
   // エミッタマネージャからプリセットを読み込み
-  emitterManager_->LoadEmittersFromJSON("title_preset");
+  emitterManager_->LoadScenePreset("title_preset");
 
   // slashエミッターの初期設定
   auto slashEmitter = emitterManager_->GetEmitterByName("slash");
