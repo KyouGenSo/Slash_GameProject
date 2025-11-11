@@ -54,8 +54,13 @@ void Boss::Finalize()
 
 void Boss::Update()
 {
+    // フェーズとライフの更新
     UpdatePhaseAndLive();
+
+    // ヒットエフェクトの更新
     UpdateHitEffect(Vector4(1.0f, 1.0f, 1.0f, 1.0f), 0.1f);
+
+    // モデルの更新
     model_->SetTransform(transform_);
     model_->Update();
 }
@@ -109,6 +114,7 @@ void Boss::UpdatePhaseAndLive()
             return;
         }
 
+        isReadyToChangePhase_ = false;
         hp_ = maxHp_;
         phase_ = 1;
     }

@@ -129,7 +129,7 @@
     <ClCompile Include="CameraSystem\CameraAnimationController.cpp">
       <Filter>CameraSystem\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\FirstPersonController.cpp">
+    <ClCompile Include="CameraSystem\ThirdPersonController.cpp">
       <Filter>CameraSystem\Controller</Filter>
     </ClCompile>
     <ClCompile Include="CameraSystem\TopDownController.cpp">
@@ -221,7 +221,7 @@
     <ClInclude Include="CameraSystem\CameraAnimationController.h">
       <Filter>CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\FirstPersonController.h">
+    <ClInclude Include="CameraSystem\ThirdPersonController.h">
       <Filter>CameraSystem\Controller</Filter>
     </ClInclude>
     <ClInclude Include="CameraSystem\ICameraController.h">

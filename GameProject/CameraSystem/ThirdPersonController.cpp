@@ -1,12 +1,12 @@
-#include "FirstPersonController.h"
+#include "ThirdPersonController.h"
 #include "Vec3Func.h"
 #include "Mat4x4Func.h"
 
-FirstPersonController::FirstPersonController() {
+ThirdPersonController::ThirdPersonController() {
   input_ = Input::GetInstance();
 }
 
-void FirstPersonController::Update(float deltaTime) {
+void ThirdPersonController::Update(float deltaTime) {
   if (!isActive_ || !camera_ || !primaryTarget_) {
     return;
   }
@@ -21,7 +21,7 @@ void FirstPersonController::Update(float deltaTime) {
   UpdatePosition();
 }
 
-void FirstPersonController::Activate() {
+void ThirdPersonController::Activate() {
   isActive_ = true;
 
   // 標準FOVを設定
@@ -34,7 +34,7 @@ void FirstPersonController::Activate() {
   }
 }
 
-void FirstPersonController::Reset() {
+void ThirdPersonController::Reset() {
   if (!primaryTarget_ || !camera_) {
     return;
   }
@@ -56,7 +56,7 @@ void FirstPersonController::Reset() {
   camera_->SetTranslate(interpolatedTargetPos_ + offset);
 }
 
-void FirstPersonController::ProcessInput(float deltaTime) {
+void ThirdPersonController::ProcessInput(float deltaTime) {
   // ゲームパッド入力
   if (!input_->RStickInDeadZone()) {
     isRotating_ = true;
@@ -81,7 +81,7 @@ void FirstPersonController::ProcessInput(float deltaTime) {
   }
 }
 
-void FirstPersonController::UpdateRotation() {
+void ThirdPersonController::UpdateRotation() {
   // 現在の回転角度を取得
   Vector3 currentRotation = camera_->GetRotate();
 
@@ -94,7 +94,7 @@ void FirstPersonController::UpdateRotation() {
   camera_->SetRotate(Vector3(angleX, angleY, angleZ));
 }
 
-void FirstPersonController::UpdatePosition() {
+void ThirdPersonController::UpdatePosition() {
   // オフセットを補間
   offset_.z = Vec3::Lerp(offset_.z, offsetOrigin_.z, offsetLerpSpeed_);
 
@@ -108,7 +108,7 @@ void FirstPersonController::UpdatePosition() {
   camera_->SetTranslate(interpolatedTargetPos_ + offset);
 }
 
-Vector3 FirstPersonController::CalculateOffset() const {
+Vector3 ThirdPersonController::CalculateOffset() const {
   Vector3 offset = offset_;
 
   // カメラの回転行列を生成

@@ -1,6 +1,6 @@
 #pragma once
 #include "CameraManager.h"
-#include "FirstPersonController.h"
+#include "ThirdPersonController.h"
 #include "TopDownController.h"
 #include "CameraAnimation/CameraAnimation.h"
 #include "CameraAnimationEditor/CameraAnimationEditor.h"
@@ -28,7 +28,7 @@ public:
     /// FirstPersonControllerのデバッグ情報を描画
     /// </summary>
     /// <param name="controller">対象のコントローラー</param>
-    static void DrawFirstPersonControllerInfo(FirstPersonController* controller);
+    static void DrawFirstPersonControllerInfo(ThirdPersonController* controller);
 
     /// <summary>
     /// TopDownControllerのデバッグ情報を描画

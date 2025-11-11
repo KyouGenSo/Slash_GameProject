@@ -14,7 +14,7 @@ class EmitterManager;
 class Sprite;
 class BoneTracker;
 class CameraManager;
-class FirstPersonController;
+class ThirdPersonController;
 class TopDownController;
 class CameraAnimationController;
 
@@ -85,7 +85,7 @@ private: // メンバ変数
 
     // Camera system components
     CameraManager* cameraManager_ = nullptr;  ///< カメラシステム管理
-    FirstPersonController* firstPersonController_ = nullptr;  ///< 一人称視点コントローラー
+    ThirdPersonController* firstPersonController_ = nullptr;  ///< 一人称視点コントローラー
     TopDownController* topDownController_ = nullptr;  ///< トップダウン視点コントローラー
     CameraAnimationController* animationController_ = nullptr;  ///< カメラアニメーションコントローラー
     bool cameraMode_ = false;  ///< カメラモード (true: FirstPerson, false: TopDown)

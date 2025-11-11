@@ -8,17 +8,17 @@
 /// 一人称視点カメラコントローラー
 /// ターゲット追従と回転制御に特化
 /// </summary>
-class FirstPersonController : public TargetedCameraController {
+class ThirdPersonController : public TargetedCameraController {
 public:
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    FirstPersonController();
+    ThirdPersonController();
 
     /// <summary>
     /// デストラクタ
     /// </summary>
-    ~FirstPersonController() override = default;
+    ~ThirdPersonController() override = default;
 
     /// <summary>
     /// 更新処理

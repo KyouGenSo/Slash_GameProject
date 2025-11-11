@@ -119,7 +119,7 @@ void CameraDebugUI::DrawManagerInfo() {
     }
 }
 
-void CameraDebugUI::DrawFirstPersonControllerInfo(FirstPersonController* controller) {
+void CameraDebugUI::DrawFirstPersonControllerInfo(ThirdPersonController* controller) {
     if (!controller) {
         return;
     }
@@ -368,7 +368,7 @@ void CameraDebugUI::DrawControllerSwitcher() {
 
     // 各コントローラーの詳細情報
     if (ImGui::CollapsingHeader("FirstPerson Controller Details")) {
-        auto* fpController = dynamic_cast<FirstPersonController*>(
+        auto* fpController = dynamic_cast<ThirdPersonController*>(
             manager->GetController("FirstPerson"));
         DrawFirstPersonControllerInfo(fpController);
     }
