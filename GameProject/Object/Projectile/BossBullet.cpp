@@ -50,7 +50,7 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
         collider_ = std::make_unique<BossBulletCollider>(this);
     }
     collider_->SetTransform(&transform_);
-    collider_->SetRadius(0.8f);  // 衝突判定の半径
+    collider_->SetRadius(1.0f);  // 衝突判定の半径
     collider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
     collider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK));
     collider_->SetOwner(this);
