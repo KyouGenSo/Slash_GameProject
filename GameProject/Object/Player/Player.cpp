@@ -36,7 +36,7 @@ void Player::Initialize()
 {
   model_ = std::make_unique<Object3d>();
   model_->Initialize();
-  model_->SetModel("Player.gltf");
+  model_->SetModel("white_cube.gltf");
 
   transform_.translate = Vector3(0.0f, 2.5f, -22.0f);
   transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);

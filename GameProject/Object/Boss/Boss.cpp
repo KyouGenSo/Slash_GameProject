@@ -23,7 +23,7 @@ void Boss::Initialize()
 {
     model_ = std::make_unique<Object3d>();
     model_->Initialize();
-    model_->SetModel("Player.gltf");
+    model_->SetModel("white_cube.gltf");
     model_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
     transform_.translate = Vector3(0.0f, 2.5f, 10.0f);
