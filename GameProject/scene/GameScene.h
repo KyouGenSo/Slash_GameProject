@@ -91,42 +91,40 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-    std::unique_ptr<SkyBox> skyBox_;  ///< スカイボックス（環境マップ）
+    std::unique_ptr<SkyBox> skyBox_;                            // スカイボックス（環境マップ）
 
-    std::unique_ptr<Object3d> ground_;  ///< 地面オブジェクト
+    std::unique_ptr<Object3d> ground_;                          // 地面オブジェクト
 
-    std::unique_ptr<Player> player_;  ///< プレイヤーキャラクター
+    std::unique_ptr<Player> player_;                            // プレイヤーキャラクター
 
-    std::unique_ptr<Boss> boss_;  ///< ボスキャラクター
+    std::unique_ptr<Boss> boss_;                                // ボスキャラクター
 
-    std::unique_ptr<InputHandler> inputHandler_; ///< 入力ハンドラー
+    std::unique_ptr<InputHandler> inputHandler_;                // 入力ハンドラー
 
     // Camera system components
-    CameraManager* cameraManager_ = nullptr;  ///< カメラシステム管理
-    ThirdPersonController* firstPersonController_ = nullptr;  ///< 一人称視点コントローラー
-    TopDownController* topDownController_ = nullptr;  ///< トップダウン視点コントローラー
-    CameraAnimationController* animationController_ = nullptr;  ///< カメラアニメーションコントローラー
-    bool cameraMode_ = false;  ///< カメラモード (true: FirstPerson, false: TopDown)
+    CameraManager* cameraManager_ = nullptr;                    // カメラシステム管理
+    ThirdPersonController* firstPersonController_ = nullptr;    // 一人称視点コントローラー
+    TopDownController* topDownController_ = nullptr;            // トップダウン視点コントローラー
+    CameraAnimationController* animationController_ = nullptr;  // カメラアニメーションコントローラー
+    bool cameraMode_ = false;                                   // カメラモード (true: FirstPerson, false: TopDown)
 
-    Transform groundUvTransform_{};  ///< 地面のUVトランスフォーム（テクスチャスクロール等に使用）
+    Transform groundUvTransform_{};                             // 地面のUVトランスフォーム（テクスチャスクロール等に使用）
 
-    std::unique_ptr<EmitterManager> emitterManager_;  ///< パーティクルエミッター管理
+    std::unique_ptr<EmitterManager> emitterManager_;            // パーティクルエミッター管理
 
-    std::unique_ptr<Sprite> toTitleSprite_;  ///< タイトルに戻るボタンテキスト
+    std::unique_ptr<Sprite> toTitleSprite_;                     // タイトルに戻るボタンテキスト
 
-    float overAnimTimer_ = 0.0f;  ///< ゲームオーバー演出タイマー
-    bool isOver_ = false;        ///< ゲームオーバーフラグ
+    float overAnimTimer_ = 0.0f;                                // ゲームオーバー演出タイマー
+    bool isOver_ = false;                                       // ゲームオーバーフラグ
+    bool isStart_ = false;                                      // ゲーム開始フラグ
 
-    /// <summary>
-    /// ボスの弾リスト（オブジェクトプール）
-    /// </summary>
+    /// ボスの弾リスト
     std::vector<std::unique_ptr<BossBullet>> bossBullets_;
-    bool isOver1Emit = false;   ///< ゲームオーバー演出用エミッター発生フラグ
-    bool isOver2Emit = false;   ///< ゲームオーバー演出用エミッター発生フラグ
+    bool isOver1Emit = false;                                   // ゲームオーバー演出用エミッター発生フラグ
+    bool isOver2Emit = false;                                   // ゲームオーバー演出用エミッター発生フラグ
 
     // ボスフェーズ2境界線パーティクル管理
-    bool borderEmittersLoaded_ = false;  ///< 境界線エミッター読み込み済みフラグ
-    bool borderEmittersActive_ = false;  ///< 境界線エミッターアクティブ状態
+    bool borderEmittersActive_ = false;                         // 境界線エミッターアクティブ状態
 
-    bool isDebug_ = false;  ///< デバッグモードフラグ
+    bool isDebug_ = false;                                      // デバッグモードフラグ
 };

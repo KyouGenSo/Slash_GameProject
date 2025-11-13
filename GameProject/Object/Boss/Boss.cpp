@@ -124,7 +124,7 @@ void Boss::Update(float deltaTime)
     UpdatePhaseAndLive();
 
     // ステートマシンの更新
-    if (stateMachine_ && !isDead_) {
+    if (stateMachine_ && !isDead_ && !isPause_) {
         stateMachine_->Update(deltaTime);
     }
 

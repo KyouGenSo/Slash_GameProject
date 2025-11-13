@@ -81,6 +81,19 @@ public:
     /// </summary>
     void UpdatePhaseAndLive();
 
+    /// <summary>
+    /// 弾生成リクエストを追加
+    /// </summary>
+    /// <param name="position">弾の発射位置</param>
+    /// <param name="velocity">弾の速度ベクトル</param>
+    void RequestBulletSpawn(const Vector3& position, const Vector3& velocity);
+
+    /// <summary>
+    /// 保留中の弾生成リクエストを取得して消費
+    /// </summary>
+    /// <returns>弾生成リクエストのリスト（moveで返される）</returns>
+    std::vector<BulletSpawnRequest> ConsumePendingBullets();
+
     //-----------------------------Getters/Setters------------------------------//
     /// <summary>
     /// 座標変換情報を設定
@@ -123,6 +136,12 @@ public:
     /// </summary>
     /// <param name="player">プレイヤーのポインタ</param>
     void SetPlayer(Player* player) { player_ = player; }
+
+    /// <summary>
+    /// 一時行動停止フラグを設定
+    /// </summary>
+    /// <param name="isPause">一時行動停止フラグの値</param>
+    void SetIsPause(bool isPause) { isPause_ = isPause; }
 
     /// <summary>
     /// 座標変換情報を取得
@@ -172,19 +191,6 @@ public:
     /// <returns>ボスのAABBコライダーのポインタ</returns>
     OBBCollider* GetCollider() const { return bodyCollider_.get(); }
 
-    /// <summary>
-    /// 弾生成リクエストを追加
-    /// </summary>
-    /// <param name="position">弾の発射位置</param>
-    /// <param name="velocity">弾の速度ベクトル</param>
-    void RequestBulletSpawn(const Vector3& position, const Vector3& velocity);
-
-    /// <summary>
-    /// 保留中の弾生成リクエストを取得して消費
-    /// </summary>
-    /// <returns>弾生成リクエストのリスト（moveで返される）</returns>
-    std::vector<BulletSpawnRequest> ConsumePendingBullets();
-
 private:
     // ボスの3Dモデルオブジェクト（描画とアニメーション管理）
     std::unique_ptr<Object3d> model_;
@@ -215,6 +221,9 @@ private:
 
     // 死亡フラグ
     bool isDead_ = false;
+
+    // 一時行動停止フラグ
+    bool isPause_ = false;
 
     // ボス本体の衝突判定用AABBコライダー（矩形境界ボックス）
     std::unique_ptr<OBBCollider> bodyCollider_;

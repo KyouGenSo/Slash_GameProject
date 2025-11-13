@@ -111,34 +111,35 @@ void GameScene::Initialize()
     inputHandler_ = std::make_unique<InputHandler>();
     inputHandler_->Initialize();
 
-    // 敵モデルの初期化
-    boss_ = std::make_unique<Boss>();
-    boss_->Initialize();
-
-    // Playerの初期化
+    //-----------Playerの初期化----------------//
     player_ = std::make_unique<Player>();
     player_->Initialize();
     player_->SetCamera((*Object3dBasic::GetInstance()->GetCamera()));
     player_->SetInputHandler(inputHandler_.get());
 
+    //-----------Bossの初期化--------------------//
+    boss_ = std::make_unique<Boss>();
+    boss_->Initialize();
     // ボスにプレイヤーの参照を設定
     boss_->SetPlayer(player_.get());
+    // ゲーム開始時の演出が終わるまで一時停止状態に設定
+    boss_->SetIsPause(true);
 
     // 弾のオブジェクトプールを初期化（最大50発）
     bossBullets_.reserve(50);
 
-    // カメラシステムの初期化
+    // カメラマネージャーの初期化
     cameraManager_ = CameraManager::GetInstance();
     cameraManager_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
 
-    // FirstPersonControllerを登録
-    auto fpController = std::make_unique<ThirdPersonController>();
-    firstPersonController_ = fpController.get();
+    // ThirdPersonControllerを登録
+    auto tpController = std::make_unique<ThirdPersonController>();
+    firstPersonController_ = tpController.get();
     firstPersonController_->SetTarget(&player_->GetTransform());
     // ボスをセカンダリターゲットとして設定し、注視機能を有効化
     firstPersonController_->SetSecondaryTarget(&boss_->GetTransform());
     firstPersonController_->EnableLookAtTarget(true);
-    cameraManager_->RegisterController("ThirdPerson", std::move(fpController));
+    cameraManager_->RegisterController("ThirdPerson", std::move(tpController));
 
     // TopDownControllerを登録
     auto tdController = std::make_unique<TopDownController>();
@@ -154,16 +155,14 @@ void GameScene::Initialize()
     cameraManager_->RegisterController("Animation", std::move(animController));
 
     // ゲーム開始アニメーションを再生
-    animationController_->LoadAnimation("game_start");
+    animationController_->LoadAnimationFromFile("game_start");
+    cameraManager_->ActivateController("Animation");
+    animationController_->SwitchAnimation("game_start");
     animationController_->Play();
 
-    // game_overアニメーションの設定
+    // game_overアニメーションの読み込みと設定
     animationController_->LoadAnimationFromFile("over_anim");
     animationController_->SetAnimationTargetByName("over_anim", player_->GetTransformPtr());
-
-    // デフォルトモードを設定（TopDown）
-    cameraMode_ = false;
-    cameraManager_->ActivateController("TopDown");
 
 
     // 衝突マスクの設定（どのタイプ同士が衝突判定を行うか）
@@ -186,13 +185,11 @@ void GameScene::Initialize()
     emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_left");
     emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_right");
 
-    // 初期状態は無効化（フェーズ2まで非表示）
+    // 初期状態は無効化（ボスフェーズ2まで非表示）
     emitterManager_->SetEmitterActive("boss_border_left", false);
     emitterManager_->SetEmitterActive("boss_border_right", false);
     emitterManager_->SetEmitterActive("boss_border_front", false);
     emitterManager_->SetEmitterActive("boss_border_back", false);
-
-    borderEmittersLoaded_ = true;
 }
 
 void GameScene::Finalize()
@@ -220,6 +217,11 @@ void GameScene::Finalize()
         cameraManager_ = nullptr;
     }
 
+    if (emitterManager_) {
+        emitterManager_->RemoveAllEmitters();
+        emitterManager_ = nullptr;
+    }
+
     // CollisionManagerのリセット
     CollisionManager::GetInstance()->Reset();
 }
@@ -242,6 +244,11 @@ void GameScene::Update()
         StartOverAnim();
     }
 #endif
+
+    if (animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING){
+        isStart_ = true;
+        boss_->SetIsPause(false);
+    }
 
     // ゲームクリア判定
     if (boss_->IsDead())
@@ -427,7 +434,7 @@ void GameScene::UpdateOverAnim()
 
 void GameScene::UpdateCameraMode()
 {
-    if (player_->IsDead())
+    if (player_->IsDead() || !isStart_)
     {
         return;
     }
@@ -501,7 +508,7 @@ void GameScene::UpdateProjectiles(float deltaTime)
 void GameScene::UpdateBossBorder()
 {
     // ボスフェーズ2の境界線パーティクル制御
-    if (borderEmittersLoaded_ && boss_) {
+    if (boss_) {
         bool shouldShowBorder = (boss_->GetPhase() == 2);
 
         if (shouldShowBorder && !borderEmittersActive_) {
