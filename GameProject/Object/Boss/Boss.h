@@ -205,10 +205,13 @@ private:
     Player* player_ = nullptr;
 
     // 最大HP
-    const float maxHp_ = 200.0f;
+    const float kMaxHp_ = 200.0f;
+
+    // フェーズ2開始HP閾値
+    const float kPhase2HP = 110.0f;
 
     // ボスの現在HP（0になると撃破、初期値200）
-    float hp_ = maxHp_;
+    float hp_ = kMaxHp_;
 
     // ボスのライフ（HPが0になるたびに減少、0でゲームクリア）
     uint8_t life_ = 1;

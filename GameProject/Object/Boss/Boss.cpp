@@ -180,7 +180,7 @@ void Boss::UpdateHitEffect(Vector4 color, float duration)
 
 void Boss::UpdatePhaseAndLive()
 {
-    if (hp_ <= 100.f) {
+    if (hp_ <= kPhase2HP) {
         isReadyToChangePhase_ = true;
     }
 
@@ -193,7 +193,7 @@ void Boss::UpdatePhaseAndLive()
         }
 
         isReadyToChangePhase_ = false;
-        hp_ = maxHp_;
+        hp_ = kMaxHp_;
         phase_ = 1;
     }
 }
@@ -215,7 +215,7 @@ void Boss::DrawImGui()
     ImGui::Text("=== Debug Controls ===");
     if (ImGui::Button("Set Phase 1")) {
         SetPhase(1);
-        hp_ = maxHp_;  // HPも回復
+        hp_ = kMaxHp_;  // HPも回復
     }
     ImGui::SameLine();
     if (ImGui::Button("Set Phase 2")) {
