@@ -242,7 +242,7 @@ void GameScene::Update()
 #endif
 
     // ゲーム開始演出終了後、ボスの一時停止を解除
-    if (animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING) {
+    if (animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING && !isStart_) {
         isStart_ = true;
         boss_->SetIsPause(false);
     }
@@ -405,8 +405,10 @@ void GameScene::StartOverAnim()
 
 void GameScene::UpdateOverAnim()
 {
+    // オーバーアニメーションタイマーの更新
     if (isOver_) overAnimTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
 
+    // オーバーアニメーション中のエミッター制御
     if (overAnimTimer_ > 2.0f && !isOver1Emit) {
         emitterManager_->CreateTemporaryEmitterFrom("over1", "over1_temp", 0.5f);
         isOver1Emit = true;
@@ -417,6 +419,17 @@ void GameScene::UpdateOverAnim()
         isOver2Emit = true;
     }
 
+    // プレイヤースケールの減少
+    if (isOver2Emit) {
+        float scaleDecreaseRate = 5.0f; // スケール減少速度
+        Vector3 newScale = player_->GetScale() - Vector3(scaleDecreaseRate, scaleDecreaseRate, scaleDecreaseRate) * FrameTimer::GetInstance()->GetDeltaTime();
+        newScale.x = std::max<float>(newScale.x, 0.0f);
+        newScale.y = std::max<float>(newScale.y, 0.0f);
+        newScale.z = std::max<float>(newScale.z, 0.0f);
+        player_->SetScale(newScale);
+    }
+
+    // シーン遷移
     if (overAnimTimer_ > 3.8f) {
         SceneManager::GetInstance()->ChangeScene("over", "Fade", 0.3f);
     }

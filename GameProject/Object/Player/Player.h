@@ -109,6 +109,24 @@ public: // メンバ関数
     void SetTransform(const Transform& transform) { transform_ = transform; }
 
     /// <summary>
+    /// 平行移動情報を設定
+    /// </summary>
+    /// <param name="position">新しい位置情報</param>
+    void SetTranslate(Vector3 translate) { transform_.translate = translate; }
+
+    /// <summary>
+    /// 回転情報を設定
+    /// </summary>
+    /// <param name="rotation">新しい回転情報（ラジアン）</param>
+    void SetRotate(Vector3 rotate) { transform_.rotate = rotate; }
+
+    /// <summary>
+    /// スケール情報を設定
+    /// </summary>
+    /// <param name="scale">新しいスケール情報</param>
+    void SetScale(Vector3 scale) { transform_.scale = scale; }
+
+    /// <summary>
     /// HPを設定
     /// </summary>
     /// <param name="hp">新しいHP値（0未満は0に補正）</param>
@@ -154,6 +172,24 @@ public: // メンバ関数
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
     const Transform& GetTransform() const { return transform_; }
+
+    /// <summary>
+    /// 平行移動情報を取得
+    /// </summary>
+    /// <returns>現在の位置情報の参照</returns>
+    Vector3 GetTranslate() const { return transform_.translate; }
+
+    /// <summary>
+    /// 回転情報を取得
+    /// </summary>
+    /// <returns>現在の回転情報の参照（ラジアン）</returns>
+    Vector3 GetRotate() const { return transform_.rotate; }
+
+    /// <summary>
+    /// スケール情報を取得
+    /// </summary>
+    /// <returns>現在のスケール情報の参照</returns>
+    Vector3 GetScale() const { return transform_.scale; }
 
     /// <summary>
     /// 3Dモデルを取得
