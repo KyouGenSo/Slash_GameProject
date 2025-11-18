@@ -1,19 +1,19 @@
 {
     "animation_name": "clear_anim",
-    "blend_duration": 0.699999988079071,
-    "duration": 3.0,
+    "blend_duration": 0.5,
+    "duration": 4.0,
     "keyframes": [
         {
             "coordinateType": "TARGET_RELATIVE",
-            "fov": 0.7853981852531433,
+            "fov": 0.45378562808036804,
             "interpolation": "LINEAR",
             "position": [
                 0.0,
-                5.0,
-                -10.0
+                0.0,
+                -20.0
             ],
             "rotation": [
-                0.20000000298023224,
+                -0.044348813593387604,
                 0.0,
                 0.0
             ],
@@ -21,19 +21,19 @@
         },
         {
             "coordinateType": "TARGET_RELATIVE",
-            "fov": 0.7853981852531433,
+            "fov": 0.45378562808036804,
             "interpolation": "LINEAR",
             "position": [
                 0.0,
-                5.0,
-                -10.0
+                0.0,
+                -20.0
             ],
             "rotation": [
-                0.20000000298023224,
+                -0.044348813593387604,
                 0.0,
                 0.0
             ],
-            "time": 3.0
+            "time": 4.0
         }
     ],
     "loop": false,

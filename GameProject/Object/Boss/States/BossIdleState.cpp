@@ -63,7 +63,7 @@ void BossIdleState::Update(Boss* boss, float deltaTime) {
                 currentAngle += (angleDiff > 0 ? rotateSpeed : -rotateSpeed);
             }
 
-            boss->SetRotation(Vector3(0.0f, currentAngle, 0.0f));
+            boss->SetRotate(Vector3(0.0f, currentAngle, 0.0f));
         }
     }
 

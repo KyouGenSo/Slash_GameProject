@@ -111,13 +111,13 @@ public: // メンバ関数
     /// <summary>
     /// 平行移動情報を設定
     /// </summary>
-    /// <param name="position">新しい位置情報</param>
+    /// <param name="translate">新しい位置情報</param>
     void SetTranslate(Vector3 translate) { transform_.translate = translate; }
 
     /// <summary>
     /// 回転情報を設定
     /// </summary>
-    /// <param name="rotation">新しい回転情報（ラジアン）</param>
+    /// <param name="rotate">新しい回転情報（ラジアン）</param>
     void SetRotate(Vector3 rotate) { transform_.rotate = rotate; }
 
     /// <summary>
@@ -174,6 +174,12 @@ public: // メンバ関数
     const Transform& GetTransform() const { return transform_; }
 
     /// <summary>
+    /// 座標変換情報のポインタを取得
+    /// </summary>
+    /// <returns>座標変換情報への非constポインタ</returns>
+    Transform* GetTransformPtr() { return &transform_; }
+
+    /// <summary>
     /// 平行移動情報を取得
     /// </summary>
     /// <returns>現在の位置情報の参照</returns>
@@ -210,12 +216,6 @@ public: // メンバ関数
     MeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
 
     /// <summary>
-    /// 座標変換情報のポインタを取得
-    /// </summary>
-    /// <returns>座標変換情報への非constポインタ</returns>
-    Transform* GetTransformPtr() { return &transform_; }
-
-    /// <summary>
     /// Velocityを取得
     /// </summary>
     /// <returns>現在のVelocity値の参照</returns>
@@ -250,7 +250,7 @@ public: // メンバ関数
     void ClearDynamicBounds();
 
 public: // 定数
-    // ステージ全体の移動制限（静的）
+    // ステージ全体の移動制限
     static const float X_MIN;
     static const float X_MAX;
     static const float Z_MIN;
@@ -258,7 +258,7 @@ public: // 定数
 
 private: // メンバ変数
 
-    // 動的移動制限（ボス戦闘エリアなど）
+    // 動的移動制限（ボス近接戦闘エリア）
     float dynamicXMin_;
     float dynamicXMax_;
     float dynamicZMin_;
@@ -291,7 +291,7 @@ private: // メンバ変数
 
     // HPバースプライト
     std::unique_ptr<Sprite> hpBarSprite_;
-    Vector2 hpBarSize_{};
     std::unique_ptr<Sprite> hpBarBGSprite_;
+    Vector2 hpBarSize_{};
 };
 

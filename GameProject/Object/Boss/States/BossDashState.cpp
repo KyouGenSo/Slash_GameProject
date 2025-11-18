@@ -42,7 +42,7 @@ void BossDashState::Enter(Boss* boss) {
     // ダッシュ方向を向く
     if (dashDirection_.Length() > 0.01f) {
         float angle = atan2f(dashDirection_.x, dashDirection_.z);
-        boss->SetRotation(Vector3(0.0f, angle, 0.0f));
+        boss->SetRotate(Vector3(0.0f, angle, 0.0f));
     }
 }
 
@@ -66,16 +66,16 @@ void BossDashState::Update(Boss* boss, float deltaTime) {
         t = t * t * (3.0f - 2.0f * t);
 
         Vector3 newPosition = Vector3::Lerp(startPosition_, targetPosition_, t);
-        boss->SetPosition(newPosition);
+        boss->SetTranslate(newPosition);
 
         // ダッシュエフェクト的な表現（少し振動させる）
         float vibration = sinf(stateTimer_ * 50.0f) * 0.05f;
         Vector3 currentPos = boss->GetTransform().translate;
         currentPos.y += vibration;
-        boss->SetPosition(currentPos);
+        boss->SetTranslate(currentPos);
     } else {
         // ダッシュ終了、最終位置に設定
-        boss->SetPosition(targetPosition_);
+        boss->SetTranslate(targetPosition_);
 
         // 待機状態へ遷移
         BossStateMachine* stateMachine = boss->GetStateMachine();

@@ -44,7 +44,7 @@ void BossShootState::Update(Boss* boss, float deltaTime) {
         if (toPlayer.Length() > 0.01f) {
             toPlayer = toPlayer.Normalize();
             float angle = atan2f(toPlayer.x, toPlayer.z);
-            boss->SetRotation(Vector3(0.0f, angle, 0.0f));
+            boss->SetRotate(Vector3(0.0f, angle, 0.0f));
         }
     }
 

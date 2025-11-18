@@ -191,7 +191,7 @@ void GameScene::Initialize()
     emitterManager_->SetEmitterActive("boss_border_back", false);
 
     // クリア演出用のエミッターの読み込み
-    emitterManager_->LoadPreset( "clear_slash");
+    emitterManager_->LoadPreset("clear_slash");
     // クリア演出開始まで無効化
     emitterManager_->SetEmitterActive("clear_slash", false);
 }
@@ -243,8 +243,12 @@ void GameScene::Update()
     }
 
     // ゲームオーバーアニメーションEnterキーで再生
-    if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
+    if (Input::GetInstance()->TriggerKey(DIK_O)) {
         StartOverAnim();
+    }
+
+    if (Input::GetInstance()->TriggerKey(DIK_P)) {
+        StartClearAnim();
     }
 #endif
 
@@ -256,7 +260,8 @@ void GameScene::Update()
 
     // ゲームクリア判定
     if (boss_->IsDead()) {
-        SceneManager::GetInstance()->ChangeScene("clear", "Fade", 0.3f);
+        StartClearAnim();
+        //SceneManager::GetInstance()->ChangeScene("clear", "Fade", 0.3f);
     }
 
     // ゲームオーバー判定
@@ -280,18 +285,17 @@ void GameScene::Update()
 
     // ボスからの弾生成リクエストを処理
     CreateBossBullet();
-    
+
     // プロジェクタイルの更新
     float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
     UpdateProjectiles(deltaTime);
 
-    // プレイヤーの位置にエミッターをセット
-    Vector3 playerPos = { .x = player_->GetTransform().translate.x,
-                        .y = player_->GetTransform().translate.y,
-                        .z = player_->GetTransform().translate.z };
+    // プレイヤーの位置にオーバー演出エミッターをセット
+    emitterManager_->SetEmitterPosition("over1", player_->GetTranslate());
+    emitterManager_->SetEmitterPosition("over2", player_->GetTranslate());
 
-    emitterManager_->SetEmitterPosition("over1", playerPos);
-    emitterManager_->SetEmitterPosition("over2", playerPos);
+    // ボスの位置にクリア演出エミッターをセット
+    emitterManager_->SetEmitterPosition("clear_slash", boss_->GetTranslate());
 
     UpdateBossBorder();
 
@@ -300,6 +304,9 @@ void GameScene::Update()
 
     // ゲームオーバーアニメーションの更新
     UpdateOverAnim();
+
+    // ゲームクリアアニメーションの更新
+    UpdateClearAnim();
 
     // 衝突判定の実行
     CollisionManager::GetInstance()->CheckAllCollisions();
@@ -399,9 +406,7 @@ void GameScene::DrawImGui()
 
 void GameScene::StartOverAnim()
 {
-    if (isOver_) {
-        return;
-    }
+    if (isOver_) return;
 
     cameraManager_->DeactivateAllControllers();
     cameraManager_->ActivateController("Animation");
@@ -416,18 +421,18 @@ void GameScene::UpdateOverAnim()
     if (isOver_) overAnimTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
 
     // オーバーアニメーション中のエミッター制御
-    if (overAnimTimer_ > 2.0f && !isOver1Emit) {
+    if (overAnimTimer_ > 2.0f && !isOver1Emit_) {
         emitterManager_->CreateTemporaryEmitterFrom("over1", "over1_temp", 0.5f);
-        isOver1Emit = true;
+        isOver1Emit_ = true;
     }
 
-    if (overAnimTimer_ > 2.8f && !isOver2Emit) {
+    if (overAnimTimer_ > 2.8f && !isOver2Emit_) {
         emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
-        isOver2Emit = true;
+        isOver2Emit_ = true;
     }
 
     // プレイヤースケールの減少
-    if (isOver2Emit) {
+    if (isOver2Emit_) {
         float scaleDecreaseRate = 5.0f; // スケール減少速度
         Vector3 newScale = player_->GetScale() - Vector3(scaleDecreaseRate, scaleDecreaseRate, scaleDecreaseRate) * FrameTimer::GetInstance()->GetDeltaTime();
         newScale.x = std::max<float>(newScale.x, 0.0f);
@@ -442,9 +447,65 @@ void GameScene::UpdateOverAnim()
     }
 }
 
+void GameScene::StartClearAnim()
+{
+    if (isClear_) return;
+
+    cameraManager_->DeactivateAllControllers();
+    cameraManager_->ActivateController("Animation");
+    animationController_->SwitchAnimation("clear_anim");
+    animationController_->Play();
+    boss_->SetIsPause(true);
+    player_->SetScale(Vector3(0.f, 0.f, 0.f)); // プレイヤーを非表示にするためスケールを0に設定
+    isClear_ = true;
+}
+
+void GameScene::UpdateClearAnim()
+{
+    // オーバーアニメーションタイマーの更新
+    if (isClear_) clearAnimTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
+
+    // オーバーアニメーション中のエミッター制御
+    if (clearAnimTimer_ > 0.5f && !isClear1Emit_) {
+        emitterManager_->SetEmitterActive("clear_slash", true);
+        emitterManager_->SetEmitterCount("clear_slash", currentSlashCount_);
+        emitterManager_->SetEmitterRadius("clear_slash", currentSlashRadius_);
+
+        if (currentSlashCount_ < kSlashEmitterMaxCount_ || currentSlashRadius_ < kSlashEmitterMaxRadius_) {
+            currentSlashCount_ += 2;
+            currentSlashRadius_ += 0.05f;
+        }
+        else {
+            emitterManager_->SetEmitterActive("clear_slash", false);
+            isClear1Emit_ = true;
+        }
+    }
+
+    if (isClear1Emit_ && !isClear2Emit_) {
+        emitterManager_->SetEmitterPosition("over2", boss_->GetTranslate());
+        emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
+        isClear2Emit_ = true;
+    }
+
+    // ボススケールの減少
+    if (isClear2Emit_) {
+        float scaleDecreaseRate = 5.0f; // スケール減少速度
+        Vector3 newScale = boss_->GetScale() - Vector3(scaleDecreaseRate, scaleDecreaseRate, scaleDecreaseRate) * FrameTimer::GetInstance()->GetDeltaTime();
+        newScale.x = std::max<float>(newScale.x, 0.0f);
+        newScale.y = std::max<float>(newScale.y, 0.0f);
+        newScale.z = std::max<float>(newScale.z, 0.0f);
+        boss_->SetScale(newScale);
+    }
+
+    // シーン遷移
+    if (boss_->GetScale().x <= 0.f) {
+        SceneManager::GetInstance()->ChangeScene("clear", "Fade", 0.3f);
+    }
+}
+
 void GameScene::UpdateCameraMode()
 {
-    if (player_->IsDead() || !isStart_) {
+    if (player_->IsDead() || boss_->IsDead() || !isStart_) {
         return;
     }
 

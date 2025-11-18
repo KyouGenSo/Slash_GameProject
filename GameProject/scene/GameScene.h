@@ -65,6 +65,16 @@ public: // メンバ関数
     void UpdateOverAnim();
 
     /// <summary>
+    /// ゲームクリア演出開始
+    /// </summary>
+    void StartClearAnim();
+
+    /// <summary>
+    /// ゲームクリア演出更新
+    /// </summary>
+    void UpdateClearAnim();
+
+    /// <summary>
     /// カメラモードの更新処理
     /// </summary>
     void UpdateCameraMode();
@@ -99,6 +109,8 @@ private: // メンバ変数
 
     std::unique_ptr<Boss> boss_;                                // ボスキャラクター
 
+    std::vector<std::unique_ptr<BossBullet>> bossBullets_;      // ボスの弾のコンテナ
+
     std::unique_ptr<InputHandler> inputHandler_;                // 入力ハンドラー
 
     // Camera system components
@@ -114,19 +126,28 @@ private: // メンバ変数
 
     std::unique_ptr<Sprite> toTitleSprite_;                     // タイトルに戻るボタンテキスト
 
-    float overAnimTimer_ = 0.0f;                                // ゲームオーバー演出タイマー
-    bool isOver_ = false;                                       // ゲームオーバーフラグ
     bool isStart_ = false;                                      // ゲーム開始フラグ
-
-    /// ボスの弾リスト
-    std::vector<std::unique_ptr<BossBullet>> bossBullets_;
-    bool isOver1Emit = false;                                   // ゲームオーバー演出用エミッター発生フラグ
-    bool isOver2Emit = false;                                   // ゲームオーバー演出用エミッター発生フラグ
-
+    
     // ボスフェーズ2境界線パーティクル管理
     bool borderEmittersActive_ = false;                         // 境界線エミッターアクティブ状態
 
-    float battleAreaSize_ = 20.0f;                               // 戦闘エリアのサイズ（片側）
+    float battleAreaSize_ = 20.0f;                              // 戦闘エリアのサイズ
+
+    // ゲームオーバー演出関連
+    float overAnimTimer_ = 0.0f;                                // ゲームオーバー演出タイマー
+    bool isOver_ = false;                                       // ゲームオーバーフラグ
+    bool isOver1Emit_ = false;                                  // ゲームオーバー演出用エミッター発生フラグ
+    bool isOver2Emit_ = false;                                  // ゲームオーバー演出用エミッター発生フラグ
+
+    // ゲームクリア演出関連
+    float clearAnimTimer_ = 0.0f;                               // ゲームクリア演出タイマー
+    bool isClear_ = false;                                      // ゲームクリアフラグ
+    bool isClear1Emit_ = false;                                 // ゲームクリア演出用エミッター発生フラグ
+    bool isClear2Emit_ = false;                                 // ゲームクリア演出用エミッター発生フラグ
+    const uint32_t kSlashEmitterMaxCount_ = 100;                // 斬撃エミッター最大数
+    const float kSlashEmitterMaxRadius_ = 10.0f;                // 斬撃エミッター最大発生半径
+    uint32_t currentSlashCount_ = 1;                            // 現在の斬撃発生数
+    float currentSlashRadius_ = 2.f;                            // 現在の斬撃発生半径
 
     bool isDebug_ = false;                                      // デバッグモードフラグ
 };
