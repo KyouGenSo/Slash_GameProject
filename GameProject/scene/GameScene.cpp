@@ -83,9 +83,6 @@ void GameScene::Initialize()
     // 平行光源の方向の設定
     Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, -0.05f));
 
-    // エミッターマネージャーの初期化
-    emitterManager_->LoadScenePreset("gamescene_preset");
-
     // タイトルボタンテキストの初期化
     toTitleSprite_ = std::make_unique<Sprite>();
     toTitleSprite_->Initialize("game_button_text.png");
@@ -178,18 +175,25 @@ void GameScene::Initialize()
         true
     );
 
-    // ボスフェーズ2用の境界線パーティクルを事前読み込み（初期状態は無効）
+    // シーンのエミッターをまとめて読み込む
+    emitterManager_->LoadScenePreset("gamescene_preset");
+
+    // ボスフェーズ2用の境界線エミッターの読み込み
     // 4辺の境界線を作成（左右前後）
     emitterManager_->LoadPreset("boss_vertical_border", "boss_border_front");
     emitterManager_->LoadPreset("boss_vertical_border", "boss_border_back");
     emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_left");
     emitterManager_->LoadPreset("boss_horizontal_border", "boss_border_right");
-
     // 初期状態は無効化（ボスフェーズ2まで非表示）
     emitterManager_->SetEmitterActive("boss_border_left", false);
     emitterManager_->SetEmitterActive("boss_border_right", false);
     emitterManager_->SetEmitterActive("boss_border_front", false);
     emitterManager_->SetEmitterActive("boss_border_back", false);
+
+    // クリア演出用のエミッターの読み込み
+    emitterManager_->LoadPreset( "clear_slash");
+    // クリア演出開始まで無効化
+    emitterManager_->SetEmitterActive("clear_slash", false);
 }
 
 void GameScene::Finalize()
