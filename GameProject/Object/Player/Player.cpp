@@ -22,7 +22,7 @@
 #include <cmath>
 
 #ifdef _DEBUG
-#include "ImGui.h"
+#include "ImGuiManager.h"
 #endif
 
 // Static const member initialization

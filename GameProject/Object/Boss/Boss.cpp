@@ -14,7 +14,7 @@
 #include "States/BossShootState.h"
 
 #ifdef _DEBUG
-#include "ImGui.h"
+#include "ImGuiManager.h"
 #endif
 
 Boss::Boss()
