@@ -73,7 +73,8 @@ private:
     EmitterManager* emitterManager_ = nullptr;
 
     // エミッターの名前
-    std::string emitterName_ = "";
+    std::string bulletEmitterName_ = "";
+    std::string explodeEmitterName_ = "";
 
     // id
     static uint32_t id;

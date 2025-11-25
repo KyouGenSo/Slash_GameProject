@@ -28,9 +28,12 @@ BossBullet::BossBullet(EmitterManager* emittermanager) {
 
     // エフェクトプリセットをロード
     if (emitterManager_) {
-        emitterName_ = "boss_bullet" + std::to_string(id);
-        emitterManager_->LoadPreset("boss_bullet", emitterName_);
-        emitterManager_->SetEmitterActive(emitterName_, false);
+        bulletEmitterName_ = "boss_bullet" + std::to_string(id);
+        explodeEmitterName_ = "boss_bullet_explode" + std::to_string(id);
+        emitterManager_->LoadPreset("boss_bullet", bulletEmitterName_);
+        emitterManager_->SetEmitterActive(bulletEmitterName_, false);
+        emitterManager_->LoadPreset("boss_bullet_explode", explodeEmitterName_);
+        emitterManager_->SetEmitterActive(explodeEmitterName_, false);
     }
 
     id++;
@@ -61,8 +64,8 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     }
 
     if (emitterManager_) {
-        emitterManager_->SetEmitterActive(emitterName_, true);
-        emitterManager_->SetEmitterPosition(emitterName_, position);
+        emitterManager_->SetEmitterActive(bulletEmitterName_, true);
+        emitterManager_->SetEmitterPosition(bulletEmitterName_, position);
     }
 
     // コライダーの設定
@@ -88,7 +91,11 @@ void BossBullet::Finalize() {
     }
 
     if (emitterManager_) {
-        emitterManager_->RemoveEmitter(emitterName_);
+        emitterManager_->CreateTemporaryEmitterFrom(
+            explodeEmitterName_,
+            explodeEmitterName_ + "temp",
+            0.2f);
+        emitterManager_->RemoveEmitter(bulletEmitterName_);
     }
 }
 
@@ -110,7 +117,8 @@ void BossBullet::Update(float deltaTime) {
 
     // 軌跡エフェクト
     if (emitterManager_) {
-        emitterManager_->SetEmitterPosition(emitterName_, transform_.translate);
+        emitterManager_->SetEmitterPosition(bulletEmitterName_, transform_.translate);
+        emitterManager_->SetEmitterPosition(explodeEmitterName_, transform_.translate);
     }
 
     // エリア外に出たら非アクティブ化
