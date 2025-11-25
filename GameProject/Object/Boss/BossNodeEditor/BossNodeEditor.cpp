@@ -393,7 +393,8 @@ void BossNodeEditor::DrawNode(const EditorNode& node) {
                 ImGui::SameLine(0, 0);
                 DrawPin(*pin);
             }
-        } else if (pinCount > 1 && node.outputPinIds.size() >= static_cast<size_t>(pinCount)) {
+        }
+        else if (pinCount > 1 && node.outputPinIds.size() >= static_cast<size_t>(pinCount)) {
             // 複数ピンは横並び（範囲チェック追加）
             float spacing = nodeWidth / (pinCount + 1);
 
@@ -449,13 +450,8 @@ void BossNodeEditor::DrawPin(const EditorPin& pin) {
     ImVec2 pinRectMin = ImGui::GetCursorScreenPos();
 
     // ピンテキストを表示
-    if (pin.isInput) {
-        // 入力ピン
-        ImGui::Text("%s", pin.name.c_str());
-    } else {
-        // 出力ピン
-        ImGui::Text("%s", pin.name.c_str());
-    }
+    ImGui::Text("    ");
+
 
     // ピンの矩形領域終了位置を記録
     ImVec2 pinRectMax = ImVec2(
@@ -468,7 +464,7 @@ void BossNodeEditor::DrawPin(const EditorPin& pin) {
 
     // ピンアイコンの配置位置を設定
     // 入力ピンは左側（0.0f）、出力ピンは右側（1.0f）に配置
-    ImVec2 alignment = pin.isInput ? ImVec2(0.0f, 0.5f) : ImVec2(1.0f, 0.5f);
+    ImVec2 alignment = pin.isInput ? ImVec2(0.5f, 0.0f) : ImVec2(0.5f, 1.0f);
     ed::PinPivotAlignment(alignment);
     ed::PinPivotSize(ImVec2(0, 0)); // 自動サイズ
 
@@ -535,7 +531,8 @@ void BossNodeEditor::HandleLinkCreation() {
                     newLink.endNodeId = inputPin->nodeId;
 
                     links_.push_back(newLink);
-                } else if (!canCreateLink) {
+                }
+                else if (!canCreateLink) {
                     // リンク作成を拒否（赤色で表示）
                     ed::RejectNewItem(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), 2.0f);
                 }
@@ -807,7 +804,7 @@ bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
 
         ImGui::LogText("[BossNodeEditor] Successfully loaded from: %s", filepath.c_str());
         ImGui::LogText("[BossNodeEditor] Loaded %d nodes and %d links",
-                      (int)nodes_.size(), (int)links_.size());
+            (int)nodes_.size(), (int)links_.size());
         return true;
     }
     catch (const std::exception& e) {
