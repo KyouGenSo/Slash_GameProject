@@ -319,11 +319,11 @@ void GameScene::Draw()
         boss_->Draw();
 
         // ボスの弾のシャドウ
-        for (const auto& bullet : bossBullets_) {
-            if (bullet && bullet->IsActive()) {
-                bullet->Draw();
-            }
-        }
+        //for (const auto& bullet : bossBullets_) {
+        //    if (bullet && bullet->IsActive()) {
+        //        bullet->Draw();
+        //    }
+        //}
 
         ShadowRenderer::GetInstance()->EndShadowPass();
     }

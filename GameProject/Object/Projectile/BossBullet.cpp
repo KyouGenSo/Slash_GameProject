@@ -58,10 +58,10 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     transform_.scale = Vector3(0.0f, 0.0f, 0.0f);
 
     // 弾の色を設定（赤っぽい色）
-    if (model_) {
-        model_->SetMaterialColor(Vector4(1.0f, 0.3f, 0.3f, 1.0f));
-        model_->SetTransform(transform_);
-    }
+    //if (model_) {
+    //    model_->SetMaterialColor(Vector4(1.0f, 0.3f, 0.3f, 1.0f));
+    //    model_->SetTransform(transform_);
+    //}
 
     if (emitterManager_) {
         emitterManager_->SetEmitterActive(bulletEmitterName_, true);
@@ -112,9 +112,9 @@ void BossBullet::Update(float deltaTime) {
     transform_.rotate += rotationSpeed_ * deltaTime;
 
     // モデルの更新
-    if (model_) {
-        model_->SetTransform(transform_);
-    }
+    //if (model_) {
+    //    model_->SetTransform(transform_);
+    //}
 
     // 軌跡エフェクト
     if (emitterManager_) {
