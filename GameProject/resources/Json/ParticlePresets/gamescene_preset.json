@@ -18,7 +18,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.008021259680390358,
+      "frequencyTime": 0.0095153097063303,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -80,7 +80,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.008032465353608131,
+      "frequencyTime": 0.00952652283012867,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -142,7 +142,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.0068434495478868484,
+      "frequencyTime": 0.008337635546922684,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -204,7 +204,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.01597185805439949,
+      "frequencyTime": 0.01746610924601555,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -268,9 +268,9 @@
       ],
       "particleCount": 1,
       "position": [
-        -6.207944869995117,
+        -31.10824966430664,
         2.5,
-        25.078479766845703
+        -0.4757804870605469
       ],
       "radius": 2.0,
       "scaleRangeX": [
@@ -321,9 +321,9 @@
       ],
       "particleCount": 200,
       "position": [
-        24.39409637451172,
+        18.333831787109375,
         2.5,
-        -22.501811981201172
+        -41.364662170410156
       ],
       "radius": 0.10000000149011612,
       "scaleRangeX": [
@@ -374,9 +374,9 @@
       ],
       "particleCount": 1000,
       "position": [
-        24.39409637451172,
+        18.333831787109375,
         2.5,
-        -22.501811981201172
+        -41.364662170410156
       ],
       "radius": 0.10000000149011612,
       "scaleRangeX": [
@@ -405,6 +405,59 @@
       "velRangeZ": [
         0.0,
         0.0
+      ]
+    },
+    "player_dash": {
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.0010000000474974513,
+      "frequencyTime": 0.0007046462269499898,
+      "isActive": false,
+      "isEmitting": true,
+      "isNormalize": false,
+      "isRandomRotateZ": true,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        0.5,
+        0.800000011920929
+      ],
+      "particleCount": 25,
+      "position": [
+        18.333831787109375,
+        2.5,
+        -41.364662170410156
+      ],
+      "radius": 1.0,
+      "scaleRangeX": [
+        3.0,
+        3.0
+      ],
+      "scaleRangeY": [
+        0.20000000298023224,
+        0.20000000298023224
+      ],
+      "startColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "type": 0,
+      "velRangeX": [
+        0.009999999776482582,
+        0.009999999776482582
+      ],
+      "velRangeY": [
+        0.009999999776482582,
+        0.009999999776482582
+      ],
+      "velRangeZ": [
+        0.009999999776482582,
+        0.009999999776482582
       ]
     }
   },

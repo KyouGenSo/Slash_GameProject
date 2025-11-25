@@ -279,9 +279,10 @@ void GameScene::Update()
     float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
     UpdateProjectiles(deltaTime);
 
-    // プレイヤーの位置にオーバー演出エミッターをセット
+    // プレイヤーの位置にオーバー演出エミッターとダッシュエミッターををセット
     emitterManager_->SetEmitterPosition("over1", player_->GetTranslate());
     emitterManager_->SetEmitterPosition("over2", player_->GetTranslate());
+    emitterManager_->SetEmitterPosition("player_dash", player_->GetTranslate());
 
     // ボスの位置にクリア演出エミッターをセット
     emitterManager_->SetEmitterPosition("clear_slash", boss_->GetTranslate());
