@@ -190,11 +190,6 @@ void GameScene::Initialize()
     emitterManager_->SetEmitterActive("boss_border_right", false);
     emitterManager_->SetEmitterActive("boss_border_front", false);
     emitterManager_->SetEmitterActive("boss_border_back", false);
-
-    // クリア演出用のエミッターの読み込み
-    emitterManager_->LoadPreset("clear_slash");
-    // クリア演出開始まで無効化
-    emitterManager_->SetEmitterActive("clear_slash", false);
 }
 
 void GameScene::Finalize()
