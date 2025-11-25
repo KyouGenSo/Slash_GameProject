@@ -41,7 +41,6 @@ void TitleScene::Finalize()
   DebugUIManager::GetInstance()->ClearGameObjects();
 #endif
 
-  emitterManager_->RemoveAllEmitters();
   PostEffectManager::GetInstance()->ClearEffectChain();
 }
 

@@ -103,6 +103,7 @@ void GameScene::Initialize()
     ground_->Initialize();
     ground_->SetModel("ground_black.gltf");
     ground_->SetUvTransform(groundUvTransform_);
+    ground_->SetEnableHighlight(false);
 
     // Input Handlerの初期化
     inputHandler_ = std::make_unique<InputHandler>();
@@ -218,12 +219,6 @@ void GameScene::Finalize()
     // CameraManagerのクリーンアップ
     if (cameraManager_) {
         cameraManager_->Finalize();
-        cameraManager_ = nullptr;
-    }
-
-    if (emitterManager_) {
-        emitterManager_->RemoveAllEmitters();
-        emitterManager_ = nullptr;
     }
 
     // CollisionManagerのリセット
