@@ -123,7 +123,7 @@ private:
     // ブラックボード
     std::unique_ptr<BTBlackboard> blackboard_;
 
-    // 現在のノード名（デバッグ用）
+    // 現在のノード名
     std::string currentNodeName_;
 
     // 実行中ノード追跡用

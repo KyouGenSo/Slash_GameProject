@@ -30,7 +30,7 @@ void BossBehaviorTree::Update(float deltaTime) {
         return;
     }
 
-    // ブラックボードに経過時間を設定
+    // ブラックボードにデルタータイムを設定
     blackboard_->SetDeltaTime(deltaTime);
 
     // 実行前に実行中ノード情報をクリア
