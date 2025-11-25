@@ -3,7 +3,9 @@
 #include "Projectile.h"
 #include "../../../GameProject/Collision/CollisionTypeIdDef.h"
 #include <memory>
+#include <string>
 
+class EmitterManager;
 class ModelManager;
 class BossBulletCollider;
 
@@ -15,7 +17,7 @@ public:
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    BossBullet();
+    BossBullet(EmitterManager* emittermanager);
 
     /// <summary>
     /// デストラクタ
@@ -51,28 +53,28 @@ public:
     BossBulletCollider* GetCollider() const { return collider_.get(); }
 
 private:
-    /// <summary>
-    /// エフェクト用の回転速度
-    /// </summary>
+    // モデルを設定
+    void SetModel();
+
+private:
+    // エフェクト用の回転速度
     Vector3 rotationSpeed_;
 
-    /// <summary>
-    /// パーティクルタイマー
-    /// </summary>
+    // パーティクルタイマー
     float particleTimer_ = 0.0f;
 
-    /// <summary>
-    /// パーティクル生成間隔
-    /// </summary>
+    // パーティクル生成間隔
     float particleInterval_ = 0.05f;
 
-    /// <summary>
-    /// 専用コライダー
-    /// </summary>
+    // 専用コライダー
     std::unique_ptr<BossBulletCollider> collider_;
 
-    /// <summary>
-    /// モデルをロード
-    /// </summary>
-    void SetModel();
+    // エミッタマネージャャーへのポインタ
+    EmitterManager* emitterManager_ = nullptr;
+
+    // エミッターの名前
+    std::string emitterName_ = "";
+
+    // id
+    static uint32_t id;
 };

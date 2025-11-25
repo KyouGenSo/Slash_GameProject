@@ -4,9 +4,12 @@
 #include "ModelManager.h"
 #include "Object3d.h"
 #include "CollisionManager.h"
+#include "EmitterManager.h"
 #include "RandomEngine.h"
 
-BossBullet::BossBullet() {
+uint32_t BossBullet::id = 0;
+
+BossBullet::BossBullet(EmitterManager* emittermanager) {
     // 弾のパラメータ設定
     damage_ = 10.0f;
     lifeTime_ = 5.0f;
@@ -19,11 +22,25 @@ BossBullet::BossBullet() {
         rng->GetFloat(-10.0f, 10.0f),
         rng->GetFloat(-10.0f, 10.0f)
     );
+
+    // エミッターマネージャーの設定
+    emitterManager_ = emittermanager;
+
+    // エフェクトプリセットをロード
+    if (emitterManager_) {
+        emitterName_ = "boss_bullet" + std::to_string(id);
+        emitterManager_->LoadPreset("boss_bullet", emitterName_);
+        emitterManager_->SetEmitterActive(emitterName_, false);
+    }
+
+    id++;
+
+    if (id > 10000) {
+        id = 0; // IDのリセット
+    }
 }
 
-BossBullet::~BossBullet() {
-    Finalize();
-}
+BossBullet::~BossBullet() = default;
 
 void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     // 親クラスの初期化
@@ -35,12 +52,17 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     model_->Update();
 
     // スケールを設定（球体モデルのサイズ調整）
-    transform_.scale = Vector3(1.5f, 1.5f, 1.5f);
+    transform_.scale = Vector3(0.0f, 0.0f, 0.0f);
 
     // 弾の色を設定（赤っぽい色）
     if (model_) {
         model_->SetMaterialColor(Vector4(1.0f, 0.3f, 0.3f, 1.0f));
         model_->SetTransform(transform_);
+    }
+
+    if (emitterManager_) {
+        emitterManager_->SetEmitterActive(emitterName_, true);
+        emitterManager_->SetEmitterPosition(emitterName_, position);
     }
 
     // コライダーの設定
@@ -64,6 +86,10 @@ void BossBullet::Finalize() {
     if (collider_) {
         CollisionManager::GetInstance()->RemoveCollider(collider_.get());
     }
+
+    if (emitterManager_) {
+        emitterManager_->RemoveEmitter(emitterName_);
+    }
 }
 
 void BossBullet::Update(float deltaTime) {
@@ -82,11 +108,9 @@ void BossBullet::Update(float deltaTime) {
         model_->SetTransform(transform_);
     }
 
-    // 軌跡エフェクト的な処理
-    particleTimer_ += deltaTime;
-    if (particleTimer_ >= particleInterval_) {
-        particleTimer_ = 0.0f;
-        // TODO: パーティクル生成処理を追加
+    // 軌跡エフェクト
+    if (emitterManager_) {
+        emitterManager_->SetEmitterPosition(emitterName_, transform_.translate);
     }
 
     // エリア外に出たら非アクティブ化

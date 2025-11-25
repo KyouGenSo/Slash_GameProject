@@ -237,14 +237,13 @@ void GameScene::Update()
         cameraMode_ = !cameraMode_;
     }
 
-    // ゲームオーバーアニメーションEnterキーで再生
-    if (Input::GetInstance()->TriggerKey(DIK_O)) {
-        StartOverAnim();
-    }
+    //if (Input::GetInstance()->TriggerKey(DIK_O)) {
+    //    StartOverAnim();
+    //}
 
-    if (Input::GetInstance()->TriggerKey(DIK_P)) {
-        StartClearAnim();
-    }
+    //if (Input::GetInstance()->TriggerKey(DIK_P)) {
+    //    StartClearAnim();
+    //}
 #endif
 
     // ゲーム開始演出終了後、ボスの一時停止を解除
@@ -614,7 +613,7 @@ void GameScene::UpdateBossBorder()
 void GameScene::CreateBossBullet()
 {
     for (const auto& request : boss_->ConsumePendingBullets()) {
-        auto bullet = std::make_unique<BossBullet>();
+        auto bullet = std::make_unique<BossBullet>(emitterManager_.get());
         bullet->Initialize(request.position, request.velocity);
         bossBullets_.push_back(std::move(bullet));
     }
