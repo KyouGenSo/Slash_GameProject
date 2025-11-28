@@ -166,9 +166,6 @@ void MyGame::Draw()
 
   Draw2D::GetInstance()->ImGui();
 
-  // GlobalVariablesの更新
-  GlobalVariables::GetInstance()->Update();
-
   imguiManager_->End();
 
   //imguiの描画
