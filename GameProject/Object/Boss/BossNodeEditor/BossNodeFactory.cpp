@@ -10,6 +10,9 @@
 #include "../BossBehaviorTree/Actions/BTBossShoot.h"
 #include "../BossBehaviorTree/Actions/BTBossRapidFire.h"
 #include "../BossBehaviorTree/Conditions/BTActionSelector.h"
+#include "../BossBehaviorTree/Conditions/BTBossPhaseCondition.h"
+#include "../BossBehaviorTree/Conditions/BTBossHPCondition.h"
+#include "../BossBehaviorTree/Conditions/BTBossDistanceCondition.h"
 
 #include <typeinfo>
 #include <algorithm>
@@ -79,6 +82,27 @@ void BossNodeFactory::InitializeNodeTypes() {
             NodeCategory::Condition,
             ImVec4(0.8f, 0.8f, 0.2f, 1.0f),  // 黄色
             false
+        },
+        {
+            "BTBossPhaseCondition",
+            "Phase Condition",
+            NodeCategory::Condition,
+            ImVec4(0.5f, 0.2f, 0.9f, 1.0f),  // 紫
+            false
+        },
+        {
+            "BTBossHPCondition",
+            "HP Condition",
+            NodeCategory::Condition,
+            ImVec4(0.9f, 0.5f, 0.2f, 1.0f),  // オレンジ
+            false
+        },
+        {
+            "BTBossDistanceCondition",
+            "Distance Condition",
+            NodeCategory::Condition,
+            ImVec4(0.2f, 0.7f, 0.5f, 1.0f),  // 緑
+            false
         }
     };
 
@@ -137,6 +161,15 @@ BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
         // ActionSelectorも特定のアクションタイプが必要なため、ここでは基本的なものを作成
         return std::make_shared<BTActionSelector>(BTActionSelector::ActionType::Dash);
     }
+    else if (nodeType == "BTBossPhaseCondition") {
+        return std::make_shared<BTBossPhaseCondition>();
+    }
+    else if (nodeType == "BTBossHPCondition") {
+        return std::make_shared<BTBossHPCondition>();
+    }
+    else if (nodeType == "BTBossDistanceCondition") {
+        return std::make_shared<BTBossDistanceCondition>();
+    }
 
     return nullptr;
 }
@@ -174,6 +207,15 @@ BTNodePtr BossNodeFactory::CreateNodeWithDependencies(
         // デフォルトでDashタイプを作成
         return std::make_shared<BTActionSelector>(BTActionSelector::ActionType::Dash);
     }
+    else if (nodeType == "BTBossPhaseCondition") {
+        return std::make_shared<BTBossPhaseCondition>();
+    }
+    else if (nodeType == "BTBossHPCondition") {
+        return std::make_shared<BTBossHPCondition>();
+    }
+    else if (nodeType == "BTBossDistanceCondition") {
+        return std::make_shared<BTBossDistanceCondition>();
+    }
 
     return nullptr;
 }
@@ -196,6 +238,9 @@ std::string BossNodeFactory::GetNodeType(const BTNodePtr& node) {
     if (typeInfo == typeid(BTBossShoot)) return "BTBossShoot";
     if (typeInfo == typeid(BTBossRapidFire)) return "BTBossRapidFire";
     if (typeInfo == typeid(BTActionSelector)) return "BTActionSelector";
+    if (typeInfo == typeid(BTBossPhaseCondition)) return "BTBossPhaseCondition";
+    if (typeInfo == typeid(BTBossHPCondition)) return "BTBossHPCondition";
+    if (typeInfo == typeid(BTBossDistanceCondition)) return "BTBossDistanceCondition";
 
     return "";
 }

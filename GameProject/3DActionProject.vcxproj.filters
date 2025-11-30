@@ -210,6 +210,15 @@
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossDistanceCondition.cpp">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossHPCondition.cpp">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.cpp">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -358,6 +367,15 @@
     </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.h">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossDistanceCondition.h">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossHPCondition.h">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.h">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

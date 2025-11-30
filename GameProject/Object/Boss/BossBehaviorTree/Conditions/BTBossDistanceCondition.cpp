@@ -1,0 +1,90 @@
+#include "BTBossDistanceCondition.h"
+#include "../../Boss.h"
+#include "../../../Player/Player.h"
+#include "Vector3.h"
+
+#ifdef _DEBUG
+#include <imgui.h>
+#endif
+
+BTBossDistanceCondition::BTBossDistanceCondition() {
+    name_ = "DistanceCondition";
+}
+
+BTNodeStatus BTBossDistanceCondition::Execute(BTBlackboard* blackboard) {
+    // ボスとプレイヤーを取得
+    Boss* boss = blackboard->GetBoss();
+    Player* player = blackboard->GetPlayer();
+
+    if (!boss || !player) {
+        status_ = BTNodeStatus::Failure;
+        return BTNodeStatus::Failure;
+    }
+
+    // 位置を取得
+    Vector3 bossPos = boss->GetTransform().translate;
+    Vector3 playerPos = player->GetTransform().translate;
+
+    // 水平距離を計算（Y軸を無視）
+    Vector3 diff = playerPos - bossPos;
+    diff.y = 0.0f;
+    float distance = diff.Length();
+
+    // 範囲内チェック: minDistance_ <= distance <= maxDistance_
+    if (distance >= minDistance_ && distance <= maxDistance_) {
+        status_ = BTNodeStatus::Success;
+        return BTNodeStatus::Success;
+    }
+
+    status_ = BTNodeStatus::Failure;
+    return BTNodeStatus::Failure;
+}
+
+void BTBossDistanceCondition::Reset() {
+    BTNode::Reset();
+}
+
+void BTBossDistanceCondition::ApplyParameters(const nlohmann::json& params) {
+    if (params.contains("minDistance")) {
+        minDistance_ = params["minDistance"].get<float>();
+    }
+    if (params.contains("maxDistance")) {
+        maxDistance_ = params["maxDistance"].get<float>();
+    }
+}
+
+nlohmann::json BTBossDistanceCondition::ExtractParameters() const {
+    return {
+        {"minDistance", minDistance_},
+        {"maxDistance", maxDistance_}
+    };
+}
+
+#ifdef _DEBUG
+bool BTBossDistanceCondition::DrawImGui() {
+    bool changed = false;
+
+    // 最小距離の編集
+    if (ImGui::DragFloat("Min Distance##dist", &minDistance_, 0.5f, 0.0f, 100.0f, "%.1f")) {
+        // minがmaxを超えないように
+        if (minDistance_ > maxDistance_) {
+            minDistance_ = maxDistance_;
+        }
+        changed = true;
+    }
+
+    // 最大距離の編集
+    if (ImGui::DragFloat("Max Distance##dist", &maxDistance_, 0.5f, 0.0f, 100.0f, "%.1f")) {
+        // maxがminを下回らないように
+        if (maxDistance_ < minDistance_) {
+            maxDistance_ = minDistance_;
+        }
+        changed = true;
+    }
+
+    // 補助テキスト
+    ImGui::TextDisabled("Success if: %.1f <= distance <= %.1f", minDistance_, maxDistance_);
+
+    return changed;
+}
+#endif

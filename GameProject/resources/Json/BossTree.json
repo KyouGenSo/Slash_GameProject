@@ -15,13 +15,6 @@
       "targetPinId": 20005
     },
     {
-      "id": 30002,
-      "sourceNodeId": 10004,
-      "sourcePinId": 20007,
-      "targetNodeId": 10005,
-      "targetPinId": 20008
-    },
-    {
       "id": 30003,
       "sourceNodeId": 10000,
       "sourcePinId": 20001,
@@ -29,23 +22,58 @@
       "targetPinId": 20003
     },
     {
-      "id": 30004,
-      "sourceNodeId": 10002,
-      "sourcePinId": 20004,
-      "targetNodeId": 10004,
-      "targetPinId": 20006
+      "id": 30011,
+      "sourceNodeId": 10012,
+      "sourcePinId": 20020,
+      "targetNodeId": 10007,
+      "targetPinId": 20010
     },
     {
-      "id": 30005,
-      "sourceNodeId": 10004,
-      "sourcePinId": 20007,
+      "id": 30012,
+      "sourceNodeId": 10012,
+      "sourcePinId": 20020,
+      "targetNodeId": 10005,
+      "targetPinId": 20008
+    },
+    {
+      "id": 30013,
+      "sourceNodeId": 10011,
+      "sourcePinId": 20018,
+      "targetNodeId": 10013,
+      "targetPinId": 20021
+    },
+    {
+      "id": 30014,
+      "sourceNodeId": 10011,
+      "sourcePinId": 20018,
       "targetNodeId": 10006,
       "targetPinId": 20009
+    },
+    {
+      "id": 30015,
+      "sourceNodeId": 10002,
+      "sourcePinId": 20004,
+      "targetNodeId": 10014,
+      "targetPinId": 20022
+    },
+    {
+      "id": 30016,
+      "sourceNodeId": 10014,
+      "sourcePinId": 20023,
+      "targetNodeId": 10012,
+      "targetPinId": 20019
+    },
+    {
+      "id": 30017,
+      "sourceNodeId": 10014,
+      "sourcePinId": 20023,
+      "targetNodeId": 10011,
+      "targetPinId": 20017
     }
   ],
   "metadata": {
-    "created": "2025-12-01T03:06:20",
-    "modified": "2025-12-01T03:06:20",
+    "created": "2025-12-01T03:42:50",
+    "modified": "2025-12-01T03:42:50",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -85,7 +113,7 @@
       "displayName": "DashAction",
       "id": 10003,
       "parameters": {
-        "dashDuration": 0.0501839816570282,
+        "dashDuration": 0.05283592268824577,
         "dashSpeed": 200.0
       },
       "position": {
@@ -95,21 +123,11 @@
       "type": "BTBossDash"
     },
     {
-      "displayName": "ShootSequence",
-      "id": 10004,
-      "parameters": null,
-      "position": {
-        "x": 750.0,
-        "y": 400.0
-      },
-      "type": "BTSequence"
-    },
-    {
       "displayName": "Rapid Fire",
       "id": 10005,
       "parameters": {
-        "bulletCount": 5,
-        "bulletSpeed": 150.0,
+        "bulletCount": 10,
+        "bulletSpeed": 200.0,
         "chargeTime": 0.5,
         "fireInterval": 0.10000000149011612,
         "recoveryTime": 0.30000001192092896
@@ -124,16 +142,72 @@
       "displayName": "Shoot",
       "id": 10006,
       "parameters": {
-        "bulletSpeed": 100.0,
-        "chargeTime": 1.0,
+        "bulletSpeed": 30.0,
+        "chargeTime": 0.800000011920929,
         "recoveryTime": 0.5,
-        "spreadAngle": 0.26179999113082886
+        "spreadAngle": 0.3490658700466156
       },
       "position": {
         "x": 130.0,
         "y": 120.0
       },
       "type": "BTBossShoot"
+    },
+    {
+      "displayName": "Phase1 Condition",
+      "id": 10007,
+      "parameters": {
+        "comparison": 0,
+        "targetPhase": 1
+      },
+      "position": {
+        "x": 100.0,
+        "y": 100.0
+      },
+      "type": "BTBossPhaseCondition"
+    },
+    {
+      "displayName": "ShootSequence",
+      "id": 10011,
+      "parameters": null,
+      "position": {
+        "x": 220.0,
+        "y": 180.0
+      },
+      "type": "BTSequence"
+    },
+    {
+      "displayName": "RapidFireSequence",
+      "id": 10012,
+      "parameters": null,
+      "position": {
+        "x": 250.0,
+        "y": 200.0
+      },
+      "type": "BTSequence"
+    },
+    {
+      "displayName": "Phase2 Condition",
+      "id": 10013,
+      "parameters": {
+        "comparison": 0,
+        "targetPhase": 2
+      },
+      "position": {
+        "x": 280.0,
+        "y": 220.0
+      },
+      "type": "BTBossPhaseCondition"
+    },
+    {
+      "displayName": "ShootSelector",
+      "id": 10014,
+      "parameters": null,
+      "position": {
+        "x": 310.0,
+        "y": 240.0
+      },
+      "type": "BTSelector"
     }
   ],
   "version": "1.0"
