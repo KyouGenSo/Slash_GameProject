@@ -999,35 +999,6 @@ BTNodePtr BossNodeEditor::BuildRuntimeTree() {
 }
 
 /// <summary>
-/// BossBehaviorTreeからツリーをインポート
-/// </summary>
-void BossNodeEditor::ImportFromBehaviorTree(BossBehaviorTree* tree) {
-    if (!tree) return;
-
-    // 既存のエディタをクリア
-    Clear();
-
-    // ルートノードを取得
-    BTNodePtr rootNode = tree->GetRootNode();
-    if (!rootNode) {
-        DebugUIManager::GetInstance()->AddLog(
-            "[BossNodeEditor] No root node found in BossBehaviorTree",
-            DebugUIManager::LogType::Error);
-        return;
-    }
-
-    // ノードを再帰的にインポート
-    ImportNodeRecursive(rootNode, ImVec2(400, 100), 0);
-
-    DebugUIManager::GetInstance()->AddLog(
-        "[BossNodeEditor] Successfully imported BossBehaviorTree",
-        DebugUIManager::LogType::Info);
-    DebugUIManager::GetInstance()->AddLog(
-        "[BossNodeEditor] Imported " + std::to_string(nodes_.size()) + " nodes",
-        DebugUIManager::LogType::Info);
-}
-
-/// <summary>
 /// 現在実行中のノードをハイライト表示（パルスエフェクト付き）
 /// </summary>
 void BossNodeEditor::HighlightRunningNode(const BTNodePtr& nodePtr) {
@@ -1319,79 +1290,6 @@ void BossNodeEditor::ApplyNodeParameters(EditorNode& node, const nlohmann::json&
     if (inspector) {
         inspector->ApplyParams(params);
     }
-}
-
-/// <summary>
-/// ノードを再帰的にインポート
-/// </summary>
-int BossNodeEditor::ImportNodeRecursive(const BTNodePtr& btNode, const ImVec2& position, int depth) {
-    if (!btNode) return -1;
-
-    // ノードタイプを取得
-    std::string nodeType = BossNodeFactory::GetNodeType(btNode);
-    if (nodeType.empty()) {
-        DebugUIManager::GetInstance()->AddLog(
-            "[BossNodeEditor] Unknown node type during import",
-            DebugUIManager::LogType::Warning);
-        return -1;
-    }
-
-    // エディタノードを作成
-    int nodeId = CreateNodeWithId(nextNodeId_++, nodeType, position);
-    if (nodeId == -1) {
-        return -1;
-    }
-
-    auto* editorNode = FindNodeById(nodeId);
-    if (!editorNode) {
-        return -1;
-    }
-
-    // ランタイムノードとのマッピングを保存
-    editorNode->runtimeNode = btNode;
-    runtimeNodeToEditorId_[btNode.get()] = nodeId;
-
-    // BTActionSelectorの場合、パラメータをコピー
-    if (nodeType == "BTActionSelector") {
-        auto srcSelector = std::dynamic_pointer_cast<BTActionSelector>(btNode);
-        auto dstSelector = std::dynamic_pointer_cast<BTActionSelector>(editorNode->runtimeNode);
-        if (srcSelector && dstSelector) {
-            dstSelector->SetActionType(srcSelector->GetActionType());
-        }
-    }
-
-    // コンポジットノードの場合、子ノードもインポート
-    auto composite = std::dynamic_pointer_cast<BTComposite>(btNode);
-    if (composite) {
-        const auto& children = composite->GetChildren();
-        float childOffsetX = 200.0f;
-        float childOffsetY = 150.0f;
-        float startX = position.x - (children.size() - 1) * childOffsetX * 0.5f;
-
-        for (size_t i = 0; i < children.size(); ++i) {
-            ImVec2 childPos(startX + i * childOffsetX, position.y + childOffsetY);
-            int childId = ImportNodeRecursive(children[i], childPos, depth + 1);
-
-            // リンクを作成
-            if (childId != -1) {
-                auto* childNode = FindNodeById(childId);
-                if (childNode && !editorNode->outputPinIds.empty() && !childNode->inputPinIds.empty()) {
-                    EditorLink link;
-                    link.id = nextLinkId_++;
-                    link.startPinId = editorNode->outputPinIds[0];
-                    link.endPinId = childNode->inputPinIds[0];
-                    link.startNodeId = nodeId;
-                    link.endNodeId = childId;
-                    links_.push_back(link);
-                }
-            }
-        }
-    }
-
-    // ノード位置を設定
-    ed::SetNodePosition(nodeId, position);
-
-    return nodeId;
 }
 
 /// <summary>

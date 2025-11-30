@@ -120,13 +120,6 @@ public:
     BTNodePtr BuildRuntimeTree();
 
     /// <summary>
-    /// BossBehaviorTreeからツリーをインポート
-    /// </summary>
-    /// <param name="tree">インポート元のツリー</param>
-    void ImportFromBehaviorTree(BossBehaviorTree* tree);
-
-
-    /// <summary>
     /// 現在実行中のノードをハイライト表示（デバッグ用）
     /// </summary>
     /// <param name="nodePtr">実行中のノード</param>
@@ -199,9 +192,6 @@ private:
     // ノードパラメータの保存・復元
     nlohmann::json ExtractNodeParameters(const EditorNode& node);
     void ApplyNodeParameters(EditorNode& node, const nlohmann::json& params);
-
-    // ImportFromBehaviorTree用ヘルパー
-    int ImportNodeRecursive(const BTNodePtr& btNode, const ImVec2& position, int depth);
 
     // ノード・ピンIDマッピング管理
     std::unordered_map<BTNode*, int> runtimeNodeToEditorId_;
