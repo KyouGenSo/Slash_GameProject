@@ -9,57 +9,43 @@
     },
     {
       "id": 30001,
-      "sourceNodeId": 10000,
-      "sourcePinId": 20001,
-      "targetNodeId": 10002,
-      "targetPinId": 20003
-    },
-    {
-      "id": 30002,
       "sourceNodeId": 10002,
       "sourcePinId": 20004,
       "targetNodeId": 10003,
       "targetPinId": 20005
     },
     {
-      "id": 30003,
-      "sourceNodeId": 10002,
-      "sourcePinId": 20004,
-      "targetNodeId": 10006,
-      "targetPinId": 20009
-    },
-    {
-      "id": 30004,
-      "sourceNodeId": 10003,
-      "sourcePinId": 20006,
-      "targetNodeId": 10004,
-      "targetPinId": 20007
-    },
-    {
-      "id": 30005,
-      "sourceNodeId": 10003,
-      "sourcePinId": 20006,
+      "id": 30002,
+      "sourceNodeId": 10004,
+      "sourcePinId": 20007,
       "targetNodeId": 10005,
       "targetPinId": 20008
     },
     {
-      "id": 30006,
-      "sourceNodeId": 10006,
-      "sourcePinId": 20010,
-      "targetNodeId": 10007,
-      "targetPinId": 20011
+      "id": 30003,
+      "sourceNodeId": 10000,
+      "sourcePinId": 20001,
+      "targetNodeId": 10002,
+      "targetPinId": 20003
     },
     {
-      "id": 30007,
-      "sourceNodeId": 10006,
-      "sourcePinId": 20010,
-      "targetNodeId": 10008,
-      "targetPinId": 20012
+      "id": 30004,
+      "sourceNodeId": 10002,
+      "sourcePinId": 20004,
+      "targetNodeId": 10004,
+      "targetPinId": 20006
+    },
+    {
+      "id": 30005,
+      "sourceNodeId": 10004,
+      "sourcePinId": 20007,
+      "targetNodeId": 10006,
+      "targetPinId": 20009
     }
   ],
   "metadata": {
-    "created": "2025-11-30T23:59:52",
-    "modified": "2025-11-30T23:59:52",
+    "created": "2025-12-01T02:44:47",
+    "modified": "2025-12-01T02:44:47",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -77,7 +63,7 @@
       "displayName": "Idle",
       "id": 10001,
       "parameters": {
-        "idleDuration": 1.0
+        "idleDuration": 2.0
       },
       "position": {
         "x": 250.0,
@@ -86,18 +72,8 @@
       "type": "BTBossIdle"
     },
     {
-      "displayName": "ActionSelector",
+      "displayName": "ActionSequence",
       "id": 10002,
-      "parameters": null,
-      "position": {
-        "x": 550.0,
-        "y": 250.0
-      },
-      "type": "BTSelector"
-    },
-    {
-      "displayName": "DashSequence",
-      "id": 10003,
       "parameters": null,
       "position": {
         "x": 350.0,
@@ -106,23 +82,11 @@
       "type": "BTSequence"
     },
     {
-      "displayName": "DashCondition",
-      "id": 10004,
-      "parameters": {
-        "actionType": 0
-      },
-      "position": {
-        "x": 250.0,
-        "y": 550.0
-      },
-      "type": "BTActionSelector"
-    },
-    {
       "displayName": "DashAction",
-      "id": 10005,
+      "id": 10003,
       "parameters": {
-        "dashDuration": 0.12563887238502502,
-        "dashSpeed": 350.0
+        "dashDuration": 0.16467982530593872,
+        "dashSpeed": 200.0
       },
       "position": {
         "x": 450.0,
@@ -132,7 +96,7 @@
     },
     {
       "displayName": "ShootSequence",
-      "id": 10006,
+      "id": 10004,
       "parameters": null,
       "position": {
         "x": 750.0,
@@ -141,29 +105,33 @@
       "type": "BTSequence"
     },
     {
-      "displayName": "ShootCondition",
-      "id": 10007,
+      "displayName": "Rapid Fire",
+      "id": 10005,
       "parameters": {
-        "actionType": 1
+        "bulletCount": 5,
+        "bulletSpeed": 150.0,
+        "chargeTime": 0.5,
+        "fireInterval": 0.10000000149011612,
+        "recoveryTime": 0.30000001192092896
       },
       "position": {
-        "x": 650.0,
-        "y": 550.0
+        "x": 100.0,
+        "y": 100.0
       },
-      "type": "BTActionSelector"
+      "type": "BTBossRapidFire"
     },
     {
-      "displayName": "ShootAction",
-      "id": 10008,
+      "displayName": "Shoot",
+      "id": 10006,
       "parameters": {
-        "bulletSpeed": 150.0,
-        "chargeTime": 0.0,
+        "bulletSpeed": 100.0,
+        "chargeTime": 1.0,
         "recoveryTime": 0.5,
-        "spreadAngle": 0.2617993950843811
+        "spreadAngle": 0.26179999113082886
       },
       "position": {
-        "x": 850.0,
-        "y": 550.0
+        "x": 130.0,
+        "y": 120.0
       },
       "type": "BTBossShoot"
     }
