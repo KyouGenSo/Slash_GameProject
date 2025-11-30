@@ -228,6 +228,24 @@ public: // メンバ関数
     MeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
 
     /// <summary>
+    /// 攻撃ブロックを取得
+    /// </summary>
+    /// <returns>攻撃ブロックのObject3dポインタ</returns>
+    Object3d* GetAttackBlock() const { return attackBlock_.get(); }
+
+    /// <summary>
+    /// 攻撃ブロックの表示/非表示を設定
+    /// </summary>
+    /// <param name="visible">true: 表示, false: 非表示</param>
+    void SetAttackBlockVisible(bool visible) { attackBlockVisible_ = visible; }
+
+    /// <summary>
+    /// 攻撃ブロックが表示中か取得
+    /// </summary>
+    /// <returns>true: 表示中, false: 非表示</returns>
+    bool IsAttackBlockVisible() const { return attackBlockVisible_; }
+
+    /// <summary>
     /// Velocityを取得
     /// </summary>
     /// <returns>現在のVelocity値の参照</returns>
@@ -297,6 +315,10 @@ private: // メンバ変数
     // Colliders
     std::unique_ptr<OBBCollider> bodyCollider_;
     std::unique_ptr<MeleeAttackCollider> meleeAttackCollider_;
+
+    // 攻撃ブロック
+    std::unique_ptr<Object3d> attackBlock_;  ///< 攻撃時に表示される回転ブロック
+    bool attackBlockVisible_ = false;         ///< 攻撃ブロック表示フラグ
 
     // 攻撃関連
     Boss* targetEnemy_ = nullptr;

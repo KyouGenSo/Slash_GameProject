@@ -5,6 +5,8 @@
 #include "../MeleeAttackCollider.h"
 #include "../../Boss/Boss.h"
 #include "CollisionManager.h"
+#include "Object3d.h"
+#include <cmath>
 #ifdef _DEBUG
 #include <imgui.h>
 #endif
@@ -26,6 +28,13 @@ void AttackState::Enter(Player* player)
     if (player->GetMeleeAttackCollider()) {
         player->GetMeleeAttackCollider()->SetActive(true);
         player->GetMeleeAttackCollider()->Reset();
+    }
+
+    // 攻撃ブロックを表示して初期位置設定
+    if (player->GetAttackBlock()) {
+        player->SetAttackBlockVisible(true);
+        blockAngle_ = GetStartAngle();
+        UpdateBlockPosition(player);
     }
 
     // SearchForTargetはUpdateのSearchTargetフェーズで呼ばれる
@@ -79,6 +88,9 @@ void AttackState::Exit(Player* player)
         player->GetMeleeAttackCollider()->SetActive(false);
     }
 
+    // 攻撃ブロックを非表示
+    player->SetAttackBlockVisible(false);
+
     // コンボカウントをリセット
     if (attackTimer_ >= attackDuration_) {
         comboCount_ = 0;
@@ -130,6 +142,11 @@ void AttackState::ProcessExecuteAttack(Player* player, float deltaTime)
 {
     attackTimer_ += deltaTime;
 
+    // ブロックを回転させる（偶数コンボ: +方向、奇数コンボ: -方向）
+    float direction = (comboCount_ % 2 == 0) ? 1.0f : -1.0f;
+    blockAngle_ += blockSwingAngle_ / attackDuration_ * deltaTime * direction;
+    UpdateBlockPosition(player);
+
     // コンボ受付時間の判定
     if (attackTimer_ >= attackDuration_ - comboWindow_ && attackTimer_ < attackDuration_) {
         player->GetMeleeAttackCollider()->Damage();
@@ -141,6 +158,38 @@ void AttackState::ProcessExecuteAttack(Player* player, float deltaTime)
         phase_ = Recovery;
         attackTimer_ = 0.0f;
     }
+}
+
+float AttackState::GetStartAngle() const
+{
+    // 偶数コンボ: 右側開始（-π/2）、奇数コンボ: 左側開始（π/2）
+    return (comboCount_ % 2 == 0) ? -1.5708f : 1.5708f;
+}
+
+void AttackState::UpdateBlockPosition(Player* player)
+{
+    Object3d* block = player->GetAttackBlock();
+    if (!block) return;
+
+    // プレイヤーの向きを考慮した回転角度
+    float playerRotY = player->GetRotate().y;
+    float worldAngle = playerRotY + blockAngle_;
+
+    // ブロック位置を計算（プレイヤー中心から半径blockRadius_の円周上）
+    Vector3 playerPos = player->GetTranslate();
+    Vector3 blockPos = {
+        playerPos.x + sinf(worldAngle) * blockRadius_,
+        playerPos.y,
+        playerPos.z + cosf(worldAngle) * blockRadius_
+    };
+
+    // ブロックのトランスフォーム設定
+    Transform blockTransform;
+    blockTransform.translate = blockPos;
+    blockTransform.rotate = { 0.0f, worldAngle, 0.0f };
+    blockTransform.scale = { 0.5f, 0.5f, 0.5f };
+
+    block->SetTransform(blockTransform);
 }
 
 void AttackState::DrawImGui(Player* player)

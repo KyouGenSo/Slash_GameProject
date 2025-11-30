@@ -89,6 +89,11 @@ void Player::Initialize()
 
     // Colliderの初期化
     SetupColliders();
+
+    // 攻撃ブロックの初期化
+    attackBlock_ = std::make_unique<Object3d>();
+    attackBlock_->Initialize();
+    attackBlock_->SetModel("white_cube.gltf");
 }
 
 void Player::Finalize()
@@ -140,6 +145,11 @@ void Player::Update()
     model_->SetTransform(transform_);
     model_->Update();
 
+    // 攻撃ブロックの更新（表示中のみ）
+    if (attackBlockVisible_ && attackBlock_) {
+        attackBlock_->Update();
+    }
+
     // 攻撃範囲Colliderの更新
     UpdateAttackCollider();
 }
@@ -147,6 +157,11 @@ void Player::Update()
 void Player::Draw()
 {
     model_->Draw();
+
+    // 攻撃ブロックの描画（表示中のみ）
+    if (attackBlockVisible_ && attackBlock_) {
+        attackBlock_->Draw();
+    }
 }
 
 void Player::DrawSprite()

@@ -40,6 +40,11 @@ private:
 	float comboWindow_ = 1.f;                         ///< コンボ受付時間
 	bool canCombo_ = false;                           ///< コンボ可能フラグ
 
+	// 攻撃ブロック回転制御
+	float blockAngle_ = 0.0f;                         ///< 現在のブロック回転角度
+	float blockRadius_ = 4.0f;                        ///< プレイヤーからの距離
+	float blockSwingAngle_ = 3.14159f;                ///< 振り幅（π = 180度）
+
 	/// <summary>
 	/// ターゲット検索処理
 	/// 攻撃範囲内の最も近い敵を検索してターゲットに設定する
@@ -62,6 +67,20 @@ private:
 	/// <param name="player">プレイヤーインスタンス</param>
 	/// <param name="deltaTime">前フレームからの経過時間</param>
 	void ProcessExecuteAttack(Player* player, float deltaTime);
+
+	/// <summary>
+	/// コンボ数に基づいて開始角度を取得
+	/// 偶数コンボ: 右側開始（-π/2）、奇数コンボ: 左側開始（π/2）
+	/// </summary>
+	/// <returns>開始角度（ラジアン）</returns>
+	float GetStartAngle() const;
+
+	/// <summary>
+	/// ブロックの位置を更新
+	/// プレイヤーの位置と向きに基づいてブロックの位置を計算
+	/// </summary>
+	/// <param name="player">プレイヤーインスタンス</param>
+	void UpdateBlockPosition(Player* player);
 
 public:
 	/// <summary>
