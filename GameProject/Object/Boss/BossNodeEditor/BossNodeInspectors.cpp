@@ -4,6 +4,7 @@
 #include <imgui.h>
 #include "../BossBehaviorTree/Actions/BTBossDash.h"
 #include "../BossBehaviorTree/Actions/BTBossShoot.h"
+#include "../BossBehaviorTree/Actions/BTBossRapidFire.h"
 #include "../BossBehaviorTree/Actions/BTBossIdle.h"
 #include "../BossBehaviorTree/Conditions/BTActionSelector.h"
 
@@ -85,6 +86,61 @@ void BTBossShootInspector::ApplyParams(const nlohmann::json& params) {
     if (params.contains("spreadAngle")) node_->SetSpreadAngle(params["spreadAngle"]);
 }
 
+// ========== BTBossRapidFire ==========
+bool BTBossRapidFireInspector::DrawUI() {
+    bool changed = false;
+
+    float chargeTime = node_->GetChargeTime();
+    if (ImGui::DragFloat("Charge Time##rapidfire", &chargeTime, 0.05f, 0.0f, 3.0f)) {
+        node_->SetChargeTime(chargeTime);
+        changed = true;
+    }
+
+    int bulletCount = node_->GetBulletCount();
+    if (ImGui::DragInt("Bullet Count##rapidfire", &bulletCount, 1, 1, 20)) {
+        node_->SetBulletCount(bulletCount);
+        changed = true;
+    }
+
+    float fireInterval = node_->GetFireInterval();
+    if (ImGui::DragFloat("Fire Interval##rapidfire", &fireInterval, 0.01f, 0.05f, 1.0f)) {
+        node_->SetFireInterval(fireInterval);
+        changed = true;
+    }
+
+    float bulletSpeed = node_->GetBulletSpeed();
+    if (ImGui::DragFloat("Bullet Speed##rapidfire", &bulletSpeed, 1.0f, 5.0f, 100.0f)) {
+        node_->SetBulletSpeed(bulletSpeed);
+        changed = true;
+    }
+
+    float recoveryTime = node_->GetRecoveryTime();
+    if (ImGui::DragFloat("Recovery Time##rapidfire", &recoveryTime, 0.05f, 0.0f, 3.0f)) {
+        node_->SetRecoveryTime(recoveryTime);
+        changed = true;
+    }
+
+    return changed;
+}
+
+nlohmann::json BTBossRapidFireInspector::ExtractParams() const {
+    return {
+        {"chargeTime", node_->GetChargeTime()},
+        {"bulletCount", node_->GetBulletCount()},
+        {"fireInterval", node_->GetFireInterval()},
+        {"bulletSpeed", node_->GetBulletSpeed()},
+        {"recoveryTime", node_->GetRecoveryTime()}
+    };
+}
+
+void BTBossRapidFireInspector::ApplyParams(const nlohmann::json& params) {
+    if (params.contains("chargeTime")) node_->SetChargeTime(params["chargeTime"]);
+    if (params.contains("bulletCount")) node_->SetBulletCount(params["bulletCount"]);
+    if (params.contains("fireInterval")) node_->SetFireInterval(params["fireInterval"]);
+    if (params.contains("bulletSpeed")) node_->SetBulletSpeed(params["bulletSpeed"]);
+    if (params.contains("recoveryTime")) node_->SetRecoveryTime(params["recoveryTime"]);
+}
+
 // ========== BTBossIdle ==========
 bool BTBossIdleInspector::DrawUI() {
     bool changed = false;
@@ -140,6 +196,9 @@ std::unique_ptr<IBTNodeInspector> CreateNodeInspector(const BTNodePtr& node) {
 
     if (auto* p = dynamic_cast<BTBossShoot*>(node.get()))
         return std::make_unique<BTBossShootInspector>(p);
+
+    if (auto* p = dynamic_cast<BTBossRapidFire*>(node.get()))
+        return std::make_unique<BTBossRapidFireInspector>(p);
 
     if (auto* p = dynamic_cast<BTBossIdle*>(node.get()))
         return std::make_unique<BTBossIdleInspector>(p);

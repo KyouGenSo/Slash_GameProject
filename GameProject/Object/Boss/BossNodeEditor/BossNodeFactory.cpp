@@ -8,6 +8,7 @@
 #include "../BossBehaviorTree/Actions/BTBossIdle.h"
 #include "../BossBehaviorTree/Actions/BTBossDash.h"
 #include "../BossBehaviorTree/Actions/BTBossShoot.h"
+#include "../BossBehaviorTree/Actions/BTBossRapidFire.h"
 #include "../BossBehaviorTree/Conditions/BTActionSelector.h"
 
 #include <typeinfo>
@@ -61,6 +62,13 @@ void BossNodeFactory::InitializeNodeTypes() {
             "Shoot",
             NodeCategory::Action,
             ImVec4(0.8f, 0.3f, 0.3f, 1.0f),  // 赤
+            false
+        },
+        {
+            "BTBossRapidFire",
+            "Rapid Fire",
+            NodeCategory::Action,
+            ImVec4(0.9f, 0.2f, 0.5f, 1.0f),  // マゼンタ
             false
         },
 
@@ -119,7 +127,8 @@ BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
     // Actionノード（Boss/Player依存のため、ここでは生成しない）
     else if (nodeType == "BTBossIdle" ||
              nodeType == "BTBossDash" ||
-             nodeType == "BTBossShoot") {
+             nodeType == "BTBossShoot" ||
+             nodeType == "BTBossRapidFire") {
         // これらはCreateNodeWithDependenciesを使う必要がある
         return nullptr;
     }
@@ -157,6 +166,9 @@ BTNodePtr BossNodeFactory::CreateNodeWithDependencies(
     else if (nodeType == "BTBossShoot") {
         return std::make_shared<BTBossShoot>();
     }
+    else if (nodeType == "BTBossRapidFire") {
+        return std::make_shared<BTBossRapidFire>();
+    }
     // Conditionノード
     else if (nodeType == "BTActionSelector") {
         // デフォルトでDashタイプを作成
@@ -182,6 +194,7 @@ std::string BossNodeFactory::GetNodeType(const BTNodePtr& node) {
     if (typeInfo == typeid(BTBossIdle)) return "BTBossIdle";
     if (typeInfo == typeid(BTBossDash)) return "BTBossDash";
     if (typeInfo == typeid(BTBossShoot)) return "BTBossShoot";
+    if (typeInfo == typeid(BTBossRapidFire)) return "BTBossRapidFire";
     if (typeInfo == typeid(BTActionSelector)) return "BTActionSelector";
 
     return "";

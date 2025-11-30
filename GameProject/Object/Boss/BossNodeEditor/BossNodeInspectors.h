@@ -7,6 +7,7 @@
 
 class BTBossDash;
 class BTBossShoot;
+class BTBossRapidFire;
 class BTBossIdle;
 class BTActionSelector;
 
@@ -55,6 +56,17 @@ public:
     void ApplyParams(const nlohmann::json& params) override;
 private:
     BTBossShoot* node_;
+};
+
+// ========== BTBossRapidFire用インスペクター ==========
+class BTBossRapidFireInspector : public IBTNodeInspector {
+public:
+    explicit BTBossRapidFireInspector(BTBossRapidFire* node) : node_(node) {}
+    bool DrawUI() override;
+    nlohmann::json ExtractParams() const override;
+    void ApplyParams(const nlohmann::json& params) override;
+private:
+    BTBossRapidFire* node_;
 };
 
 // ========== BTBossIdle用インスペクター ==========
