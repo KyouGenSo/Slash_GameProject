@@ -78,6 +78,11 @@ public: // メンバ関数
     void UpdateAttackCollider();
 
     /// <summary>
+    /// フェーズ2時にボス方向を向く
+    /// </summary>
+    void LookAtBoss();
+
+    /// <summary>
     /// 近接攻撃ヒット時の処理
     /// </summary>
     /// <param name="other">衝突相手のコライダー</param>
@@ -278,6 +283,11 @@ public: // メンバ関数
     /// 動的移動範囲をクリア（無効化）
     /// </summary>
     void ClearDynamicBounds();
+
+    /// <summary>
+    /// Bossをターゲットに設定
+    /// </summary>
+    void SetBoss(Boss* target) { targetEnemy_ = target; }
 
 public: // 定数
     // ステージ全体の移動制限

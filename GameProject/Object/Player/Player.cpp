@@ -129,6 +129,9 @@ void Player::Update()
         stateMachine_->Update(FrameTimer::GetInstance()->GetDeltaTime());
     }
 
+    // フェーズ2時はボス方向を向く
+    LookAtBoss();
+
     // 実効的な制限を計算（静的制限と動的制限の交差）
     float effectiveXMin = std::max<float>(X_MIN, dynamicXMin_);
     float effectiveXMax = std::min<float>(X_MAX, dynamicXMax_);
@@ -256,6 +259,24 @@ void Player::UpdateAttackCollider()
         Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(transform_.rotate.y);
         meleeAttackCollider_->SetOrientation(rotationMatrix);
     }
+}
+
+void Player::LookAtBoss()
+{
+    // ボス参照がない、またはフェーズ2でなければスキップ
+    if (!targetEnemy_ || targetEnemy_->GetPhase() != 2) return;
+
+    // ボスへの方向ベクトルを計算
+    Vector3 toTarget = targetEnemy_->GetTransform().translate - transform_.translate;
+    toTarget.y = 0.0f;  // Y軸は無視
+
+    if (toTarget.Length() < 0.01f) return;  // 距離が近すぎる場合はスキップ
+
+    // 目標角度を計算
+    float targetAngle = std::atan2(toTarget.x, toTarget.z);
+
+    // スムーズに補間して回転
+    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle, 1.15f);
 }
 
 void Player::OnMeleeAttackHit(Collider* other)

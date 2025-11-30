@@ -129,6 +129,9 @@ void GameScene::Initialize()
     // ゲーム開始時の演出が終わるまで一時停止状態に設定
     boss_->SetIsPause(true);
 
+    // プレイヤーにボスの参照を設定
+    player_->SetBoss(boss_.get());
+
     // カメラマネージャーの初期化
     cameraManager_ = CameraManager::GetInstance();
     cameraManager_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
