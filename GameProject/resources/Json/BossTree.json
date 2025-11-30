@@ -15,65 +15,79 @@
       "targetPinId": 20005
     },
     {
-      "id": 30003,
+      "id": 30002,
       "sourceNodeId": 10000,
       "sourcePinId": 20001,
       "targetNodeId": 10002,
       "targetPinId": 20003
     },
     {
-      "id": 30011,
-      "sourceNodeId": 10012,
-      "sourcePinId": 20020,
-      "targetNodeId": 10007,
-      "targetPinId": 20010
-    },
-    {
-      "id": 30012,
-      "sourceNodeId": 10012,
-      "sourcePinId": 20020,
-      "targetNodeId": 10005,
+      "id": 30003,
+      "sourceNodeId": 10008,
+      "sourcePinId": 20012,
+      "targetNodeId": 10006,
       "targetPinId": 20008
     },
     {
-      "id": 30013,
-      "sourceNodeId": 10011,
-      "sourcePinId": 20018,
-      "targetNodeId": 10013,
-      "targetPinId": 20021
+      "id": 30005,
+      "sourceNodeId": 10007,
+      "sourcePinId": 20010,
+      "targetNodeId": 10009,
+      "targetPinId": 20013
     },
     {
-      "id": 30014,
-      "sourceNodeId": 10011,
-      "sourcePinId": 20018,
-      "targetNodeId": 10006,
+      "id": 30006,
+      "sourceNodeId": 10007,
+      "sourcePinId": 20010,
+      "targetNodeId": 10005,
+      "targetPinId": 20007
+    },
+    {
+      "id": 30007,
+      "sourceNodeId": 10002,
+      "sourcePinId": 20004,
+      "targetNodeId": 10010,
+      "targetPinId": 20014
+    },
+    {
+      "id": 30008,
+      "sourceNodeId": 10010,
+      "sourcePinId": 20015,
+      "targetNodeId": 10008,
+      "targetPinId": 20011
+    },
+    {
+      "id": 30009,
+      "sourceNodeId": 10010,
+      "sourcePinId": 20015,
+      "targetNodeId": 10007,
       "targetPinId": 20009
     },
     {
-      "id": 30015,
-      "sourceNodeId": 10002,
-      "sourcePinId": 20004,
-      "targetNodeId": 10014,
-      "targetPinId": 20022
-    },
-    {
-      "id": 30016,
-      "sourceNodeId": 10014,
-      "sourcePinId": 20023,
-      "targetNodeId": 10012,
-      "targetPinId": 20019
-    },
-    {
-      "id": 30017,
-      "sourceNodeId": 10014,
-      "sourcePinId": 20023,
+      "id": 30010,
+      "sourceNodeId": 10008,
+      "sourcePinId": 20012,
       "targetNodeId": 10011,
-      "targetPinId": 20017
+      "targetPinId": 20016
+    },
+    {
+      "id": 30011,
+      "sourceNodeId": 10011,
+      "sourcePinId": 20017,
+      "targetNodeId": 10004,
+      "targetPinId": 20006
+    },
+    {
+      "id": 30012,
+      "sourceNodeId": 10011,
+      "sourcePinId": 20017,
+      "targetNodeId": 10012,
+      "targetPinId": 20018
     }
   ],
   "metadata": {
-    "created": "2025-12-01T03:42:50",
-    "modified": "2025-12-01T03:42:50",
+    "created": "2025-12-01T03:59:04",
+    "modified": "2025-12-01T03:59:04",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -113,7 +127,7 @@
       "displayName": "DashAction",
       "id": 10003,
       "parameters": {
-        "dashDuration": 0.05283592268824577,
+        "dashDuration": 0.11934325844049454,
         "dashSpeed": 200.0
       },
       "position": {
@@ -124,9 +138,9 @@
     },
     {
       "displayName": "Rapid Fire",
-      "id": 10005,
+      "id": 10004,
       "parameters": {
-        "bulletCount": 10,
+        "bulletCount": 8,
         "bulletSpeed": 200.0,
         "chargeTime": 0.5,
         "fireInterval": 0.10000000149011612,
@@ -140,7 +154,7 @@
     },
     {
       "displayName": "Shoot",
-      "id": 10006,
+      "id": 10005,
       "parameters": {
         "bulletSpeed": 30.0,
         "chargeTime": 0.800000011920929,
@@ -155,7 +169,7 @@
     },
     {
       "displayName": "Phase1 Condition",
-      "id": 10007,
+      "id": 10006,
       "parameters": {
         "comparison": 0,
         "targetPhase": 1
@@ -168,7 +182,7 @@
     },
     {
       "displayName": "ShootSequence",
-      "id": 10011,
+      "id": 10007,
       "parameters": null,
       "position": {
         "x": 220.0,
@@ -178,7 +192,7 @@
     },
     {
       "displayName": "RapidFireSequence",
-      "id": 10012,
+      "id": 10008,
       "parameters": null,
       "position": {
         "x": 250.0,
@@ -188,7 +202,7 @@
     },
     {
       "displayName": "Phase2 Condition",
-      "id": 10013,
+      "id": 10009,
       "parameters": {
         "comparison": 0,
         "targetPhase": 2
@@ -201,13 +215,38 @@
     },
     {
       "displayName": "ShootSelector",
-      "id": 10014,
+      "id": 10010,
       "parameters": null,
       "position": {
         "x": 310.0,
         "y": 240.0
       },
       "type": "BTSelector"
+    },
+    {
+      "displayName": "Random Selector",
+      "id": 10011,
+      "parameters": null,
+      "position": {
+        "x": 100.0,
+        "y": 100.0
+      },
+      "type": "BTRandomSelector"
+    },
+    {
+      "displayName": "Shoot",
+      "id": 10012,
+      "parameters": {
+        "bulletSpeed": 100.0,
+        "chargeTime": 0.44999998807907104,
+        "recoveryTime": 0.25,
+        "spreadAngle": 0.2617993950843811
+      },
+      "position": {
+        "x": 130.0,
+        "y": 120.0
+      },
+      "type": "BTBossShoot"
     }
   ],
   "version": "1.0"
