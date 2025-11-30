@@ -159,7 +159,7 @@ BTNodePtr BossNodeFactory::CreateNodeWithDependencies(
     }
     // Conditionノード
     else if (nodeType == "BTActionSelector") {
-        // デフォルトでDashタイプを作成（後で編集可能にする）
+        // デフォルトでDashタイプを作成
         return std::make_shared<BTActionSelector>(BTActionSelector::ActionType::Dash);
     }
 

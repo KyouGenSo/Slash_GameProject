@@ -181,10 +181,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ClCompile>
     <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeFactory.cpp" />
     <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeInspectors.cpp" />
-    <ClCompile Include="Object\Boss\States\BossDashState.cpp" />
-    <ClCompile Include="Object\Boss\States\BossIdleState.cpp" />
-    <ClCompile Include="Object\Boss\States\BossShootState.cpp" />
-    <ClCompile Include="Object\Boss\States\BossStateMachine.cpp" />
     <ClCompile Include="Object\Player\MeleeAttackCollider.cpp" />
     <ClCompile Include="Object\Player\Player.cpp" />
     <ClCompile Include="Object\Player\State\AttackState.cpp" />
@@ -249,11 +245,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </ClInclude>
     <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeFactory.h" />
     <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeInspectors.h" />
-    <ClInclude Include="Object\Boss\States\BossDashState.h" />
-    <ClInclude Include="Object\Boss\States\BossIdleState.h" />
-    <ClInclude Include="Object\Boss\States\BossShootState.h" />
-    <ClInclude Include="Object\Boss\States\BossStateBase.h" />
-    <ClInclude Include="Object\Boss\States\BossStateMachine.h" />
     <ClInclude Include="Object\Player\MeleeAttackCollider.h" />
     <ClInclude Include="Object\Player\Player.h" />
     <ClInclude Include="Object\Player\State\AttackState.h" />

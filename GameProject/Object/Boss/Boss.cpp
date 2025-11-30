@@ -8,10 +8,6 @@
 #include "FrameTimer.h"
 #include "Sprite.h"
 #include "WinApp.h"
-#include "States/BossStateMachine.h"
-#include "States/BossIdleState.h"
-#include "States/BossDashState.h"
-#include "States/BossShootState.h"
 #include "BossBehaviorTree/BossBehaviorTree.h"
 
 #ifdef _DEBUG
@@ -78,32 +74,20 @@ void Boss::Initialize()
     CollisionManager::GetInstance()->AddCollider(bodyCollider_.get());
 
     // ビヘイビアツリーを使用する場合
-    if (useBehaviorTree_) {
-        // ビヘイビアツリーの初期化
-        behaviorTree_ = std::make_unique<BossBehaviorTree>(this, player_);
+
+    // ビヘイビアツリーの初期化
+    behaviorTree_ = std::make_unique<BossBehaviorTree>(this, player_);
 
 #ifdef _DEBUG
-        // ノードエディタの初期化
-        nodeEditor_ = std::make_unique<BossNodeEditor>();
-        nodeEditor_->Initialize();
-        BTNodePtr runtimeTree = nodeEditor_->BuildRuntimeTree();
-        if (runtimeTree && behaviorTree_) {
-            behaviorTree_->SetRootNode(runtimeTree);
-        }
-#endif
-    } else {
-        // ステートマシンの初期化（互換性のため残す）
-        stateMachine_ = std::make_unique<BossStateMachine>();
-        stateMachine_->Initialize(this);
-
-        // 各状態を追加
-        stateMachine_->AddState("Idle", std::make_unique<BossIdleState>());
-        stateMachine_->AddState("Dash", std::make_unique<BossDashState>());
-        stateMachine_->AddState("Shoot", std::make_unique<BossShootState>());
-
-        // 初期状態をIdleに設定
-        stateMachine_->ChangeState("Idle");
+    // ノードエディタの初期化
+    nodeEditor_ = std::make_unique<BossNodeEditor>();
+    nodeEditor_->Initialize();
+    BTNodePtr runtimeTree = nodeEditor_->BuildRuntimeTree();
+    if (runtimeTree && behaviorTree_) {
+        behaviorTree_->SetRootNode(runtimeTree);
     }
+#endif
+
 }
 
 void Boss::Finalize()
@@ -144,7 +128,7 @@ void Boss::Update(float deltaTime)
 
     // AIシステムの更新
     if (!isDead_ && !isPause_) {
-        if (useBehaviorTree_ && behaviorTree_) {
+        if (behaviorTree_) {
             // ビヘイビアツリーの更新
             behaviorTree_->Update(deltaTime);
 
@@ -157,9 +141,6 @@ void Boss::Update(float deltaTime)
                 }
             }
 #endif
-        } else if (stateMachine_) {
-            // ステートマシンの更新（互換性のため残す）
-            stateMachine_->Update(deltaTime);
         }
     }
 
@@ -236,7 +217,7 @@ void Boss::DrawImGui()
 {
 #ifdef _DEBUG
 
-    // ===== セクション1: 基本ステータス =====
+    // ===== 基本ステータス =====
     ImGui::SeparatorText("Basic Status");
 
     // HP表示（数値 + プログレスバー）
@@ -250,52 +231,21 @@ void Boss::DrawImGui()
     // 状態フラグ（警告は赤色でハイライト）
     if (isDead_) {
         ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Dead: YES");
-    } else {
+    }
+    else {
         ImGui::Text("Dead: NO");
     }
     ImGui::SameLine();
     if (isPause_) {
         ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Paused: YES");
-    } else {
+    }
+    else {
         ImGui::Text("Paused: NO");
     }
 
     ImGui::Text("Ready to Change Phase: %s", isReadyToChangePhase_ ? "YES" : "NO");
 
-    // ===== セクション2: 状態マシン =====
-    ImGui::SeparatorText("State Machine");
-    if (stateMachine_) {
-        const std::string& stateName = stateMachine_->GetCurrentStateName();
-
-        // 状態名を色分け（Idle=青、Dash=黄色、Shoot=オレンジ）
-        ImVec4 stateColor;
-        if (stateName == "Idle") {
-            stateColor = ImVec4(0.5f, 0.5f, 1.0f, 1.0f);  // 青
-        } else if (stateName == "Dash") {
-            stateColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);  // 黄色
-        } else if (stateName == "Shoot") {
-            stateColor = ImVec4(1.0f, 0.6f, 0.0f, 1.0f);  // オレンジ
-        } else {
-            stateColor = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);  // 白（デフォルト）
-        }
-
-        ImGui::Text("Current State: ");
-        ImGui::SameLine();
-        ImGui::TextColored(stateColor, "%s", stateName.c_str());
-
-        BossStateBase* currentState = stateMachine_->GetCurrentState();
-        if (currentState) {
-            float stateTimer = currentState->GetStateTimer();
-            ImGui::Text("State Timer: %.2f sec", stateTimer);
-
-            // 状態タイマーのプログレスバー（想定最大時間5秒）
-            float maxDuration = 5.0f;
-            float progress = std::min<float>(stateTimer / maxDuration, 1.0f);
-            ImGui::ProgressBar(progress, ImVec2(-1.0f, 0.0f), "");
-        }
-    }
-
-    // ===== セクション5: 座標情報（折りたたみ可能） =====
+    // ===== 座標情報（折りたたみ可能） =====
     if (ImGui::CollapsingHeader("Transform")) {
         ImGui::Text("Position: (%.2f, %.2f, %.2f)",
             transform_.translate.x, transform_.translate.y, transform_.translate.z);
@@ -322,32 +272,11 @@ void Boss::DrawImGui()
         }
     }
 
-    // ===== セクション7: デバッグコントロール =====
-    ImGui::SeparatorText("Debug Controls");
-
-    // AIシステム選択
-    ImGui::Text("AI System:");
-    if (ImGui::RadioButton("Behavior Tree", useBehaviorTree_)) {
-        useBehaviorTree_ = true;
-        if (!behaviorTree_ && player_) {
-            behaviorTree_ = std::make_unique<BossBehaviorTree>(this, player_);
-        }
-    }
-    ImGui::SameLine();
-    if (ImGui::RadioButton("State Machine", !useBehaviorTree_)) {
-        useBehaviorTree_ = false;
-        if (!stateMachine_) {
-            stateMachine_ = std::make_unique<BossStateMachine>();
-            stateMachine_->Initialize(this);
-            stateMachine_->AddState("Idle", std::make_unique<BossIdleState>());
-            stateMachine_->AddState("Dash", std::make_unique<BossDashState>());
-            stateMachine_->AddState("Shoot", std::make_unique<BossShootState>());
-            stateMachine_->ChangeState("Idle");
-        }
-    }
+    // ===== ビヘイビアツリー =====
+    ImGui::SeparatorText("Behavior Tree");
 
     // ビヘイビアツリーの制御
-    if (useBehaviorTree_ && behaviorTree_) {
+    if (behaviorTree_) {
         // JSONから直接ビヘイビアツリーに読み込み（デバッグ・リリース共通）
         ImGui::SameLine();
         if (ImGui::Button("Load Tree from JSON")) {
@@ -398,28 +327,6 @@ void Boss::DrawImGui()
     if (ImGui::Button("Set Phase 2", buttonSize)) {
         SetPhase(2);
         hp_ = 100.0f;
-    }
-
-    // 状態強制遷移
-    ImGui::Spacing();
-    ImGui::Text("Force State Transition:");
-
-    if (useBehaviorTree_) {
-        // ビヘイビアツリー使用時
-        ImGui::TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "Using Behavior Tree");
-        ImGui::Text("(State transitions are automatic)");
-    } else if (stateMachine_) {
-        // ステートマシン使用時
-        static int selectedStateIndex = 0;
-        const char* stateNames[] = { "Idle", "Dash", "Shoot" };
-
-        ImGui::Combo("Select State", &selectedStateIndex, stateNames, IM_ARRAYSIZE(stateNames));
-
-        // 選択された状態に遷移するボタン
-        ImVec2 fullButtonSize(ImGui::GetContentRegionAvail().x, 0);
-        if (ImGui::Button("Force Transition", fullButtonSize)) {
-            stateMachine_->ChangeState(stateNames[selectedStateIndex]);
-        }
     }
 
     // 一時停止トグル

@@ -182,12 +182,6 @@ public:
     Vector3 GetScale() const { return transform_.scale; }
 
     /// <summary>
-    /// ステートマシンを取得
-    /// </summary>
-    /// <returns>ステートマシンのポインタ</returns>
-    BossStateMachine* GetStateMachine() const { return stateMachine_.get(); }
-
-    /// <summary>
     /// プレイヤーを取得
     /// </summary>
     /// <returns>プレイヤーのポインタ</returns>
@@ -224,14 +218,8 @@ private:
     // ボスの座標変換情報（位置、回転、スケール）
     Transform transform_{};
 
-    // ステートマシン（デバッグ用に残す）
-    std::unique_ptr<BossStateMachine> stateMachine_;
-
     // ビヘイビアツリー
     std::unique_ptr<BossBehaviorTree> behaviorTree_;
-
-    // 使用するAIシステム（true: ビヘイビアツリー, false: ステートマシン）
-    bool useBehaviorTree_ = true;
 
 #ifdef _DEBUG
     // ビヘイビアツリーノードエディタ

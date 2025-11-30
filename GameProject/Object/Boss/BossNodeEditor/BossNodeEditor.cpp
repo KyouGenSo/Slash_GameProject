@@ -180,15 +180,6 @@ void BossNodeEditor::DrawToolbar() {
         nodeOffsetX = 100.0f;
         nodeOffsetY = 100.0f;
     }
-    ImGui::SameLine();
-
-    if (ImGui::Button("Build Runtime Tree##bne_toolbar")) {
-        BTNodePtr runtimeTree = BuildRuntimeTree();
-        if (runtimeTree) {
-            ImGui::SameLine();
-            ImGui::Text("Tree built successfully!");
-        }
-    }
 
     // ノード作成用のUIセクション
     ImGui::SameLine();
