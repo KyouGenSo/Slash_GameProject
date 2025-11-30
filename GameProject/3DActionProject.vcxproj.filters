@@ -183,6 +183,9 @@
     <ClCompile Include="BehaviorTree\Composites\BTSequence.cpp">
       <Filter>BehaviorTree\Composite</Filter>
     </ClCompile>
+    <ClCompile Include="BehaviorTree\Composites\BTRandomSelector.cpp">
+      <Filter>BehaviorTree\Composite</Filter>
+    </ClCompile>
     <ClCompile Include="BehaviorTree\Core\BTComposite.cpp">
       <Filter>BehaviorTree\Core</Filter>
     </ClCompile>
@@ -333,6 +336,9 @@
       <Filter>BehaviorTree\Composite</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree\Composites\BTSequence.h">
+      <Filter>BehaviorTree\Composite</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviorTree\Composites\BTRandomSelector.h">
       <Filter>BehaviorTree\Composite</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree\Core\BTBlackboard.h">

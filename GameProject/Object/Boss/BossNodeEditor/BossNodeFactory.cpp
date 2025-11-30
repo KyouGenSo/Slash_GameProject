@@ -5,6 +5,7 @@
 // BehaviorTreeノードのインクルード
 #include "../../../BehaviorTree/Composites/BTSelector.h"
 #include "../../../BehaviorTree/Composites/BTSequence.h"
+#include "../../../BehaviorTree/Composites/BTRandomSelector.h"
 #include "../BossBehaviorTree/Actions/BTBossIdle.h"
 #include "../BossBehaviorTree/Actions/BTBossDash.h"
 #include "../BossBehaviorTree/Actions/BTBossShoot.h"
@@ -42,6 +43,13 @@ void BossNodeFactory::InitializeNodeTypes() {
             "Sequence",
             NodeCategory::Composite,
             ImVec4(0.2f, 0.6f, 0.8f, 1.0f),  // 青
+            true  // 子ノードを持てる
+        },
+        {
+            "BTRandomSelector",
+            "Random Selector",
+            NodeCategory::Composite,
+            ImVec4(0.9f, 0.6f, 0.2f, 1.0f),  // 明るいオレンジ
             true  // 子ノードを持てる
         },
 
@@ -148,6 +156,9 @@ BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
     else if (nodeType == "BTSequence") {
         return std::make_shared<BTSequence>();
     }
+    else if (nodeType == "BTRandomSelector") {
+        return std::make_shared<BTRandomSelector>();
+    }
     // Actionノード（Boss/Player依存のため、ここでは生成しない）
     else if (nodeType == "BTBossIdle" ||
              nodeType == "BTBossDash" ||
@@ -188,6 +199,9 @@ BTNodePtr BossNodeFactory::CreateNodeWithDependencies(
     }
     else if (nodeType == "BTSequence") {
         return std::make_shared<BTSequence>();
+    }
+    else if (nodeType == "BTRandomSelector") {
+        return std::make_shared<BTRandomSelector>();
     }
     // Actionノード（Boss/Player依存）
     else if (nodeType == "BTBossIdle") {
@@ -233,6 +247,7 @@ std::string BossNodeFactory::GetNodeType(const BTNodePtr& node) {
     // 各タイプと比較
     if (typeInfo == typeid(BTSelector)) return "BTSelector";
     if (typeInfo == typeid(BTSequence)) return "BTSequence";
+    if (typeInfo == typeid(BTRandomSelector)) return "BTRandomSelector";
     if (typeInfo == typeid(BTBossIdle)) return "BTBossIdle";
     if (typeInfo == typeid(BTBossDash)) return "BTBossDash";
     if (typeInfo == typeid(BTBossShoot)) return "BTBossShoot";

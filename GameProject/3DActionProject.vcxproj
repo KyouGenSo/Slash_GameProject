@@ -156,6 +156,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClCompile Include="BehaviorTree\Composites\BTSelector.cpp" />
     <ClCompile Include="BehaviorTree\Composites\BTSequence.cpp" />
+    <ClCompile Include="BehaviorTree\Composites\BTRandomSelector.cpp" />
     <ClCompile Include="BehaviorTree\Core\BTComposite.cpp" />
     <ClCompile Include="CameraAnimation\CameraAnimation.cpp" />
     <ClCompile Include="CameraSystem\CameraAnimationController.cpp" />
@@ -218,6 +219,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="BehaviorTree\Composites\BTSelector.h" />
     <ClInclude Include="BehaviorTree\Composites\BTSequence.h" />
+    <ClInclude Include="BehaviorTree\Composites\BTRandomSelector.h" />
     <ClInclude Include="BehaviorTree\Core\BTBlackboard.h" />
     <ClInclude Include="BehaviorTree\Core\BTComposite.h" />
     <ClInclude Include="BehaviorTree\Core\BTNode.h" />
