@@ -12,6 +12,7 @@
 #include <string>
 #include <json.hpp>
 #include "../../../BehaviorTree/Core/BTNode.h"
+#include "BossNodeInspectors.h"
 
 // 名前空間エイリアス
 namespace ed = ax::NodeEditor;
@@ -161,6 +162,7 @@ private:
     bool firstFrame_;
     int highlightedNodeId_;  // 現在ハイライト中のノードID（実行デバッグ用）
     float highlightStartTime_;  // ハイライト開始時刻（パルスエフェクト用）
+    int selectedNodeId_ = -1;  // 選択中のノードID（インスペクター用）
 
     // 内部処理
     void DrawNodes();
@@ -173,6 +175,8 @@ private:
     void DrawContextMenu();
     void DrawNodeInspector();
     void DrawToolbar();
+    void SaveNodeParamsToFile(EditorNode* node, IBTNodeInspector* inspector);
+    void LoadNodeParamsFromFile(EditorNode* node, IBTNodeInspector* inspector);
 
     // ノード作成
     void CreateNode(const std::string& nodeType, const ImVec2& position);

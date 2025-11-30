@@ -178,6 +178,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTActionSelector.cpp" />
     <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeEditor.cpp" />
     <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeFactory.cpp" />
+    <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeInspectors.cpp" />
     <ClCompile Include="Object\Boss\States\BossDashState.cpp" />
     <ClCompile Include="Object\Boss\States\BossIdleState.cpp" />
     <ClCompile Include="Object\Boss\States\BossShootState.cpp" />
@@ -243,6 +244,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTActionSelector.h" />
     <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeEditor.h" />
     <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeFactory.h" />
+    <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeInspectors.h" />
     <ClInclude Include="Object\Boss\States\BossDashState.h" />
     <ClInclude Include="Object\Boss\States\BossIdleState.h" />
     <ClInclude Include="Object\Boss\States\BossShootState.h" />

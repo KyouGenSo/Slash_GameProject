@@ -32,6 +32,14 @@ public:
     /// </summary>
     void Reset() override;
 
+    // パラメータ取得・設定
+    float GetChargeTime() const { return chargeTime_; }
+    void SetChargeTime(float time) { chargeTime_ = time; }
+    float GetBulletSpeed() const { return bulletSpeed_; }
+    void SetBulletSpeed(float speed) { bulletSpeed_ = speed; }
+    float GetSpreadAngle() const { return spreadAngle_; }
+    void SetSpreadAngle(float angle) { spreadAngle_ = angle; }
+
 private:
     /// <summary>
     /// 射撃パラメータの初期化

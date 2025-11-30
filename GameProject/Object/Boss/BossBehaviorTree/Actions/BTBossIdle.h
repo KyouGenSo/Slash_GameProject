@@ -37,6 +37,12 @@ public:
     /// <param name="duration">待機時間</param>
     void SetIdleDuration(float duration) { idleDuration_ = duration; }
 
+    /// <summary>
+    /// 待機時間の取得
+    /// </summary>
+    /// <returns>待機時間</returns>
+    float GetIdleDuration() const { return idleDuration_; }
+
 private:
     /// <summary>
     /// プレイヤーの方向を向く処理

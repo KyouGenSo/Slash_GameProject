@@ -222,6 +222,9 @@
     <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeFactory.cpp">
       <Filter>Object\Boss\BossNodeEditor</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeInspectors.cpp">
+      <Filter>Object\Boss\BossNodeEditor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -381,6 +384,9 @@
       <Filter>Object\Boss\BossNodeEditor</Filter>
     </ClInclude>
     <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeFactory.h">
+      <Filter>Object\Boss\BossNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeInspectors.h">
       <Filter>Object\Boss\BossNodeEditor</Filter>
     </ClInclude>
   </ItemGroup>

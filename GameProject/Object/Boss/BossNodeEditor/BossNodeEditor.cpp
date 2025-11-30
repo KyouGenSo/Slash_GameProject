@@ -16,6 +16,7 @@
 #include <chrono>
 #include <iomanip>
 #include <sstream>
+#include <filesystem>
 
 /// <summary>
 /// コンストラクタ
@@ -101,6 +102,22 @@ void BossNodeEditor::Update() {
         // コンテキストメニュー
         // DrawContextMenu();
 
+        // 選択ノードの取得（ed::End()前に実行必須）
+        {
+            int selectedCount = ed::GetSelectedObjectCount();
+            if (selectedCount > 0) {
+                std::vector<ed::NodeId> selectedNodes(selectedCount);
+                int nodeCount = ed::GetSelectedNodes(selectedNodes.data(), selectedCount);
+                if (nodeCount > 0) {
+                    selectedNodeId_ = static_cast<int>(selectedNodes[0].Get());
+                } else {
+                    selectedNodeId_ = -1;
+                }
+            } else {
+                selectedNodeId_ = -1;
+            }
+        }
+
         ed::End();
         ed::SetCurrentEditor(nullptr);
 
@@ -131,6 +148,7 @@ void BossNodeEditor::Clear() {
 
     highlightedNodeId_ = -1;
     highlightStartTime_ = 0.0f;
+    selectedNodeId_ = -1;
     firstFrame_ = true;
 }
 
@@ -694,10 +712,122 @@ void BossNodeEditor::DrawContextMenu() {
 }
 
 /// <summary>
-/// ノードインスペクターの描画（仮実装）
+/// ノードインスペクターの描画
 /// </summary>
 void BossNodeEditor::DrawNodeInspector() {
-    // 後で実装
+    // インスペクターパネル（別ウィンドウとして表示）
+    if (!ImGui::Begin("Node Inspector##BNE")) {
+        ImGui::End();
+        return;
+    }
+
+    ImGui::Text("Inspector");
+    ImGui::Separator();
+
+    if (selectedNodeId_ < 0) {
+        ImGui::TextDisabled("No node selected");
+        ImGui::End();
+        return;
+    }
+
+    EditorNode* node = FindNodeById(selectedNodeId_);
+    if (!node) {
+        ImGui::TextDisabled("Invalid selection");
+        ImGui::End();
+        return;
+    }
+
+    // 基本情報
+    ImGui::Text("ID: %d", node->id);
+    ImGui::Text("Type: %s", node->nodeType.c_str());
+
+    // 表示名編集
+    char nameBuf[256];
+    strncpy_s(nameBuf, node->displayName.c_str(), sizeof(nameBuf) - 1);
+    if (ImGui::InputText("Name##inspector", nameBuf, sizeof(nameBuf))) {
+        node->displayName = nameBuf;
+    }
+
+    ImGui::Separator();
+    ImGui::Text("Parameters");
+
+    // インスペクターでパラメータ編集
+    if (node->runtimeNode) {
+        auto inspector = CreateNodeInspector(node->runtimeNode);
+        if (inspector) {
+            inspector->DrawUI();
+        } else {
+            ImGui::TextDisabled("No editable parameters");
+        }
+    } else {
+        ImGui::TextDisabled("No runtime node");
+    }
+
+    // パラメータ保存・読み込みボタン
+    ImGui::Separator();
+    if (node->runtimeNode) {
+        auto inspector = CreateNodeInspector(node->runtimeNode);
+        if (inspector) {
+            if (ImGui::Button("Save Params##inspector")) {
+                SaveNodeParamsToFile(node, inspector.get());
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Load Params##inspector")) {
+                LoadNodeParamsFromFile(node, inspector.get());
+            }
+        }
+    }
+
+    ImGui::End();
+}
+
+/// <summary>
+/// ノードパラメータをJSONファイルに保存
+/// </summary>
+void BossNodeEditor::SaveNodeParamsToFile(EditorNode* node, IBTNodeInspector* inspector) {
+    if (!node || !inspector) return;
+
+    // 保存先パス（自動命名）
+    std::string filename = "resources/Json/NodeParams/" + node->nodeType + "_" + node->displayName + ".json";
+
+    // ディレクトリが存在しない場合は作成
+    std::filesystem::path filePath(filename);
+    std::filesystem::create_directories(filePath.parent_path());
+
+    nlohmann::json json;
+    json["nodeType"] = node->nodeType;
+    json["displayName"] = node->displayName;
+    json["parameters"] = inspector->ExtractParams();
+
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        file << json.dump(4);
+        file.close();
+    }
+}
+
+/// <summary>
+/// ノードパラメータをJSONファイルから読み込み
+/// </summary>
+void BossNodeEditor::LoadNodeParamsFromFile(EditorNode* node, IBTNodeInspector* inspector) {
+    if (!node || !inspector) return;
+
+    // 読み込みパス（自動命名）
+    std::string filename = "resources/Json/NodeParams/" + node->nodeType + "_" + node->displayName + ".json";
+
+    std::ifstream file(filename);
+    if (!file.is_open()) return;
+
+    nlohmann::json json;
+    file >> json;
+    file.close();
+
+    // ノードタイプが一致する場合のみ適用
+    if (json.contains("nodeType") && json["nodeType"] == node->nodeType) {
+        if (json.contains("parameters")) {
+            inspector->ApplyParams(json["parameters"]);
+        }
+    }
 }
 
 /// <summary>
@@ -1211,45 +1341,22 @@ void BossNodeEditor::BuildRuntimeTreeRecursive(int nodeId, BTNodePtr& outNode) {
 /// ノードパラメータを抽出
 /// </summary>
 nlohmann::json BossNodeEditor::ExtractNodeParameters(const EditorNode& node) {
-    nlohmann::json params;
+    if (!node.runtimeNode) return {};
 
-    if (!node.runtimeNode) {
-        return params;
-    }
-
-    // BTActionSelectorの場合
-    if (node.nodeType == "BTActionSelector") {
-        auto actionSelector = std::dynamic_pointer_cast<BTActionSelector>(node.runtimeNode);
-        if (actionSelector) {
-            params["actionType"] = static_cast<int>(actionSelector->GetActionType());
-        }
-    }
-    // 今後、他のノードタイプのパラメータもここに追加
-    // else if (node.nodeType == "BTBossDash") {
-    //     params["dashSpeed"] = 10.0f;
-    //     params["dashDuration"] = 1.5f;
-    // }
-
-    return params;
+    auto inspector = CreateNodeInspector(node.runtimeNode);
+    return inspector ? inspector->ExtractParams() : nlohmann::json{};
 }
 
 /// <summary>
 /// ノードパラメータを適用
 /// </summary>
 void BossNodeEditor::ApplyNodeParameters(EditorNode& node, const nlohmann::json& params) {
-    if (!node.runtimeNode || params.empty()) {
-        return;
-    }
+    if (!node.runtimeNode || params.empty()) return;
 
-    // BTActionSelectorの場合
-    if (node.nodeType == "BTActionSelector" && params.contains("actionType")) {
-        auto actionSelector = std::dynamic_pointer_cast<BTActionSelector>(node.runtimeNode);
-        if (actionSelector) {
-            int actionType = params["actionType"];
-            actionSelector->SetActionType(static_cast<BTActionSelector::ActionType>(actionType));
-        }
+    auto inspector = CreateNodeInspector(node.runtimeNode);
+    if (inspector) {
+        inspector->ApplyParams(params);
     }
-    // 今後、他のノードタイプのパラメータ適用もここに追加
 }
 
 /// <summary>

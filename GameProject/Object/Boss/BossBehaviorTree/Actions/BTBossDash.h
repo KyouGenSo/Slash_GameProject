@@ -32,6 +32,12 @@ public:
     /// </summary>
     void Reset() override;
 
+    // パラメータ取得・設定
+    float GetDashSpeed() const { return dashSpeed_; }
+    void SetDashSpeed(float speed) { dashSpeed_ = speed; }
+    float GetDashDuration() const { return dashDuration_; }
+    void SetDashDuration(float duration) { dashDuration_ = duration; }
+
 private:
     /// <summary>
     /// ダッシュパラメータの初期化
