@@ -51,12 +51,14 @@ void Player::Initialize()
     gv->AddItem("Player", "MeleeColliderY", 2.0f);
     gv->AddItem("Player", "MeleeColliderZ", 17.0f);
     gv->AddItem("Player", "MeleeColliderOffsetZ", 10.0f);
+    gv->AddItem("Player", "MoveInputDeadzone", 0.1f);
+    gv->AddItem("Player", "RotationLerpSpeed", 0.2f);
 
     model_ = std::make_unique<Object3d>();
     model_->Initialize();
     model_->SetModel("white_cube.gltf");
 
-    transform_.translate = Vector3(0.0f, kInitialY, kInitialZ);
+    transform_.translate = Vector3(0.0f, initialY_, initialZ_);
     transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
     transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
@@ -182,8 +184,12 @@ void Player::Move(float speedMultiplier)
 {
     if (!inputHandlerPtr_) return;
 
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    float deadzone = gv->GetValueFloat("Player", "MoveInputDeadzone");
+    float rotationLerpSpeed = gv->GetValueFloat("Player", "RotationLerpSpeed");
+
     Vector2 moveDir = inputHandlerPtr_->GetMoveDirection();
-    if (moveDir.Length() < kMoveInputDeadzone) return;
+    if (moveDir.Length() < deadzone) return;
 
     // 3Dベクトルに変換
     velocity_ = { moveDir.x, 0.0f, moveDir.y };
@@ -203,7 +209,7 @@ void Player::Move(float speedMultiplier)
     if (velocity_.Length() > kVelocityEpsilon)
     {
         targetAngle_ = std::atan2(velocity_.x, velocity_.z);
-        transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, kRotationLerpSpeed);
+        transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, rotationLerpSpeed);
     }
 }
 
@@ -218,7 +224,7 @@ void Player::MoveToTarget(Boss* target, float deltaTime)
     direction.y = 0.0f;
 
     float distance = direction.Length();
-    if (distance > kAttackStartDistance) {
+    if (distance > attackStartDistance_) {
         direction = direction.Normalize();
 
         // ターゲットに向かって移動
@@ -227,7 +233,7 @@ void Player::MoveToTarget(Boss* target, float deltaTime)
 
         // ターゲットの方向を向く
         targetAngle_ = std::atan2(direction.x, direction.z);
-        transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, kAttackMoveRotationLerp);
+        transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, attackMoveRotationLerp_);
     }
 }
 
@@ -288,7 +294,7 @@ void Player::LookAtBoss()
     float targetAngle = std::atan2(toTarget.x, toTarget.z);
 
     // スムーズに補間して回転
-    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle, kBossLookatLerp);
+    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle, bossLookatLerp_);
 }
 
 void Player::OnMeleeAttackHit(Collider* other)
@@ -491,6 +497,16 @@ void Player::DrawImGui()
             // Combat Parameters
             if (ImGui::TreeNode("Combat Parameters")) {
                 ImGui::SliderFloat("Attack Move Speed", &attackMoveSpeed_, 0.5f, 10.0f);
+                ImGui::SliderFloat("Attack Start Distance", &attackStartDistance_, 1.0f, 10.0f);
+                ImGui::SliderFloat("Attack Move Rotation Lerp", &attackMoveRotationLerp_, 0.01f, 1.0f);
+                ImGui::SliderFloat("Boss Lookat Lerp", &bossLookatLerp_, 0.01f, 2.0f);
+                ImGui::TreePop();
+            }
+
+            // Initial Position (調整用)
+            if (ImGui::TreeNode("Initial Position")) {
+                ImGui::DragFloat("Initial Y", &initialY_, 0.1f, 0.0f, 10.0f);
+                ImGui::DragFloat("Initial Z", &initialZ_, 1.0f, -200.0f, 0.0f);
                 ImGui::TreePop();
             }
 

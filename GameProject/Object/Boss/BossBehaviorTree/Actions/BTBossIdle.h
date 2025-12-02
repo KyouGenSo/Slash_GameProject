@@ -12,7 +12,6 @@ class BTBossIdle : public BTNode {
     // 定数
     //=========================================================================================
 private:
-    static constexpr float kRotationSpeed = 5.0f;       ///< 回転速度（ラジアン/秒）
     static constexpr float kDirectionEpsilon = 0.01f;   ///< 方向判定の閾値
 
 public:
@@ -83,6 +82,9 @@ private:
 
     // 待機時間（次の行動までの時間）
     float idleDuration_ = 2.0f;
+
+    // 回転速度（ラジアン/秒）
+    float rotationSpeed_ = 5.0f;
 
     // 経過時間
     float elapsedTime_ = 0.0f;

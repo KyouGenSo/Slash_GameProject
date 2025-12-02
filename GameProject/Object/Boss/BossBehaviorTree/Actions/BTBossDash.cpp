@@ -109,7 +109,7 @@ void BTBossDash::UpdateDashMovement(Boss* boss, float deltaTime) {
         boss->SetTranslate(newPosition);
 
         // ダッシュエフェクト的な表現（少し振動させる）
-        float vibration = sinf(elapsedTime_ * kVibrationFreq) * kVibrationAmp;
+        float vibration = sinf(elapsedTime_ * vibrationFreq_) * vibrationAmp_;
         Vector3 currentPos = boss->GetTransform().translate;
         currentPos.y += vibration;
         boss->SetTranslate(currentPos);
@@ -121,10 +121,10 @@ Vector3 BTBossDash::ClampToArea(const Vector3& position) {
 
     // GameConfigのステージ境界を使用
     // X座標の制限
-    clampedPos.x = std::clamp(clampedPos.x, GameConfig::kStageXMin + kAreaMargin, GameConfig::kStageXMax - kAreaMargin);
+    clampedPos.x = std::clamp(clampedPos.x, GameConfig::kStageXMin + areaMargin_, GameConfig::kStageXMax - areaMargin_);
 
     // Z座標の制限
-    clampedPos.z = std::clamp(clampedPos.z, GameConfig::kStageZMin + kAreaMargin, GameConfig::kStageZMax - kAreaMargin);
+    clampedPos.z = std::clamp(clampedPos.z, GameConfig::kStageZMin + areaMargin_, GameConfig::kStageZMax - areaMargin_);
 
     // Y座標は元の値を保持
     clampedPos.y = position.y;
@@ -153,6 +153,18 @@ bool BTBossDash::DrawImGui() {
         changed = true;
     }
     if (ImGui::DragFloat("Max Distance##dash", &maxDistance_, 0.1f, 0.0f, 100.0f)) {
+        changed = true;
+    }
+
+    ImGui::Separator();
+    ImGui::Text("Effect Parameters:");
+    if (ImGui::DragFloat("Vibration Freq##dash", &vibrationFreq_, 1.0f, 1.0f, 100.0f)) {
+        changed = true;
+    }
+    if (ImGui::DragFloat("Vibration Amp##dash", &vibrationAmp_, 0.01f, 0.0f, 0.5f)) {
+        changed = true;
+    }
+    if (ImGui::DragFloat("Area Margin##dash", &areaMargin_, 0.5f, 0.0f, 20.0f)) {
         changed = true;
     }
 

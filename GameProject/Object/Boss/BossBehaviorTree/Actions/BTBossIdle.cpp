@@ -84,10 +84,10 @@ void BTBossIdle::LookAtPlayer(Boss* boss, float deltaTime) {
         while (angleDiff < -kPi) angleDiff += kTwoPi;
 
         // スムーズに回転（回転速度を調整）
-        float rotationAmount = angleDiff * kRotationSpeed * deltaTime;
+        float rotationAmount = angleDiff * rotationSpeed_ * deltaTime;
 
         // 回転量を制限（急激な回転を防ぐ）
-        float maxRotationPerFrame = kRotationSpeed * deltaTime;
+        float maxRotationPerFrame = rotationSpeed_ * deltaTime;
         if (fabs(rotationAmount) > maxRotationPerFrame) {
             rotationAmount = (rotationAmount > 0) ? maxRotationPerFrame : -maxRotationPerFrame;
         }
@@ -108,6 +108,9 @@ bool BTBossIdle::DrawImGui() {
     bool changed = false;
 
     if (ImGui::DragFloat("Idle Duration##idle", &idleDuration_, 0.1f, 0.0f, 10.0f)) {
+        changed = true;
+    }
+    if (ImGui::DragFloat("Rotation Speed##idle", &rotationSpeed_, 0.1f, 0.1f, 20.0f)) {
         changed = true;
     }
 

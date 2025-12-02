@@ -37,7 +37,7 @@ void Boss::Initialize()
     model_->SetModel("white_cube.gltf");
     model_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
-    transform_.translate = Vector3(0.0f, kInitialY, kInitialZ);
+    transform_.translate = Vector3(0.0f, initialY_, initialZ_);
     transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
     transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
@@ -260,6 +260,12 @@ void Boss::DrawImGui()
             transform_.rotate.x, transform_.rotate.y, transform_.rotate.z);
         ImGui::Text("Scale: (%.2f, %.2f, %.2f)",
             transform_.scale.x, transform_.scale.y, transform_.scale.z);
+
+        // 初期位置の調整
+        ImGui::Separator();
+        ImGui::Text("Initial Position (for respawn):");
+        ImGui::DragFloat("Initial Y", &initialY_, 0.1f, 0.0f, 10.0f);
+        ImGui::DragFloat("Initial Z", &initialZ_, 1.0f, -50.0f, 50.0f);
     }
 
     // ===== セクション6: コライダー（折りたたみ可能） =====

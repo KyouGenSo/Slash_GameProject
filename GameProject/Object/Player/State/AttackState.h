@@ -12,7 +12,6 @@ class AttackState : public PlayerState
 	//=========================================================================================
 private:
     static constexpr float kBlockStartAngle = 1.5708f;  ///< ブロック開始角度（π/2）
-	static constexpr float kBlockScale = 0.5f;          ///< ブロックのスケール
 
 public:
 	AttackState() : PlayerState("Attack") {}
@@ -51,6 +50,7 @@ private:
 	float blockAngle_ = 0.0f;                         ///< 現在のブロック回転角度
 	float blockRadius_ = 4.0f;                        ///< プレイヤーからの距離
 	float blockSwingAngle_ = 3.14159f;                ///< 振り幅（π = 180度）
+	float blockScale_ = 0.5f;                         ///< ブロックのスケール
 
 	/// <summary>
 	/// ターゲット検索処理

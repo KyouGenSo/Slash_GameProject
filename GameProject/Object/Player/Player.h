@@ -24,15 +24,8 @@ class Player
 	// 定数
 	//=========================================================================================
 private:
-    static constexpr float kInitialY = 2.5f;
-	static constexpr float kInitialZ = -120.0f;
-	static constexpr float kMoveInputDeadzone = 0.1f;
-	static constexpr float kVelocityEpsilon = 0.01f;
-	static constexpr float kRotationLerpSpeed = 0.2f;
-	static constexpr float kAttackStartDistance = 4.0f;
-	static constexpr float kAttackMoveRotationLerp = 0.3f;
-	static constexpr float kBossLookatLerp = 1.15f;
-	static constexpr float kBoundaryDisabled = 9999.0f;
+	static constexpr float kVelocityEpsilon = 0.01f;   ///< 速度判定の閾値
+	static constexpr float kBoundaryDisabled = 9999.0f; ///< 境界無効化マーカー
 
 public: // メンバ関数
     Player();
@@ -341,6 +334,13 @@ private: // メンバ変数
     Boss* targetEnemy_ = nullptr;
     bool isAttackHit_ = false;
     float attackMoveSpeed_ = 2.0f;
+
+    // 調整可能パラメータ（ImGui編集用）
+    float initialY_ = 2.5f;                   ///< 初期Y座標
+    float initialZ_ = -120.0f;                ///< 初期Z座標
+    float attackStartDistance_ = 4.0f;        ///< 攻撃開始距離
+    float attackMoveRotationLerp_ = 0.3f;     ///< 攻撃移動中の回転補間速度
+    float bossLookatLerp_ = 1.15f;            ///< ボス視線追従補間速度
 
     // HPバースプライト
     std::unique_ptr<Sprite> hpBarSprite_;

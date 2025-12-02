@@ -2,9 +2,18 @@
 #include "Player.h"
 #include "../Boss/Boss.h"
 #include "../../Collision/CollisionTypeIdDef.h"
+#include "GlobalVariables.h"
 
 MeleeAttackCollider::MeleeAttackCollider(Player* player)
     : player_(player) {
+    // GlobalVariables登録
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    gv->CreateGroup("MeleeAttack");
+    gv->AddItem("MeleeAttack", "AttackDamage", 10.0f);
+
+    // GlobalVariablesから値を取得
+    attackDamage_ = gv->GetValueFloat("MeleeAttack", "AttackDamage");
+
     SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_MELEE_ATTACK));
     SetActive(false);
 }
@@ -18,7 +27,7 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy) {
 
-            enemy->OnHit(kAttackDamage);
+            enemy->OnHit(attackDamage_);
 
             if (!detectedEnemy_) {
                 detectedEnemy_ = enemy;
@@ -42,7 +51,7 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
             detectedEnemy_ = enemy;
             if (canDamage)
             {
-                enemy->OnHit(kAttackDamage);
+                enemy->OnHit(attackDamage_);
                 canDamage = false;
             }
         }

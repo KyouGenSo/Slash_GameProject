@@ -23,11 +23,10 @@ class BossShootState;
 class Boss
 {
 	//=========================================================================================
-	// 定数
+	// 定数（変更不要なもののみ）
 	//=========================================================================================
 private:
-    static constexpr float kInitialY = 2.5f;   ///< 初期Y座標
-	static constexpr float kInitialZ = 10.0f;  ///< 初期Z座標
+	// 定数なし（kInitialY, kInitialZはメンバ変数化）
 
 public:
     /// <summary>
@@ -281,5 +280,9 @@ private:
     std::unique_ptr<Sprite> hpBarSprite2_;
     Vector2 hpBarSize2_{};
     std::unique_ptr<Sprite> hpBarBGSprite_;
+
+    // 調整可能パラメータ（ImGui編集用）
+    float initialY_ = 2.5f;   ///< 初期Y座標
+    float initialZ_ = 10.0f;  ///< 初期Z座標
 };
 

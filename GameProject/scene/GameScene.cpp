@@ -84,10 +84,18 @@ void GameScene::Initialize()
     ///              初期化処理             ///
     /// ================================== ///
 
+    // GlobalVariables登録（描画品質設定）
+    GlobalVariables* gvScene = GlobalVariables::GetInstance();
+    gvScene->CreateGroup("GameScene");
+    gvScene->AddItem("GameScene", "ShadowMaxDistance", 100.0f);
+    gvScene->AddItem("GameScene", "DirectionalLightZ", -0.05f);
+
     // シャドウマッピンの最大描画距離の設定
-    ShadowRenderer::GetInstance()->SetMaxShadowDistance(kShadowMaxDistance);
+    float shadowMaxDist = gvScene->GetValueFloat("GameScene", "ShadowMaxDistance");
+    ShadowRenderer::GetInstance()->SetMaxShadowDistance(shadowMaxDist);
     // 平行光源の方向の設定
-    Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, kDirectionalLightZ));
+    float lightZ = gvScene->GetValueFloat("GameScene", "DirectionalLightZ");
+    Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, lightZ));
 
     // タイトルボタンテキストの初期化
     toTitleSprite_ = std::make_unique<Sprite>();
@@ -424,19 +432,19 @@ void GameScene::UpdateOverAnim()
     if (isOver_) overAnimTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
 
     // オーバーアニメーション中のエミッター制御
-    if (overAnimTimer_ > kOverEmit1Time && !isOver1Emit_) {
+    if (overAnimTimer_ > overEmit1Time_ && !isOver1Emit_) {
         emitterManager_->CreateTemporaryEmitterFrom("over1", "over1_temp", 0.5f);
         isOver1Emit_ = true;
     }
 
-    if (overAnimTimer_ > kOverEmit2Time && !isOver2Emit_) {
+    if (overAnimTimer_ > overEmit2Time_ && !isOver2Emit_) {
         emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
         isOver2Emit_ = true;
     }
 
     // プレイヤースケールの減少
     if (isOver2Emit_) {
-        Vector3 newScale = player_->GetScale() - Vector3(kScaleDecreaseRate, kScaleDecreaseRate, kScaleDecreaseRate) * FrameTimer::GetInstance()->GetDeltaTime();
+        Vector3 newScale = player_->GetScale() - Vector3(scaleDecreaseRate_, scaleDecreaseRate_, scaleDecreaseRate_) * FrameTimer::GetInstance()->GetDeltaTime();
         newScale.x = std::max<float>(newScale.x, 0.0f);
         newScale.y = std::max<float>(newScale.y, 0.0f);
         newScale.z = std::max<float>(newScale.z, 0.0f);
@@ -444,7 +452,7 @@ void GameScene::UpdateOverAnim()
     }
 
     // シーン遷移
-    if (overAnimTimer_ > kOverTotalTime) {
+    if (overAnimTimer_ > overTotalTime_) {
         SceneManager::GetInstance()->ChangeScene("over", "Fade", 0.3f);
     }
 }
@@ -491,7 +499,7 @@ void GameScene::UpdateClearAnim()
 
     // ボススケールの減少
     if (isClear2Emit_) {
-        Vector3 newScale = boss_->GetScale() - Vector3(kScaleDecreaseRate, kScaleDecreaseRate, kScaleDecreaseRate) * FrameTimer::GetInstance()->GetDeltaTime();
+        Vector3 newScale = boss_->GetScale() - Vector3(scaleDecreaseRate_, scaleDecreaseRate_, scaleDecreaseRate_) * FrameTimer::GetInstance()->GetDeltaTime();
         newScale.x = std::max<float>(newScale.x, 0.0f);
         newScale.y = std::max<float>(newScale.y, 0.0f);
         newScale.z = std::max<float>(newScale.z, 0.0f);
@@ -661,7 +669,7 @@ void GameScene::UpdateDashEmitter(float deltaTime)
             Vector3 diff = player_->GetTranslate() - dashEmitterPosition_;
             float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
-            if (distanceSquared < kDashEmitterThreshold * kDashEmitterThreshold) {
+            if (distanceSquared < dashEmitterThreshold_ * dashEmitterThreshold_) {
                 emitterManager_->SetEmitterActive("player_dash", false);
                 dashEmitterActive_ = false;
             }

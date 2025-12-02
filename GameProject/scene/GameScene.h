@@ -27,18 +27,6 @@ class BossBullet;
 /// </summary>
 class GameScene : public BaseScene
 {
-    //=========================================================================================
-    // 定数
-    //=========================================================================================
-private:
-    static constexpr float kShadowMaxDistance = 100.0f;       ///< シャドウマッピング最大距離
-    static constexpr float kDirectionalLightZ = -0.05f;       ///< 平行光源のZ方向
-    static constexpr float kOverEmit1Time = 2.0f;             ///< オーバー演出エミッター1発生時間
-    static constexpr float kOverEmit2Time = 2.8f;             ///< オーバー演出エミッター2発生時間
-    static constexpr float kOverTotalTime = 3.8f;             ///< オーバー演出総時間
-    static constexpr float kScaleDecreaseRate = 5.0f;         ///< スケール減少速度
-    static constexpr float kDashEmitterThreshold = 0.65f;     ///< ダッシュエミッター追従閾値
-
 public: // メンバ関数
     /// <summary>
     /// 初期化
@@ -173,4 +161,11 @@ private: // メンバ変数
     /// </summary>
     /// <param name="deltaTime">フレーム間の経過時間</param>
     void UpdateDashEmitter(float deltaTime);
+
+    // 調整可能パラメータ（演出調整用）
+    float overEmit1Time_ = 2.0f;             ///< オーバー演出エミッター1発生時間
+    float overEmit2Time_ = 2.8f;             ///< オーバー演出エミッター2発生時間
+    float overTotalTime_ = 3.8f;             ///< オーバー演出総時間
+    float scaleDecreaseRate_ = 5.0f;         ///< スケール減少速度
+    float dashEmitterThreshold_ = 0.65f;     ///< ダッシュエミッター追従閾値
 };

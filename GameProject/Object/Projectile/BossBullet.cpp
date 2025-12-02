@@ -16,18 +16,20 @@ BossBullet::BossBullet(EmitterManager* emittermanager) {
     GlobalVariables* gv = GlobalVariables::GetInstance();
     gv->CreateGroup("BossBullet");
     gv->AddItem("BossBullet", "ColliderRadius", 1.0f);
+    gv->AddItem("BossBullet", "Damage", 10.0f);
+    gv->AddItem("BossBullet", "Lifetime", 5.0f);
 
-    // 弾のパラメータ設定
-    damage_ = kDamage;
-    lifeTime_ = kLifetime;
+    // 弾のパラメータ設定（GlobalVariablesから取得）
+    damage_ = gv->GetValueFloat("BossBullet", "Damage");
+    lifeTime_ = gv->GetValueFloat("BossBullet", "Lifetime");
 
     // ランダムな回転速度を設定
     RandomEngine* rng = RandomEngine::GetInstance();
 
     rotationSpeed_ = Vector3(
-        rng->GetFloat(kRotationSpeedMin, kRotationSpeedMax),
-        rng->GetFloat(kRotationSpeedMin, kRotationSpeedMax),
-        rng->GetFloat(kRotationSpeedMin, kRotationSpeedMax)
+        rng->GetFloat(rotationSpeedMin_, rotationSpeedMax_),
+        rng->GetFloat(rotationSpeedMin_, rotationSpeedMax_),
+        rng->GetFloat(rotationSpeedMin_, rotationSpeedMax_)
     );
 
     // エミッターマネージャーの設定
@@ -134,7 +136,7 @@ void BossBullet::Update(float deltaTime) {
     Vector3 pos = transform_.translate;
     if (pos.x < GameConfig::kStageXMin || pos.x > GameConfig::kStageXMax ||
         pos.z < GameConfig::kStageZMin || pos.z > GameConfig::kStageZMax ||
-        pos.y < kYBoundaryMin || pos.y > kYBoundaryMax) {
+        pos.y < yBoundaryMin_ || pos.y > yBoundaryMax_) {
         isActive_ = false;
     }
 }

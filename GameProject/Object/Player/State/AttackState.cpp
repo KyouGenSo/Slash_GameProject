@@ -187,7 +187,7 @@ void AttackState::UpdateBlockPosition(Player* player)
     Transform blockTransform;
     blockTransform.translate = blockPos;
     blockTransform.rotate = { 0.0f, worldAngle, 0.0f };
-    blockTransform.scale = { kBlockScale, kBlockScale, kBlockScale };
+    blockTransform.scale = { blockScale_, blockScale_, blockScale_ };
 
     block->SetTransform(blockTransform);
 }
@@ -252,6 +252,16 @@ void AttackState::DrawImGui(Player* player)
         ImGui::SliderFloat("Attack Duration", &attackDuration_, 0.1f, 2.0f);
         ImGui::SliderFloat("Max Search Time", &maxSearchTime_, 0.05f, 1.0f);
         ImGui::SliderFloat("Max Move Time", &maxMoveTime_, 0.1f, 2.0f);
+
+        ImGui::TreePop();
+    }
+
+    // ブロックパラメータ
+    if (ImGui::TreeNode("Block Parameters")) {
+        ImGui::SliderFloat("Block Radius", &blockRadius_, 1.0f, 10.0f);
+        ImGui::SliderFloat("Block Swing Angle", &blockSwingAngle_, 0.5f, 6.28f);
+        ImGui::SliderFloat("Block Scale", &blockScale_, 0.1f, 2.0f);
+        ImGui::Text("Current Block Angle: %.2f", blockAngle_);
 
         ImGui::TreePop();
     }
