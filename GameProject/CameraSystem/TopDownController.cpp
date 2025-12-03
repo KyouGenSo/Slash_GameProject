@@ -4,7 +4,7 @@
 #include <numeric>
 
 TopDownController::TopDownController() {
-    // 初期化は設定値で行う
+    // デフォルト値設定
     currentHeight_ = 88.f;
     currentBackOffset_ = -205.f;
 }

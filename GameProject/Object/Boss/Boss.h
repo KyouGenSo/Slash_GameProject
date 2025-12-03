@@ -22,11 +22,16 @@ class BossShootState;
 /// </summary>
 class Boss
 {
-	//=========================================================================================
-	// 定数（変更不要なもののみ）
-	//=========================================================================================
+    // 定数
 private:
-	// 定数なし（kInitialY, kInitialZはメンバ変数化）
+    // 最大HP
+    static constexpr float kMaxHp = 200.0f;
+
+    // フェーズ2開始HP閾値
+    static constexpr float kPhase2Threshold = 110.0f;
+
+    // フェーズ2開始時のHP
+    static constexpr float kPhase2InitialHp = 100.0f;
 
 public:
     /// <summary>
@@ -200,6 +205,12 @@ public:
     float GetHp() const { return hp_; }
 
     /// <summary>
+    /// 最大HPを取得
+    /// </summary>
+    /// <returns>最大HP値</returns>
+    static constexpr float GetMaxHp() { return kMaxHp; }
+
+    /// <summary>
     /// 現在のフェーズを取得
     /// </summary>
     /// <returns>フェーズ番号</returns>
@@ -238,14 +249,8 @@ private:
     // プレイヤーへの参照
     Player* player_ = nullptr;
 
-    // 最大HP
-    const float kMaxHp_ = 200.0f;
-
-    // フェーズ2開始HP閾値
-    const float kPhase2HP = 110.0f;
-
     // ボスの現在HP（0になると撃破、初期値200）
-    float hp_ = kMaxHp_;
+    float hp_ = kMaxHp;
 
     // ボスのライフ（HPが0になるたびに減少、0でゲームクリア）
     uint8_t life_ = 1;
@@ -284,5 +289,9 @@ private:
     // 調整可能パラメータ（ImGui編集用）
     float initialY_ = 2.5f;   ///< 初期Y座標
     float initialZ_ = 10.0f;  ///< 初期Z座標
+
+    // HPバー画面位置（メンバー変数）
+    float hpBarScreenXRatio_ = 0.65f;   ///< HPバーX座標（画面幅に対する比率）
+    float hpBarScreenYRatio_ = 0.05f;   ///< HPバーY座標（画面高さに対する比率）
 };
 

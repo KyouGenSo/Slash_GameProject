@@ -7,6 +7,8 @@
 #include <fstream>
 #include <filesystem>
 #include <cmath>
+#include <numbers>
+#include <DirectXMath.h>
 
 #ifdef _DEBUG
 #include <imgui.h>
@@ -17,10 +19,10 @@
 /// コンストラクタ
 /// </summary>
 CameraAnimation::CameraAnimation() {
-    keyframes_.reserve(32); // 予め領域を確保
+    keyframes_.reserve(GameConst::Camera::kKeyframeReserve); // 予め領域を確保
 
     // FOV復元用変数の初期化
-    originalFov_ = 45.0f;  // デフォルトFOV
+    originalFov_ = defaultFov_;
     hasOriginalFov_ = false;
 }
 
@@ -507,7 +509,7 @@ Vector3 CameraAnimation::QuaternionToEuler(const Quaternion& q) const {
     // Pitch (Y軸回転)
     float sinp = 2.0f * (q.w * q.y - q.z * q.x);
     if (std::abs(sinp) >= 1.0f) {
-        euler.y = std::copysignf(3.14159265f / 2.0f, sinp); // ジンバルロック時
+        euler.y = std::copysignf(std::numbers::pi_v<float> / 2.0f, sinp); // ジンバルロック時
     } else {
         euler.y = std::asinf(sinp);
     }
@@ -925,23 +927,23 @@ void CameraAnimation::DrawImGui() {
 
             // 回転（度単位で表示）
             Vector3 rotationDegrees = {
-                tempKeyframe_.rotation.x * 180.0f / 3.14159265f,
-                tempKeyframe_.rotation.y * 180.0f / 3.14159265f,
-                tempKeyframe_.rotation.z * 180.0f / 3.14159265f
+                DirectX::XMConvertToDegrees(tempKeyframe_.rotation.x),
+                DirectX::XMConvertToDegrees(tempKeyframe_.rotation.y),
+                DirectX::XMConvertToDegrees(tempKeyframe_.rotation.z)
             };
             if (ImGui::DragFloat3("Rotation (deg)", &rotationDegrees.x, 1.0f)) {
                 tempKeyframe_.rotation = {
-                    rotationDegrees.x * 3.14159265f / 180.0f,
-                    rotationDegrees.y * 3.14159265f / 180.0f,
-                    rotationDegrees.z * 3.14159265f / 180.0f
+                    DirectX::XMConvertToRadians(rotationDegrees.x),
+                    DirectX::XMConvertToRadians(rotationDegrees.y),
+                    DirectX::XMConvertToRadians(rotationDegrees.z)
                 };
                 ApplyKeyframeToCamera(selectedKeyframeIndex_);
             }
 
             // FOV（度単位で表示）
-            float fovDegrees = tempKeyframe_.fov * 180.0f / 3.14159265f;
+            float fovDegrees = DirectX::XMConvertToDegrees(tempKeyframe_.fov);
             if (ImGui::DragFloat("FOV (deg)", &fovDegrees, 0.5f, 10.0f, 120.0f)) {
-                tempKeyframe_.fov = fovDegrees * 3.14159265f / 180.0f;
+                tempKeyframe_.fov = DirectX::XMConvertToRadians(fovDegrees);
                 ApplyKeyframeToCamera(selectedKeyframeIndex_);
             }
 

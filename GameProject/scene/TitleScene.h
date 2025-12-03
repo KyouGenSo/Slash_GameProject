@@ -7,6 +7,7 @@
 #include "AABB.h"
 #include "EmitterManager.h"
 #include "PostEffectManager.h"
+#include "../Common/GameConst.h"
 
 /// <summary>
 /// タイトルシーンクラス
@@ -144,7 +145,18 @@ private: // メンバ変数
 	RGBSplitParam rgbSplitParam_{};  ///< RGBSplitポストエフェクトのパラメータ
 	VignetteParam vignetteParam_{};  ///< Vignetteポストエフェクトのパラメータ
 
-	float offsetY = -1000.0f;  ///< Y方向オフセット（用途不明・要確認）
+	float offsetY = GameConst::Camera::kHiddenY;  ///< カメラ非表示用Y方向オフセット
+
+	// === カメラ位置用変数 === //
+	float cameraY_ = 9.0f;  ///< カメラY座標
+	float cameraZ_ = -34.0f;  ///< カメラZ座標
+
+	// === UI位置・サイズ用変数 === //
+	float titleTextWidth_ = 500.0f;  ///< タイトルテキスト幅
+	float titleTextHeight_ = 200.0f;  ///< タイトルテキスト高さ
+	float titleTextY_ = 100.0f;  ///< タイトルテキストY座標
+	float startButtonBottomOffset_ = 250.0f;  ///< スタートボタン下端からのオフセット
+	float sceneTransitionProgress_ = 0.9f;  ///< シーン遷移トリガー進行度
 
 	// === タイトルテキストアニメーション制御用変数 === //
 	int currentFrame_ = 0;  ///< 現在表示中のフレーム番号（0〜9）

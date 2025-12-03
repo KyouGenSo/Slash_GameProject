@@ -3,6 +3,7 @@
 
 #include "BaseScene.h"
 #include "vector2.h"
+#include "../Common/GameConst.h"
 
 class Sprite;
 
@@ -47,8 +48,12 @@ private: // メンバ変数
     std::unique_ptr<Sprite> titleText_ = nullptr;
     std::unique_ptr<Sprite> pressButtonText_ = nullptr;
 
-    Vector2 backGround_Pos_ = { 0.0f, 0.0f };
-    Vector2 title_Pos_ = { 396.0f, 170.0f };
-    Vector2 pressButton_Pos_ = { 530.8f, 463.2f };
+    // カメラ非表示Y座標
+    float cameraHiddenY_ = GameConst::Camera::kHiddenY;
+
+    // UI位置・サイズ用変数
+    float titleTextHalfWidth_ = 250.0f;  ///< タイトルテキスト半幅（センタリング用）
+    float titleTextY_ = 300.0f;  ///< タイトルテキストY座標
+    float buttonBottomOffset_ = 300.0f;  ///< ボタン下端からのオフセット
 };
 

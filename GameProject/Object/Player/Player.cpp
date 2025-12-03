@@ -15,9 +15,8 @@
 #include "CollisionManager.h"
 #include "../../Collision/CollisionTypeIdDef.h"
 #include "../Boss/Boss.h"
-#include "../../Config/GameConfig.h"
 #include "GlobalVariables.h"
-
+#include "../../Common/GameConst.h"
 #include "FrameTimer.h"
 #include "Sprite.h"
 
@@ -53,6 +52,12 @@ void Player::Initialize()
     gv->AddItem("Player", "MeleeColliderOffsetZ", 10.0f);
     gv->AddItem("Player", "MoveInputDeadzone", 0.1f);
     gv->AddItem("Player", "RotationLerpSpeed", 0.2f);
+    gv->AddItem("Player", "Speed", speed_);
+    gv->AddItem("Player", "InitialY", initialY_);
+    gv->AddItem("Player", "InitialZ", initialZ_);
+    gv->AddItem("Player", "AttackStartDistance", attackMinDist_);
+    gv->AddItem("Player", "AttackMoveRotationLerp", attackMoveRotationLerp_);
+    gv->AddItem("Player", "BossLookatLerp", bossLookatLerp_);
 
     model_ = std::make_unique<Object3d>();
     model_->Initialize();
@@ -72,16 +77,16 @@ void Player::Initialize()
     hpBarSprite_->SetAnchorPoint(Vector2(1.0f, 0.0f));
     hpBarSprite_->SetColor({ 0.3f, 1.0f, 0.3f, 1.0f });
     hpBarSprite_->SetPos(Vector2(
-        WinApp::clientWidth * 0.35f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
 
     hpBarBGSprite_ = std::make_unique<Sprite>();
     hpBarBGSprite_->Initialize("white.png");
     hpBarBGSprite_->SetSize(hpBarSize_);
     hpBarBGSprite_->SetAnchorPoint(Vector2(1.0f, 0.0f));
     hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * 0.35f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
 
     // State Machineの初期化
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);
@@ -116,16 +121,24 @@ void Player::Finalize()
 
 void Player::Update()
 {
+    // GlobalVariablesから値を同期
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    speed_ = gv->GetValueFloat("Player", "Speed");
+    attackMinDist_ = gv->GetValueFloat("Player", "AttackStartDistance");
+    attackMoveRotationLerp_ = gv->GetValueFloat("Player", "AttackMoveRotationLerp");
+    bossLookatLerp_ = gv->GetValueFloat("Player", "BossLookatLerp");
+
     // 死亡判定
     if (hp_ <= 0.0f) isDead_ = true;
 
-    hpBarSprite_->SetSize(Vector2(hpBarSize_.x * (hp_ / 100.0f), hpBarSize_.y));
+    // HPバーの更新
+    hpBarSprite_->SetSize(Vector2(hpBarSize_.x * (hp_ / kMaxHp), hpBarSize_.y));
     hpBarSprite_->SetPos(Vector2(
-        WinApp::clientWidth * 0.35f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
     hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * 0.35f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
     hpBarSprite_->Update();
     hpBarBGSprite_->Update();
 
@@ -140,10 +153,10 @@ void Player::Update()
     LookAtBoss();
 
     // 実効的な制限を計算（静的制限と動的制限の交差）
-    float effectiveXMin = std::max<float>(GameConfig::kStageXMin, dynamicXMin_);
-    float effectiveXMax = std::min<float>(GameConfig::kStageXMax, dynamicXMax_);
-    float effectiveZMin = std::max<float>(GameConfig::kStageZMin, dynamicZMin_);
-    float effectiveZMax = std::min<float>(GameConfig::kStageZMax, dynamicZMax_);
+    float effectiveXMin = std::max<float>(GameConst::kStageXMin, dynamicXMin_);
+    float effectiveXMax = std::min<float>(GameConst::kStageXMax, dynamicXMax_);
+    float effectiveZMin = std::max<float>(GameConst::kStageZMin, dynamicZMin_);
+    float effectiveZMax = std::min<float>(GameConst::kStageZMax, dynamicZMax_);
 
     // 位置制限適用
     transform_.translate.x = std::min<float>(transform_.translate.x, effectiveXMax);
@@ -224,7 +237,7 @@ void Player::MoveToTarget(Boss* target, float deltaTime)
     direction.y = 0.0f;
 
     float distance = direction.Length();
-    if (distance > attackStartDistance_) {
+    if (distance > attackMinDist_) {
         direction = direction.Normalize();
 
         // ターゲットに向かって移動
@@ -497,7 +510,7 @@ void Player::DrawImGui()
             // Combat Parameters
             if (ImGui::TreeNode("Combat Parameters")) {
                 ImGui::SliderFloat("Attack Move Speed", &attackMoveSpeed_, 0.5f, 10.0f);
-                ImGui::SliderFloat("Attack Start Distance", &attackStartDistance_, 1.0f, 10.0f);
+                ImGui::SliderFloat("Attack Start Distance", &attackMinDist_, 1.0f, 10.0f);
                 ImGui::SliderFloat("Attack Move Rotation Lerp", &attackMoveRotationLerp_, 0.01f, 1.0f);
                 ImGui::SliderFloat("Boss Lookat Lerp", &bossLookatLerp_, 0.01f, 2.0f);
                 ImGui::TreePop();

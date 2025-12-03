@@ -78,6 +78,9 @@
     <Filter Include="Object\Boss\BossNodeEditor">
       <UniqueIdentifier>{25c158da-6b5c-4fac-9f5e-e540c569d30e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{2efc4229-8240-4c6f-8339-ac353fe07ab6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGame\MyGame.cpp">
@@ -382,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.h">
       <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\GameConst.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

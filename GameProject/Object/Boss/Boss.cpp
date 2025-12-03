@@ -50,8 +50,8 @@ void Boss::Initialize()
     hpBarSprite1_->SetSize(hpBarSize1_);
     hpBarSprite1_->SetColor({ 0.5f, 0.5f, 1.0f, 1.0f });
     hpBarSprite1_->SetPos(Vector2(
-        WinApp::clientWidth * 0.65f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
 
     hpBarSprite2_ = std::make_unique<Sprite>();
     hpBarSprite2_->Initialize("white.png");
@@ -59,15 +59,15 @@ void Boss::Initialize()
     hpBarSprite2_->SetSize(hpBarSize2_);
     hpBarSprite2_->SetColor({ 1.0f, 0.3f, 0.3f, 1.0f });
     hpBarSprite2_->SetPos(Vector2(
-        WinApp::clientWidth * 0.65f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
 
     hpBarBGSprite_ = std::make_unique<Sprite>();
     hpBarBGSprite_->Initialize("white.png");
     hpBarBGSprite_->SetSize(hpBarSize1_);
     hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * 0.65f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
 
     // Colliderの初期化
     float bodySize = gv->GetValueFloat("Boss", "BodyColliderSize");
@@ -108,22 +108,22 @@ void Boss::Update(float deltaTime)
 {
     // HPバーの更新
     if (phase_ == 1) {
-        hpBarSprite1_->SetSize(Vector2(hpBarSize1_.x * (hp_ - 100.0f) / 100.0f, hpBarSize1_.y));
+        hpBarSprite1_->SetSize(Vector2(hpBarSize1_.x * (hp_ - kPhase2InitialHp) / kPhase2InitialHp, hpBarSize1_.y));
         hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x, hpBarSize2_.y));
     }
     else if (phase_ == 2) {
         hpBarSprite1_->SetSize(Vector2(0.0f, hpBarSize1_.y));
-        hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x * (hp_ / 100.0f), hpBarSize2_.y));
+        hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x * (hp_ / kPhase2InitialHp), hpBarSize2_.y));
     }
     hpBarSprite1_->SetPos(Vector2(
-        WinApp::clientWidth * 0.65f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
     hpBarSprite2_->SetPos(Vector2(
-        WinApp::clientWidth * 0.65f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
     hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * 0.65f,
-        WinApp::clientHeight * 0.05f));
+        WinApp::clientWidth * hpBarScreenXRatio_,
+        WinApp::clientHeight * hpBarScreenYRatio_));
 
     hpBarSprite1_->Update();
     hpBarSprite2_->Update();
@@ -202,7 +202,7 @@ void Boss::UpdateHitEffect(Vector4 color, float duration)
 
 void Boss::UpdatePhaseAndLive()
 {
-    if (hp_ <= kPhase2HP) {
+    if (hp_ <= kPhase2Threshold) {
         isReadyToChangePhase_ = true;
     }
 
@@ -215,7 +215,7 @@ void Boss::UpdatePhaseAndLive()
         }
 
         isReadyToChangePhase_ = false;
-        hp_ = kMaxHp_;
+        hp_ = kMaxHp;
         phase_ = 1;
     }
 }
@@ -228,8 +228,8 @@ void Boss::DrawImGui()
     ImGui::SeparatorText("Basic Status");
 
     // HP表示（数値 + プログレスバー）
-    ImGui::Text("HP: %.1f / %.1f (%.1f%%)", hp_, kMaxHp_, (hp_ / kMaxHp_) * 100.0f);
-    ImGui::ProgressBar(hp_ / kMaxHp_, ImVec2(-1.0f, 0.0f), "");
+    ImGui::Text("HP: %.1f / %.1f (%.1f%%)", hp_, kMaxHp, (hp_ / kMaxHp) * 100.0f);
+    ImGui::ProgressBar(hp_ / kMaxHp, ImVec2(-1.0f, 0.0f), "");
 
     // ライフ、フェーズ
     ImGui::Text("Life: %d", life_);
@@ -326,20 +326,20 @@ void Boss::DrawImGui()
 
     // HP操作
     float tempHp = hp_;
-    if (ImGui::SliderFloat("Set HP", &tempHp, 0.0f, kMaxHp_)) {
-        hp_ = std::clamp(tempHp, 0.0f, kMaxHp_);
+    if (ImGui::SliderFloat("Set HP", &tempHp, 0.0f, kMaxHp)) {
+        hp_ = std::clamp(tempHp, 0.0f, kMaxHp);
     }
 
     // フェーズ切り替え
     ImVec2 buttonSize(ImGui::GetContentRegionAvail().x * 0.48f, 0);
     if (ImGui::Button("Set Phase 1", buttonSize)) {
         SetPhase(1);
-        hp_ = kMaxHp_;
+        hp_ = kMaxHp;
     }
     ImGui::SameLine();
     if (ImGui::Button("Set Phase 2", buttonSize)) {
         SetPhase(2);
-        hp_ = 100.0f;
+        hp_ = kPhase2InitialHp;
     }
 
     // 一時停止トグル
@@ -367,7 +367,7 @@ void Boss::DrawImGui()
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
     if (ImGui::Button("Revive Boss", fullButtonSize)) {
         isDead_ = false;
-        hp_ = kMaxHp_;
+        hp_ = kMaxHp;
         life_ = 1;
         SetPhase(1);
     }

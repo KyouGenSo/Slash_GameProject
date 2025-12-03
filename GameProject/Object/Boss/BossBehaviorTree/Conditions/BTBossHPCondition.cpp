@@ -5,9 +5,6 @@
 #include <imgui.h>
 #endif
 
-// ボスの最大HP（Boss.hのkMaxHp_と同じ値）
-static const float kMaxHp = 200.0f;
-
 BTBossHPCondition::BTBossHPCondition() {
     name_ = "HPCondition";
 }
@@ -22,7 +19,7 @@ BTNodeStatus BTBossHPCondition::Execute(BTBlackboard* blackboard) {
 
     // 現在のHPをパーセンテージに変換
     float currentHp = boss->GetHp();
-    float currentPercent = (currentHp / kMaxHp) * 100.0f;
+    float currentPercent = (currentHp / Boss::GetMaxHp()) * 100.0f;
 
     if (EvaluateCondition(currentPercent)) {
         status_ = BTNodeStatus::Success;

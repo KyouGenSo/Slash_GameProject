@@ -1,7 +1,7 @@
 #include "BossBullet.h"
 #include "BossBulletCollider.h"
 #include "../../Object/Player/Player.h"
-#include "../../Config/GameConfig.h"
+#include "../../Common/GameConst.h"
 #include "ModelManager.h"
 #include "Object3d.h"
 #include "CollisionManager.h"
@@ -134,8 +134,8 @@ void BossBullet::Update(float deltaTime) {
 
     // エリア外に出たら非アクティブ化
     Vector3 pos = transform_.translate;
-    if (pos.x < GameConfig::kStageXMin || pos.x > GameConfig::kStageXMax ||
-        pos.z < GameConfig::kStageZMin || pos.z > GameConfig::kStageZMax ||
+    if (pos.x < GameConst::kStageXMin || pos.x > GameConst::kStageXMax ||
+        pos.z < GameConst::kStageZMin || pos.z > GameConst::kStageZMax ||
         pos.y < yBoundaryMin_ || pos.y > yBoundaryMax_) {
         isActive_ = false;
     }

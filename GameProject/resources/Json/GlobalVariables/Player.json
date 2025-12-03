@@ -1,11 +1,17 @@
 {
     "Player": {
+        "AttackMoveRotationLerp": 0.30000001192092896,
+        "AttackStartDistance": 4.0,
         "BodyColliderSize": 3.200000047683716,
+        "BossLookatLerp": 1.149999976158142,
+        "InitialY": 2.5,
+        "InitialZ": -120.0,
         "MeleeColliderOffsetZ": 10.0,
         "MeleeColliderX": 5.0,
         "MeleeColliderY": 2.0,
         "MeleeColliderZ": 17.0,
         "MoveInputDeadzone": 0.10000000149011612,
-        "RotationLerpSpeed": 0.20000000298023224
+        "RotationLerpSpeed": 0.20000000298023224,
+        "Speed": 0.5
     }
 }

@@ -1,6 +1,7 @@
 #include "BTBossRapidFire.h"
 #include "../../Boss.h"
 #include "../../../Player/Player.h"
+#include "../../../../Common/GameConst.h"
 #include <cmath>
 
 #ifdef _DEBUG
@@ -95,7 +96,7 @@ void BTBossRapidFire::AimAtPlayer(Boss* boss, float deltaTime) {
     Vector3 toPlayer = playerPos - bossPos;
     toPlayer.y = 0.0f; // Y軸は無視
 
-    if (toPlayer.Length() > 0.01f) {
+    if (toPlayer.Length() > GameConst::kDirectionEpsilon) {
         toPlayer = toPlayer.Normalize();
         float angle = atan2f(toPlayer.x, toPlayer.z);
         boss->SetRotate(Vector3(0.0f, angle, 0.0f));
@@ -129,7 +130,7 @@ Vector3 BTBossRapidFire::CalculateDirectionToPlayer(Boss* boss) {
 
     // 水平方向のみで計算
     float distance = sqrtf(toPlayer.x * toPlayer.x + toPlayer.z * toPlayer.z);
-    if (distance > 0.01f) {
+    if (distance > GameConst::kDirectionEpsilon) {
         toPlayer = toPlayer.Normalize();
     } else {
         // プレイヤーが真上にいる場合など

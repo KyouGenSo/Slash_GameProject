@@ -30,9 +30,10 @@ public:
 	void SetFireRate(float rate) { fireRate_ = rate; }
 
 private:
-	float fireRate_ = 0.2f;         ///< 発射レート（秒間隔）
-	float fireRateTimer_ = 0.0f;    ///< 発射間隔タイマー
-	Vector3 aimDirection_;           ///< 照準方向ベクトル
+	float fireRate_ = 0.2f;              ///< 発射レート（秒間隔）
+	float fireRateTimer_ = 0.0f;         ///< 発射間隔タイマー
+	float moveSpeedMultiplier_ = 0.5f;   ///< 射撃中の移動速度倍率
+	Vector3 aimDirection_;                ///< 照準方向ベクトル
 
 	/// <summary>
 	/// 照準方向を計算

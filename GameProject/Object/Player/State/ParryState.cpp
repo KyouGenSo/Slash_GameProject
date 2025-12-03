@@ -2,6 +2,7 @@
 #include "PlayerStateMachine.h"
 #include "../Player.h"
 #include "Input/InputHandler.h"
+#include "GlobalVariables.h"
 #include <algorithm>  // for std::min
 #ifdef _DEBUG
 #include <imgui.h>
@@ -9,18 +10,29 @@
 
 void ParryState::Enter(Player* player)
 {
+	// GlobalVariables登録
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	gv->CreateGroup("ParryState");
+	gv->AddItem("ParryState", "ParryWindow", parryWindow_);
+	gv->AddItem("ParryState", "ParryDuration", parryDuration_);
+
 	// パリィアニメーションを再生
-  // TODO: アニメーション作成後に実装
+	// TODO: アニメーション作成後に実装
 	// player->GetModel()->PlayAnimation("Parry");
-	
+
 	parryTimer_ = 0.0f;
 	perfectParryActive_ = false;
 }
 
 void ParryState::Update(Player* player, float deltaTime)
 {
+	// GlobalVariablesから値を同期
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	parryWindow_ = gv->GetValueFloat("ParryState", "ParryWindow");
+	parryDuration_ = gv->GetValueFloat("ParryState", "ParryDuration");
+
 	parryTimer_ += deltaTime;
-	
+
 	// パリィ時間が終了したら元の状態に戻る
 	if (parryTimer_ >= parryDuration_)
 	{

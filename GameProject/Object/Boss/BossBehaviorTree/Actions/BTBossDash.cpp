@@ -1,8 +1,9 @@
 #include "BTBossDash.h"
 #include "../../Boss.h"
 #include "../../../Player/Player.h"
-#include "../../../../Config/GameConfig.h"
+#include "../../../../Common/GameConst.h"
 #include "RandomEngine.h"
+
 #include <algorithm>
 #include <cmath>
 
@@ -119,12 +120,12 @@ void BTBossDash::UpdateDashMovement(Boss* boss, float deltaTime) {
 Vector3 BTBossDash::ClampToArea(const Vector3& position) {
     Vector3 clampedPos = position;
 
-    // GameConfigのステージ境界を使用
+    // GameConstantsのステージ境界を使用
     // X座標の制限
-    clampedPos.x = std::clamp(clampedPos.x, GameConfig::kStageXMin + areaMargin_, GameConfig::kStageXMax - areaMargin_);
+    clampedPos.x = std::clamp(clampedPos.x, GameConst::kStageXMin + areaMargin_, GameConst::kStageXMax - areaMargin_);
 
     // Z座標の制限
-    clampedPos.z = std::clamp(clampedPos.z, GameConfig::kStageZMin + areaMargin_, GameConfig::kStageZMax - areaMargin_);
+    clampedPos.z = std::clamp(clampedPos.z, GameConst::kStageZMin + areaMargin_, GameConst::kStageZMax - areaMargin_);
 
     // Y座標は元の値を保持
     clampedPos.y = position.y;

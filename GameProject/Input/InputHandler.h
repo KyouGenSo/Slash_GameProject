@@ -95,4 +95,7 @@ private:
 
 	/// キャッシュされた移動方向ベクトル（正規化済み、毎フレーム更新）
 	Vector2 moveDirection_;
+
+	/// 右トリガー射撃判定の閾値
+	float triggerThreshold_ = 0.5f;
 };

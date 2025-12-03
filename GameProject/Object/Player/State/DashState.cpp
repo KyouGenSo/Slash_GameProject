@@ -2,23 +2,35 @@
 #include "PlayerStateMachine.h"
 #include "../Player.h"
 #include "Input/InputHandler.h"
+#include "GlobalVariables.h"
 #ifdef _DEBUG
 #include <imgui.h>
 #endif
 
 void DashState::Enter(Player* player)
 {
+	// GlobalVariables登録
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	gv->CreateGroup("DashState");
+	gv->AddItem("DashState", "Duration", duration_);
+	gv->AddItem("DashState", "Speed", speed_);
+
 	// ダッシュアニメーションを再生
-  // TODO: アニメーション作成後に実装
+	// TODO: アニメーション作成後に実装
 	// player->GetModel()->PlayAnimation("Dash");
-	
+
 	timer_ = 0.0f;
 }
 
 void DashState::Update(Player* player, float deltaTime)
 {
+	// GlobalVariablesから値を同期
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	duration_ = gv->GetValueFloat("DashState", "Duration");
+	speed_ = gv->GetValueFloat("DashState", "Speed");
+
 	timer_ += deltaTime;
-	
+
 	// ダッシュ移動処理
 	player->Move(speed_);
 	

@@ -6,6 +6,7 @@
 #include "../../Boss/Boss.h"
 #include "CollisionManager.h"
 #include "Object3d.h"
+#include "GlobalVariables.h"
 #include <cmath>
 #ifdef _DEBUG
 #include <imgui.h>
@@ -13,6 +14,17 @@
 
 void AttackState::Enter(Player* player)
 {
+    // GlobalVariables登録
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    gv->CreateGroup("AttackState");
+    gv->AddItem("AttackState", "SearchTime", maxSearchTime_);
+    gv->AddItem("AttackState", "MoveTime", maxMoveTime_);
+    gv->AddItem("AttackState", "AttackDuration", attackDuration_);
+    gv->AddItem("AttackState", "MaxCombo", maxCombo_);
+    gv->AddItem("AttackState", "ComboWindow", comboWindow_);
+    gv->AddItem("AttackState", "BlockRadius", blockRadius_);
+    gv->AddItem("AttackState", "BlockScale", blockScale_);
+
     // 攻撃アニメーションを再生
     // TODO: アニメーション作成後に実装
     // player->GetModel()->PlayAnimation("Attack" + std::to_string(comboCount_));
@@ -42,6 +54,16 @@ void AttackState::Enter(Player* player)
 
 void AttackState::Update(Player* player, float deltaTime)
 {
+    // GlobalVariablesから値を同期
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    maxSearchTime_ = gv->GetValueFloat("AttackState", "SearchTime");
+    maxMoveTime_ = gv->GetValueFloat("AttackState", "MoveTime");
+    attackDuration_ = gv->GetValueFloat("AttackState", "AttackDuration");
+    maxCombo_ = gv->GetValueInt("AttackState", "MaxCombo");
+    comboWindow_ = gv->GetValueFloat("AttackState", "ComboWindow");
+    blockRadius_ = gv->GetValueFloat("AttackState", "BlockRadius");
+    blockScale_ = gv->GetValueFloat("AttackState", "BlockScale");
+
     switch (phase_) {
     case SearchTarget:
         // 待機時間をカウント

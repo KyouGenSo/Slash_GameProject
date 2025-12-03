@@ -2,6 +2,7 @@
 #include "Object/Player/Player.h"
 #include "Input.h"
 #include "Vector2.h"
+#include "GlobalVariables.h"
 
 InputHandler::InputHandler()
 {
@@ -13,6 +14,11 @@ InputHandler::~InputHandler()
 
 void InputHandler::Initialize()
 {
+  // GlobalVariables登録
+  GlobalVariables* gv = GlobalVariables::GetInstance();
+  gv->CreateGroup("Input");
+  gv->AddItem("Input", "TriggerThreshold", triggerThreshold_);
+
   isMoving_ = false;
   isDashing_ = false;
   isAttacking_ = false;
@@ -24,6 +30,10 @@ void InputHandler::Initialize()
 
 void InputHandler::Update()
 {
+  // GlobalVariablesから値を同期
+  GlobalVariables* gv = GlobalVariables::GetInstance();
+  triggerThreshold_ = gv->GetValueFloat("Input", "TriggerThreshold");
+
   Input* input = Input::GetInstance();
 
   moveDirection_ = Vector2(0.0f, 0.0f); // 初期化
@@ -37,7 +47,7 @@ void InputHandler::Update()
   isMoving_ = !input->LStickInDeadZone() || moveDirection_.Length() > 0.0f;
   isDashing_ = input->TriggerKey(DIK_SPACE) || input->TriggerButton(XButtons.A);
   isAttacking_ = input->TriggerKey(DIK_Z) || input->TriggerButton(XButtons.X);
-  isShooting_ = input->PushKey(DIK_LCONTROL) || input->GetRightTrigger() > 0.5f;
+  isShooting_ = input->PushKey(DIK_LCONTROL) || input->GetRightTrigger() > triggerThreshold_;
   isParrying_ = input->TriggerKey(DIK_F) || input->TriggerButton(XButtons.B);
   isPaused_ = input->TriggerKey(DIK_ESCAPE) || input->TriggerButton(XButtons.Start);
 }

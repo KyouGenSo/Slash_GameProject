@@ -4,6 +4,7 @@
 #include "Input/InputHandler.h"
 #include "Camera.h"
 #include "Matrix4x4.h"
+#include "GlobalVariables.h"
 #include <algorithm>  // for std::max
 #ifdef _DEBUG
 #include <imgui.h>
@@ -11,33 +12,44 @@
 
 void ShootState::Enter(Player* player)
 {
+	// GlobalVariables登録
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	gv->CreateGroup("ShootState");
+	gv->AddItem("ShootState", "FireRate", fireRate_);
+	gv->AddItem("ShootState", "MoveSpeedMultiplier", moveSpeedMultiplier_);
+
 	// 射撃アニメーションを再生
-  // TODO: アニメーション作成後に実装
+	// TODO: アニメーション作成後に実装
 	// player->GetModel()->PlayAnimation("Shoot");
-	
+
 	fireRateTimer_ = 0.0f;
 }
 
 void ShootState::Update(Player* player, float deltaTime)
 {
+	// GlobalVariablesから値を同期
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	fireRate_ = gv->GetValueFloat("ShootState", "FireRate");
+	moveSpeedMultiplier_ = gv->GetValueFloat("ShootState", "MoveSpeedMultiplier");
+
 	// 発射レートタイマーの更新
 	if (fireRateTimer_ > 0.0f)
 	{
 		fireRateTimer_ -= deltaTime;
 	}
-	
+
 	// エイム方向の計算
 	CalculateAimDirection(player);
-	
+
 	// 射撃可能なら発射
 	if (fireRateTimer_ <= 0.0f)
 	{
 		Fire(player);
 		fireRateTimer_ = fireRate_;
 	}
-	
+
 	// 移動処理
-	player->Move(0.5f);
+	player->Move(moveSpeedMultiplier_);
 }
 
 void ShootState::Exit(Player* player)

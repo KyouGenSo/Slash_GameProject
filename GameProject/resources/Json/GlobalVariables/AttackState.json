@@ -1,0 +1,11 @@
+{
+    "AttackState": {
+        "AttackDuration": 0.10000000149011612,
+        "BlockRadius": 4.0,
+        "BlockScale": 0.5,
+        "ComboWindow": 1.0,
+        "MaxCombo": 2,
+        "MoveTime": 0.10000000149011612,
+        "SearchTime": 0.10000000149011612
+    }
+}

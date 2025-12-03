@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Quaternion.h"
 #include "Transform.h"
+#include "../Common/GameConst.h"
 #include <vector>
 #include <string>
 #include <memory>
@@ -336,6 +337,7 @@ private:
     float blendStartFov_;         ///< ブレンド開始時のFOV
 
     // FOV復元用
+    float defaultFov_ = 45.0f;    ///< デフォルトFOV値
     float originalFov_;           ///< アニメーション開始前の元のFOV値
     bool hasOriginalFov_;         ///< 元のFOVが保存されているかのフラグ
 

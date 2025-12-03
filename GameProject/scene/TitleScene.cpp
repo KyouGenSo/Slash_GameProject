@@ -8,6 +8,7 @@
 #include "Draw2D.h"
 #include "GPUParticle.h"
 #include <cmath>
+#include <numbers>
 
 #ifdef _DEBUG
 #include"ImGui.h"
@@ -379,7 +380,7 @@ void TitleScene::InitializeCamera()
 {
   // カメラの回転と位置を設定
   (*Object3dBasic::GetInstance()->GetCamera())->SetRotate(Vector3(0.2f, 0.0f, 0.0f));
-  (*Object3dBasic::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, 9.0f + offsetY, -34.0f));
+  (*Object3dBasic::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, cameraY_ + offsetY, cameraZ_));
 }
 
 void TitleScene::InitializePostEffects()
@@ -416,8 +417,8 @@ void TitleScene::InitializeSprites()
     std::string texturePath = "title_text/title_text_" + std::to_string(i + 1) + ".png";
     auto sprite = make_unique<Sprite>();
     sprite->Initialize(texturePath);
-    sprite->SetSize(Vector2(500.f, 200.f));
-    sprite->SetPos(Vector2(WinApp::clientWidth / 2.f - 250.f, 100.f));
+    sprite->SetSize(Vector2(titleTextWidth_, titleTextHeight_));
+    sprite->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextWidth_ / 2.f, titleTextY_));
     titleTextSprites_.push_back(std::move(sprite));
   }
 
@@ -426,13 +427,13 @@ void TitleScene::InitializeSprites()
   startButtonText_->Initialize("title_button.png");
   startButtonText_->SetPos(Vector2(
     WinApp::clientWidth / 2.f - startButtonText_->GetSize().x / 2.f,
-    WinApp::clientHeight - 250.f));
+    WinApp::clientHeight - startButtonBottomOffset_));
 
   // タイトルテキストエフェクトの初期化（拡大フェードアウト用）
   titleTextEffect_ = make_unique<Sprite>();
   titleTextEffect_->Initialize("title_text/title_text_10.png");
-  titleTextEffect_->SetSize(Vector2(500.f, 200.f));
-  titleTextEffect_->SetPos(Vector2(WinApp::clientWidth / 2.f - 250.f, 100.f));
+  titleTextEffect_->SetSize(Vector2(titleTextWidth_, titleTextHeight_));
+  titleTextEffect_->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextWidth_ / 2.f, titleTextY_));
   titleTextEffect_->SetAlpha(0.0f);  // 初期状態では非表示
 }
 
@@ -457,13 +458,13 @@ void TitleScene::UpdateWindowResize()
 
   // タイトルテキストの位置更新（すべてのスプライトの位置を更新）
   for (auto& sprite : titleTextSprites_) {
-    sprite->SetPos(Vector2(WinApp::clientWidth / 2.f - sprite->GetSize().x / 2.f, 100.f));
+    sprite->SetPos(Vector2(WinApp::clientWidth / 2.f - sprite->GetSize().x / 2.f, titleTextY_));
   }
 
   // スタートボタンの位置更新
   startButtonText_->SetPos(Vector2(
     WinApp::clientWidth / 2.f - startButtonText_->GetSize().x / 2.f,
-    WinApp::clientHeight - 250.f));
+    WinApp::clientHeight - startButtonBottomOffset_));
 }
 
 void TitleScene::UpdateStartButtonBlink()
@@ -477,7 +478,7 @@ void TitleScene::UpdateStartButtonBlink()
 
   // サイン波を使用してアルファ値を計算
   // sin関数の結果（-1〜1）を0〜1の範囲に正規化し、指定範囲にマッピング
-  float sineValue = std::sin(blinkTimer_ * blinkSpeed_ * 3.14159265f);
+  float sineValue = std::sin(blinkTimer_ * blinkSpeed_ * std::numbers::pi_v<float>);
   float normalizedSine = (sineValue + 1.0f) * 0.5f;  // -1〜1 を 0〜1 に変換
   float alpha = blinkMinAlpha_ + (blinkMaxAlpha_ - blinkMinAlpha_) * normalizedSine;
 
@@ -533,7 +534,7 @@ void TitleScene::UpdateSlashParticleAnimation()
   // 進行度を計算（0.0 〜 1.0）
   float progress = slashEmitterAnimTimer_ / slashEmitterAnimDuration_;
 
-  if (progress >= 0.9f) {
+  if (progress >= sceneTransitionProgress_) {
     SceneManager::GetInstance()->ChangeScene("game","Fade",0.2f);
   }
 
@@ -587,13 +588,13 @@ void TitleScene::UpdateTitleEffectAnimation()
   }
 
   // エフェクトスプライトに適用
-  titleTextEffect_->SetSize(Vector2(500.f * effectScale_, 200.f * effectScale_));
+  titleTextEffect_->SetSize(Vector2(titleTextWidth_ * effectScale_, titleTextHeight_ * effectScale_));
   // 拡大してもセンターに保つために位置を調整
   float centerX = WinApp::clientWidth / 2.f;
-  float centerY = 100.f + 100.f; // 元の位置 + 高さの半分
+  float centerY = titleTextY_ + titleTextHeight_ / 2.f; // 元の位置 + 高さの半分
   titleTextEffect_->SetPos(Vector2(
-    centerX - (250.f * effectScale_),
-    centerY - (100.f * effectScale_)
+    centerX - (titleTextWidth_ / 2.f * effectScale_),
+    centerY - (titleTextHeight_ / 2.f * effectScale_)
   ));
   titleTextEffect_->SetAlpha(effectAlpha_);
   titleTextEffect_->Update();

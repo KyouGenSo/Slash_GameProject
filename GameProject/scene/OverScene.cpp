@@ -29,7 +29,7 @@ void OverScene::Initialize()
 
     // カメラの回転と位置を設定
     (*Object3dBasic::GetInstance()->GetCamera())->SetRotate(Vector3(0.2f, 0.0f, 0.0f));
-    (*Object3dBasic::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, -1000.0f, -34.0f));
+    (*Object3dBasic::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, cameraHiddenY_, -34.0f));
 
     // spriteの初期化
     backGround_ = std::make_unique<Sprite>();
@@ -39,13 +39,13 @@ void OverScene::Initialize()
 
     titleText_ = std::make_unique<Sprite>();
     titleText_->Initialize("gameOver_Text.png");
-    titleText_->SetPos(Vector2(WinApp::clientWidth / 2.f - 250.f, 300.f));
+    titleText_->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextHalfWidth_, titleTextY_));
 
     pressButtonText_ = std::make_unique<Sprite>();
     pressButtonText_->Initialize("title_button.png");
     pressButtonText_->SetPos(Vector2(
         WinApp::clientWidth / 2.f - pressButtonText_->GetSize().x / 2.f,
-        WinApp::clientHeight - 300.f));
+        WinApp::clientHeight - buttonBottomOffset_));
 
 }
 

@@ -338,7 +338,7 @@ private: // メンバ変数
     // 調整可能パラメータ（ImGui編集用）
     float initialY_ = 2.5f;                   ///< 初期Y座標
     float initialZ_ = -120.0f;                ///< 初期Z座標
-    float attackStartDistance_ = 4.0f;        ///< 攻撃開始距離
+    float attackMinDist_ = 5.0f;              ///< 攻撃開始距離
     float attackMoveRotationLerp_ = 0.3f;     ///< 攻撃移動中の回転補間速度
     float bossLookatLerp_ = 1.15f;            ///< ボス視線追従補間速度
 
@@ -346,5 +346,12 @@ private: // メンバ変数
     std::unique_ptr<Sprite> hpBarSprite_;
     std::unique_ptr<Sprite> hpBarBGSprite_;
     Vector2 hpBarSize_{};
+
+    // HPバー画面位置（メンバー変数）
+    float hpBarScreenXRatio_ = 0.35f;   ///< HPバーX座標（画面幅に対する比率）
+    float hpBarScreenYRatio_ = 0.05f;   ///< HPバーY座標（画面高さに対する比率）
+
+    // HP最大値
+    static constexpr float kMaxHp = 100.0f;  ///< HP最大値
 };
 

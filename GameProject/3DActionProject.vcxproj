@@ -237,6 +237,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="CameraSystem\ICameraController.h" />
     <ClInclude Include="CameraSystem\TopDownController.h" />
     <ClInclude Include="Collision\CollisionTypeIdDef.h" />
+    <ClInclude Include="Common\GameConst.h" />
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="MyGame\MyGame.h" />
     <ClInclude Include="Object\Boss\Boss.h" />
