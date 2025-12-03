@@ -137,7 +137,7 @@ public:
 private:
     // ax::NodeEditor コンテキスト
     ed::EditorContext* editorContext_;
-    ed::Config* editorConfig_;
+    std::unique_ptr<ed::Config> editorConfig_;
 
     // エディタデータ
     std::vector<EditorNode> nodes_;

@@ -32,8 +32,8 @@ void MyGame::Initialize()
 #pragma endregion
 
     // シーンの初期化
-    sceneFactory_ = new SceneFactory();
-    SceneManager::GetInstance()->SetSceneFactory(sceneFactory_);
+    sceneFactory_ = std::make_unique<SceneFactory>();
+    SceneManager::GetInstance()->SetSceneFactory(sceneFactory_.get());
     SceneManager::GetInstance()->ChangeScene("title", 0.0f);
 
     // テクスチャの読み込み
@@ -66,7 +66,7 @@ void MyGame::Initialize()
     spriteBasicOnresizeId_ = winApp_->RegisterOnResizeFunc(std::bind(&SpriteBasic::OnResize, SpriteBasic::GetInstance(), std::placeholders::_1));
 
     // GPUパーティクルの初期化
-    GPUParticle::GetInstance()->Initialize(dx12_, defaultCamera_);
+    GPUParticle::GetInstance()->Initialize(dx12_.get(), defaultCamera_.get());
 }
 
 void MyGame::Finalize()

@@ -24,7 +24,7 @@
 /// </summary>
 BossNodeEditor::BossNodeEditor()
     : editorContext_(nullptr)
-    , editorConfig_(nullptr)
+    , editorConfig_()
     , nextNodeId_(10000)    // BossNodeEditor専用: 10000番台
     , nextPinId_(20000)     // BossNodeEditor専用: 20000番台
     , nextLinkId_(30000)    // BossNodeEditor専用: 30000番台
@@ -46,13 +46,13 @@ BossNodeEditor::~BossNodeEditor() {
 /// </summary>
 void BossNodeEditor::Initialize() {
     // エディタコンフィグの作成
-    editorConfig_ = new ed::Config();
+    editorConfig_ = std::make_unique<ed::Config>();
     editorConfig_->SettingsFile = "resources/Json/BossNodeEditor.json";
     editorConfig_->NavigateButtonIndex = 1;        // マウス中ボタンでナビゲート
     editorConfig_->ContextMenuButtonIndex = 2;     // マウス右ボタンでコンテキストメニュー
 
     // エディタコンテキストの作成
-    editorContext_ = ed::CreateEditor(editorConfig_);
+    editorContext_ = ed::CreateEditor(editorConfig_.get());
 
     LoadFromJSON("resources/Json/BossTree.json");
 }
@@ -65,10 +65,8 @@ void BossNodeEditor::Finalize() {
         ed::DestroyEditor(editorContext_);
         editorContext_ = nullptr;
     }
-    if (editorConfig_) {
-        delete editorConfig_;
-        editorConfig_ = nullptr;
-    }
+    // editorConfig_はunique_ptrで自動解放
+    editorConfig_.reset();
     Clear();
 }
 

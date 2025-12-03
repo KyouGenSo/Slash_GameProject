@@ -1,15 +1,13 @@
 #include"TakoFramework.h"
 #include "MyGame/MyGame.h"
+#include <memory>
 
 //Windowsプログラムのエントリーポイント
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-
-  TakoFramework* game = new MyGame();
+  auto game = std::make_unique<MyGame>();
 
   game->Run();
-
-  delete game;
 
   return 0;
 }

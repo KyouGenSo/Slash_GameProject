@@ -9,23 +9,21 @@
 #include "DebugUIManager.h"
 #endif
 
-BaseScene* SceneFactory::CreateScene(const std::string& sceneName)
+std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneName)
 {
-  BaseScene* newScene = nullptr;
-
   if (sceneName == "title") {
-    newScene = new TitleScene();
+    return std::make_unique<TitleScene>();
   } else if (sceneName == "game") {
-    newScene = new GameScene();
+    return std::make_unique<GameScene>();
   } else if (sceneName == "clear") {
-      newScene = new ClearScene();
+    return std::make_unique<ClearScene>();
   } else if (sceneName == "over") {
-      newScene = new OverScene();
-  } else {
-#ifdef _DEBUG
-    DebugUIManager::GetInstance()->AddLog("Unknown scene name: " + sceneName, DebugUIManager::LogType::Error);
-#endif
+    return std::make_unique<OverScene>();
   }
 
-  return newScene;
+#ifdef _DEBUG
+  DebugUIManager::GetInstance()->AddLog("Unknown scene name: " + sceneName, DebugUIManager::LogType::Error);
+#endif
+
+  return nullptr;
 }
