@@ -12,12 +12,8 @@
 uint32_t BossBullet::id = 0;
 
 BossBullet::BossBullet(EmitterManager* emittermanager) {
-    // GlobalVariables登録（初回のみ）
+    // GlobalVariablesから値を取得
     GlobalVariables* gv = GlobalVariables::GetInstance();
-    gv->CreateGroup("BossBullet");
-    gv->AddItem("BossBullet", "ColliderRadius", 1.0f);
-    gv->AddItem("BossBullet", "Damage", 10.0f);
-    gv->AddItem("BossBullet", "Lifetime", 5.0f);
 
     // 弾のパラメータ設定（GlobalVariablesから取得）
     damage_ = gv->GetValueFloat("BossBullet", "Damage");

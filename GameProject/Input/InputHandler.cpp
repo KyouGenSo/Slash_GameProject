@@ -14,11 +14,6 @@ InputHandler::~InputHandler()
 
 void InputHandler::Initialize()
 {
-  // GlobalVariables登録
-  GlobalVariables* gv = GlobalVariables::GetInstance();
-  gv->CreateGroup("Input");
-  gv->AddItem("Input", "TriggerThreshold", triggerThreshold_);
-
   isMoving_ = false;
   isDashing_ = false;
   isAttacking_ = false;

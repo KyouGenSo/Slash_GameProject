@@ -30,6 +30,13 @@ public: // メンバ関数
   /// </summary>
   void Draw() override;
 
+private: // メンバ関数
+
+  /// <summary>
+  /// GlobalVariablesにパラメータを登録
+  /// </summary>
+  void RegisterGlobalVariables();
+
 private: // メンバ変数
 
   uint32_t spriteBasicOnresizeId_ = 0;

@@ -10,12 +10,6 @@
 
 void ParryState::Enter(Player* player)
 {
-	// GlobalVariables登録
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	gv->CreateGroup("ParryState");
-	gv->AddItem("ParryState", "ParryWindow", parryWindow_);
-	gv->AddItem("ParryState", "ParryDuration", parryDuration_);
-
 	// パリィアニメーションを再生
 	// TODO: アニメーション作成後に実装
 	// player->GetModel()->PlayAnimation("Parry");

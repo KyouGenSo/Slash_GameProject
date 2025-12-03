@@ -12,12 +12,6 @@
 
 void ShootState::Enter(Player* player)
 {
-	// GlobalVariables登録
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	gv->CreateGroup("ShootState");
-	gv->AddItem("ShootState", "FireRate", fireRate_);
-	gv->AddItem("ShootState", "MoveSpeedMultiplier", moveSpeedMultiplier_);
-
 	// 射撃アニメーションを再生
 	// TODO: アニメーション作成後に実装
 	// player->GetModel()->PlayAnimation("Shoot");

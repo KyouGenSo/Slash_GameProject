@@ -42,22 +42,7 @@ Player::~Player()
 
 void Player::Initialize()
 {
-    // GlobalVariables登録
     GlobalVariables* gv = GlobalVariables::GetInstance();
-    gv->CreateGroup("Player");
-    gv->AddItem("Player", "BodyColliderSize", 3.2f);
-    gv->AddItem("Player", "MeleeColliderX", 5.0f);
-    gv->AddItem("Player", "MeleeColliderY", 2.0f);
-    gv->AddItem("Player", "MeleeColliderZ", 17.0f);
-    gv->AddItem("Player", "MeleeColliderOffsetZ", 10.0f);
-    gv->AddItem("Player", "MoveInputDeadzone", 0.1f);
-    gv->AddItem("Player", "RotationLerpSpeed", 0.2f);
-    gv->AddItem("Player", "Speed", speed_);
-    gv->AddItem("Player", "InitialY", initialY_);
-    gv->AddItem("Player", "InitialZ", initialZ_);
-    gv->AddItem("Player", "AttackStartDistance", attackMinDist_);
-    gv->AddItem("Player", "AttackMoveRotationLerp", attackMoveRotationLerp_);
-    gv->AddItem("Player", "BossLookatLerp", bossLookatLerp_);
 
     model_ = std::make_unique<Object3d>();
     model_->Initialize();

@@ -26,11 +26,8 @@ Boss::~Boss()
 
 void Boss::Initialize()
 {
-    // GlobalVariables登録
+    // GlobalVariablesから値を取得
     GlobalVariables* gv = GlobalVariables::GetInstance();
-    gv->CreateGroup("Boss");
-    gv->AddItem("Boss", "BodyColliderSize", 3.2f);
-    gv->AddItem("Boss", "HitEffectDuration", 0.1f);
 
     model_ = std::make_unique<Object3d>();
     model_->Initialize();

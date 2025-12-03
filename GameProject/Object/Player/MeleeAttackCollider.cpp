@@ -6,12 +6,8 @@
 
 MeleeAttackCollider::MeleeAttackCollider(Player* player)
     : player_(player) {
-    // GlobalVariables登録
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    gv->CreateGroup("MeleeAttack");
-    gv->AddItem("MeleeAttack", "AttackDamage", 10.0f);
-
     // GlobalVariablesから値を取得
+    GlobalVariables* gv = GlobalVariables::GetInstance();
     attackDamage_ = gv->GetValueFloat("MeleeAttack", "AttackDamage");
 
     SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_MELEE_ATTACK));

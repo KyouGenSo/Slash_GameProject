@@ -14,17 +14,6 @@
 
 void AttackState::Enter(Player* player)
 {
-    // GlobalVariables登録
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    gv->CreateGroup("AttackState");
-    gv->AddItem("AttackState", "SearchTime", maxSearchTime_);
-    gv->AddItem("AttackState", "MoveTime", maxMoveTime_);
-    gv->AddItem("AttackState", "AttackDuration", attackDuration_);
-    gv->AddItem("AttackState", "MaxCombo", maxCombo_);
-    gv->AddItem("AttackState", "ComboWindow", comboWindow_);
-    gv->AddItem("AttackState", "BlockRadius", blockRadius_);
-    gv->AddItem("AttackState", "BlockScale", blockScale_);
-
     // 攻撃アニメーションを再生
     // TODO: アニメーション作成後に実装
     // player->GetModel()->PlayAnimation("Attack" + std::to_string(comboCount_));

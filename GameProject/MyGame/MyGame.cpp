@@ -56,6 +56,9 @@ void MyGame::Initialize()
     TextureManager::GetInstance()->LoadTexture("gameClear_Text.png");
     TextureManager::GetInstance()->LoadTexture("gameOver_Text.png");
 
+    // GlobalVariablesにパラメータを登録
+    RegisterGlobalVariables();
+
     // GlobalVariablesのJsonファイル読み込み
     GlobalVariables::GetInstance()->LoadFiles();
 
@@ -179,4 +182,69 @@ void MyGame::Draw()
 
     // 描画後の処理
     dx12_->EndDraw();
+}
+
+void MyGame::RegisterGlobalVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
+    // === Input === //
+    gv->CreateGroup("Input");
+    gv->AddItem("Input", "TriggerThreshold", 0.5f);
+
+    // === Player === //
+    gv->CreateGroup("Player");
+    gv->AddItem("Player", "BodyColliderSize", 3.2f);
+    gv->AddItem("Player", "MeleeColliderX", 5.0f);
+    gv->AddItem("Player", "MeleeColliderY", 2.0f);
+    gv->AddItem("Player", "MeleeColliderZ", 17.0f);
+    gv->AddItem("Player", "MeleeColliderOffsetZ", 10.0f);
+    gv->AddItem("Player", "MoveInputDeadzone", 0.1f);
+    gv->AddItem("Player", "RotationLerpSpeed", 0.2f);
+    gv->AddItem("Player", "Speed", 0.5f);
+    gv->AddItem("Player", "InitialY", 2.5f);
+    gv->AddItem("Player", "InitialZ", -120.0f);
+    gv->AddItem("Player", "AttackStartDistance", 5.0f);
+    gv->AddItem("Player", "AttackMoveRotationLerp", 0.3f);
+    gv->AddItem("Player", "BossLookatLerp", 1.15f);
+
+    // === MeleeAttack === //
+    gv->CreateGroup("MeleeAttack");
+    gv->AddItem("MeleeAttack", "AttackDamage", 10.0f);
+
+    // === Boss === //
+    gv->CreateGroup("Boss");
+    gv->AddItem("Boss", "BodyColliderSize", 3.2f);
+    gv->AddItem("Boss", "HitEffectDuration", 0.1f);
+
+    // === BossBullet === //
+    gv->CreateGroup("BossBullet");
+    gv->AddItem("BossBullet", "ColliderRadius", 1.0f);
+    gv->AddItem("BossBullet", "Damage", 10.0f);
+    gv->AddItem("BossBullet", "Lifetime", 5.0f);
+
+    // === AttackState === //
+    gv->CreateGroup("AttackState");
+    gv->AddItem("AttackState", "SearchTime", 0.1f);
+    gv->AddItem("AttackState", "MoveTime", 0.1f);
+    gv->AddItem("AttackState", "AttackDuration", 0.1f);
+    gv->AddItem("AttackState", "MaxCombo", 2);
+    gv->AddItem("AttackState", "ComboWindow", 1.0f);
+    gv->AddItem("AttackState", "BlockRadius", 4.0f);
+    gv->AddItem("AttackState", "BlockScale", 0.5f);
+
+    // === DashState === //
+    gv->CreateGroup("DashState");
+    gv->AddItem("DashState", "Duration", 0.05f);
+    gv->AddItem("DashState", "Speed", 10.0f);
+
+    // === ParryState === //
+    gv->CreateGroup("ParryState");
+    gv->AddItem("ParryState", "ParryWindow", 0.2f);
+    gv->AddItem("ParryState", "ParryDuration", 0.5f);
+
+    // === ShootState === //
+    gv->CreateGroup("ShootState");
+    gv->AddItem("ShootState", "FireRate", 0.2f);
+    gv->AddItem("ShootState", "MoveSpeedMultiplier", 0.5f);
 }

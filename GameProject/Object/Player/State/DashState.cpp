@@ -9,12 +9,6 @@
 
 void DashState::Enter(Player* player)
 {
-	// GlobalVariables登録
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	gv->CreateGroup("DashState");
-	gv->AddItem("DashState", "Duration", duration_);
-	gv->AddItem("DashState", "Speed", speed_);
-
 	// ダッシュアニメーションを再生
 	// TODO: アニメーション作成後に実装
 	// player->GetModel()->PlayAnimation("Dash");
