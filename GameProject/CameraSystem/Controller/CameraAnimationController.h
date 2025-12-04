@@ -27,22 +27,6 @@ public:
     void Update(float deltaTime) override;
 
     /// <summary>
-    /// アクティブ状態を判定
-    /// アニメーション再生中のみアクティブ
-    /// </summary>
-    /// <returns>アクティブな場合true</returns>
-    bool IsActive() const override;
-
-    /// <summary>
-    /// 優先度を取得
-    /// アニメーションは最高優先度
-    /// </summary>
-    /// <returns>コントローラーの優先度</returns>
-    CameraControlPriority GetPriority() const override {
-        return CameraControlPriority::ANIMATION;
-    }
-
-    /// <summary>
     /// アクティブ化（アニメーション再生開始）
     /// </summary>
     void Activate() override;
@@ -51,32 +35,6 @@ public:
     /// 非アクティブ化（アニメーション停止）
     /// </summary>
     void Deactivate() override;
-
-    /// <summary>
-    /// カメラを設定
-    /// </summary>
-    /// <param name="camera">制御対象のカメラ</param>
-    void SetCamera(Camera* camera) override;
-
-    /// <summary>
-    /// アニメーションターゲットを設定
-    /// </summary>
-    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
-    /// <param name="applyToAll">全アニメーションに適用する場合true（デフォルトはfalse）</param>
-    void SetAnimationTarget(const Transform* target, bool applyToAll = false);
-
-    /// <summary>
-    /// 特定のアニメーションにターゲットを設定
-    /// </summary>
-    /// <param name="animationName">アニメーション名</param>
-    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
-    void SetAnimationTargetByName(const std::string& animationName, const Transform* target);
-
-    /// <summary>
-    /// 現在のアニメーションのみにターゲットを設定
-    /// </summary>
-    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
-    void SetCurrentAnimationTarget(const Transform* target);
 
     //==================== アニメーション制御 ====================
 
@@ -151,28 +109,6 @@ public:
     /// </summary>
     void ClearKeyframes();
 
-    //==================== Setter ====================
-
-    /// <summary>
-    /// ループ設定
-    /// </summary>
-    /// <param name="loop">ループする場合true</param>
-    void SetLooping(bool loop);
-
-    /// <summary>
-    /// 再生速度設定
-    /// </summary>
-    /// <param name="speed">再生速度（1.0が標準）</param>
-    void SetPlaySpeed(float speed);
-
-    /// <summary>
-    /// アニメーション名設定
-    /// </summary>
-    /// <param name="name">アニメーション名</param>
-    void SetAnimationName(const std::string& name);
-
-    //==================== Getter ====================
-
     //==================== アニメーション管理 ====================
 
     /// <summary>
@@ -227,6 +163,70 @@ public:
     /// <param name="filepath">保存先ファイルパス</param>
     /// <returns>保存成功した場合true</returns>
     bool SaveAnimationToFile(const std::string& name);
+
+    //==================== Setter ====================
+
+    /// <summary>
+    /// カメラを設定
+    /// </summary>
+    /// <param name="camera">制御対象のカメラ</param>
+    void SetCamera(Camera* camera) override;
+
+    /// <summary>
+    /// アニメーションターゲットを設定
+    /// </summary>
+    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    /// <param name="applyToAll">全アニメーションに適用する場合true（デフォルトはfalse）</param>
+    void SetAnimationTarget(const Transform* target, bool applyToAll = false);
+
+    /// <summary>
+    /// 特定のアニメーションにターゲットを設定
+    /// </summary>
+    /// <param name="animationName">アニメーション名</param>
+    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    void SetAnimationTargetByName(const std::string& animationName, const Transform* target);
+
+    /// <summary>
+    /// 現在のアニメーションのみにターゲットを設定
+    /// </summary>
+    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    void SetCurrentAnimationTarget(const Transform* target);
+
+    /// <summary>
+    /// ループ設定
+    /// </summary>
+    /// <param name="loop">ループする場合true</param>
+    void SetLooping(bool loop);
+
+    /// <summary>
+    /// 再生速度設定
+    /// </summary>
+    /// <param name="speed">再生速度（1.0が標準）</param>
+    void SetPlaySpeed(float speed);
+
+    /// <summary>
+    /// アニメーション名設定
+    /// </summary>
+    /// <param name="name">アニメーション名</param>
+    void SetAnimationName(const std::string& name);
+
+    //==================== Getter ====================
+
+    /// <summary>
+    /// アクティブ状態を判定
+    /// アニメーション再生中のみアクティブ
+    /// </summary>
+    /// <returns>アクティブな場合true</returns>
+    bool IsActive() const override;
+
+    /// <summary>
+    /// 優先度を取得
+    /// アニメーションは最高優先度
+    /// </summary>
+    /// <returns>コントローラーの優先度</returns>
+    CameraControlPriority GetPriority() const override {
+        return CameraControlPriority::ANIMATION;
+    }
 
     /// <summary>
     /// 現在のアニメーションオブジェクトを取得

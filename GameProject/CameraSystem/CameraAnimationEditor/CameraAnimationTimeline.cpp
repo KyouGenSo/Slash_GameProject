@@ -394,8 +394,7 @@ void CameraAnimationTimeline::HandleMouseInput() {
           int start = std::min<int>(lastSelected, hitIndex);
           int end = std::max<int>(lastSelected, hitIndex);
           for (int i = start; i <= end; ++i) {
-            if (std::find(selectedKeyframes_.begin(),
-              selectedKeyframes_.end(), i) == selectedKeyframes_.end()) {
+            if (std::ranges::find(selectedKeyframes_, i) == selectedKeyframes_.end()) {
               selectedKeyframes_.push_back(i);
             }
           }

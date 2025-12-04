@@ -30,7 +30,7 @@ public: // メンバ関数
   /// </summary>
   void Draw() override;
 
-private: // メンバ関数
+private: // プライベートメンバ関数
 
   /// <summary>
   /// GlobalVariablesにパラメータを登録
