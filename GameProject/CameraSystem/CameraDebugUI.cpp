@@ -2,7 +2,7 @@
 
 #include "CameraDebugUI.h"
 #include "CameraAnimationEditor/CameraAnimationEditor.h"
-#include "CameraAnimationController.h"
+#include "Controller/CameraAnimationController.h"
 #include "FrameTimer.h"
 #include <imgui.h>
 #include <sstream>

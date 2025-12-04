@@ -159,15 +159,15 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="BehaviorTree\Composites\BTRandomSelector.cpp" />
     <ClCompile Include="BehaviorTree\Core\BTComposite.cpp" />
     <ClCompile Include="CameraAnimation\CameraAnimation.cpp" />
-    <ClCompile Include="CameraSystem\CameraAnimationController.cpp" />
+    <ClCompile Include="CameraSystem\Controller\CameraAnimationController.cpp" />
     <ClCompile Include="CameraSystem\CameraDebugUI.cpp" />
     <ClCompile Include="CameraSystem\CameraManager.cpp" />
-    <ClCompile Include="CameraSystem\ThirdPersonController.cpp" />
+    <ClCompile Include="CameraSystem\Controller\ThirdPersonController.cpp" />
     <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.cpp" />
     <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.cpp" />
     <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.cpp" />
     <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.cpp" />
-    <ClCompile Include="CameraSystem\TopDownController.cpp" />
+    <ClCompile Include="CameraSystem\Controller\TopDownController.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame\MyGame.cpp" />
@@ -184,8 +184,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeEditor.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeFactory.cpp" />
-    <ClCompile Include="Object\Player\MeleeAttackCollider.cpp" />
+    <ClCompile Include="Object\Boss\BossBehaviorTree\BossNodeFactory.cpp" />
+    <ClCompile Include="Collision\MeleeAttackCollider.cpp" />
     <ClCompile Include="Object\Player\Player.cpp" />
     <ClCompile Include="Object\Player\State\AttackState.cpp" />
     <ClCompile Include="Object\Player\State\DashState.cpp" />
@@ -196,7 +196,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Player\State\ShootState.cpp" />
     <ClCompile Include="Object\Player\State\MoveState.cpp" />
     <ClCompile Include="Object\Projectile\BossBullet.cpp" />
-    <ClCompile Include="Object\Projectile\BossBulletCollider.cpp" />
+    <ClCompile Include="Collision\BossBulletCollider.cpp" />
     <ClCompile Include="Object\Projectile\Projectile.cpp" />
     <ClCompile Include="scene\ClearScene.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
@@ -225,17 +225,17 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="BehaviorTree\Core\BTNode.h" />
     <ClInclude Include="CameraAnimation\CameraAnimation.h" />
     <ClInclude Include="CameraAnimation\CameraKeyframe.h" />
-    <ClInclude Include="CameraSystem\CameraAnimationController.h" />
+    <ClInclude Include="CameraSystem\Controller\CameraAnimationController.h" />
     <ClInclude Include="CameraSystem\CameraConfig.h" />
     <ClInclude Include="CameraSystem\CameraDebugUI.h" />
     <ClInclude Include="CameraSystem\CameraManager.h" />
-    <ClInclude Include="CameraSystem\ThirdPersonController.h" />
+    <ClInclude Include="CameraSystem\Controller\ThirdPersonController.h" />
     <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.h" />
     <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.h" />
     <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.h" />
     <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.h" />
-    <ClInclude Include="CameraSystem\ICameraController.h" />
-    <ClInclude Include="CameraSystem\TopDownController.h" />
+    <ClInclude Include="CameraSystem\Controller\ICameraController.h" />
+    <ClInclude Include="CameraSystem\Controller\TopDownController.h" />
     <ClInclude Include="Collision\CollisionTypeIdDef.h" />
     <ClInclude Include="Common\GameConst.h" />
     <ClInclude Include="Input\InputHandler.h" />
@@ -253,8 +253,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeEditor.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeFactory.h" />
-    <ClInclude Include="Object\Player\MeleeAttackCollider.h" />
+    <ClInclude Include="Object\Boss\BossBehaviorTree\BossNodeFactory.h" />
+    <ClInclude Include="Collision\MeleeAttackCollider.h" />
     <ClInclude Include="Object\Player\Player.h" />
     <ClInclude Include="Object\Player\State\AttackState.h" />
     <ClInclude Include="Object\Player\State\DashState.h" />
@@ -265,7 +265,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Player\State\ShootState.h" />
     <ClInclude Include="Object\Player\State\MoveState.h" />
     <ClInclude Include="Object\Projectile\BossBullet.h" />
-    <ClInclude Include="Object\Projectile\BossBulletCollider.h" />
+    <ClInclude Include="Collision\BossBulletCollider.h" />
     <ClInclude Include="Object\Projectile\Projectile.h" />
     <ClInclude Include="scene\ClearScene.h" />
     <ClInclude Include="scene\GameScene.h" />

@@ -1,7 +1,7 @@
 #pragma once
 #include "CameraManager.h"
-#include "ThirdPersonController.h"
-#include "TopDownController.h"
+#include "Controller/ThirdPersonController.h"
+#include "Controller/TopDownController.h"
 #include "CameraAnimation/CameraAnimation.h"
 #include "CameraAnimationEditor/CameraAnimationEditor.h"
 #include <memory>

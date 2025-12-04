@@ -1,5 +1,5 @@
 #include "BossBullet.h"
-#include "BossBulletCollider.h"
+#include "../../Collision/BossBulletCollider.h"
 #include "../../Object/Player/Player.h"
 #include "../../Common/GameConst.h"
 #include "ModelManager.h"

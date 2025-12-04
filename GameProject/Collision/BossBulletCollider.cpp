@@ -1,6 +1,6 @@
 #include "BossBulletCollider.h"
-#include "../Player/Player.h"
-#include "../../Collision/CollisionTypeIdDef.h"
+#include "../Object/Player/Player.h"
+#include "CollisionTypeIdDef.h"
 #include "CollisionManager.h"
 
 BossBulletCollider::BossBulletCollider(BossBullet* owner)

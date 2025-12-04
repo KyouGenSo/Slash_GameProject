@@ -81,6 +81,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{2efc4229-8240-4c6f-8339-ac353fe07ab6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CameraAnimation">
+      <UniqueIdentifier>{91d85fa5-151f-4004-88ba-6c651e6f09b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGame\MyGame.cpp">
@@ -153,19 +156,16 @@
     <ClCompile Include="CameraSystem\CameraManager.cpp">
       <Filter>CameraSystem</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\CameraAnimationController.cpp">
+    <ClCompile Include="CameraSystem\Controller\CameraAnimationController.cpp">
       <Filter>CameraSystem\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\ThirdPersonController.cpp">
+    <ClCompile Include="CameraSystem\Controller\ThirdPersonController.cpp">
       <Filter>CameraSystem\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\TopDownController.cpp">
+    <ClCompile Include="CameraSystem\Controller\TopDownController.cpp">
       <Filter>CameraSystem\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="CameraAnimation\CameraAnimation.cpp">
-      <Filter>CameraSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Player\MeleeAttackCollider.cpp">
+    <ClCompile Include="Collision\MeleeAttackCollider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
     <ClCompile Include="Object\Projectile\BossBullet.cpp">
@@ -174,7 +174,7 @@
     <ClCompile Include="Object\Projectile\Projectile.cpp">
       <Filter>Object\Projectile</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Projectile\BossBulletCollider.cpp">
+    <ClCompile Include="Collision\BossBulletCollider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
     <ClCompile Include="scene\OverScene.cpp">
@@ -210,9 +210,6 @@
     <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeEditor.cpp">
       <Filter>Object\Boss\BossNodeEditor</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossNodeEditor\BossNodeFactory.cpp">
-      <Filter>Object\Boss\BossNodeEditor</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClCompile>
@@ -224,6 +221,12 @@
     </ClCompile>
     <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\BossBehaviorTree\BossNodeFactory.cpp">
+      <Filter>Object\Boss\BossBehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraAnimation\CameraAnimation.cpp">
+      <Filter>CameraAnimation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,26 +305,20 @@
     <ClInclude Include="CameraSystem\CameraManager.h">
       <Filter>CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\CameraAnimationController.h">
+    <ClInclude Include="CameraSystem\Controller\CameraAnimationController.h">
       <Filter>CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\ThirdPersonController.h">
+    <ClInclude Include="CameraSystem\Controller\ThirdPersonController.h">
       <Filter>CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\ICameraController.h">
+    <ClInclude Include="CameraSystem\Controller\ICameraController.h">
       <Filter>CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\TopDownController.h">
+    <ClInclude Include="CameraSystem\Controller\TopDownController.h">
       <Filter>CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraAnimation\CameraAnimation.h">
-      <Filter>CameraSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Player\MeleeAttackCollider.h">
+    <ClInclude Include="Collision\MeleeAttackCollider.h">
       <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraAnimation\CameraKeyframe.h">
-      <Filter>CameraSystem</Filter>
     </ClInclude>
     <ClInclude Include="Object\Projectile\BossBullet.h">
       <Filter>Object\Projectile</Filter>
@@ -329,7 +326,7 @@
     <ClInclude Include="Object\Projectile\Projectile.h">
       <Filter>Object\Projectile</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Projectile\BossBulletCollider.h">
+    <ClInclude Include="Collision\BossBulletCollider.h">
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="scene\OverScene.h">
@@ -371,9 +368,6 @@
     <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeEditor.h">
       <Filter>Object\Boss\BossNodeEditor</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossNodeEditor\BossNodeFactory.h">
-      <Filter>Object\Boss\BossNodeEditor</Filter>
-    </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.h">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClInclude>
@@ -388,6 +382,15 @@
     </ClInclude>
     <ClInclude Include="Common\GameConst.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossBehaviorTree\BossNodeFactory.h">
+      <Filter>Object\Boss\BossBehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraAnimation\CameraAnimation.h">
+      <Filter>CameraAnimation</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraAnimation\CameraKeyframe.h">
+      <Filter>CameraAnimation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

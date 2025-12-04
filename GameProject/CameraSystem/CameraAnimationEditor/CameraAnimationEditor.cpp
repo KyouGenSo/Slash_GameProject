@@ -5,7 +5,7 @@
 #include "CameraAnimationCurveEditor.h"
 #include "CameraAnimationHistory.h"
 #include "../CameraManager.h"
-#include "CameraSystem/CameraAnimationController.h"
+#include "../Controller/CameraAnimationController.h"
 #include "Vec3Func.h"
 #include <imgui.h>
 // #include <imgui_internal.h> // 不要な場合はコメントアウト

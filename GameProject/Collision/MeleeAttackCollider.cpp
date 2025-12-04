@@ -1,7 +1,7 @@
 #include "MeleeAttackCollider.h"
-#include "Player.h"
-#include "../Boss/Boss.h"
-#include "../../Collision/CollisionTypeIdDef.h"
+#include "../Object/Player/Player.h"
+#include "../Object/Boss/Boss.h"
+#include "CollisionTypeIdDef.h"
 #include "GlobalVariables.h"
 
 MeleeAttackCollider::MeleeAttackCollider(Player* player)

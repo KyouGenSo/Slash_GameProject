@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SphereCollider.h"
-#include "BossBullet.h"
+#include "../Object/Projectile/BossBullet.h"
 #include <unordered_set>
 
 class BossBullet;

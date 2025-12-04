@@ -1,6 +1,6 @@
 #pragma once
 #include "ICameraController.h"
-#include "CameraConfig.h"
+#include "../CameraConfig.h"
 #include "Vector3.h"
 
 /// <summary>

@@ -19,9 +19,9 @@
 // Game includes
 #include "../Collision/CollisionTypeIdDef.h"
 #include "CameraSystem/CameraManager.h"
-#include "CameraSystem/ThirdPersonController.h"
-#include "CameraSystem/TopDownController.h"
-#include "CameraSystem/CameraAnimationController.h"
+#include "CameraSystem/Controller/ThirdPersonController.h"
+#include "CameraSystem/Controller/TopDownController.h"
+#include "CameraSystem/Controller/CameraAnimationController.h"
 #include "../Object/Projectile/BossBullet.h"
 #include "GlobalVariables.h"
 #include "Vec3Func.h"

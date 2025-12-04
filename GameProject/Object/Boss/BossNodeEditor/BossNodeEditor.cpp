@@ -1,7 +1,7 @@
 #ifdef _DEBUG
 
 #include "BossNodeEditor.h"
-#include "BossNodeFactory.h"
+#include "../BossBehaviorTree/BossNodeFactory.h"
 #include "../BossBehaviorTree/BossBehaviorTree.h"
 #include "../../../BehaviorTree/Core/BTComposite.h"
 #include "../../../BehaviorTree/Core/BTBlackboard.h"

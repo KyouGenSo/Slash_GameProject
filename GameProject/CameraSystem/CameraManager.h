@@ -1,5 +1,5 @@
 #pragma once
-#include "ICameraController.h"
+#include "Controller/ICameraController.h"
 #include "Camera.h"
 #include <vector>
 #include <memory>

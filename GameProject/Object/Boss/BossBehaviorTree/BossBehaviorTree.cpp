@@ -8,7 +8,7 @@
 #include "Conditions/BTActionSelector.h"
 #include "../Boss.h"
 #include "../../Player/Player.h"
-#include "../BossNodeEditor/BossNodeFactory.h"
+#include "../BossBehaviorTree/BossNodeFactory.h"
 #include <fstream>
 #include <unordered_map>
 
