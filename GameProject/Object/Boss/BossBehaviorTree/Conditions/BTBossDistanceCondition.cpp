@@ -4,7 +4,7 @@
 #include "Vector3.h"
 
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 BTBossDistanceCondition::BTBossDistanceCondition() {

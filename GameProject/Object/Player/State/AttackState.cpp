@@ -8,8 +8,9 @@
 #include "Object3d.h"
 #include "GlobalVariables.h"
 #include <cmath>
+
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 void AttackState::Enter(Player* player)

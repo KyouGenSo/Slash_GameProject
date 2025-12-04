@@ -1,7 +1,7 @@
 #include "BTActionSelector.h"
 
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 BTActionSelector::BTActionSelector(ActionType type)

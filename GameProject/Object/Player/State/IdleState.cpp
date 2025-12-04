@@ -4,7 +4,7 @@
 #include "Input.h"
 #include "Input/InputHandler.h"
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 void IdleState::Enter(Player* player)

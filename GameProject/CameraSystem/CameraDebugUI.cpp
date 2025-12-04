@@ -4,7 +4,7 @@
 #include "CameraAnimationEditor/CameraAnimationEditor.h"
 #include "Controller/CameraAnimationController.h"
 #include "FrameTimer.h"
-#include <imgui.h>
+#include "ImGuiManager.h"
 #include <sstream>
 
 // 静的メンバ変数の定義

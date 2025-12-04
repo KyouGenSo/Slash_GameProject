@@ -5,7 +5,7 @@
 #include "GlobalVariables.h"
 #include <algorithm>  // for std::min
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 void ParryState::Enter(Player* player)

@@ -4,7 +4,7 @@
 #include "Input/InputHandler.h"
 #include "GlobalVariables.h"
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 void DashState::Enter(Player* player)

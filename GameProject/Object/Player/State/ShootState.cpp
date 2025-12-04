@@ -7,7 +7,7 @@
 #include "GlobalVariables.h"
 #include <algorithm>  // for std::max
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 void ShootState::Enter(Player* player)

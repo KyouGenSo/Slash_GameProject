@@ -2,7 +2,7 @@
 #include "CameraAnimation/CameraAnimation.h"
 #include "CameraAnimation/CameraKeyframe.h"
 #include <vector>
-#include <imgui.h>
+#include "ImGuiManager.h"
 
 #ifdef _DEBUG
 

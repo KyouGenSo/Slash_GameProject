@@ -391,8 +391,8 @@ void CameraAnimationTimeline::HandleMouseInput() {
         } else if (ImGui::GetIO().KeyShift && !selectedKeyframes_.empty()) {
           // Shift+クリック：範囲選択
           int lastSelected = selectedKeyframes_.back();
-          int start = std::min(lastSelected, hitIndex);
-          int end = std::max(lastSelected, hitIndex);
+          int start = std::min<int>(lastSelected, hitIndex);
+          int end = std::max<int>(lastSelected, hitIndex);
           for (int i = start; i <= end; ++i) {
             if (std::find(selectedKeyframes_.begin(),
               selectedKeyframes_.end(), i) == selectedKeyframes_.end()) {
@@ -449,7 +449,7 @@ void CameraAnimationTimeline::HandleMouseInput() {
       // スクラブ中
       float relX = mousePos.x - canvasPos.x;
       scrubTime_ = ScreenXToTime(relX);
-      scrubTime_ = std::max(0.0f, std::min(scrubTime_, animation_->GetDuration()));
+      scrubTime_ = std::max<float>(0.0f, std::min<float>(scrubTime_, animation_->GetDuration()));
       // キーフレームプレビュー中でない場合のみSetCurrentTime()を呼ぶ
       if (isPreviewModeEnabled_ && !isKeyframePreviewActive_) {
         animation_->SetCurrentTime(scrubTime_);
@@ -522,7 +522,7 @@ void CameraAnimationTimeline::HandleMouseInput() {
       float newZoom = zoom_ * zoomDelta;
 
       // ズーム制限
-      newZoom = std::max(minZoom_, std::min(maxZoom_, newZoom));
+      newZoom = std::max<float>(minZoom_, std::min<float>(maxZoom_, newZoom));
 
       // マウス位置を中心にズーム
       float mouseTime = ScreenXToTime(mousePos.x - canvasPos.x);
@@ -592,10 +592,10 @@ int CameraAnimationTimeline::HitTestKeyframe(float x, float y, TrackType trackTy
 
 void CameraAnimationTimeline::ProcessRectSelection() {
   // 矩形内のキーフレームを選択
-  float left = std::min(dragStartPos_.x, dragCurrentPos_.x);
-  float right = std::max(dragStartPos_.x, dragCurrentPos_.x);
-  float top = std::min(dragStartPos_.y, dragCurrentPos_.y);
-  float bottom = std::max(dragStartPos_.y, dragCurrentPos_.y);
+  float left = std::min<float>(dragStartPos_.x, dragCurrentPos_.x);
+  float right = std::max<float>(dragStartPos_.x, dragCurrentPos_.x);
+  float top = std::min<float>(dragStartPos_.y, dragCurrentPos_.y);
+  float bottom = std::max<float>(dragStartPos_.y, dragCurrentPos_.y);
 
   for (size_t i = 0; i < animation_->GetKeyframeCount(); ++i) {
     const CameraKeyframe& kf = animation_->GetKeyframe(i);
@@ -640,7 +640,7 @@ void CameraAnimationTimeline::ProcessKeyframeDrag() {
       }
 
       // 時間範囲制限
-      newTime = std::max(0.0f, std::min(newTime, animation_->GetDuration()));
+      newTime = std::max<float>(0.0f, std::min<float>(newTime, animation_->GetDuration()));
 
       kf.time = newTime;
       animation_->EditKeyframe(idx, kf);
@@ -688,7 +688,7 @@ ImU32 CameraAnimationTimeline::GetTrackColor(TrackType track) const {
 }
 
 void CameraAnimationTimeline::SetZoom(float zoom) {
-  zoom_ = std::max(minZoom_, std::min(maxZoom_, zoom));
+  zoom_ = std::max<float>(minZoom_, std::min<float>(maxZoom_, zoom));
   ClampOffset();
 }
 
@@ -706,7 +706,7 @@ void CameraAnimationTimeline::ClampOffset() {
   float duration = animation_->GetDuration();
 
   // 左端制限（アニメーション開始より前は見せない）
-  offset_ = std::max(-1.0f, offset_);
+  offset_ = std::max<float>(-1.0f, offset_);
 
   // 右端制限
   if (visibleTime >= duration + 2.0f) {
@@ -714,7 +714,7 @@ void CameraAnimationTimeline::ClampOffset() {
     offset_ = 0.0f;
   } else {
     // スクロールが必要な場合は、終端より先を見せすぎない
-    offset_ = std::min(offset_, duration - visibleTime + 1.0f);
+    offset_ = std::min<float>(offset_, duration - visibleTime + 1.0f);
   }
 }
 

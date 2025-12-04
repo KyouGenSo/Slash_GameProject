@@ -8,7 +8,7 @@
 #include <cmath>
 
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 BTBossDash::BTBossDash() {

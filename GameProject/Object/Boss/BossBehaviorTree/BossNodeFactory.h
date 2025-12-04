@@ -6,7 +6,7 @@
 #include "../../../BehaviorTree/Core/BTNode.h"
 
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 class Boss;

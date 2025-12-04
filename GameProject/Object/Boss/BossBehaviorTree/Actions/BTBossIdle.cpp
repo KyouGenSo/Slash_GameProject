@@ -6,7 +6,7 @@
 #include <numbers>
 
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 BTBossIdle::BTBossIdle() {

@@ -2,7 +2,7 @@
 #include "../../Boss.h"
 
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #endif
 
 BTBossHPCondition::BTBossHPCondition() {

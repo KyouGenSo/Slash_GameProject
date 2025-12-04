@@ -11,7 +11,7 @@
 #include <DirectXMath.h>
 
 #ifdef _DEBUG
-#include <imgui.h>
+#include "ImGuiManager.h"
 #include "DebugUIManager.h"
 #endif
 

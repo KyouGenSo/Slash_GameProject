@@ -2,7 +2,7 @@
 
 #ifdef _DEBUG
 
-#include <imgui.h>
+#include "ImGuiManager.h"
 #include <../../../../TakoEngine/project/externals/imgui-node-editor/imgui_node_editor.h>
 #include <vector>
 #include <memory>
