@@ -31,7 +31,7 @@ private:
     static constexpr float kMaxHp = 200.0f;
 
     // フェーズ2開始HP閾値
-    static constexpr float kPhase2Threshold = 110.0f;
+    static constexpr float kPhase2Threshold = 105.0f;
 
     // フェーズ2開始時のHP
     static constexpr float kPhase2InitialHp = 100.0f;

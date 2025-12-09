@@ -8,13 +8,6 @@
       "targetPinId": 20002
     },
     {
-      "id": 30001,
-      "sourceNodeId": 10002,
-      "sourcePinId": 20004,
-      "targetNodeId": 10003,
-      "targetPinId": 20005
-    },
-    {
       "id": 30002,
       "sourceNodeId": 10000,
       "sourcePinId": 20001,
@@ -134,20 +127,6 @@
       "targetPinId": 20030
     },
     {
-      "id": 30019,
-      "sourceNodeId": 10020,
-      "sourcePinId": 20031,
-      "targetNodeId": 10021,
-      "targetPinId": 20032
-    },
-    {
-      "id": 30020,
-      "sourceNodeId": 10020,
-      "sourcePinId": 20031,
-      "targetNodeId": 10022,
-      "targetPinId": 20033
-    },
-    {
       "id": 30021,
       "sourceNodeId": 10025,
       "sourcePinId": 20037,
@@ -176,16 +155,86 @@
       "targetPinId": 20036
     },
     {
-      "id": 30025,
+      "id": 30026,
+      "sourceNodeId": 10020,
+      "sourcePinId": 20031,
+      "targetNodeId": 10027,
+      "targetPinId": 20040
+    },
+    {
+      "id": 30027,
+      "sourceNodeId": 10002,
+      "sourcePinId": 20004,
+      "targetNodeId": 10028,
+      "targetPinId": 20041
+    },
+    {
+      "id": 30028,
+      "sourceNodeId": 10028,
+      "sourcePinId": 20042,
+      "targetNodeId": 10003,
+      "targetPinId": 20005
+    },
+    {
+      "id": 30029,
+      "sourceNodeId": 10028,
+      "sourcePinId": 20042,
+      "targetNodeId": 10029,
+      "targetPinId": 20043
+    },
+    {
+      "id": 30030,
       "sourceNodeId": 10026,
       "sourcePinId": 20039,
       "targetNodeId": 10011,
       "targetPinId": 20016
+    },
+    {
+      "id": 30033,
+      "sourceNodeId": 10020,
+      "sourcePinId": 20031,
+      "targetNodeId": 10030,
+      "targetPinId": 20044
+    },
+    {
+      "id": 30034,
+      "sourceNodeId": 10020,
+      "sourcePinId": 20031,
+      "targetNodeId": 10031,
+      "targetPinId": 20046
+    },
+    {
+      "id": 30035,
+      "sourceNodeId": 10030,
+      "sourcePinId": 20045,
+      "targetNodeId": 10033,
+      "targetPinId": 20049
+    },
+    {
+      "id": 30036,
+      "sourceNodeId": 10030,
+      "sourcePinId": 20045,
+      "targetNodeId": 10021,
+      "targetPinId": 20032
+    },
+    {
+      "id": 30037,
+      "sourceNodeId": 10031,
+      "sourcePinId": 20047,
+      "targetNodeId": 10032,
+      "targetPinId": 20048
+    },
+    {
+      "id": 30038,
+      "sourceNodeId": 10031,
+      "sourcePinId": 20047,
+      "targetNodeId": 10022,
+      "targetPinId": 20033
     }
   ],
   "metadata": {
-    "created": "2025-12-09T16:58:56",
-    "modified": "2025-12-09T16:58:56",
+    "created": "2025-12-09T22:44:04",
+    "modified": "2025-12-09T22:44:04",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -203,7 +252,7 @@
       "displayName": "Idle",
       "id": 10001,
       "parameters": {
-        "idleDuration": 2.0
+        "idleDuration": 1.5
       },
       "position": {
         "x": 250.0,
@@ -225,7 +274,7 @@
       "displayName": "Dash",
       "id": 10003,
       "parameters": {
-        "dashDuration": 0.12145118415355682,
+        "dashDuration": 0.09563064575195313,
         "dashSpeed": 200.0
       },
       "position": {
@@ -491,6 +540,8 @@
         "blockScale": 0.5,
         "prepareTime": 0.5,
         "recoveryTime": 0.30000001192092896,
+        "rushDistance": 20.0,
+        "stopDistance": 5.0,
         "swingAngle": 3.1415927410125732
       },
       "position": {
@@ -518,6 +569,87 @@
         "y": 180.0
       },
       "type": "BTRandomSelector"
+    },
+    {
+      "displayName": "Retreat",
+      "id": 10027,
+      "parameters": {
+        "retreatSpeed": 60.0,
+        "targetDistance": 55.0
+      },
+      "position": {
+        "x": 100.0,
+        "y": 100.0
+      },
+      "type": "BTBossRetreat"
+    },
+    {
+      "displayName": "Random Selector",
+      "id": 10028,
+      "parameters": null,
+      "position": {
+        "x": 130.0,
+        "y": 120.0
+      },
+      "type": "BTRandomSelector"
+    },
+    {
+      "displayName": "Idle",
+      "id": 10029,
+      "parameters": {
+        "idleDuration": 0.10000000149011612
+      },
+      "position": {
+        "x": 160.0,
+        "y": 140.0
+      },
+      "type": "BTBossIdle"
+    },
+    {
+      "displayName": "CloseRapidFireSequence",
+      "id": 10030,
+      "parameters": null,
+      "position": {
+        "x": 190.0,
+        "y": 160.0
+      },
+      "type": "BTSequence"
+    },
+    {
+      "displayName": "CloseShootSequence",
+      "id": 10031,
+      "parameters": null,
+      "position": {
+        "x": 220.0,
+        "y": 180.0
+      },
+      "type": "BTSequence"
+    },
+    {
+      "displayName": "Retreat",
+      "id": 10032,
+      "parameters": {
+        "retreatSpeed": 60.0,
+        "targetDistance": 40.0
+      },
+      "position": {
+        "x": 250.0,
+        "y": 200.0
+      },
+      "type": "BTBossRetreat"
+    },
+    {
+      "displayName": "Retreat",
+      "id": 10033,
+      "parameters": {
+        "retreatSpeed": 60.0,
+        "targetDistance": 40.0
+      },
+      "position": {
+        "x": 280.0,
+        "y": 220.0
+      },
+      "type": "BTBossRetreat"
     }
   ],
   "version": "1.0"

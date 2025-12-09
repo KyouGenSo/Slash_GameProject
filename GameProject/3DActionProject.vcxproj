@@ -179,6 +179,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossIdle.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.cpp" />
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRetreat.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossShoot.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\BossBehaviorTree.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTActionSelector.cpp" />
@@ -253,6 +254,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossIdle.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.h" />
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRetreat.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossShoot.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\BossBehaviorTree.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTActionSelector.h" />
