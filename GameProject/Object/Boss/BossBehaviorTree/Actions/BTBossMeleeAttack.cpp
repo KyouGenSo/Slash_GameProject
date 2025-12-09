@@ -2,9 +2,11 @@
 #include "../../Boss.h"
 #include "../../../Player/Player.h"
 #include "../../../../Collision/BossMeleeAttackCollider.h"
+#include "../../../../Common/GameConst.h"
 #include "Object3d.h"
 #include "Mat4x4Func.h"
 #include <cmath>
+#include <algorithm>
 
 #ifdef _DEBUG
 #include "ImGuiManager.h"
@@ -117,6 +119,28 @@ void BTBossMeleeAttack::InitializeMeleeAttack(Boss* boss) {
 
     // 初期位置を設定
     UpdateBlockPosition(boss);
+
+    // ★突進の初期化（Prepare開始時にプレイヤー位置を固定）
+    startPosition_ = boss->GetTransform().translate;
+
+    Player* player = boss->GetPlayer();
+    if (player) {
+        Vector3 playerPos = player->GetTransform().translate;
+        Vector3 toPlayer = playerPos - startPosition_;
+        toPlayer.y = 0.0f;
+
+        if (toPlayer.Length() > kDirectionEpsilon) {
+            Vector3 direction = toPlayer.Normalize();
+
+            // 目標位置 = 開始位置 + 方向 * 突進距離
+            targetPosition_ = startPosition_ + direction * rushDistance_;
+            targetPosition_ = ClampToArea(targetPosition_);
+        } else {
+            targetPosition_ = startPosition_;
+        }
+    } else {
+        targetPosition_ = startPosition_;
+    }
 }
 
 void BTBossMeleeAttack::AimAtPlayer(Boss* boss, float deltaTime) {
@@ -167,6 +191,14 @@ void BTBossMeleeAttack::ProcessPreparePhase(Boss* boss, float deltaTime) {
 }
 
 void BTBossMeleeAttack::ProcessExecutePhase(Boss* boss, float deltaTime) {
+    // ★突進移動（attackDuration_中にSmoothstepで移動）
+    float t = phaseTimer_ / attackDuration_;
+    t = std::clamp(t, 0.0f, 1.0f);
+    t = t * t * (3.0f - 2.0f * t);  // Smoothstep
+
+    Vector3 newPosition = Vector3::Lerp(startPosition_, targetPosition_, t);
+    boss->SetTranslate(newPosition);
+
     // ブロックを回転させる（常に同じ方向：右から左へ）
     float rotationSpeed = swingAngle_ / attackDuration_;
     blockAngle_ += rotationSpeed * deltaTime;
@@ -178,6 +210,18 @@ void BTBossMeleeAttack::ProcessExecutePhase(Boss* boss, float deltaTime) {
 void BTBossMeleeAttack::ProcessRecoveryPhase(Boss* boss) {
     // 硬直中は特に処理なし
     (void)boss;
+}
+
+Vector3 BTBossMeleeAttack::ClampToArea(const Vector3& position) {
+    Vector3 clampedPos = position;
+    clampedPos.x = std::clamp(clampedPos.x,
+        GameConst::kStageXMin + areaMargin_,
+        GameConst::kStageXMax - areaMargin_);
+    clampedPos.z = std::clamp(clampedPos.z,
+        GameConst::kStageZMin + areaMargin_,
+        GameConst::kStageZMax - areaMargin_);
+    clampedPos.y = position.y;
+    return clampedPos;
 }
 
 void BTBossMeleeAttack::UpdateBlockPosition(Boss* boss) {
@@ -223,7 +267,8 @@ nlohmann::json BTBossMeleeAttack::ExtractParameters() const {
         {"recoveryTime", recoveryTime_},
         {"blockRadius", blockRadius_},
         {"blockScale", blockScale_},
-        {"swingAngle", swingAngle_}
+        {"swingAngle", swingAngle_},
+        {"rushDistance", rushDistance_}
     };
 }
 
@@ -247,6 +292,9 @@ bool BTBossMeleeAttack::DrawImGui() {
         changed = true;
     }
     if (ImGui::SliderAngle("Swing Angle##melee", &swingAngle_, 0.0f, 360.0f)) {
+        changed = true;
+    }
+    if (ImGui::DragFloat("Rush Distance##melee", &rushDistance_, 1.0f, 0.0f, 50.0f)) {
         changed = true;
     }
 

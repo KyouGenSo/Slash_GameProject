@@ -6,21 +6,21 @@
     1.0
   ],
   "frequency": 0.5,
-  "frequencyTime": 0.2739286422729492,
-  "isActive": true,
+  "frequencyTime": 0.06442297995090485,
+  "isActive": false,
   "isEmitting": false,
   "isNormalize": false,
   "isRandomRotateZ": true,
-  "isTemporary": true,
+  "isTemporary": false,
   "lifeTimeRange": [
-    0.0,
-    0.0
+    0.3499999940395355,
+    0.3499999940395355
   ],
   "particleCount": 100,
   "position": [
-    0.0,
-    8.5,
-    0.0
+    -3.677907943725586,
+    2.5,
+    -79.43688201904297
   ],
   "radius": 0.10000000149011612,
   "scaleRangeX": [

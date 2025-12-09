@@ -363,6 +363,7 @@ void Boss::DrawImGui()
     if (ImGui::Button("Set Phase 1", buttonSize)) {
         SetPhase(1);
         hp_ = kMaxHp;
+        isReadyToChangePhase_ = false;
     }
     ImGui::SameLine();
     if (ImGui::Button("Set Phase 2", buttonSize)) {

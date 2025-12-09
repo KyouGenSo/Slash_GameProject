@@ -69,6 +69,8 @@ public:
     void SetBlockScale(float scale) { blockScale_ = scale; }
     float GetSwingAngle() const { return swingAngle_; }
     void SetSwingAngle(float angle) { swingAngle_ = angle; }
+    float GetRushDistance() const { return rushDistance_; }
+    void SetRushDistance(float distance) { rushDistance_ = distance; }
 
     /// <summary>
     /// JSONからパラメータを適用
@@ -92,6 +94,9 @@ public:
         }
         if (params.contains("swingAngle")) {
             swingAngle_ = params["swingAngle"];
+        }
+        if (params.contains("rushDistance")) {
+            rushDistance_ = params["rushDistance"];
         }
     }
 
@@ -147,6 +152,13 @@ private:
     /// <param name="boss">ボス</param>
     void UpdateBlockPosition(Boss* boss);
 
+    /// <summary>
+    /// エリア内に収まる位置を計算
+    /// </summary>
+    /// <param name="position">調整前の位置</param>
+    /// <returns>エリア内に収まる位置</returns>
+    Vector3 ClampToArea(const Vector3& position);
+
     //=========================================================================================
     // メンバ変数
     //=========================================================================================
@@ -172,4 +184,12 @@ private:
     float phaseTimer_ = 0.0f;       ///< 現在フェーズのタイマー
     bool isFirstExecute_ = true;    ///< 初回実行フラグ
     bool colliderActivated_ = false;///< コライダー有効化済みフラグ
+
+    // 突進パラメータ
+    float rushDistance_ = 20.0f;    ///< 突進距離
+
+    // 突進状態管理
+    Vector3 startPosition_;         ///< 突進開始位置
+    Vector3 targetPosition_;        ///< 突進目標位置（Prepare開始時に固定）
+    float areaMargin_ = 5.0f;       ///< エリア境界マージン
 };
