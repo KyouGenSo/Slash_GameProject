@@ -474,6 +474,8 @@ void GameScene::UpdateClearAnim()
         emitterManager_->SetEmitterCount("clear_slash", currentSlashCount_);
         emitterManager_->SetEmitterRadius("clear_slash", currentSlashRadius_);
 
+        boss_->StartShake(0.4f);
+
         if (currentSlashCount_ < kSlashEmitterMaxCount_ || currentSlashRadius_ < kSlashEmitterMaxRadius_) {
             currentSlashCount_ += 1;
             currentSlashRadius_ += 0.05f;
@@ -485,6 +487,9 @@ void GameScene::UpdateClearAnim()
     }
 
     if (isClear1Emit_ && !isClear2Emit_) {
+
+        boss_->StartShake(0.4f);
+
         emitterManager_->SetEmitterPosition("over2", boss_->GetTranslate());
         emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
         isClear2Emit_ = true;
