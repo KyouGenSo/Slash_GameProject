@@ -22,11 +22,8 @@ void BossMeleeAttackCollider::OnCollisionEnter(Collider* other) {
     // プレイヤーとの衝突判定
     if (typeID == static_cast<uint32_t>(CollisionTypeId::PLAYER)) {
         Player* player = static_cast<Player*>(other->GetOwner());
-        if (player && !player->IsInvincible()) {
-            // プレイヤーにダメージを与える
-            player->SetHp(player->GetHp() - damage_);
-            hasHitPlayer_ = true;  // 多重ヒット防止
-        }
+        player->OnHit(damage_);
+        hasHitPlayer_ = true;  // 多重ヒット防止
     }
 }
 

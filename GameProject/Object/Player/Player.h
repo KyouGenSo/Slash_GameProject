@@ -96,7 +96,7 @@ public: // メンバ関数
     /// 近接攻撃ヒット時の処理
     /// </summary>
     /// <param name="other">衝突相手のコライダー</param>
-    void OnMeleeAttackHit(Collider* other);
+    void OnHit(float damage);
 
     //-----------------------------Getters/Setters------------------------------//
     /// <summary>

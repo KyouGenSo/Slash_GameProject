@@ -128,8 +128,7 @@ void Player::Update()
     hpBarBGSprite_->Update();
 
     // State Machineの更新
-    if (stateMachine_)
-    {
+    if (stateMachine_) {
         stateMachine_->HandleInput();
         stateMachine_->Update(FrameTimer::GetInstance()->GetDeltaTime());
     }
@@ -194,8 +193,7 @@ void Player::Move(float speedMultiplier, bool isApplyDirCalulate)
     velocity_ = velocity_.Normalize() * speed_ * speedMultiplier;
 
     // カメラモードに応じて移動方向を調整
-    if (mode_ && camera_)
-    {
+    if (mode_ && camera_) {
         Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(camera_->GetRotateY());
         velocity_ = Mat4x4::TransformNormal(rotationMatrix, velocity_);
     }
@@ -204,8 +202,7 @@ void Player::Move(float speedMultiplier, bool isApplyDirCalulate)
     transform_.translate += velocity_;
 
     // 移動方向を向く
-    if (velocity_.Length() > kVelocityEpsilon && isApplyDirCalulate)
-    {
+    if (velocity_.Length() > kVelocityEpsilon && isApplyDirCalulate) {
         targetAngle_ = std::atan2(velocity_.x, velocity_.z);
         transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, rotationLerpSpeed);
     }
@@ -295,14 +292,12 @@ void Player::LookAtBoss()
     transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle, bossLookatLerp_);
 }
 
-void Player::OnMeleeAttackHit(Collider* other)
+void Player::OnHit(float damage)
 {
-    if (!other) return;
+    if (IsInvincible()) return;
 
-    uint32_t typeID = other->GetTypeID();
-    if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
-        isAttackHit_ = true;
-    }
+    hp_ -= damage;
+    hp_ = std::max<float>(hp_, 0.0f);
 }
 
 void Player::DrawImGui()
@@ -388,7 +383,8 @@ void Player::DrawImGui()
                         // 現在のステートなら緑色、そうでなければ青色でヘッダー表示
                         if (currentState && currentState->GetName() == selectedStateName) {
                             ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.1f, 0.4f, 0.1f, 1.0f));
-                        } else {
+                        }
+                        else {
                             ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.3f, 0.4f, 1.0f));
                         }
 
@@ -484,7 +480,8 @@ void Player::DrawImGui()
                     Boss* detectedEnemy = meleeAttackCollider_->GetDetectedEnemy();
                     if (detectedEnemy) {
                         ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Enemy Detected!");
-                    } else {
+                    }
+                    else {
                         ImGui::Text("No Enemy Detected");
                     }
                     ImGui::Text("Collision Count: %d", meleeAttackCollider_->GetCollisionCount());
@@ -641,7 +638,7 @@ void Player::ClearDynamicBounds()
 
 void Player::RequestBulletSpawn(const Vector3& position, const Vector3& velocity)
 {
-    pendingBullets_.push_back({position, velocity});
+    pendingBullets_.push_back({ position, velocity });
 }
 
 std::vector<Player::BulletSpawnRequest> Player::ConsumePendingBullets()
