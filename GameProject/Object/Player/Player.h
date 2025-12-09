@@ -62,7 +62,8 @@ public: // メンバ関数
     /// 移動
     /// </summary>
     /// <param name="speedMultiplier">速度倍率（デフォルト1.0）</param>
-    void Move(float speedMultiplier = 1.0f);
+    /// <param name="isApplyDirCalulate"> 方向計算を適用するか（デフォルトtrue）</param>
+    void Move(float speedMultiplier = 1.0f, bool isApplyDirCalulate = true);
 
     /// <summary>
     /// ターゲットへ移動
@@ -297,6 +298,12 @@ public: // メンバ関数
     /// Bossをターゲットに設定
     /// </summary>
     void SetBoss(Boss* target) { targetEnemy_ = target; }
+
+    /// <summary>
+    /// ターゲットのBossを取得
+    /// </summary>
+    /// <returns>Bossのポインタ（未設定ならnullptr）</returns>
+    Boss* GetBoss() const { return targetEnemy_; }
 
     //-----------------------------弾生成リクエストシステム------------------------------//
     /// <summary>

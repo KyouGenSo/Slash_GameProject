@@ -3,6 +3,7 @@
 #include "../Player.h"
 #include "Input/InputHandler.h"
 #include "Camera.h"
+#include "Object/Boss/Boss.h"
 #include "Matrix4x4.h"
 #include "Mat4x4Func.h"
 #include "Vec3Func.h"
@@ -29,6 +30,22 @@ void ShootState::Update(Player* player, float deltaTime)
 	fireRate_ = gv->GetValueFloat("ShootState", "FireRate");
 	moveSpeedMultiplier_ = gv->GetValueFloat("ShootState", "MoveSpeedMultiplier");
 
+	// フェーズ2では射撃を無効化
+	Boss* boss = player->GetBoss();
+	if (boss && boss->GetPhase() == 2) {
+		// 射撃せずにIdle/Moveに戻る
+		PlayerStateMachine* stateMachine = player->GetStateMachine();
+		InputHandler* input = player->GetInputHandler();
+		if (stateMachine && input) {
+			if (input->IsMoving()) {
+				stateMachine->ChangeState("Move");
+			} else {
+				stateMachine->ChangeState("Idle");
+			}
+		}
+		return;
+	}
+
 	// 発射レートタイマーの更新
 	if (fireRateTimer_ > 0.0f)
 	{
@@ -46,7 +63,7 @@ void ShootState::Update(Player* player, float deltaTime)
 	}
 
 	// 移動処理
-	player->Move(moveSpeedMultiplier_);
+    player->Move(moveSpeedMultiplier_, false);
 }
 
 void ShootState::Exit(Player* player)
@@ -93,8 +110,10 @@ void ShootState::CalculateAimDirection(Player* player)
 	// スティック入力を3Dベクトルに変換（X=左右, Y=前後 → X=X, Z=Y）
 	Vector3 localDirection = Vector3(stick.x, 0.0f, stick.y);
 
-	// プレイヤーのY回転行列を作成
-	Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(player->GetRotate().y);
+	// カメラのY回転を基準にする（カメラ相対座標系）
+	Camera* camera = player->GetCamera();
+	float cameraYaw = camera ? camera->GetRotateY() : player->GetRotate().y;
+	Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(cameraYaw);
 
 	// ローカル方向をワールド方向に変換
 	aimDirection_ = Mat4x4::TransformNormal(rotationMatrix, localDirection);
