@@ -1,6 +1,6 @@
 {
     "PlayerBullet": {
-        "ColliderRadius": 1.5,
+        "ColliderRadius": 5.0,
         "Damage": 1.0,
         "Lifetime": 5.0,
         "Speed": 180.0

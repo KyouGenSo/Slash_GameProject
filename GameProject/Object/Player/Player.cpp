@@ -606,6 +606,14 @@ void Player::DrawImGui()
 #endif
 }
 
+bool Player::CanShoot() const
+{
+    if (isDead_) return false;
+    if (targetEnemy_->GetPhase() == 2) return false; // フェーズ2では射撃不可
+
+    return true;
+}
+
 void Player::SetDynamicBounds(float xMin, float xMax, float zMin, float zMax)
 {
     dynamicXMin_ = xMin;

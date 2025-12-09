@@ -52,7 +52,7 @@ void IdleState::HandleInput(Player* player)
 	}
 	
 	// 射撃
-	if (input->IsShooting())
+    if (input->IsShooting() && player->CanShoot())
 	{
 		stateMachine->ChangeState("Shoot");
 		return;

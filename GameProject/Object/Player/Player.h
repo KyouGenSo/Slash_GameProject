@@ -195,6 +195,12 @@ public: // メンバ関数
     bool IsInvincible() const{ return isInvincible_; }
 
     /// <summary>
+    /// Shootできるか
+    /// </summary>
+    /// <returns>true: 可能, false: 不可能</returns>
+    bool CanShoot() const;
+
+    /// <summary>
     /// 座標変換情報を取得
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
