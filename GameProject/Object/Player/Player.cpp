@@ -353,6 +353,9 @@ void Player::OnHit(float damage)
 
     // カメラシェイク発動（被弾時は強めに）
     CameraManager::GetInstance()->StartShake(0.8f);
+
+    // ゲームパット振動
+    Input::GetInstance()->SetVibration(0.2f, 0.3f, 0.25f);
 }
 
 void Player::DrawImGui()
