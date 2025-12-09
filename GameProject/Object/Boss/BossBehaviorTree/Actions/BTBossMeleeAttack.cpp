@@ -246,6 +246,10 @@ void BTBossMeleeAttack::InitializeRush(Boss* boss) {
         if (toPlayer.Length() > kDirectionEpsilon) {
             rushDirection_ = toPlayer.Normalize();
 
+            // 突進方向に向く
+            float angle = atan2f(rushDirection_.x, rushDirection_.z);
+            boss->SetRotate(Vector3(0.0f, angle, 0.0f));
+
             // 目標位置 = 開始位置 + 方向 * 突進距離
             targetPosition_ = startPosition_ + rushDirection_ * rushDistance_;
             targetPosition_ = ClampToArea(targetPosition_);
