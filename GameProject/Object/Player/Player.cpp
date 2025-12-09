@@ -630,3 +630,13 @@ void Player::ClearDynamicBounds()
     dynamicZMin_ = -kBoundaryDisabled;
     dynamicZMax_ = kBoundaryDisabled;
 }
+
+void Player::RequestBulletSpawn(const Vector3& position, const Vector3& velocity)
+{
+    pendingBullets_.push_back({position, velocity});
+}
+
+std::vector<Player::BulletSpawnRequest> Player::ConsumePendingBullets()
+{
+    return std::move(pendingBullets_);
+}

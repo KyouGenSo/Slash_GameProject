@@ -6,6 +6,7 @@
 #include "Object/Player/Player.h"
 #include "Input/InputHandler.h"
 #include "../Object/Projectile/BossBullet.h"
+#include "../Object/Projectile/PlayerBullet.h"
 
 #include <memory>
 #include <vector>
@@ -20,6 +21,7 @@ class ThirdPersonController;
 class TopDownController;
 class CameraAnimationController;
 class BossBullet;
+class PlayerBullet;
 
 /// <summary>
 /// ゲームメインシーンクラス
@@ -99,6 +101,11 @@ public: // メンバ関数
     /// </summary>
     void CreateBossBullet();
 
+    /// <summary>
+    /// プレイヤーの弾の生成処理
+    /// </summary>
+    void CreatePlayerBullet();
+
 private: // メンバ変数
 
     std::unique_ptr<SkyBox> skyBox_;                            // スカイボックス（環境マップ）
@@ -110,6 +117,8 @@ private: // メンバ変数
     std::unique_ptr<Boss> boss_;                                // ボスキャラクター
 
     std::vector<std::unique_ptr<BossBullet>> bossBullets_;      // ボスの弾のコンテナ
+
+    std::vector<std::unique_ptr<PlayerBullet>> playerBullets_;  // プレイヤーの弾のコンテナ
 
     std::unique_ptr<InputHandler> inputHandler_;                // 入力ハンドラー
 

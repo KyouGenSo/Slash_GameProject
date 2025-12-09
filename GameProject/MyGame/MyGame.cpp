@@ -223,6 +223,13 @@ void MyGame::RegisterGlobalVariables()
     gv->AddItem("BossBullet", "Damage", 10.0f);
     gv->AddItem("BossBullet", "Lifetime", 5.0f);
 
+    // === PlayerBullet === //
+    gv->CreateGroup("PlayerBullet");
+    gv->AddItem("PlayerBullet", "Damage", 10.0f);
+    gv->AddItem("PlayerBullet", "Lifetime", 3.0f);
+    gv->AddItem("PlayerBullet", "ColliderRadius", 0.5f);
+    gv->AddItem("PlayerBullet", "Speed", 30.0f);
+
     // === AttackState === //
     gv->CreateGroup("AttackState");
     gv->AddItem("AttackState", "SearchTime", 0.1f);
@@ -247,4 +254,5 @@ void MyGame::RegisterGlobalVariables()
     gv->CreateGroup("ShootState");
     gv->AddItem("ShootState", "FireRate", 0.2f);
     gv->AddItem("ShootState", "MoveSpeedMultiplier", 0.5f);
+    gv->AddItem("ShootState", "AimRotationLerp", 0.3f);
 }

@@ -73,6 +73,12 @@ public:
 	/// <returns>正規化された移動方向ベクトル</returns>
 	Vector2 GetMoveDirection() const;
 
+	/// <summary>
+	/// 照準方向を取得（右スティック入力）
+	/// </summary>
+	/// <returns>正規化された照準方向ベクトル</returns>
+	Vector2 GetAimDirection() const;
+
 private:
 
 	// 移動入力が有効かどうかのキャッシュフラグ（毎フレーム更新）
@@ -96,6 +102,6 @@ private:
 	// キャッシュされた移動方向ベクトル（正規化済み、毎フレーム更新）
 	Vector2 moveDirection_;
 
-	// 右トリガー射撃判定の閾値
-	float triggerThreshold_ = 0.5f;
+	// キャッシュされた照準方向ベクトル（右スティック、正規化済み、毎フレーム更新）
+	Vector2 aimDirection_;
 };

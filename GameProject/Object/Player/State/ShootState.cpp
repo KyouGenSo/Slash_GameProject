@@ -4,8 +4,11 @@
 #include "Input/InputHandler.h"
 #include "Camera.h"
 #include "Matrix4x4.h"
+#include "Mat4x4Func.h"
+#include "Vec3Func.h"
 #include "GlobalVariables.h"
 #include <algorithm>  // for std::max
+#include <cmath>
 #ifdef _DEBUG
 #include "ImGuiManager.h"
 #endif
@@ -76,20 +79,59 @@ void ShootState::HandleInput(Player* player)
 
 void ShootState::CalculateAimDirection(Player* player)
 {
-	Camera* camera = player->GetCamera();
-	if (camera)
-	{
-		// カメラのビュー行列から前方ベクトルを取得
-		Matrix4x4 viewMatrix = camera->GetViewMatrix();
-		Matrix4x4 invViewMatrix = Mat4x4::Inverse(viewMatrix);
-		aimDirection_ = Vector3(-invViewMatrix.m[2][0], -invViewMatrix.m[2][1], -invViewMatrix.m[2][2]).Normalize();
+	InputHandler* input = player->GetInputHandler();
+	if (!input || !input->IsShooting()) {
+		// 右スティック入力なし → プレイヤー前方
+		float yaw = player->GetRotate().y;
+		aimDirection_ = Vector3(std::sin(yaw), 0.0f, std::cos(yaw));
+		return;
+	}
+
+	// 右スティック方向を取得
+	Vector2 stick = input->GetAimDirection();
+
+	// スティック入力を3Dベクトルに変換（X=左右, Y=前後 → X=X, Z=Y）
+	Vector3 localDirection = Vector3(stick.x, 0.0f, stick.y);
+
+	// プレイヤーのY回転行列を作成
+	Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(player->GetRotate().y);
+
+	// ローカル方向をワールド方向に変換
+	aimDirection_ = Mat4x4::TransformNormal(rotationMatrix, localDirection);
+
+	// 正規化
+	float len = aimDirection_.Length();
+	if (len > 0.0f) {
+		aimDirection_ = aimDirection_ / len;
 	}
 }
 
 void ShootState::Fire(Player* player)
 {
-	// 弾を発射する処理
-	// TODO: 弾オブジェクトの生成と発射処理を実装
+	// 発射位置（プレイヤー中心）
+	Vector3 position = player->GetTranslate();
+
+	// 弾速度を計算
+	GlobalVariables* gv = GlobalVariables::GetInstance();
+	float bulletSpeed = gv->GetValueFloat("PlayerBullet", "Speed");
+	if (bulletSpeed <= 0.0f) {
+		bulletSpeed = 30.0f;  // デフォルト値
+	}
+	Vector3 velocity = aimDirection_ * bulletSpeed;
+
+	// 弾生成リクエストを追加
+	player->RequestBulletSpawn(position, velocity);
+
+	// 発射方向にプレイヤーを向ける
+	if (aimDirection_.Length() > 0.01f) {
+		float targetAngle = std::atan2(aimDirection_.x, aimDirection_.z);
+		float aimRotationLerp = gv->GetValueFloat("ShootState", "AimRotationLerp");
+		if (aimRotationLerp <= 0.0f) {
+			aimRotationLerp = 0.3f;  // デフォルト値
+		}
+		Transform* transform = player->GetTransformPtr();
+		transform->rotate.y = Vec3::LerpShortAngle(transform->rotate.y, targetAngle, aimRotationLerp);
+	}
 }
 
 void ShootState::DrawImGui(Player* player)

@@ -188,6 +188,12 @@ void GameScene::Initialize()
         true
     );
 
+    collisionManager->SetCollisionMask(
+        static_cast<uint32_t>(CollisionTypeId::PLAYER_BULLET),
+        static_cast<uint32_t>(CollisionTypeId::BOSS),
+        true
+    );
+
     /// ----------------------エミッターマネージャーの初期化--------------------------------------------- ///
     // シーンのエミッターをまとめて読み込む
     emitterManager_->LoadScenePreset("gamescene_preset");
@@ -291,6 +297,9 @@ void GameScene::Update()
 
     // ボスからの弾生成リクエストを処理
     CreateBossBullet();
+
+    // プレイヤーからの弾生成リクエストを処理
+    CreatePlayerBullet();
 
     // プロジェクタイルの更新
     float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
@@ -560,6 +569,24 @@ void GameScene::UpdateProjectiles(float deltaTime)
             }
             return false;
         });
+
+    // プレイヤーの弾の更新
+    for (auto& bullet : playerBullets_) {
+        if (bullet && bullet->IsActive()) {
+            bullet->Update(deltaTime);
+        }
+    }
+
+    // 非アクティブなプレイヤーの弾を削除
+    std::erase_if(playerBullets_,
+        [](const std::unique_ptr<PlayerBullet>& bullet) {
+            if (bullet && !bullet->IsActive()) {
+                // Finalize()で自動的にコライダーが削除される
+                bullet->Finalize();
+                return true;
+            }
+            return false;
+        });
 }
 
 void GameScene::UpdateBossBorder()
@@ -611,6 +638,15 @@ void GameScene::CreateBossBullet()
         auto bullet = std::make_unique<BossBullet>(emitterManager_.get());
         bullet->Initialize(request.position, request.velocity);
         bossBullets_.push_back(std::move(bullet));
+    }
+}
+
+void GameScene::CreatePlayerBullet()
+{
+    for (const auto& request : player_->ConsumePendingBullets()) {
+        auto bullet = std::make_unique<PlayerBullet>(emitterManager_.get());
+        bullet->Initialize(request.position, request.velocity);
+        playerBullets_.push_back(std::move(bullet));
     }
 }
 

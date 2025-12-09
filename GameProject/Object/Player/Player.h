@@ -1,9 +1,11 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 #include "Collider.h"
 #include "Transform.h"
 #include "vector2.h"
+#include "Vector3.h"
 
 class Sprite;
 class OBBCollider;
@@ -296,6 +298,28 @@ public: // メンバ関数
     /// </summary>
     void SetBoss(Boss* target) { targetEnemy_ = target; }
 
+    //-----------------------------弾生成リクエストシステム------------------------------//
+    /// <summary>
+    /// 弾生成リクエスト構造体
+    /// </summary>
+    struct BulletSpawnRequest {
+        Vector3 position;  ///< 発射位置
+        Vector3 velocity;  ///< 弾の速度ベクトル
+    };
+
+    /// <summary>
+    /// 弾生成リクエストを追加
+    /// </summary>
+    /// <param name="position">発射位置</param>
+    /// <param name="velocity">弾の速度ベクトル</param>
+    void RequestBulletSpawn(const Vector3& position, const Vector3& velocity);
+
+    /// <summary>
+    /// 保留中の弾生成リクエストを取得して消費
+    /// </summary>
+    /// <returns>弾生成リクエストのリスト</returns>
+    std::vector<BulletSpawnRequest> ConsumePendingBullets();
+
 private: // メンバ変数
 
     // 動的移動制限（ボス近接戦闘エリア）
@@ -334,6 +358,9 @@ private: // メンバ変数
     Boss* targetEnemy_ = nullptr;
     bool isAttackHit_ = false;
     float attackMoveSpeed_ = 2.0f;
+
+    // 弾生成リクエスト
+    std::vector<BulletSpawnRequest> pendingBullets_;
 
     // 調整可能パラメータ（ImGui編集用）
     float initialY_ = 2.5f;                   ///< 初期Y座標

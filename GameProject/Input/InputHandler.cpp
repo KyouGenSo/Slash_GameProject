@@ -25,24 +25,31 @@ void InputHandler::Initialize()
 
 void InputHandler::Update()
 {
-  // GlobalVariablesから値を同期
-  GlobalVariables* gv = GlobalVariables::GetInstance();
-  triggerThreshold_ = gv->GetValueFloat("Input", "TriggerThreshold");
-
   Input* input = Input::GetInstance();
 
   moveDirection_ = Vector2(0.0f, 0.0f); // 初期化
+  aimDirection_ = Vector2(0.0f, 0.0f); // 初期化
 
-  // 移動入力
+  // 移動入力（左スティック + キーボード）
   if (input->IsConnect()) moveDirection_ += input->GetLeftStick();
 
   moveDirection_ += {static_cast<float>(input->PushKey(DIK_D) - input->PushKey(DIK_A)), static_cast<float>(input->PushKey(DIK_W) - input->PushKey(DIK_S)) };
+
+  // 照準入力（右スティック）
+  bool hasRightStickInput = false;
+  if (input->IsConnect()) {
+    hasRightStickInput = !input->RStickInDeadZone();
+    if (hasRightStickInput) {
+      Vector2 rightStick = input->GetRightStick();
+      aimDirection_ = rightStick.Normalize();
+    }
+  }
 
   // 各アクションの入力状態を更新
   isMoving_ = !input->LStickInDeadZone() || moveDirection_.Length() > 0.0f;
   isDashing_ = input->TriggerKey(DIK_SPACE) || input->TriggerButton(XButtons.A);
   isAttacking_ = input->TriggerKey(DIK_Z) || input->TriggerButton(XButtons.X);
-  isShooting_ = input->PushKey(DIK_LCONTROL) || input->GetRightTrigger() > triggerThreshold_;
+  isShooting_ = hasRightStickInput;  // 右スティック入力で射撃判定
   isParrying_ = input->TriggerKey(DIK_F) || input->TriggerButton(XButtons.B);
   isPaused_ = input->TriggerKey(DIK_ESCAPE) || input->TriggerButton(XButtons.Start);
 }
@@ -91,4 +98,9 @@ bool InputHandler::IsPaused() const
 Vector2 InputHandler::GetMoveDirection() const
 {
   return moveDirection_;
+}
+
+Vector2 InputHandler::GetAimDirection() const
+{
+  return aimDirection_;
 }
