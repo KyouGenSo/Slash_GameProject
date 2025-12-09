@@ -114,50 +114,78 @@
     },
     {
       "id": 30016,
-      "sourceNodeId": 10017,
-      "sourcePinId": 20027,
-      "targetNodeId": 10011,
-      "targetPinId": 20016
-    },
-    {
-      "id": 30017,
       "sourceNodeId": 10015,
       "sourcePinId": 20023,
       "targetNodeId": 10016,
       "targetPinId": 20024
     },
     {
-      "id": 30018,
+      "id": 30017,
       "sourceNodeId": 10016,
       "sourcePinId": 20025,
       "targetNodeId": 10019,
       "targetPinId": 20029
     },
     {
-      "id": 30019,
+      "id": 30018,
       "sourceNodeId": 10016,
       "sourcePinId": 20025,
       "targetNodeId": 10020,
       "targetPinId": 20030
     },
     {
-      "id": 30020,
+      "id": 30019,
       "sourceNodeId": 10020,
       "sourcePinId": 20031,
       "targetNodeId": 10021,
       "targetPinId": 20032
     },
     {
-      "id": 30021,
+      "id": 30020,
       "sourceNodeId": 10020,
       "sourcePinId": 20031,
       "targetNodeId": 10022,
       "targetPinId": 20033
+    },
+    {
+      "id": 30021,
+      "sourceNodeId": 10025,
+      "sourcePinId": 20037,
+      "targetNodeId": 10023,
+      "targetPinId": 20034
+    },
+    {
+      "id": 30022,
+      "sourceNodeId": 10025,
+      "sourcePinId": 20037,
+      "targetNodeId": 10024,
+      "targetPinId": 20035
+    },
+    {
+      "id": 30023,
+      "sourceNodeId": 10017,
+      "sourcePinId": 20027,
+      "targetNodeId": 10026,
+      "targetPinId": 20038
+    },
+    {
+      "id": 30024,
+      "sourceNodeId": 10026,
+      "sourcePinId": 20039,
+      "targetNodeId": 10025,
+      "targetPinId": 20036
+    },
+    {
+      "id": 30025,
+      "sourceNodeId": 10026,
+      "sourcePinId": 20039,
+      "targetNodeId": 10011,
+      "targetPinId": 20016
     }
   ],
   "metadata": {
-    "created": "2025-12-01T05:20:35",
-    "modified": "2025-12-01T05:20:35",
+    "created": "2025-12-09T16:58:56",
+    "modified": "2025-12-09T16:58:56",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -197,7 +225,7 @@
       "displayName": "Dash",
       "id": 10003,
       "parameters": {
-        "dashDuration": 0.07297095656394958,
+        "dashDuration": 0.12145118415355682,
         "dashSpeed": 200.0
       },
       "position": {
@@ -440,6 +468,56 @@
         "y": 300.0
       },
       "type": "BTBossShoot"
+    },
+    {
+      "displayName": "Approach",
+      "id": 10023,
+      "parameters": {
+        "approachSpeed": 200.0,
+        "targetDistance": 5.0
+      },
+      "position": {
+        "x": 100.0,
+        "y": 100.0
+      },
+      "type": "BTBossApproach"
+    },
+    {
+      "displayName": "Melee Attack",
+      "id": 10024,
+      "parameters": {
+        "attackDuration": 0.20000000298023224,
+        "blockRadius": 8.0,
+        "blockScale": 0.5,
+        "prepareTime": 0.5,
+        "recoveryTime": 0.30000001192092896,
+        "swingAngle": 3.1415927410125732
+      },
+      "position": {
+        "x": 130.0,
+        "y": 120.0
+      },
+      "type": "BTBossMeleeAttack"
+    },
+    {
+      "displayName": "MeleeSequence",
+      "id": 10025,
+      "parameters": null,
+      "position": {
+        "x": 190.0,
+        "y": 160.0
+      },
+      "type": "BTSequence"
+    },
+    {
+      "displayName": "Random Selector",
+      "id": 10026,
+      "parameters": null,
+      "position": {
+        "x": 220.0,
+        "y": 180.0
+      },
+      "type": "BTRandomSelector"
     }
   ],
   "version": "1.0"
