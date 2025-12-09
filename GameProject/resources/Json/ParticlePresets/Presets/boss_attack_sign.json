@@ -5,8 +5,8 @@
     1.0,
     1.0
   ],
-  "frequency": 0.5,
-  "frequencyTime": 0.06442297995090485,
+  "frequency": 0.3499999940395355,
+  "frequencyTime": 0.055917758494615555,
   "isActive": false,
   "isEmitting": false,
   "isNormalize": false,
@@ -18,9 +18,9 @@
   ],
   "particleCount": 100,
   "position": [
-    -3.677907943725586,
+    -33.05976104736328,
     2.5,
-    -79.43688201904297
+    -76.91895294189453
   ],
   "radius": 0.10000000149011612,
   "scaleRangeX": [
