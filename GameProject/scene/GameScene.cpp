@@ -177,7 +177,7 @@ void GameScene::Initialize()
     /// ----------------------衝突判定の初期化--------------------------------------------------- ///
     // 衝突マスクの設定（どのタイプ同士が衝突判定を行うか）
     collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER_MELEE_ATTACK),
+        static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
         static_cast<uint32_t>(CollisionTypeId::BOSS),
         true
     );
@@ -185,12 +185,6 @@ void GameScene::Initialize()
     collisionManager->SetCollisionMask(
         static_cast<uint32_t>(CollisionTypeId::PLAYER),
         static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
-        true
-    );
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER_BULLET),
-        static_cast<uint32_t>(CollisionTypeId::BOSS),
         true
     );
 
@@ -203,6 +197,13 @@ void GameScene::Initialize()
     emitterManager_->SetEmitterActive("boss_border_right", false);
     emitterManager_->SetEmitterActive("boss_border_front", false);
     emitterManager_->SetEmitterActive("boss_border_back", false);
+
+    // ボス近接攻撃予兆エフェクトの読み込みと初期化
+    emitterManager_->LoadPreset("boss_attack_sign", "boss_melee_attack_sign");
+    emitterManager_->SetEmitterActive("boss_melee_attack_sign", false);
+
+    // ボスにEmitterManagerを設定
+    boss_->SetEmitterManager(emitterManager_.get());
 
     // ダッシュエミッター位置を初期化
     dashEmitterPosition_ = player_->GetTranslate();

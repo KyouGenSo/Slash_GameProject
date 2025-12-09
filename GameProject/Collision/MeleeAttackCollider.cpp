@@ -10,7 +10,7 @@ MeleeAttackCollider::MeleeAttackCollider(Player* player)
     GlobalVariables* gv = GlobalVariables::GetInstance();
     attackDamage_ = gv->GetValueFloat("MeleeAttack", "AttackDamage");
 
-    SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_MELEE_ATTACK));
+    SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK));
     SetActive(false);
 }
 

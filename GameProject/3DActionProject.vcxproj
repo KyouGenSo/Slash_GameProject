@@ -168,6 +168,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.cpp" />
     <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.cpp" />
     <ClCompile Include="CameraSystem\Controller\TopDownController.cpp" />
+    <ClCompile Include="Collision\BossMeleeAttackCollider.cpp" />
     <ClCompile Include="Collision\PlayerBulletCollider.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
@@ -175,6 +176,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Boss\Boss.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossDash.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossIdle.cpp" />
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossShoot.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\BossBehaviorTree.cpp" />
@@ -238,6 +240,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.h" />
     <ClInclude Include="CameraSystem\Controller\ICameraController.h" />
     <ClInclude Include="CameraSystem\Controller\TopDownController.h" />
+    <ClInclude Include="Collision\BossMeleeAttackCollider.h" />
     <ClInclude Include="Collision\CollisionTypeIdDef.h" />
     <ClInclude Include="Collision\PlayerBulletCollider.h" />
     <ClInclude Include="Common\GameConst.h" />
@@ -246,6 +249,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Boss\Boss.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossDash.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossIdle.h" />
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossShoot.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\BossBehaviorTree.h" />

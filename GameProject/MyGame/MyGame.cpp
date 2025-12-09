@@ -255,4 +255,12 @@ void MyGame::RegisterGlobalVariables()
     gv->AddItem("ShootState", "FireRate", 0.2f);
     gv->AddItem("ShootState", "MoveSpeedMultiplier", 0.5f);
     gv->AddItem("ShootState", "AimRotationLerp", 0.3f);
+
+    // === BossMeleeAttackCollider === //
+    gv->CreateGroup("BossMeleeAttackCollider");
+    gv->AddItem("BossMeleeAttackCollider", "Damage", 10.0f);
+    gv->AddItem("BossMeleeAttackCollider", "ColliderSizeX", 2.0f);
+    gv->AddItem("BossMeleeAttackCollider", "ColliderSizeY", 2.0f);
+    gv->AddItem("BossMeleeAttackCollider", "ColliderSizeZ", 2.0f);
+    gv->AddItem("BossMeleeAttackCollider", "OffsetZ", 3.0f);
 }

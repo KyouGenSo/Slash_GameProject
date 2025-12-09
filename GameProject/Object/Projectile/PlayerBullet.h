@@ -53,7 +53,7 @@ public:
     /// <summary>
     /// コリジョンタイプIDを取得
     /// </summary>
-    CollisionTypeId GetTypeId() const { return CollisionTypeId::PLAYER_BULLET; }
+    CollisionTypeId GetTypeId() const { return CollisionTypeId::PLAYER_ATTACK; }
 
     /// <summary>
     /// コライダーを取得

@@ -234,6 +234,12 @@
     <ClCompile Include="Object\Projectile\PlayerBullet.cpp">
       <Filter>Object\Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="Collision\BossMeleeAttackCollider.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.cpp">
+      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -403,6 +409,12 @@
     </ClInclude>
     <ClInclude Include="Object\Projectile\PlayerBullet.h">
       <Filter>Object\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\BossMeleeAttackCollider.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.h">
+      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

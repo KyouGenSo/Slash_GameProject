@@ -5,11 +5,13 @@
 #include "OBBCollider.h"
 #include "CollisionManager.h"
 #include "../../Collision/CollisionTypeIdDef.h"
+#include "../../Collision/BossMeleeAttackCollider.h"
 #include "FrameTimer.h"
 #include "Sprite.h"
 #include "WinApp.h"
 #include "BossBehaviorTree/BossBehaviorTree.h"
 #include "GlobalVariables.h"
+#include "EmitterManager.h"
 
 #ifdef _DEBUG
 #include "ImGuiManager.h"
@@ -78,6 +80,27 @@ void Boss::Initialize()
     // CollisionManagerに登録
     CollisionManager::GetInstance()->AddCollider(bodyCollider_.get());
 
+    // 近接攻撃用ブロックの初期化
+    meleeAttackBlock_ = std::make_unique<Object3d>();
+    meleeAttackBlock_->Initialize();
+    meleeAttackBlock_->SetModel("white_cube.gltf");
+    meleeAttackBlock_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));  // オレンジ色
+
+    // 近接攻撃コライダーの初期化
+    float meleeColliderSizeX = gv->GetValueFloat("BossMeleeAttackCollider", "ColliderSizeX");
+    float meleeColliderSizeY = gv->GetValueFloat("BossMeleeAttackCollider", "ColliderSizeY");
+    float meleeColliderSizeZ = gv->GetValueFloat("BossMeleeAttackCollider", "ColliderSizeZ");
+    float meleeOffsetZ = gv->GetValueFloat("BossMeleeAttackCollider", "OffsetZ");
+    meleeAttackCollider_ = std::make_unique<BossMeleeAttackCollider>(this);
+    meleeAttackCollider_->SetTransform(&transform_);
+    meleeAttackCollider_->SetSize(Vector3(meleeColliderSizeX, meleeColliderSizeY, meleeColliderSizeZ));
+    meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, meleeOffsetZ));
+    meleeAttackCollider_->SetOwner(this);
+
+
+    // 近接攻撃コライダーをCollisionManagerに登録
+    CollisionManager::GetInstance()->AddCollider(meleeAttackCollider_.get());
+
     // ビヘイビアツリーの初期化
     behaviorTree_ = std::make_unique<BossBehaviorTree>(this, player_);
 
@@ -98,6 +121,9 @@ void Boss::Finalize()
     // Colliderを削除
     if (bodyCollider_) {
         CollisionManager::GetInstance()->RemoveCollider(bodyCollider_.get());
+    }
+    if (meleeAttackCollider_) {
+        CollisionManager::GetInstance()->RemoveCollider(meleeAttackCollider_.get());
     }
 }
 
@@ -159,6 +185,11 @@ void Boss::Update(float deltaTime)
 void Boss::Draw()
 {
     model_->Draw();
+
+    // 攻撃ブロックの描画（表示フラグがtrueの時のみ）
+    if (meleeAttackBlockVisible_ && meleeAttackBlock_) {
+        meleeAttackBlock_->Draw();
+    }
 }
 
 void Boss::DrawSprite()
@@ -392,5 +423,17 @@ void Boss::SetPlayer(Player* player) {
     player_ = player;
     if (behaviorTree_) {
         behaviorTree_->SetPlayer(player);
+    }
+}
+
+void Boss::SetAttackSignEmitterActive(bool active) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterActive(attackSignEmitterName_, active);
+    }
+}
+
+void Boss::SetAttackSignEmitterPosition(const Vector3& position) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterPosition(attackSignEmitterName_, position);
     }
 }

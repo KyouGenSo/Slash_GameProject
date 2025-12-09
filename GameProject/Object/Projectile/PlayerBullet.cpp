@@ -79,7 +79,7 @@ void PlayerBullet::Initialize(const Vector3& position, const Vector3& velocity) 
     collider_->SetTransform(&transform_);
     collider_->SetRadius(colliderRadius);
     collider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
-    collider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_BULLET));
+    collider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK));
     collider_->SetOwner(this);
     collider_->SetActive(true);
     collider_->Reset();

@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "Transform.h"
@@ -15,6 +16,8 @@ class BossBehaviorTree;
 class BossNodeEditor;
 class Player;
 class BossShootState;
+class BossMeleeAttackCollider;
+class EmitterManager;
 
 /// <summary>
 /// ボスエネミークラス
@@ -228,6 +231,49 @@ public:
     /// <returns>ボスのOBBコライダーのポインタ</returns>
     OBBCollider* GetCollider() const { return bodyCollider_.get(); }
 
+    //-----------------------------近接攻撃関連------------------------------//
+    /// <summary>
+    /// 攻撃ブロックを取得
+    /// </summary>
+    /// <returns>攻撃ブロックのObject3dポインタ</returns>
+    Object3d* GetMeleeAttackBlock() const { return meleeAttackBlock_.get(); }
+
+    /// <summary>
+    /// 攻撃ブロックの表示/非表示を設定
+    /// </summary>
+    /// <param name="visible">表示する場合true</param>
+    void SetMeleeAttackBlockVisible(bool visible) { meleeAttackBlockVisible_ = visible; }
+
+    /// <summary>
+    /// 攻撃ブロックが表示中か取得
+    /// </summary>
+    /// <returns>表示中の場合true</returns>
+    bool IsMeleeAttackBlockVisible() const { return meleeAttackBlockVisible_; }
+
+    /// <summary>
+    /// 近接攻撃コライダーを取得
+    /// </summary>
+    /// <returns>近接攻撃コライダーのポインタ</returns>
+    BossMeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
+
+    /// <summary>
+    /// 予兆エフェクトをアクティブ化/非アクティブ化
+    /// </summary>
+    /// <param name="active">アクティブにする場合true</param>
+    void SetAttackSignEmitterActive(bool active);
+
+    /// <summary>
+    /// 予兆エフェクトの位置を設定
+    /// </summary>
+    /// <param name="position">設定する位置</param>
+    void SetAttackSignEmitterPosition(const Vector3& position);
+
+    /// <summary>
+    /// EmitterManagerを設定
+    /// </summary>
+    /// <param name="emitterManager">EmitterManagerのポインタ</param>
+    void SetEmitterManager(EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
+
 private:
     // ボスの3Dモデルオブジェクト（描画とアニメーション管理）
     std::unique_ptr<Object3d> model_;
@@ -269,6 +315,22 @@ private:
 
     // ボス本体の衝突判定用AABBコライダー（矩形境界ボックス）
     std::unique_ptr<OBBCollider> bodyCollider_;
+
+    //-----------------------------近接攻撃関連------------------------------//
+    // 近接攻撃用武器ブロック
+    std::unique_ptr<Object3d> meleeAttackBlock_;
+
+    // 攻撃ブロック表示フラグ
+    bool meleeAttackBlockVisible_ = false;
+
+    // 近接攻撃用コライダー
+    std::unique_ptr<BossMeleeAttackCollider> meleeAttackCollider_;
+
+    // 予兆エフェクト管理
+    EmitterManager* emitterManager_ = nullptr;
+
+    // 予兆エフェクト名
+    std::string attackSignEmitterName_ = "boss_melee_attack_sign";
 
     // ヒットエフェクトの再生状態を示すフラグ。
     bool isPlayHitEffect_ = false;
