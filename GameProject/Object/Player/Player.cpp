@@ -1,3 +1,5 @@
+#include <numbers>
+
 #include "Player.h"
 #include "Object3d.h"
 #include "Input.h"
@@ -616,8 +618,8 @@ void Player::DrawImGui()
             ImGui::Separator();
 
             // Target Angle
-            ImGui::Text("Target Angle: %.2f degrees", targetAngle_ * 180.0f / 3.14159f);
-            ImGui::Text("Current Y Rotation: %.2f degrees", transform_.rotate.y * 180.0f / 3.14159f);
+            ImGui::Text("Target Angle: %.2f degrees", targetAngle_ * 180.0f / std::numbers::pi_v<float>);
+            ImGui::Text("Current Y Rotation: %.2f degrees", transform_.rotate.y * 180.0f / std::numbers::pi_v<float>);
 
             ImGui::Separator();
 

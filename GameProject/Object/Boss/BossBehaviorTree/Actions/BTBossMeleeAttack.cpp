@@ -149,8 +149,8 @@ void BTBossMeleeAttack::AimAtPlayer(Boss* boss, float deltaTime) {
         float angleDiff = targetAngle - currentAngle;
 
         // -πからπの範囲に正規化
-        while (angleDiff > 3.14159f) angleDiff -= 2.0f * 3.14159f;
-        while (angleDiff < -3.14159f) angleDiff += 2.0f * 3.14159f;
+        while (angleDiff > std::numbers::pi_v<float>) angleDiff -= 2.0f * std::numbers::pi_v<float>;
+        while (angleDiff < -std::numbers::pi_v<float>) angleDiff += 2.0f * std::numbers::pi_v<float>;
 
         // スムーズに回転（補間率を調整）
         float rotationSpeed = 5.0f;

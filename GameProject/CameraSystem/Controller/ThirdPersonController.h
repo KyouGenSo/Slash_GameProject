@@ -1,4 +1,6 @@
 #pragma once
+#include <numbers>
+
 #include "ICameraController.h"
 #include "../CameraConfig.h"
 #include "Vector3.h"
@@ -166,7 +168,7 @@ private:
     // パラメータ
     // CameraConfig::FirstPersonは実際にはThirdPerson用の設定
     // 回転速度をラジアン単位に変換（0.05度 ≈ 0.00087ラジアン）
-    float rotateSpeed_ = CameraConfig::FirstPerson::DEFAULT_ROTATE_SPEED * (3.14159265359f / 180.0f);
+    float rotateSpeed_ = CameraConfig::FirstPerson::DEFAULT_ROTATE_SPEED * (std::numbers::pi_v<float> / 180.0f);
     float followSmoothness_ = CameraConfig::FOLLOW_SMOOTHNESS;
     float offsetLerpSpeed_ = CameraConfig::OFFSET_LERP_SPEED;
     float rotationLerpSpeed_ = CameraConfig::ROTATION_LERP_SPEED;

@@ -17,7 +17,7 @@ class BTBossMeleeAttack : public BTNode {
     //=========================================================================================
 private:
     static constexpr float kDirectionEpsilon = 0.01f;   ///< 方向判定の閾値
-    static constexpr float kBlockStartAngle = -1.5708f; ///< ブロック開始角度（-π/2、右側から開始）
+    static constexpr float kBlockStartAngle = -std::numbers::pi_v<float> / 2.0f; ///< ブロック開始角度（-π/2、右側から開始）
     static constexpr float kAngleEpsilon = 0.001f;      ///< 角度判定の閾値
 
     //=========================================================================================

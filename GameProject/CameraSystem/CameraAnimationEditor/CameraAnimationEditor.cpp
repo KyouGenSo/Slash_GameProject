@@ -9,6 +9,7 @@
 #include "Vec3Func.h"
 #include "ImGuiManager.h"
 #include <algorithm>
+#include <numbers>
 #include <sstream>
 
 CameraAnimationEditor::CameraAnimationEditor() {
@@ -656,7 +657,7 @@ void CameraAnimationEditor::DrawInspectorPanel() {
             defaultKf.time = enableGridSnap_ ? SnapToGrid(newKeyTime) : newKeyTime;
             defaultKf.position = Vector3(0.0f, 5.0f, -10.0f); // デフォルト位置（オフセット）
             defaultKf.rotation = Vector3(0.2f, 0.0f, 0.0f);
-            defaultKf.fov = 45.0f * 3.14159265f / 180.0f;
+            defaultKf.fov = 45.0f * std::numbers::pi_v<float> / 180.0f;
             defaultKf.interpolation = CameraKeyframe::InterpolationType::LINEAR;
             defaultKf.coordinateType = static_cast<CameraKeyframe::CoordinateType>(coordTypeIndex);
 
@@ -724,23 +725,23 @@ void CameraAnimationEditor::DrawInspectorPanel() {
 
                 // 回転（度単位）
                 Vector3 rotDeg = {
-                    kf.rotation.x * 180.0f / 3.14159265f,
-                    kf.rotation.y * 180.0f / 3.14159265f,
-                    kf.rotation.z * 180.0f / 3.14159265f
+                    kf.rotation.x * 180.0f / std::numbers::pi_v<float>,
+                    kf.rotation.y * 180.0f / std::numbers::pi_v<float>,
+                    kf.rotation.z * 180.0f / std::numbers::pi_v<float>
                 };
                 if (ImGui::DragFloat3("Rotation", &rotDeg.x, 1.0f)) {
                     kf.rotation = {
-                        rotDeg.x * 3.14159265f / 180.0f,
-                        rotDeg.y * 3.14159265f / 180.0f,
-                        rotDeg.z * 3.14159265f / 180.0f
+                        rotDeg.x * std::numbers::pi_v<float> / 180.0f,
+                        rotDeg.y * std::numbers::pi_v<float> / 180.0f,
+                        rotDeg.z * std::numbers::pi_v<float> / 180.0f
                     };
                     changed = true;
                 }
 
                 // FOV（度単位）
-                float fovDeg = kf.fov * 180.0f / 3.14159265f;
+                float fovDeg = kf.fov * 180.0f / std::numbers::pi_v<float>;
                 if (ImGui::DragFloat("FOV", &fovDeg, 0.5f, 10.0f, 120.0f)) {
-                    kf.fov = fovDeg * 3.14159265f / 180.0f;
+                    kf.fov = fovDeg * std::numbers::pi_v<float> / 180.0f;
                     changed = true;
                 }
 

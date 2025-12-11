@@ -1,4 +1,6 @@
 #pragma once
+#include <numbers>
+
 #include "PlayerState.h"
 
 /// <summary>
@@ -11,7 +13,7 @@ class AttackState : public PlayerState
 	// 定数
 	//=========================================================================================
 private:
-    static constexpr float kBlockStartAngle = 1.5708f;  ///< ブロック開始角度（π/2）
+    static constexpr float kBlockStartAngle = std::numbers::pi_v<float> / 2.0f;  ///< ブロック開始角度（π/2）
 
 public:
 	AttackState() : PlayerState("Attack") {}
@@ -49,7 +51,7 @@ private:
 	// 攻撃ブロック回転制御
 	float blockAngle_ = 0.0f;                         ///< 現在のブロック回転角度
 	float blockRadius_ = 4.0f;                        ///< プレイヤーからの距離
-	float blockSwingAngle_ = 3.14159f;                ///< 振り幅（π = 180度）
+	float blockSwingAngle_ = std::numbers::pi_v<float>;  ///< 振り幅（π = 180度）
 	float blockScale_ = 0.5f;                         ///< ブロックのスケール
 
 	/// <summary>

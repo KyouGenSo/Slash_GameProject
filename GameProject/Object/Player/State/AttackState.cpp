@@ -272,7 +272,7 @@ void AttackState::DrawImGui(Player* player)
     // ブロックパラメータ
     if (ImGui::TreeNode("Block Parameters")) {
         ImGui::SliderFloat("Block Radius", &blockRadius_, 1.0f, 10.0f);
-        ImGui::SliderFloat("Block Swing Angle", &blockSwingAngle_, 0.5f, 6.28f);
+        ImGui::SliderFloat("Block Swing Angle", &blockSwingAngle_, 0.5f, std::numbers::pi_v<float> * 2.0f);
         ImGui::SliderFloat("Block Scale", &blockScale_, 0.1f, 2.0f);
         ImGui::Text("Current Block Angle: %.2f", blockAngle_);
 
