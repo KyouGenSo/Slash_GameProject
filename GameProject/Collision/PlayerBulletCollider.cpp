@@ -4,6 +4,8 @@
 #include "CollisionTypeIdDef.h"
 #include "CollisionManager.h"
 
+using namespace Tako;
+
 PlayerBulletCollider::PlayerBulletCollider(PlayerBullet* owner)
     : owner_(owner) {
 }

@@ -7,6 +7,8 @@
 #include "EmitterManager.h"
 #include "GlobalVariables.h"
 
+using namespace Tako;
+
 uint32_t PlayerBullet::id = 0;
 
 PlayerBullet::PlayerBullet(EmitterManager* emitterManager) {

@@ -12,6 +12,8 @@
 #include <numbers>
 #include <sstream>
 
+using namespace Tako;
+
 CameraAnimationEditor::CameraAnimationEditor() {
     // コンポーネントの初期化は Initialize で行う
 }

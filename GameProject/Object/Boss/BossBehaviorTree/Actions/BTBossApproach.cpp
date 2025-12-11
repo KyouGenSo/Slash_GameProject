@@ -10,6 +10,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 BTBossApproach::BTBossApproach() {
     name_ = "BossApproach";
 }

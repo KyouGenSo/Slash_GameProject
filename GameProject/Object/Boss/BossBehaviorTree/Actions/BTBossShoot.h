@@ -106,7 +106,7 @@ private:
     /// <param name="baseDirection">基準方向</param>
     /// <param name="angleOffset">角度オフセット（ラジアン）</param>
     /// <returns>発射方向</returns>
-    Vector3 CalculateBulletDirection(const Vector3& baseDirection, float angleOffset);
+    Tako::Vector3 CalculateBulletDirection(const Tako::Vector3& baseDirection, float angleOffset);
 
     // 射撃前の準備時間
     float chargeTime_ = 0.5f;

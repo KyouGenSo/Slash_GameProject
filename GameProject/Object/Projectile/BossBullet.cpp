@@ -9,6 +9,8 @@
 #include "RandomEngine.h"
 #include "GlobalVariables.h"
 
+using namespace Tako;
+
 uint32_t BossBullet::id = 0;
 
 BossBullet::BossBullet(EmitterManager* emittermanager) {

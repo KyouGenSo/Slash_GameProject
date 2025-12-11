@@ -5,7 +5,7 @@
 /// サンプルシーンクラス
 /// TakoEngineのデフォルトシーンの構成を参考にしてください。
 /// </summary>
-class SampleScene : public BaseScene
+class SampleScene : public Tako::BaseScene
 {
 public: // メンバ関数
 

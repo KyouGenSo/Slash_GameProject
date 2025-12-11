@@ -8,6 +8,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 BTBossRapidFire::BTBossRapidFire() {
     name_ = "BossRapidFire";
 }

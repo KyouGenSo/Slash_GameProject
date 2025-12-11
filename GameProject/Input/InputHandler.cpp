@@ -4,6 +4,8 @@
 #include "Vector2.h"
 #include "GlobalVariables.h"
 
+using namespace Tako;
+
 InputHandler::InputHandler()
 {
 }

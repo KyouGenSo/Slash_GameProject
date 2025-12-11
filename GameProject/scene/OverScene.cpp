@@ -14,6 +14,8 @@
 #include "DebugCamera.h"
 #endif
 
+using namespace Tako;
+
 void OverScene::Initialize()
 {
 #ifdef _DEBUG

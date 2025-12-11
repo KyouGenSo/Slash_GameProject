@@ -9,6 +9,8 @@
 #include "DebugUIManager.h"
 #endif
 
+using namespace Tako;
+
 std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneName)
 {
   if (sceneName == "title") {

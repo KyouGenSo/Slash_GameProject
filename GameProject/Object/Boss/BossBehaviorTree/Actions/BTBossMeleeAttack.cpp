@@ -12,6 +12,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 BTBossMeleeAttack::BTBossMeleeAttack() {
     name_ = "BossMeleeAttack";
 }

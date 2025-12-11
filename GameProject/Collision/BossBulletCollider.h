@@ -11,7 +11,7 @@ class Player;
 /// ボスの弾専用コライダー
 /// MeleeAttackColliderと同じ設計パターンで実装
 /// </summary>
-class BossBulletCollider : public SphereCollider {
+class BossBulletCollider : public Tako::SphereCollider {
 public:
     /// <summary>
     /// コンストラクタ
@@ -28,19 +28,19 @@ public:
     /// 衝突開始時の処理
     /// </summary>
     /// <param name="other">衝突相手のコライダー</param>
-    void OnCollisionEnter(Collider* other) override;
+    void OnCollisionEnter(Tako::Collider* other) override;
 
     /// <summary>
     /// 衝突継続時の処理
     /// </summary>
     /// <param name="other">衝突相手のコライダー</param>
-    void OnCollisionStay(Collider* other) override;
+    void OnCollisionStay(Tako::Collider* other) override;
 
     /// <summary>
     /// 衝突終了時の処理
     /// </summary>
     /// <param name="other">衝突相手のコライダー</param>
-    void OnCollisionExit(Collider* other) override;
+    void OnCollisionExit(Tako::Collider* other) override;
 
     /// <summary>
     /// リセット

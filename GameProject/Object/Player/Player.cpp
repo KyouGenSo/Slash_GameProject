@@ -32,6 +32,7 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
 
 Player::Player()
     : camera_(nullptr)

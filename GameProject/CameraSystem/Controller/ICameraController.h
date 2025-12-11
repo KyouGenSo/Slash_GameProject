@@ -59,16 +59,16 @@ public:
     /// カメラを設定
     /// </summary>
     /// <param name="camera">制御対象のカメラ</param>
-    virtual void SetCamera(Camera* camera) { camera_ = camera; }
+    virtual void SetCamera(Tako::Camera* camera) { camera_ = camera; }
 
     /// <summary>
     /// カメラを取得
     /// </summary>
     /// <returns>制御対象のカメラ</returns>
-    Camera* GetCamera() const { return camera_; }
+    Tako::Camera* GetCamera() const { return camera_; }
 
 protected:
-    Camera* camera_ = nullptr;  ///< 制御対象のカメラ
+    Tako::Camera* camera_ = nullptr;  ///< 制御対象のカメラ
     bool isActive_ = false;     ///< アクティブ状態
 };
 
@@ -81,7 +81,7 @@ public:
     /// ターゲットを設定
     /// </summary>
     /// <param name="target">追従対象のTransform</param>
-    virtual void SetTarget(const Transform* target) {
+    virtual void SetTarget(const Tako::Transform* target) {
         primaryTarget_ = target;
     }
 
@@ -89,11 +89,11 @@ public:
     /// 追加ターゲットを設定（マルチターゲット対応）
     /// </summary>
     /// <param name="targets">追従対象のTransform配列</param>
-    virtual void SetAdditionalTargets(const std::vector<const Transform*>& targets) {
+    virtual void SetAdditionalTargets(const std::vector<const Tako::Transform*>& targets) {
         additionalTargets_ = targets;
     }
 
 protected:
-    const Transform* primaryTarget_ = nullptr;              ///< 主要ターゲット
-    std::vector<const Transform*> additionalTargets_;       ///< 追加ターゲット配列
+    const Tako::Transform* primaryTarget_ = nullptr;              ///< 主要ターゲット
+    std::vector<const Tako::Transform*> additionalTargets_;       ///< 追加ターゲット配列
 };

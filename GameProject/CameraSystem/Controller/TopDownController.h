@@ -100,7 +100,7 @@ public:
   /// 補間されたターゲット位置を取得
   /// </summary>
   /// <returns>補間位置</returns>
-  const Vector3& GetInterpolatedTargetPosition() const {
+  const Tako::Vector3& GetInterpolatedTargetPosition() const {
     return interpolatedTargetPos_;
   }
 
@@ -110,7 +110,7 @@ private:
   /// 複数ターゲットの中心点を算出
   /// </summary>
   /// <returns>フォーカスポイント</returns>
-  Vector3 CalculateFocusPoint() const;
+  Tako::Vector3 CalculateFocusPoint() const;
 
   /// <summary>
   /// ターゲット間の最大距離を計算
@@ -135,7 +135,7 @@ private:
 
 private:
   // 位置関連
-  Vector3 interpolatedTargetPos_ = {};
+  Tako::Vector3 interpolatedTargetPos_ = {};
   float currentHeight_ = CameraConfig::TopDown::BASE_HEIGHT;
   float currentBackOffset_ = CameraConfig::TopDown::BASE_BACK_OFFSET;
 

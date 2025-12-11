@@ -105,7 +105,7 @@ private:
     /// </summary>
     /// <param name="boss">ボス</param>
     /// <returns>プレイヤーへの正規化された方向ベクトル</returns>
-    Vector3 CalculateDirectionToPlayer(Boss* boss);
+    Tako::Vector3 CalculateDirectionToPlayer(Boss* boss);
 
     // 射撃前の準備時間
     float chargeTime_ = 0.5f;

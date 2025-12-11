@@ -13,6 +13,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 void AttackState::Enter(Player* player)
 {
     // 攻撃アニメーションを再生

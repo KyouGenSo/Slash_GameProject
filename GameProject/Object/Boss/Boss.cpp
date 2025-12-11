@@ -19,6 +19,8 @@
 #include "BossNodeEditor/BossNodeEditor.h"
 #endif
 
+using namespace Tako;
+
 Boss::Boss()
 {
 }

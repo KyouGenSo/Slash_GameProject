@@ -95,7 +95,7 @@ private:
     /// </summary>
     /// <param name="position">調整前の位置</param>
     /// <returns>エリア内に収まる位置</returns>
-    Vector3 ClampToArea(const Vector3& position);
+    Tako::Vector3 ClampToArea(const Tako::Vector3& position);
 
     /// <summary>
     /// 最適な離脱方向を探索（壁回避）
@@ -103,7 +103,7 @@ private:
     /// <param name="primaryDirection">基本の離脱方向</param>
     /// <param name="retreatDistance">離脱距離</param>
     /// <returns>最適な離脱方向</returns>
-    Vector3 FindBestRetreatDirection(const Vector3& primaryDirection, float retreatDistance);
+    Tako::Vector3 FindBestRetreatDirection(const Tako::Vector3& primaryDirection, float retreatDistance);
 
     /// <summary>
     /// 指定方向での移動距離を評価
@@ -111,7 +111,7 @@ private:
     /// <param name="direction">評価する方向</param>
     /// <param name="retreatDistance">離脱距離</param>
     /// <returns>実際に移動できる距離</returns>
-    float EvaluateDirection(const Vector3& direction, float retreatDistance);
+    float EvaluateDirection(const Tako::Vector3& direction, float retreatDistance);
 
     //=========================================================================================
     // メンバ変数
@@ -122,8 +122,8 @@ private:
     float targetDistance_ = 55.0f;     ///< 目標距離（プレイヤーからの距離）
 
     // 状態管理
-    Vector3 startPosition_;            ///< 開始位置
-    Vector3 targetPosition_;           ///< 目標位置（計算済み）
+    Tako::Vector3 startPosition_;            ///< 開始位置
+    Tako::Vector3 targetPosition_;           ///< 目標位置（計算済み）
     float elapsedTime_ = 0.0f;         ///< 経過時間
     float retreatDuration_ = 0.0f;     ///< 離脱所要時間（距離から動的計算）
     bool isFirstExecute_ = true;       ///< 初回実行フラグ

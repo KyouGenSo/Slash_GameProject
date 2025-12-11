@@ -170,27 +170,27 @@ public:
     /// カメラを設定
     /// </summary>
     /// <param name="camera">制御対象のカメラ</param>
-    void SetCamera(Camera* camera) override;
+    void SetCamera(Tako::Camera* camera) override;
 
     /// <summary>
     /// アニメーションターゲットを設定
     /// </summary>
     /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
     /// <param name="applyToAll">全アニメーションに適用する場合true（デフォルトはfalse）</param>
-    void SetAnimationTarget(const Transform* target, bool applyToAll = false);
+    void SetAnimationTarget(const Tako::Transform* target, bool applyToAll = false);
 
     /// <summary>
     /// 特定のアニメーションにターゲットを設定
     /// </summary>
     /// <param name="animationName">アニメーション名</param>
     /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
-    void SetAnimationTargetByName(const std::string& animationName, const Transform* target);
+    void SetAnimationTargetByName(const std::string& animationName, const Tako::Transform* target);
 
     /// <summary>
     /// 現在のアニメーションのみにターゲットを設定
     /// </summary>
     /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
-    void SetCurrentAnimationTarget(const Transform* target);
+    void SetCurrentAnimationTarget(const Tako::Transform* target);
 
     /// <summary>
     /// ループ設定
@@ -287,7 +287,7 @@ public:
     /// アニメーションターゲットを取得
     /// </summary>
     /// <returns>現在のターゲット（設定されていない場合nullptr）</returns>
-    const Transform* GetAnimationTarget() const;
+    const Tako::Transform* GetAnimationTarget() const;
 
 private:
     // カメラアニメーションオブジェクト（複数管理）

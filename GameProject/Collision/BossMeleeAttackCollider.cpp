@@ -4,6 +4,8 @@
 #include "CollisionTypeIdDef.h"
 #include "GlobalVariables.h"
 
+using namespace Tako;
+
 BossMeleeAttackCollider::BossMeleeAttackCollider(Boss* boss)
     : boss_(boss) {
     // GlobalVariablesから値を取得

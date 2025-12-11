@@ -4,6 +4,8 @@
 #include <cmath>
 #include <DirectXMath.h>
 
+using namespace Tako;
+
 ThirdPersonController::ThirdPersonController() {
   input_ = Input::GetInstance();
 }

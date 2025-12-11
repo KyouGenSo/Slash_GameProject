@@ -2,6 +2,8 @@
 #include "RandomEngine.h"
 #include <algorithm>
 
+using namespace Tako;
+
 BTRandomSelector::BTRandomSelector() {
     name_ = "RandomSelector";
 }

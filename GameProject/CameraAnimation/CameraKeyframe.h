@@ -28,9 +28,9 @@ struct CameraKeyframe {
 
     float time = 0.0f;                                             ///< キーフレームの時刻（秒）
 
-    Vector3 position = { 0.0f, 0.0f, 0.0f };                      ///< カメラ位置（WORLDモード）またはオフセット（TARGET_RELATIVEモード）
+    Tako::Vector3 position = { 0.0f, 0.0f, 0.0f };                      ///< カメラ位置（WORLDモード）またはオフセット（TARGET_RELATIVEモード）
 
-    Vector3 rotation = { 0.0f, 0.0f, 0.0f };                      ///< カメラ回転（オイラー角、ラジアン）
+    Tako::Vector3 rotation = { 0.0f, 0.0f, 0.0f };                      ///< カメラ回転（オイラー角、ラジアン）
 
     float fov = 0.45f;                                             ///< 視野角（ラジアン）
 
@@ -46,7 +46,7 @@ struct CameraKeyframe {
     /// <summary>
     /// パラメータ指定コンストラクタ
     /// </summary>
-    CameraKeyframe(float t, const Vector3& pos, const Vector3& rot, float f,
+    CameraKeyframe(float t, const Tako::Vector3& pos, const Tako::Vector3& rot, float f,
                    InterpolationType interp = InterpolationType::LINEAR,
                    CoordinateType coordType = CoordinateType::WORLD)
         : time(t), position(pos), rotation(rot), fov(f), interpolation(interp), coordinateType(coordType) {}

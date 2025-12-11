@@ -19,6 +19,8 @@
 #include <sstream>
 #include <filesystem>
 
+using namespace Tako;
+
 /// <summary>
 /// コンストラクタ
 /// </summary>

@@ -5,6 +5,8 @@
 #include "GlobalVariables.h"
 #include "../CameraSystem/CameraManager.h"
 
+using namespace Tako;
+
 MeleeAttackCollider::MeleeAttackCollider(Player* player)
     : player_(player) {
     // GlobalVariablesから値を取得

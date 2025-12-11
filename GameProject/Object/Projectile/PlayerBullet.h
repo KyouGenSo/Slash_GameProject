@@ -5,7 +5,11 @@
 #include <memory>
 #include <string>
 
-class EmitterManager;
+namespace  Tako
+{
+    class EmitterManager;
+}
+
 class PlayerBulletCollider;
 
 /// <summary>
@@ -25,7 +29,7 @@ public:
     /// コンストラクタ
     /// </summary>
     /// <param name="emitterManager">エミッターマネージャー</param>
-    PlayerBullet(EmitterManager* emitterManager);
+    PlayerBullet(Tako::EmitterManager* emitterManager);
 
     /// <summary>
     /// デストラクタ
@@ -37,7 +41,7 @@ public:
     /// </summary>
     /// <param name="position">初期位置</param>
     /// <param name="velocity">初期速度</param>
-    void Initialize(const Vector3& position, const Vector3& velocity) override;
+    void Initialize(const Tako::Vector3& position, const Tako::Vector3& velocity) override;
 
     /// <summary>
     /// 終了処理
@@ -69,7 +73,7 @@ private:
     std::unique_ptr<PlayerBulletCollider> collider_;
 
     // エミッタマネージャーへのポインタ
-    EmitterManager* emitterManager_ = nullptr;
+    Tako::EmitterManager* emitterManager_ = nullptr;
 
     // エミッターの名前
     std::string bulletEmitterName_ = "";

@@ -7,6 +7,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 void DashState::Enter(Player* player)
 {
 	// ダッシュアニメーションを再生

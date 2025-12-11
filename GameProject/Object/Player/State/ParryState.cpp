@@ -8,6 +8,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 void ParryState::Enter(Player* player)
 {
 	// パリィアニメーションを再生

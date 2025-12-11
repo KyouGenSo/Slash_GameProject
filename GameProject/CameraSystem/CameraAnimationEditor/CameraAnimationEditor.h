@@ -34,14 +34,14 @@ public:
     /// </summary>
     /// <param name="animation">編集対象のアニメーション</param>
     /// <param name="camera">カメラ</param>
-    void Initialize(CameraAnimation* animation, Camera* camera);
+    void Initialize(CameraAnimation* animation, Tako::Camera* camera);
 
     /// <summary>
     /// 初期化（CameraAnimationController使用）
     /// </summary>
     /// <param name="controller">アニメーションコントローラー</param>
     /// <param name="camera">カメラ</param>
-    void Initialize(class CameraAnimationController* controller, Camera* camera);
+    void Initialize(class CameraAnimationController* controller, Tako::Camera* camera);
 
     /// <summary>
     /// エディターUIの描画
@@ -79,12 +79,12 @@ public:
     /// </summary>
     /// <param name="target">ターゲットトランスフォーム</param>
     /// <param name="name">ターゲット名（表示用）</param>
-    void SetTarget(const Transform* target, const std::string& name = "");
+    void SetTarget(const Tako::Transform* target, const std::string& name = "");
 
     /// <summary>
     /// ターゲットトランスフォームを取得
     /// </summary>
-    const Transform* GetTarget() const { return targetTransform_; }
+    const Tako::Transform* GetTarget() const { return targetTransform_; }
 
 private:
     /// <summary>
@@ -160,7 +160,7 @@ private:
 
     // 編集対象
     CameraAnimation* animation_ = nullptr;       ///< 編集中のアニメーション
-    Camera* camera_ = nullptr;                   ///< カメラ
+    Tako::Camera* camera_ = nullptr;                   ///< カメラ
     class CameraAnimationController* controller_ = nullptr; ///< アニメーションコントローラー（複数管理用）
 
     // UIコンポーネント
@@ -188,7 +188,7 @@ private:
     std::string previousControllerName_;         ///< プレビュー前のコントローラー名
 
     // ターゲット設定
-    const Transform* targetTransform_ = nullptr;  ///< ターゲットトランスフォーム
+    const Tako::Transform* targetTransform_ = nullptr;  ///< ターゲットトランスフォーム
     std::string targetName_ = "None";            ///< ターゲット名（表示用）
 };
 

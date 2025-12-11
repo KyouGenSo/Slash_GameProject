@@ -6,6 +6,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 void MoveState::Enter(Player* player)
 {
 	// モデルの歩行アニメーションを再生

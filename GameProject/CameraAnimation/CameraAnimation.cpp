@@ -15,6 +15,8 @@
 #include "DebugUIManager.h"
 #endif
 
+using namespace Tako;
+
 /// <summary>
 /// コンストラクタ
 /// </summary>

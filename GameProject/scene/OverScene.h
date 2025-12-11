@@ -5,13 +5,15 @@
 #include "vector2.h"
 #include "CameraSystem/CameraConfig.h"
 
+namespace Tako {
 class Sprite;
+}
 
 /// <summary>
-/// クリアシーンクラス
-/// ゲームクリア時の演出と結果表示を管理
+/// ゲームオーバーシーンクラス
+/// ゲームオーバー時の演出と結果表示を管理
 /// </summary>
-class OverScene : public BaseScene
+class OverScene : public Tako::BaseScene
 {
 public: // メンバ関数
 
@@ -44,9 +46,9 @@ public: // メンバ関数
 private: // メンバ変数
 
     // sprite
-    std::unique_ptr<Sprite> backGround_ = nullptr;
-    std::unique_ptr<Sprite> titleText_ = nullptr;
-    std::unique_ptr<Sprite> pressButtonText_ = nullptr;
+    std::unique_ptr<Tako::Sprite> backGround_ = nullptr;
+    std::unique_ptr<Tako::Sprite> titleText_ = nullptr;
+    std::unique_ptr<Tako::Sprite> pressButtonText_ = nullptr;
 
     // カメラ非表示Y座標
     float cameraHiddenY_ = CameraConfig::HIDDEN_Y;

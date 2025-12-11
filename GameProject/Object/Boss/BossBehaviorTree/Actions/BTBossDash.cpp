@@ -11,6 +11,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 BTBossDash::BTBossDash() {
     name_ = "BossDash";
 }

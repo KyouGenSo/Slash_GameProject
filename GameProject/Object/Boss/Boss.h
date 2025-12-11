@@ -8,16 +8,21 @@
 #include "Vector4.h"
 #include "Vector3.h"
 
+// Tako namespace前方宣言
+namespace Tako {
 class Sprite;
 class OBBCollider;
 class Object3d;
+class EmitterManager;
+}
+
+// GameProject前方宣言
 class BossStateMachine;
 class BossBehaviorTree;
 class BossNodeEditor;
 class Player;
 class BossShootState;
 class BossMeleeAttackCollider;
-class EmitterManager;
 
 /// <summary>
 /// ボスエネミークラス
@@ -41,8 +46,8 @@ public:
     /// 弾生成リクエスト構造体
     /// </summary>
     struct BulletSpawnRequest {
-        Vector3 position;  // 発射位置
-        Vector3 velocity;  // 弾の速度ベクトル
+        Tako::Vector3 position;  // 発射位置
+        Tako::Vector3 velocity;  // 弾の速度ベクトル
     };
 
 public:
@@ -91,7 +96,7 @@ public:
     /// </summary>
     /// <param name="color">変化後の色</param>
     /// <param name="duration">変化時間</param>
-    void UpdateHitEffect(const Vector4& color, float duration);
+    void UpdateHitEffect(const Tako::Vector4& color, float duration);
 
     /// <summary>
     /// シェイクエフェクトの更新
@@ -115,7 +120,7 @@ public:
     /// </summary>
     /// <param name="position">弾の発射位置</param>
     /// <param name="velocity">弾の速度ベクトル</param>
-    void RequestBulletSpawn(const Vector3& position, const Vector3& velocity);
+    void RequestBulletSpawn(const Tako::Vector3& position, const Tako::Vector3& velocity);
 
     /// <summary>
     /// 保留中の弾生成リクエストを取得して消費
@@ -128,25 +133,25 @@ public:
     /// 座標変換情報を設定
     /// </summary>
     /// <param name="transform">新しい座標変換情報</param>
-    void SetTransform(const Transform& transform) { transform_ = transform; }
+    void SetTransform(const Tako::Transform& transform) { transform_ = transform; }
 
     /// <summary>
     /// 平行移動情報を設定
     /// </summary>
     /// <param name="translate">新しい位置情報</param>
-    void SetTranslate(const Vector3& translate) { transform_.translate = translate; }
+    void SetTranslate(const Tako::Vector3& translate) { transform_.translate = translate; }
 
     /// <summary>
     /// 回転情報を設定
     /// </summary>
     /// <param name="rotate">新しい回転情報（ラジアン）</param>
-    void SetRotate(const Vector3& rotate) { transform_.rotate = rotate; }
+    void SetRotate(const Tako::Vector3& rotate) { transform_.rotate = rotate; }
 
     /// <summary>
     /// スケール情報を設定
     /// </summary>
     /// <param name="scale">新しいスケール情報</param>
-    void SetScale(const Vector3& scale) { transform_.scale = scale; }
+    void SetScale(const Tako::Vector3& scale) { transform_.scale = scale; }
 
     /// <summary>
     /// HPを設定
@@ -176,37 +181,37 @@ public:
     /// 座標変換情報を取得
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
-    const Transform& GetTransform() const { return transform_; }
+    const Tako::Transform& GetTransform() const { return transform_; }
 
     /// <summary>
     /// 座標変換情報を取得（非const版）
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
-    Transform& GetWorldTransform() { return transform_; }
+    Tako::Transform& GetWorldTransform() { return transform_; }
 
     /// <summary>
     /// 座標変換情報のポインタを取得
     /// </summary>
     /// <returns>座標変換情報への非constポインタ</returns>
-    Transform* GetTransformPtr() { return &transform_; }
+    Tako::Transform* GetTransformPtr() { return &transform_; }
 
     /// <summary>
     /// 平行移動情報を取得
     /// </summary>
     /// <returns>現在の位置情報の参照</returns>
-    Vector3 GetTranslate() const { return transform_.translate; }
+    Tako::Vector3 GetTranslate() const { return transform_.translate; }
 
     /// <summary>
     /// 回転情報を取得
     /// </summary>
     /// <returns>現在の回転情報の参照（ラジアン）</returns>
-    Vector3 GetRotate() const { return transform_.rotate; }
+    Tako::Vector3 GetRotate() const { return transform_.rotate; }
 
     /// <summary>
     /// スケール情報を取得
     /// </summary>
     /// <returns>現在のスケール情報の参照</returns>
-    Vector3 GetScale() const { return transform_.scale; }
+    Tako::Vector3 GetScale() const { return transform_.scale; }
 
     /// <summary>
     /// プレイヤーを取得
@@ -242,14 +247,14 @@ public:
     /// コライダーを取得
     /// </summary>
     /// <returns>ボスのOBBコライダーのポインタ</returns>
-    OBBCollider* GetCollider() const { return bodyCollider_.get(); }
+    Tako::OBBCollider* GetCollider() const { return bodyCollider_.get(); }
 
     //-----------------------------近接攻撃関連------------------------------//
     /// <summary>
     /// 攻撃ブロックを取得
     /// </summary>
     /// <returns>攻撃ブロックのObject3dポインタ</returns>
-    Object3d* GetMeleeAttackBlock() const { return meleeAttackBlock_.get(); }
+    Tako::Object3d* GetMeleeAttackBlock() const { return meleeAttackBlock_.get(); }
 
     /// <summary>
     /// 攻撃ブロックの表示/非表示を設定
@@ -279,20 +284,20 @@ public:
     /// 予兆エフェクトの位置を設定
     /// </summary>
     /// <param name="position">設定する位置</param>
-    void SetAttackSignEmitterPosition(const Vector3& position);
+    void SetAttackSignEmitterPosition(const Tako::Vector3& position);
 
     /// <summary>
     /// EmitterManagerを設定
     /// </summary>
     /// <param name="emitterManager">EmitterManagerのポインタ</param>
-    void SetEmitterManager(EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
+    void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
 
 private:
     // ボスの3Dモデルオブジェクト（描画とアニメーション管理）
-    std::unique_ptr<Object3d> model_;
+    std::unique_ptr<Tako::Object3d> model_;
 
     // ボスの座標変換情報（位置、回転、スケール）
-    Transform transform_{};
+    Tako::Transform transform_{};
 
     // ビヘイビアツリー
     std::unique_ptr<BossBehaviorTree> behaviorTree_;
@@ -327,11 +332,11 @@ private:
     bool isPause_ = false;
 
     // ボス本体の衝突判定用AABBコライダー
-    std::unique_ptr<OBBCollider> bodyCollider_;
+    std::unique_ptr<Tako::OBBCollider> bodyCollider_;
 
     //-----------------------------近接攻撃関連------------------------------//
     // 近接攻撃用武器ブロック
-    std::unique_ptr<Object3d> meleeAttackBlock_;
+    std::unique_ptr<Tako::Object3d> meleeAttackBlock_;
 
     // 攻撃ブロック表示フラグ
     bool meleeAttackBlockVisible_ = false;
@@ -340,7 +345,7 @@ private:
     std::unique_ptr<BossMeleeAttackCollider> meleeAttackCollider_;
 
     // 予兆エフェクト管理
-    EmitterManager* emitterManager_ = nullptr;
+    Tako::EmitterManager* emitterManager_ = nullptr;
 
     // 予兆エフェクト名
     std::string attackSignEmitterName_ = "boss_melee_attack_sign";
@@ -363,17 +368,17 @@ private:
     // 現在のシェイク強度（実行時）
     float currentShakeIntensity_ = 0.0f;
     // 描画用シェイクオフセット
-    Vector3 shakeOffset_ = { 0.0f, 0.0f, 0.0f };
+    Tako::Vector3 shakeOffset_ = { 0.0f, 0.0f, 0.0f };
 
     // 弾生成リクエストのキュー（GameSceneが処理）
     std::vector<BulletSpawnRequest> pendingBullets_;
 
     // HPバースプライト
-    std::unique_ptr<Sprite> hpBarSprite1_;
-    Vector2 hpBarSize1_{};
-    std::unique_ptr<Sprite> hpBarSprite2_;
-    Vector2 hpBarSize2_{};
-    std::unique_ptr<Sprite> hpBarBGSprite_;
+    std::unique_ptr<Tako::Sprite> hpBarSprite1_;
+    Tako::Vector2 hpBarSize1_{};
+    std::unique_ptr<Tako::Sprite> hpBarSprite2_;
+    Tako::Vector2 hpBarSize2_{};
+    std::unique_ptr<Tako::Sprite> hpBarBGSprite_;
 
     // 初期座標
     float initialY_ = 2.5f;   ///< 初期Y座標

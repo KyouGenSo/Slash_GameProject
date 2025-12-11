@@ -38,6 +38,8 @@
 #include "CameraSystem/CameraDebugUI.h"
 #endif
 
+using namespace Tako;
+
 void GameScene::Initialize()
 {
     // CollisionManagerを取得

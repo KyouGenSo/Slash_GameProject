@@ -12,6 +12,8 @@
 #include "DebugCamera.h"
 #endif
 
+using namespace Tako;
+
 void SampleScene::Initialize()
 {
 #ifdef _DEBUG

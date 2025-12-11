@@ -14,6 +14,8 @@
 #include "SpriteBasic.h"
 #include "TransitionManager.h"
 
+using namespace Tako;
+
 void MyGame::Initialize()
 {
     winApp_->SetWindowSize(1920, 1080);

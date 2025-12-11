@@ -63,7 +63,7 @@ public:
     /// オフセットを設定
     /// </summary>
     /// <param name="offset">カメラオフセット</param>
-    void SetOffset(const Vector3& offset) {
+    void SetOffset(const Tako::Vector3& offset) {
         offset_ = offset;
         offsetOrigin_ = offset;
     }
@@ -88,7 +88,7 @@ public:
     /// セカンダリターゲット（ボスなど）を設定
     /// </summary>
     /// <param name="target">注視対象のTransform</param>
-    void SetSecondaryTarget(const Transform* target) {
+    void SetSecondaryTarget(const Tako::Transform* target) {
         secondaryTarget_ = target;
     }
 
@@ -106,13 +106,13 @@ public:
     /// 現在のオフセットを取得
     /// </summary>
     /// <returns>オフセット値</returns>
-    const Vector3& GetOffset() const { return offset_; }
+    const Tako::Vector3& GetOffset() const { return offset_; }
 
     /// <summary>
     /// 補間されたターゲット位置を取得
     /// </summary>
     /// <returns>補間位置</returns>
-    const Vector3& GetInterpolatedTargetPosition() const {
+    const Tako::Vector3& GetInterpolatedTargetPosition() const {
         return interpolatedTargetPos_;
     }
 
@@ -137,27 +137,27 @@ private:
     /// オフセットを計算（回転を考慮）
     /// </summary>
     /// <returns>計算されたオフセット</returns>
-    Vector3 CalculateOffset() const;
+    Tako::Vector3 CalculateOffset() const;
 
     /// <summary>
     /// セカンダリターゲットへの注視回転を計算
     /// </summary>
     /// <returns>注視方向の回転角度</returns>
-    Vector3 CalculateLookAtRotation() const;
+    Tako::Vector3 CalculateLookAtRotation() const;
 
 private:
     // 入力システム
-    Input* input_ = nullptr;
+    Tako::Input* input_ = nullptr;
 
     // 位置関連
-    Vector3 interpolatedTargetPos_ = {};
+    Tako::Vector3 interpolatedTargetPos_ = {};
     // CameraConfig::FirstPersonは実際にはThirdPerson用の設定
-    Vector3 offset_ = {
+    Tako::Vector3 offset_ = {
         CameraConfig::FirstPerson::DEFAULT_OFFSET_X,
         CameraConfig::FirstPerson::DEFAULT_OFFSET_Y,
         CameraConfig::FirstPerson::DEFAULT_OFFSET_Z
     };
-    Vector3 offsetOrigin_ = offset_;
+    Tako::Vector3 offsetOrigin_ = offset_;
 
     // 回転関連（すべてラジアン単位）
     // CameraConfig::FirstPerson::DEFAULT_ANGLE_Xはラジアン単位（約8度）
@@ -178,6 +178,6 @@ private:
     bool isRotating_ = false;
 
     // セカンダリターゲット機能
-    const Transform* secondaryTarget_ = nullptr;  // 注視対象（ボスなど）
+    const Tako::Transform* secondaryTarget_ = nullptr;  // 注視対象（ボスなど）
     bool enableLookAtTarget_ = false;             // ターゲット注視機能の有効/無効
 };

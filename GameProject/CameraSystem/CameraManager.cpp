@@ -4,6 +4,8 @@
 #include "RandomEngine.h"
 #include "GlobalVariables.h"
 
+using namespace Tako;
+
 // シングルトンインスタンス
 CameraManager* CameraManager::instance_ = nullptr;
 

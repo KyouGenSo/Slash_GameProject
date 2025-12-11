@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <numeric>
 
+using namespace Tako;
+
 TopDownController::TopDownController() {
     // デフォルト値設定
     currentHeight_ = 88.f;

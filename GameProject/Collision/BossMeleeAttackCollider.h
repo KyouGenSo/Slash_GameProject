@@ -8,7 +8,7 @@ class Player;
 /// ボス近接攻撃用コライダークラス
 /// プレイヤーへのダメージ処理を管理
 /// </summary>
-class BossMeleeAttackCollider : public OBBCollider {
+class BossMeleeAttackCollider : public Tako::OBBCollider {
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -19,20 +19,20 @@ public:
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
-	virtual ~BossMeleeAttackCollider() = default;
+	~BossMeleeAttackCollider() = default;
 
 	/// <summary>
 	/// 衝突開始時のコールバック
 	/// プレイヤーに接触した場合ダメージを与える
 	/// </summary>
 	/// <param name="other">衝突相手のコライダー</param>
-	void OnCollisionEnter(Collider* other) override;
+	void OnCollisionEnter(Tako::Collider* other) override;
 
 	/// <summary>
 	/// 衝突継続中のコールバック
 	/// </summary>
 	/// <param name="other">衝突相手のコライダー</param>
-	void OnCollisionStay(Collider* other) override;
+	void OnCollisionStay(Tako::Collider* other) override;
 
 	/// <summary>
 	/// コライダーの状態をリセット

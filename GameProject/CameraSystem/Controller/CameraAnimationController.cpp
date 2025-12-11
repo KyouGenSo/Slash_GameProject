@@ -1,5 +1,7 @@
 #include "CameraAnimationController.h"
 
+using namespace Tako;
+
 CameraAnimationController::CameraAnimationController() {
     // デフォルトアニメーションを作成
     animations_["Default"] = std::make_unique<CameraAnimation>();

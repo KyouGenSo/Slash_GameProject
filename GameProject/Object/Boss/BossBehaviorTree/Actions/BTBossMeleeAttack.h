@@ -162,7 +162,7 @@ private:
     /// </summary>
     /// <param name="position">調整前の位置</param>
     /// <returns>エリア内に収まる位置</returns>
-    Vector3 ClampToArea(const Vector3& position);
+    Tako::Vector3 ClampToArea(const Tako::Vector3& position);
 
     /// <summary>
     /// 突進の初期化（Execute開始時に呼ぶ）
@@ -201,8 +201,8 @@ private:
     float stopDistance_ = 5.0f;     ///< ヒット時の停止距離（プレイヤーからの距離）
 
     // 突進状態管理
-    Vector3 startPosition_;         ///< 突進開始位置
-    Vector3 targetPosition_;        ///< 突進目標位置（Execute開始時に固定）
-    Vector3 rushDirection_;         ///< 突進方向
+    Tako::Vector3 startPosition_;         ///< 突進開始位置
+    Tako::Vector3 targetPosition_;        ///< 突進目標位置（Execute開始時に固定）
+    Tako::Vector3 rushDirection_;         ///< 突進方向
     bool rushInitialized_ = false;  ///< 突進初期化済みフラグ
 };

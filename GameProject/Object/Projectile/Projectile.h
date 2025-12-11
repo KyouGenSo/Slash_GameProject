@@ -4,8 +4,12 @@
 #include "Vector3.h"
 #include <memory>
 
-class Object3d;
-class Model;
+namespace Tako
+{
+    class Object3d;
+    class Model;
+}
+
 
 /// <summary>
 /// プロジェクタイル（弾）基底クラス
@@ -29,7 +33,7 @@ public:
     /// </summary>
     /// <param name="position">初期位置</param>
     /// <param name="velocity">初期速度</param>
-    virtual void Initialize(const Vector3& position, const Vector3& velocity);
+    virtual void Initialize(const Tako::Vector3& position, const Tako::Vector3& velocity);
 
     /// <summary>
     /// 更新
@@ -65,27 +69,27 @@ public:
     /// <summary>
     /// 速度を取得
     /// </summary>
-    const Vector3& GetVelocity() const { return velocity_; }
+    const Tako::Vector3& GetVelocity() const { return velocity_; }
 
     /// <summary>
     /// 速度を設定
     /// </summary>
-    void SetVelocity(const Vector3& velocity) { velocity_ = velocity; }
+    void SetVelocity(const Tako::Vector3& velocity) { velocity_ = velocity; }
 
     /// <summary>
     /// Transformを取得
     /// </summary>
-    const Transform& GetTransform() const { return transform_; }
+    const Tako::Transform& GetTransform() const { return transform_; }
 
     /// <summary>
     /// Transform参照を取得（コライダー設定用）
     /// </summary>
-    Transform* GetTransformPtr() { return &transform_; }
+    Tako::Transform* GetTransformPtr() { return &transform_; }
 
     /// <summary>
     /// モデルを取得
     /// </summary>
-    Object3d* GetModel() const { return model_.get(); }
+    Tako::Object3d* GetModel() const { return model_.get(); }
 
 protected:
     /// <summary>
@@ -102,12 +106,12 @@ protected:
     /// <summary>
     /// 3Dモデルオブジェクト（描画用）
     /// </summary>
-    std::unique_ptr<Object3d> model_;
+    std::unique_ptr<Tako::Object3d> model_;
 
     /// <summary>
     /// 座標変換情報
     /// </summary>
-    Transform transform_{};
+    Tako::Transform transform_{};
 
     /// <summary>
     /// アクティブフラグ
@@ -117,7 +121,7 @@ protected:
     /// <summary>
     /// 速度ベクトル
     /// </summary>
-    Vector3 velocity_;
+    Tako::Vector3 velocity_;
 
     /// <summary>
     /// ダメージ量

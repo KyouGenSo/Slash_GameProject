@@ -5,8 +5,11 @@
 #include <memory>
 #include <string>
 
-class EmitterManager;
-class ModelManager;
+namespace Tako {
+    class EmitterManager;
+    class ModelManager;
+}
+
 class BossBulletCollider;
 
 /// <summary>
@@ -24,7 +27,7 @@ public:
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    BossBullet(EmitterManager* emittermanager);
+    BossBullet(Tako::EmitterManager* emittermanager);
 
     /// <summary>
     /// デストラクタ
@@ -36,7 +39,7 @@ public:
     /// </summary>
     /// <param name="position">初期位置</param>
     /// <param name="velocity">初期速度</param>
-    void Initialize(const Vector3& position, const Vector3& velocity) override;
+    void Initialize(const Tako::Vector3& position, const Tako::Vector3& velocity) override;
 
     /// <summary>
     /// 終了処理
@@ -65,7 +68,7 @@ private:
 
 private:
     // エフェクト用の回転速度
-    Vector3 rotationSpeed_;
+    Tako::Vector3 rotationSpeed_;
 
     // パーティクルタイマー
     float particleTimer_ = 0.0f;
@@ -77,11 +80,11 @@ private:
     std::unique_ptr<BossBulletCollider> collider_;
 
     // エミッタマネージャャーへのポインタ
-    EmitterManager* emitterManager_ = nullptr;
+    Tako::EmitterManager* emitterManager_ = nullptr;
 
     // エミッターの名前
-    std::string bulletEmitterName_ = "";
-    std::string explodeEmitterName_ = "";
+    std::string bulletEmitterName_;
+    std::string explodeEmitterName_;
 
     // id
     static uint32_t id;

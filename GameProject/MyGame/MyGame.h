@@ -6,7 +6,7 @@
 /// 3Dアクションゲームのメインクラス
 /// ゲーム全体の初期化、更新、描画処理を管理する
 /// </summary>
-class MyGame : public TakoFramework
+class MyGame : public Tako::TakoFramework
 {
 public: // メンバ関数
 

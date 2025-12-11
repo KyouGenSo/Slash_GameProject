@@ -7,6 +7,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 BTBossDistanceCondition::BTBossDistanceCondition() {
     name_ = "DistanceCondition";
 }

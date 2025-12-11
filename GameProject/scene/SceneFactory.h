@@ -6,7 +6,7 @@
 /// シーンファクトリークラス
 /// シーン名から対応するシーンインスタンスを生成
 /// </summary>
-class SceneFactory : public AbstractSceneFactory
+class SceneFactory : public Tako::AbstractSceneFactory
 {
 public: // メンバ関数
 
@@ -15,6 +15,6 @@ public: // メンバ関数
 	/// </summary>
 	/// <param name="sceneName">生成するシーン名</param>
 	/// <returns>生成されたシーンインスタンス（生成失敗時はnullptr）</returns>
-	std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) override;
+	std::unique_ptr<Tako::BaseScene> CreateScene(const std::string& sceneName) override;
 
 };

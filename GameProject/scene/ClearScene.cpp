@@ -13,6 +13,8 @@
 #include "DebugCamera.h"
 #endif
 
+using namespace Tako;
+
 void ClearScene::Initialize()
 {
 #ifdef _DEBUG

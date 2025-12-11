@@ -90,10 +90,10 @@ private:
     /// </summary>
     /// <param name="position">調整前の位置</param>
     /// <returns>エリア内に収まる位置</returns>
-    Vector3 ClampToArea(const Vector3& position);
+    Tako::Vector3 ClampToArea(const Tako::Vector3& position);
 
     // ダッシュ方向
-    Vector3 dashDirection_;
+    Tako::Vector3 dashDirection_;
 
     // ダッシュ速度
     float dashSpeed_ = 60.0f;
@@ -102,10 +102,10 @@ private:
     float dashDuration_ = 0.5f;
 
     // ダッシュ開始位置
-    Vector3 startPosition_;
+    Tako::Vector3 startPosition_;
 
     // ダッシュ目標位置
-    Vector3 targetPosition_;
+    Tako::Vector3 targetPosition_;
 
     // 経過時間
     float elapsedTime_ = 0.0f;

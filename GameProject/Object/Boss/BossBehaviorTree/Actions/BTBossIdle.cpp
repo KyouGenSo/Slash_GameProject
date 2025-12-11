@@ -9,6 +9,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 BTBossIdle::BTBossIdle() {
     name_ = "BossIdle";
 }

@@ -7,6 +7,8 @@
 #include "ImGuiManager.h"
 #include <sstream>
 
+using namespace Tako;
+
 // 静的メンバ変数の定義
 bool CameraDebugUI::showManagerInfo_ = true;
 bool CameraDebugUI::showControllerInfo_ = true;

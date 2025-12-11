@@ -7,12 +7,17 @@
 #include "vector2.h"
 #include "Vector3.h"
 
+// Tako namespace前方宣言
+namespace Tako {
 class Sprite;
 class OBBCollider;
 class Object3d;
+class Camera;
+}
+
+// GameProject前方宣言
 class PlayerStateMachine;
 class InputHandler;
-class Camera;
 class MeleeAttackCollider;
 class Boss;
 
@@ -125,7 +130,7 @@ public: // メンバ関数
     /// カメラを設定
     /// </summary>
     /// <param name="camera">使用するカメラのポインタ</param>
-    void SetCamera(Camera* camera) { camera_ = camera; }
+    void SetCamera(Tako::Camera* camera) { camera_ = camera; }
 
     /// <summary>
     /// カメラモードを設定
@@ -137,25 +142,25 @@ public: // メンバ関数
     /// 座標変換情報を設定
     /// </summary>
     /// <param name="transform">新しい座標変換情報</param>
-    void SetTransform(const Transform& transform) { transform_ = transform; }
+    void SetTransform(const Tako::Transform& transform) { transform_ = transform; }
 
     /// <summary>
     /// 平行移動情報を設定
     /// </summary>
     /// <param name="translate">新しい位置情報</param>
-    void SetTranslate(const Vector3& translate) { transform_.translate = translate; }
+    void SetTranslate(const Tako::Vector3& translate) { transform_.translate = translate; }
 
     /// <summary>
     /// 回転情報を設定
     /// </summary>
     /// <param name="rotate">新しい回転情報（ラジアン）</param>
-    void SetRotate(const Vector3& rotate) { transform_.rotate = rotate; }
+    void SetRotate(const Tako::Vector3& rotate) { transform_.rotate = rotate; }
 
     /// <summary>
     /// スケール情報を設定
     /// </summary>
     /// <param name="scale">新しいスケール情報</param>
-    void SetScale(const Vector3& scale) { transform_.scale = scale; }
+    void SetScale(const Tako::Vector3& scale) { transform_.scale = scale; }
 
     /// <summary>
     /// HPを設定
@@ -184,7 +189,7 @@ public: // メンバ関数
     /// カメラを取得
     /// </summary>
     /// <returns>現在のカメラのポインタ</returns>
-    Camera* GetCamera() const { return camera_; }
+    Tako::Camera* GetCamera() const { return camera_; }
 
     /// <summary>
     /// カメラモードを取得
@@ -220,37 +225,37 @@ public: // メンバ関数
     /// 座標変換情報を取得
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
-    const Transform& GetTransform() const { return transform_; }
+    const Tako::Transform& GetTransform() const { return transform_; }
 
     /// <summary>
     /// 座標変換情報のポインタを取得
     /// </summary>
     /// <returns>座標変換情報への非constポインタ</returns>
-    Transform* GetTransformPtr() { return &transform_; }
+    Tako::Transform* GetTransformPtr() { return &transform_; }
 
     /// <summary>
     /// 平行移動情報を取得
     /// </summary>
     /// <returns>現在の位置情報の参照</returns>
-    Vector3 GetTranslate() const { return transform_.translate; }
+    Tako::Vector3 GetTranslate() const { return transform_.translate; }
 
     /// <summary>
     /// 回転情報を取得
     /// </summary>
     /// <returns>現在の回転情報の参照（ラジアン）</returns>
-    Vector3 GetRotate() const { return transform_.rotate; }
+    Tako::Vector3 GetRotate() const { return transform_.rotate; }
 
     /// <summary>
     /// スケール情報を取得
     /// </summary>
     /// <returns>現在のスケール情報の参照</returns>
-    Vector3 GetScale() const { return transform_.scale; }
+    Tako::Vector3 GetScale() const { return transform_.scale; }
 
     /// <summary>
     /// 3Dモデルを取得
     /// </summary>
     /// <returns>プレイヤーモデルのポインタ</returns>
-    Object3d* GetModel() const { return model_.get(); }
+    Tako::Object3d* GetModel() const { return model_.get(); }
 
     /// <summary>
     /// ステートマシンを取得
@@ -268,7 +273,7 @@ public: // メンバ関数
     /// 攻撃ブロックを取得
     /// </summary>
     /// <returns>攻撃ブロックのObject3dポインタ</returns>
-    Object3d* GetAttackBlock() const { return attackBlock_.get(); }
+    Tako::Object3d* GetAttackBlock() const { return attackBlock_.get(); }
 
     /// <summary>
     /// 攻撃ブロックの表示/非表示を設定
@@ -286,7 +291,7 @@ public: // メンバ関数
     /// Velocityを取得
     /// </summary>
     /// <returns>現在のVelocity値の参照</returns>
-    Vector3& GetVelocity() { return velocity_; }
+    Tako::Vector3& GetVelocity() { return velocity_; }
 
     /// <summary>
     /// InputHandlerを取得
@@ -309,7 +314,7 @@ public: // メンバ関数
     /// <param name="center">中心座標</param>
     /// <param name="xRange">X方向の範囲（片側）</param>
     /// <param name="zRange">Z方向の範囲（片側）</param>
-    void SetDynamicBoundsFromCenter(const Vector3& center, float xRange, float zRange);
+    void SetDynamicBoundsFromCenter(const Tako::Vector3& center, float xRange, float zRange);
 
     /// <summary>
     /// 動的移動範囲をクリア（無効化）
@@ -332,8 +337,8 @@ public: // メンバ関数
     /// 弾生成リクエスト構造体
     /// </summary>
     struct BulletSpawnRequest {
-        Vector3 position;  ///< 発射位置
-        Vector3 velocity;  ///< 弾の速度ベクトル
+        Tako::Vector3 position;  ///< 発射位置
+        Tako::Vector3 velocity;  ///< 弾の速度ベクトル
     };
 
     /// <summary>
@@ -341,7 +346,7 @@ public: // メンバ関数
     /// </summary>
     /// <param name="position">発射位置</param>
     /// <param name="velocity">弾の速度ベクトル</param>
-    void RequestBulletSpawn(const Vector3& position, const Vector3& velocity);
+    void RequestBulletSpawn(const Tako::Vector3& position, const Tako::Vector3& velocity);
 
     /// <summary>
     /// 保留中の弾生成リクエストを取得して消費
@@ -357,10 +362,10 @@ private: // メンバ変数
     float dynamicZMin_;
     float dynamicZMax_;
 
-    std::unique_ptr<Object3d> model_; ///< モデル
-    Camera* camera_ = nullptr;        ///< カメラ
-    Transform transform_{};           ///< 変形情報
-    Vector3 velocity_{};              ///< 速度
+    std::unique_ptr<Tako::Object3d> model_; ///< モデル
+    Tako::Camera* camera_ = nullptr;        ///< カメラ
+    Tako::Transform transform_{};           ///< 変形情報
+    Tako::Vector3 velocity_{};              ///< 速度
     float speed_ = 0.5f;              ///< 移動速度
     float targetAngle_ = 0.f;         ///< 目標角度
     float hp_ = 100.f;                ///< 体力
@@ -376,11 +381,11 @@ private: // メンバ変数
     InputHandler* inputHandlerPtr_;
 
     // Colliders
-    std::unique_ptr<OBBCollider> bodyCollider_;
+    std::unique_ptr<Tako::OBBCollider> bodyCollider_;
     std::unique_ptr<MeleeAttackCollider> meleeAttackCollider_;
 
     // 攻撃ブロック
-    std::unique_ptr<Object3d> attackBlock_;  ///< 攻撃時に表示される回転ブロック
+    std::unique_ptr<Tako::Object3d> attackBlock_;  ///< 攻撃時に表示される回転ブロック
     bool attackBlockVisible_ = false;         ///< 攻撃ブロック表示フラグ
 
     // 攻撃関連
@@ -389,8 +394,8 @@ private: // メンバ変数
     float attackMoveSpeed_ = 2.0f;
 
     // MoveToTarget用の状態管理
-    Vector3 moveStartPosition_;           ///< 移動開始位置
-    Vector3 moveTargetPosition_;          ///< 移動目標位置
+    Tako::Vector3 moveStartPosition_;           ///< 移動開始位置
+    Tako::Vector3 moveTargetPosition_;          ///< 移動目標位置
     float moveElapsedTime_ = 0.0f;        ///< 移動経過時間
     float moveDuration_ = 0.0f;           ///< 移動所要時間
     bool isMoveInitialized_ = false;      ///< 移動初期化済みフラグ
@@ -412,9 +417,9 @@ private: // メンバ変数
     float bossLookatLerp_ = 1.15f;            ///< ボス視線追従補間速度
 
     // HPバースプライト
-    std::unique_ptr<Sprite> hpBarSprite_;
-    std::unique_ptr<Sprite> hpBarBGSprite_;
-    Vector2 hpBarSize_{};
+    std::unique_ptr<Tako::Sprite> hpBarSprite_;
+    std::unique_ptr<Tako::Sprite> hpBarBGSprite_;
+    Tako::Vector2 hpBarSize_{};
 
     // HPバー画面位置（メンバー変数）
     float hpBarScreenXRatio_ = 0.35f;   ///< HPバーX座標（画面幅に対する比率）

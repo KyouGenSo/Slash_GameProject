@@ -16,6 +16,8 @@
 #include "DebugUIManager.h"
 #endif
 
+using namespace Tako;
+
 void TitleScene::Initialize()
 {
 	/// ================================== ///

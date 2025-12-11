@@ -13,6 +13,8 @@
 #include "ImGuiManager.h"
 #endif
 
+using namespace Tako;
+
 BTBossRetreat::BTBossRetreat() {
     name_ = "BossRetreat";
 }

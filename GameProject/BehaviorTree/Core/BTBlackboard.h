@@ -136,7 +136,7 @@ public:
     /// </summary>
     /// <param name="key">キー</param>
     /// <param name="value">値</param>
-    void SetVector3(const std::string& key, const Vector3& value) {
+    void SetVector3(const std::string& key, const Tako::Vector3& value) {
         data_[key] = value;
     }
 
@@ -146,8 +146,8 @@ public:
     /// <param name="key">キー</param>
     /// <param name="defaultValue">デフォルト値</param>
     /// <returns>値</returns>
-    Vector3 GetVector3(const std::string& key, const Vector3& defaultValue = Vector3()) const {
-        auto value = GetValue<Vector3>(key);
+    Tako::Vector3 GetVector3(const std::string& key, const Tako::Vector3& defaultValue = Tako::Vector3()) const {
+        auto value = GetValue<Tako::Vector3>(key);
         return value.value_or(defaultValue);
     }
 

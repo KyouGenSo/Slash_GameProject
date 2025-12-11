@@ -10,7 +10,7 @@ class Boss;
 /// 近接攻撃用コライダークラス
 /// プレイヤーの近接攻撃判定と敵へのダメージ処理を管理
 /// </summary>
-class MeleeAttackCollider : public OBBCollider {
+class MeleeAttackCollider : public Tako::OBBCollider {
 private:
 	Player* player_ = nullptr;  ///< このコライダーを所有するプレイヤーへのポインタ
 	std::unordered_set<uint32_t> hitEnemies_;  ///< この攻撃で既にヒットした敵のIDセット（多重ヒット防止用）
@@ -38,7 +38,7 @@ public:
 	/// 衝突開始時のコールバック（敵を検出してリストに追加）
 	/// </summary>
 	/// <param name="other">衝突相手のコライダー</param>
-	void OnCollisionEnter(Collider* other) override;
+	void OnCollisionEnter(Tako::Collider* other) override;
 
 	/// <summary>
 	/// 衝突継続中のコールバック

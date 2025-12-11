@@ -2,6 +2,8 @@
 #include "Object3d.h"
 #include "Model.h"
 
+using namespace Tako;
+
 Projectile::Projectile() {
 }
 

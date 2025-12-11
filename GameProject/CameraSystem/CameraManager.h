@@ -23,7 +23,7 @@ public:
     /// 初期化
     /// </summary>
     /// <param name="camera">管理対象のカメラ</param>
-    void Initialize(Camera* camera);
+    void Initialize(Tako::Camera* camera);
 
     /// <summary>
     /// 終了処理
@@ -104,7 +104,7 @@ public:
     /// カメラを取得
     /// </summary>
     /// <returns>管理対象のカメラ</returns>
-    Camera* GetCamera() const { return camera_; }
+    Tako::Camera* GetCamera() const { return camera_; }
 
     //==================== カメラシェイク ====================
 
@@ -187,7 +187,7 @@ private:
     static CameraManager* instance_;
 
     // 管理対象カメラ
-    Camera* camera_ = nullptr;
+    Tako::Camera* camera_ = nullptr;
 
     // コントローラーリスト（優先度順）
     std::vector<ControllerEntry> controllers_;
@@ -210,5 +210,5 @@ private:
     /// 現在のシェイク強度（実行時）
     float currentShakeIntensity_ = 0.0f;
     /// 描画用シェイクオフセット
-    Vector3 shakeOffset_ = { 0.0f, 0.0f, 0.0f };
+    Tako::Vector3 shakeOffset_ = { 0.0f, 0.0f, 0.0f };
 };

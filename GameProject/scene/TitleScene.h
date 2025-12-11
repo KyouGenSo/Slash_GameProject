@@ -13,7 +13,7 @@
 /// タイトルシーンクラス
 /// タイトル画面の演出、UI表示、ゲーム開始処理を管理
 /// </summary>
-class TitleScene : public BaseScene
+class TitleScene : public Tako::BaseScene
 {
 public: // メンバ関数
 
@@ -132,18 +132,18 @@ private: // メンバ関数
 
 private: // メンバ変数
 
-	std::unique_ptr<EmitterManager> emitterManager_;  ///< パーティクルエミッター管理
+	std::unique_ptr<Tako::EmitterManager> emitterManager_;  ///< パーティクルエミッター管理
 
-	std::unique_ptr<Sprite> titleBG_;  ///< 背景スプライト
+	std::unique_ptr<Tako::Sprite> titleBG_;  ///< 背景スプライト
 
-	std::vector<std::unique_ptr<Sprite>> titleTextSprites_;  ///< タイトルテキストアニメーション用スプライト（10フレーム分）
+	std::vector<std::unique_ptr<Tako::Sprite>> titleTextSprites_;  ///< タイトルテキストアニメーション用スプライト（10フレーム分）
 
-	std::unique_ptr<Sprite> startButtonText_;  ///< スタートボタンスプライト（点滅アニメーション対象）
+	std::unique_ptr<Tako::Sprite> startButtonText_;  ///< スタートボタンスプライト（点滅アニメーション対象）
 
-	std::unique_ptr<Sprite> titleTextEffect_;  ///< タイトルテキストエフェクト用スプライト（拡大フェードアウト用）
+	std::unique_ptr<Tako::Sprite> titleTextEffect_;  ///< タイトルテキストエフェクト用スプライト（拡大フェードアウト用）
 
-	RGBSplitParam rgbSplitParam_{};  ///< RGBSplitポストエフェクトのパラメータ
-	VignetteParam vignetteParam_{};  ///< Vignetteポストエフェクトのパラメータ
+	Tako::RGBSplitParam rgbSplitParam_{};  ///< RGBSplitポストエフェクトのパラメータ
+	Tako::VignetteParam vignetteParam_{};  ///< Vignetteポストエフェクトのパラメータ
 
 	float offsetY = CameraConfig::HIDDEN_Y;  ///< カメラ非表示用Y方向オフセット
 

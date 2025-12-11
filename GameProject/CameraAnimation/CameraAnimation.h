@@ -48,13 +48,13 @@ public:
     /// カメラのセット
     /// </summary>
     /// <param name="camera">アニメーションを適用するカメラ</param>
-    void SetCamera(Camera* camera) { camera_ = camera; }
+    void SetCamera(Tako::Camera* camera) { camera_ = camera; }
 
     /// <summary>
     /// ターゲットトランスフォームのセット
     /// </summary>
     /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
-    void SetTarget(const Transform* target) { targetTransform_ = target; }
+    void SetTarget(const Tako::Transform* target) { targetTransform_ = target; }
 
     /// <summary>
     /// 更新処理
@@ -188,7 +188,7 @@ public:
     /// <summary>
     /// ターゲットトランスフォームを取得
     /// </summary>
-    [[nodiscard]] const Transform* GetTarget() const { return targetTransform_; }
+    [[nodiscard]] const Tako::Transform* GetTarget() const { return targetTransform_; }
 
     /// <summary>
     /// 開始モードを取得
@@ -291,14 +291,14 @@ private:
     /// </summary>
     /// <param name="euler">オイラー角（ラジアン）</param>
     /// <returns>クォータニオン</returns>
-    Quaternion EulerToQuaternion(const Vector3& euler) const;
+    Tako::Quaternion EulerToQuaternion(const Tako::Vector3& euler) const;
 
     /// <summary>
     /// クォータニオンをオイラー角に変換
     /// </summary>
     /// <param name="q">クォータニオン</param>
     /// <returns>オイラー角（ラジアン）</returns>
-    Vector3 QuaternionToEuler(const Quaternion& q) const;
+    Tako::Vector3 QuaternionToEuler(const Tako::Quaternion& q) const;
 
     /// <summary>
     /// 選択解除時の処理（カメラを元の値に戻す）
@@ -315,9 +315,9 @@ private:
 
     std::vector<CameraKeyframe> keyframes_;  ///< キーフレーム配列
 
-    Camera* camera_ = nullptr;  ///< アニメーション対象のカメラ
+    Tako::Camera* camera_ = nullptr;  ///< アニメーション対象のカメラ
 
-    const Transform* targetTransform_ = nullptr;  ///< ターゲットトランスフォーム（相対座標の基準）
+    const Tako::Transform* targetTransform_ = nullptr;  ///< ターゲットトランスフォーム（相対座標の基準）
 
     float currentTime_ = 0.0f;  ///< 現在の再生時間（秒）
 
@@ -335,8 +335,8 @@ private:
     bool isBlending_ = false;                    ///< ブレンド中フラグ
 
     // ブレンド開始時のカメラ状態
-    Vector3 blendStartPosition_;  ///< ブレンド開始時の位置
-    Vector3 blendStartRotation_;  ///< ブレンド開始時の回転
+    Tako::Vector3 blendStartPosition_;  ///< ブレンド開始時の位置
+    Tako::Vector3 blendStartRotation_;  ///< ブレンド開始時の回転
     float blendStartFov_;         ///< ブレンド開始時のFOV
 
     // FOV復元用

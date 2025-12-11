@@ -10,9 +10,12 @@
 #include "GlobalVariables.h"
 #include <algorithm>  // for std::max
 #include <cmath>
+
 #ifdef _DEBUG
 #include "ImGuiManager.h"
 #endif
+
+using namespace Tako;
 
 void ShootState::Enter(Player* player)
 {
