@@ -106,6 +106,12 @@ public: // メンバ関数
     /// </summary>
     void CreatePlayerBullet();
 
+    /// <summary>
+    /// ダッシュエフェクトエミッターの更新（Lerp補間）
+    /// </summary>
+    /// <param name="deltaTime">フレーム間の経過時間</param>
+    void UpdateDashEmitter(float deltaTime);
+
 private: // メンバ変数
 
     std::unique_ptr<SkyBox> skyBox_;                            // スカイボックス（環境マップ）
@@ -164,12 +170,6 @@ private: // メンバ変数
     Vector3 dashEmitterPosition_{};                              // エミッターの補間位置
     bool previousIsDashing_ = false;                             // 前フレームのダッシュ状態
     bool dashEmitterActive_ = false;                             // エミッターのアクティブ状態
-
-    /// <summary>
-    /// ダッシュエフェクトエミッターの更新（Lerp補間）
-    /// </summary>
-    /// <param name="deltaTime">フレーム間の経過時間</param>
-    void UpdateDashEmitter(float deltaTime);
 
     // 調整可能パラメータ（演出調整用）
     float overEmit1Time_ = 2.0f;             ///< オーバー演出エミッター1発生時間
