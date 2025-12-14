@@ -30,6 +30,8 @@
 #include <algorithm>
 #include <cmath>
 
+#include "PostEffectManager.h"
+
 // Debug includes
 #ifdef _DEBUG
 #include"ImGui.h"
@@ -252,6 +254,9 @@ void GameScene::Finalize()
 
     // CollisionManagerのリセット
     CollisionManager::GetInstance()->Reset();
+
+    // PostEffecをクリア
+    PostEffectManager::GetInstance()->ClearEffectChain();
 }
 
 void GameScene::Update()
