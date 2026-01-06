@@ -411,13 +411,6 @@ void Boss::DrawImGui()
                     behaviorTree_->SetRootNode(runtimeTree);
                 }
             }
-
-            // デフォルトツリー生成
-            ImGui::SameLine();
-            if (ImGui::Button("Create Default Tree")) {
-                nodeEditor_->CreateDefaultTree();
-                ImGui::Text("Default tree created!");
-            }
         }
     }
 

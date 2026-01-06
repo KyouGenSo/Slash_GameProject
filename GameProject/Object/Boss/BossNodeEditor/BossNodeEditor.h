@@ -129,11 +129,6 @@ public:
     /// </summary>
     void Clear();
 
-    /// <summary>
-    /// デフォルトツリーの作成（BuildActionTreeと同じ構造）
-    /// </summary>
-    void CreateDefaultTree();
-
 private:
     // ax::NodeEditor コンテキスト
     ed::EditorContext* editorContext_;
