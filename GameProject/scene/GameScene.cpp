@@ -209,6 +209,13 @@ void GameScene::Initialize()
     // ボスにEmitterManagerを設定
     boss_->SetEmitterManager(emitterManager_.get());
 
+    // プレイヤーにEmitterManagerを設定
+    player_->SetEmitterManager(emitterManager_.get());
+
+    // パリィエフェクトの初期状態を設定（gamescene_presetで読み込み済み）
+    emitterManager_->SetEmitterActive("parry_effect", false);
+    emitterManager_->SetEmitterActive("parry_success", false);
+
     // ダッシュエミッター位置を初期化
     dashEmitterPosition_ = player_->GetTranslate();
 

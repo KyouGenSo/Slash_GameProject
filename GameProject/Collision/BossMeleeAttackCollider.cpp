@@ -24,8 +24,17 @@ void BossMeleeAttackCollider::OnCollisionEnter(Collider* other) {
     // プレイヤーとの衝突判定
     if (typeID == static_cast<uint32_t>(CollisionTypeId::PLAYER)) {
         Player* player = static_cast<Player*>(other->GetOwner());
+
+        // パリィ判定
+        if (player->IsParrying()) {
+            player->OnParrySuccess();
+            hasHitPlayer_ = true;
+            return;
+        }
+
+        // 通常ダメージ
         player->OnHit(damage_);
-        hasHitPlayer_ = true;  // 多重ヒット防止
+        hasHitPlayer_ = true;
     }
 }
 

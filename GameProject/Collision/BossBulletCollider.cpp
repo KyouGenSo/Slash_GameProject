@@ -26,6 +26,13 @@ void BossBulletCollider::OnCollisionEnter(Collider* other) {
             hitPlayer_ = player;
             hitTargets_.insert(targetPtr);
 
+            // パリィ判定
+            if (player->IsParrying()) {
+                player->OnParrySuccess();
+                owner_->SetActive(false);
+                return;
+            }
+
             // プレイヤーにダメージを与える
             player->OnHit(owner_->GetDamage());
             hasDealtDamage_ = true;

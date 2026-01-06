@@ -18,9 +18,9 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.01992236264050007,
+      "frequencyTime": 0.0013398397713899612,
       "isActive": true,
-      "isEmitting": false,
+      "isEmitting": true,
       "isNormalize": false,
       "isRandomRotateZ": false,
       "isTemporary": false,
@@ -80,9 +80,9 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.019933560863137245,
+      "frequencyTime": 0.0013510305434465408,
       "isActive": true,
-      "isEmitting": false,
+      "isEmitting": true,
       "isNormalize": false,
       "isRandomRotateZ": false,
       "isTemporary": false,
@@ -142,9 +142,9 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.018744828179478645,
+      "frequencyTime": 0.0001625511795282364,
       "isActive": true,
-      "isEmitting": false,
+      "isEmitting": true,
       "isNormalize": false,
       "isRandomRotateZ": false,
       "isTemporary": false,
@@ -204,7 +204,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.007873211055994034,
+      "frequencyTime": 0.009290812537074089,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -496,6 +496,59 @@
         0.0010000000474974513
       ]
     },
+    "boss_melee_attack_sign": {
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.3499999940395355,
+      "frequencyTime": 0.20095446705818176,
+      "isActive": false,
+      "isEmitting": false,
+      "isNormalize": false,
+      "isRandomRotateZ": true,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        0.3499999940395355,
+        0.3499999940395355
+      ],
+      "particleCount": 100,
+      "position": [
+        5.922167778015137,
+        2.5,
+        -120.37847137451172
+      ],
+      "radius": 0.10000000149011612,
+      "scaleRangeX": [
+        8.0,
+        8.0
+      ],
+      "scaleRangeY": [
+        0.30000001192092896,
+        0.03999999910593033
+      ],
+      "startColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "type": 0,
+      "velRangeX": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeY": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeZ": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
     "clear_slash": {
       "endColor": [
         1.0,
@@ -516,9 +569,9 @@
       ],
       "particleCount": 1,
       "position": [
-        32.28160858154297,
+        -35.6739387512207,
         2.5,
-        -20.247474670410156
+        -133.28160095214844
       ],
       "radius": 2.0,
       "scaleRangeX": [
@@ -569,9 +622,9 @@
       ],
       "particleCount": 200,
       "position": [
-        34.202117919921875,
+        -1.1048022508621216,
         2.5,
-        -68.49388885498047
+        16.50794219970703
       ],
       "radius": 0.10000000149011612,
       "scaleRangeX": [
@@ -622,9 +675,9 @@
       ],
       "particleCount": 1000,
       "position": [
-        34.202117919921875,
+        -1.1048022508621216,
         2.5,
-        -68.49388885498047
+        16.50794219970703
       ],
       "radius": 0.10000000149011612,
       "scaleRangeX": [
@@ -655,6 +708,112 @@
         0.0
       ]
     },
+    "parry_effect": {
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.0010000000474974513,
+      "frequencyTime": 0.0009954777779057622,
+      "isActive": false,
+      "isEmitting": true,
+      "isNormalize": false,
+      "isRandomRotateZ": true,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "particleCount": 10,
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "radius": 0.10000000149011612,
+      "scaleRangeX": [
+        1.0,
+        1.0
+      ],
+      "scaleRangeY": [
+        8.0,
+        8.0
+      ],
+      "startColor": [
+        0.05786705017089844,
+        0.44715607166290283,
+        1.0,
+        1.0
+      ],
+      "type": 0,
+      "velRangeX": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeY": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ],
+      "velRangeZ": [
+        0.0010000000474974513,
+        0.0010000000474974513
+      ]
+    },
+    "parry_success": {
+      "endColor": [
+        0.05882352963089943,
+        0.5647059082984924,
+        1.0,
+        1.0
+      ],
+      "frequency": 1.0,
+      "frequencyTime": 0.8641405701637268,
+      "isActive": false,
+      "isEmitting": false,
+      "isNormalize": true,
+      "isRandomRotateZ": false,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        0.05000000074505806,
+        0.30000001192092896
+      ],
+      "particleCount": 300,
+      "position": [
+        0.0,
+        10.399999618530273,
+        0.0
+      ],
+      "radius": 0.10000000149011612,
+      "scaleRangeX": [
+        2.0,
+        2.0
+      ],
+      "scaleRangeY": [
+        2.0,
+        2.0
+      ],
+      "startColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "type": 0,
+      "velRangeX": [
+        0.0,
+        0.0
+      ],
+      "velRangeY": [
+        0.0,
+        0.0
+      ],
+      "velRangeZ": [
+        0.0,
+        0.0
+      ]
+    },
     "player_dash": {
       "endColor": [
         1.0,
@@ -663,7 +822,7 @@
         1.0
       ],
       "frequency": 0.0010000000474974513,
-      "frequencyTime": 6.04486558586359e-05,
+      "frequencyTime": 0.0006692243041470647,
       "isActive": false,
       "isEmitting": true,
       "isNormalize": false,
@@ -675,9 +834,9 @@
       ],
       "particleCount": 2,
       "position": [
-        44.756717681884766,
+        34.17811584472656,
         2.5,
-        -78.571044921875
+        -13.439217567443848
       ],
       "radius": 1.0,
       "scaleRangeX": [

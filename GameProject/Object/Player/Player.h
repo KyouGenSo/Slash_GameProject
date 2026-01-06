@@ -13,6 +13,7 @@ class Sprite;
 class OBBCollider;
 class Object3d;
 class Camera;
+class EmitterManager;
 }
 
 // GameProject前方宣言
@@ -109,7 +110,7 @@ public: // メンバ関数
     void UpdateAttackCollider();
 
     /// <summary>
-    /// フェーズ2時にボス方向を向く
+    /// ボス方向を向く
     /// </summary>
     void LookAtBoss();
 
@@ -332,6 +333,37 @@ public: // メンバ関数
     /// <returns>Bossのポインタ（未設定ならnullptr）</returns>
     Boss* GetBoss() const { return targetEnemy_; }
 
+    //-----------------------------パリィシステム------------------------------//
+    /// <summary>
+    /// EmitterManagerを設定
+    /// </summary>
+    /// <param name="emitterManager">エミッターマネージャーのポインタ</param>
+    void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
+
+    /// <summary>
+    /// EmitterManagerを取得
+    /// </summary>
+    /// <returns>エミッターマネージャーのポインタ</returns>
+    Tako::EmitterManager* GetEmitterManager() const { return emitterManager_; }
+
+    /// <summary>
+    /// パリィ状態かどうかを判定
+    /// </summary>
+    /// <returns>true: パリィ中, false: それ以外</returns>
+    bool IsParrying() const;
+
+    /// <summary>
+    /// パリィ成功時の処理（HP回復、エフェクト発生）
+    /// </summary>
+    void OnParrySuccess();
+
+    /// <summary>
+    /// プレイヤーの前方位置を取得
+    /// </summary>
+    /// <param name="offset">前方へのオフセット距離</param>
+    /// <returns>前方位置のワールド座標</returns>
+    Tako::Vector3 GetFrontPosition(float offset) const;
+
     //-----------------------------弾生成リクエストシステム------------------------------//
     /// <summary>
     /// 弾生成リクエスト構造体
@@ -379,6 +411,7 @@ private: // メンバ変数
     // システム
     std::unique_ptr<PlayerStateMachine> stateMachine_;
     InputHandler* inputHandlerPtr_;
+    Tako::EmitterManager* emitterManager_ = nullptr;  ///< エミッターマネージャーへの参照
 
     // Colliders
     std::unique_ptr<Tako::OBBCollider> bodyCollider_;

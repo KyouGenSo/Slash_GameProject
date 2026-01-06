@@ -118,9 +118,9 @@ public: // メンバ関数
 
 private: // メンバ変数
 
-    std::unique_ptr<Tako::SkyBox> skyBox_;                            // スカイボックス（環境マップ）
+    std::unique_ptr<Tako::SkyBox> skyBox_;                      // スカイボックス（環境マップ）
 
-    std::unique_ptr<Tako::Object3d> ground_;                          // 地面オブジェクト
+    std::unique_ptr<Tako::Object3d> ground_;                    // 地面オブジェクト
 
     std::unique_ptr<Player> player_;                            // プレイヤーキャラクター
 
@@ -139,11 +139,11 @@ private: // メンバ変数
     CameraAnimationController* animationController_ = nullptr;  // カメラアニメーションコントローラー
     bool cameraMode_ = false;                                   // カメラモード (true: FirstPerson, false: TopDown)
 
-    Tako::Transform groundUvTransform_{};                             // 地面のUVトランスフォーム（テクスチャスクロール等に使用）
+    Tako::Transform groundUvTransform_{};                       // 地面のUVトランスフォーム（テクスチャスクロール等に使用）
 
-    std::unique_ptr<Tako::EmitterManager> emitterManager_;            // パーティクルエミッター管理
+    std::unique_ptr<Tako::EmitterManager> emitterManager_;      // パーティクルエミッター管理
 
-    std::unique_ptr<Tako::Sprite> toTitleSprite_;                     // タイトルに戻るボタンテキスト
+    std::unique_ptr<Tako::Sprite> toTitleSprite_;               // タイトルに戻るボタンテキスト
 
     bool isStart_ = false;                                      // ゲーム開始フラグ
     
@@ -171,9 +171,9 @@ private: // メンバ変数
     bool isDebug_ = false;                                      // デバッグモードフラグ
 
     // ダッシュエフェクト補間用
-    Tako::Vector3 dashEmitterPosition_{};                              // エミッターの補間位置
-    bool previousIsDashing_ = false;                             // 前フレームのダッシュ状態
-    bool dashEmitterActive_ = false;                             // エミッターのアクティブ状態
+    Tako::Vector3 dashEmitterPosition_{};                       // エミッターの補間位置
+    bool previousIsDashing_ = false;                            // 前フレームのダッシュ状態
+    bool dashEmitterActive_ = false;                            // エミッターのアクティブ状態
 
     // 調整可能パラメータ（演出調整用）
     float overEmit1Time_ = 2.0f;             ///< オーバー演出エミッター1発生時間

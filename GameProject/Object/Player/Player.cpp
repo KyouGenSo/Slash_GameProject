@@ -24,6 +24,8 @@
 #include "../../CameraSystem/CameraManager.h"
 #include "PostEffectManager.h"
 #include "PostEffectStruct.h"
+#include "EmitterManager.h"
+#include "RandomEngine.h"
 
 #include <cmath>
 #include <algorithm>
@@ -141,8 +143,8 @@ void Player::Update()
         stateMachine_->Update(FrameTimer::GetInstance()->GetDeltaTime());
     }
 
-    // フェーズ2時はボス方向を向く
-    LookAtBoss();
+    // フェーズ2時とパリィ中はボスの方向を向く
+    if ((targetEnemy_ || targetEnemy_->GetPhase() == 2) && IsParrying()) LookAtBoss();
 
     // 実効的な制限を計算（静的制限と動的制限の交差）
     float effectiveXMin = std::max<float>(GameConst::kStageXMin, dynamicXMin_);
@@ -351,9 +353,6 @@ void Player::UpdateAttackCollider()
 
 void Player::LookAtBoss()
 {
-    // ボス参照がない、またはフェーズ2でなければスキップ
-    if (!targetEnemy_ || targetEnemy_->GetPhase() != 2) return;
-
     // ボスへの方向ベクトルを計算
     Vector3 toTarget = targetEnemy_->GetTransform().translate - transform_.translate;
     toTarget.y = 0.0f;  // Y軸は無視
@@ -736,4 +735,46 @@ void Player::RequestBulletSpawn(const Vector3& position, const Vector3& velocity
 std::vector<Player::BulletSpawnRequest> Player::ConsumePendingBullets()
 {
     return std::move(pendingBullets_);
+}
+
+bool Player::IsParrying() const
+{
+    if (!stateMachine_ || !stateMachine_->GetCurrentState()) return false;
+    return stateMachine_->GetCurrentState()->GetName() == "Parry";
+}
+
+void Player::OnParrySuccess()
+{
+    // HP回復
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    float healAmount = gv->GetValueFloat("ParryState", "ParrySuccessHealAmount");
+    hp_ = std::min<float>(hp_ + healAmount, kMaxHp);
+
+    // パリィ成功エフェクト（一時エミッター）
+    if (emitterManager_) {
+        Vector3 effectPos = GetFrontPosition(2.0f);
+        emitterManager_->SetEmitterPosition("parry_success", effectPos);
+        // ユニークなエミッター名を生成（RandomEngine使用）
+        int uniqueId = RandomEngine::GetInstance()->GetInt(0, 999999);
+        emitterManager_->CreateTemporaryEmitterFrom(
+            "parry_success",
+            "parry_success_temp_" + std::to_string(uniqueId),
+            0.5f);
+        emitterManager_->SetEmitterActive("parry_success_temp_" + std::to_string(uniqueId), true);
+    }
+
+    // カメラシェイク（軽め）
+    CameraManager::GetInstance()->StartShake(0.2f);
+
+    // コントローラー振動
+    Input::GetInstance()->SetVibration(0.1f, 0.15f, 0.1f);
+}
+
+Tako::Vector3 Player::GetFrontPosition(float offset) const
+{
+    Vector3 forward;
+    forward.x = std::sin(transform_.rotate.y);
+    forward.y = 0.0f;
+    forward.z = std::cos(transform_.rotate.y);
+    return transform_.translate + forward * offset;
 }
