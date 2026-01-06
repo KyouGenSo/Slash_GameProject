@@ -61,6 +61,9 @@ void ParryState::Exit(Player* player)
     if (em) {
         em->SetEmitterActive("parry_effect", false);
     }
+
+    // クールダウン開始
+    player->StartParryCooldown();
 }
 
 void ParryState::HandleInput(Player* player)

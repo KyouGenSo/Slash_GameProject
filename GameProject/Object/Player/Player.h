@@ -380,6 +380,17 @@ public: // メンバ関数
     bool IsParrying() const;
 
     /// <summary>
+    /// パリィ可能か判定（クールダウン中はfalse）
+    /// </summary>
+    /// <returns>パリィ可能ならtrue</returns>
+    bool CanParry() const;
+
+    /// <summary>
+    /// パリィクールダウンを開始
+    /// </summary>
+    void StartParryCooldown();
+
+    /// <summary>
     /// プレイヤーの前方位置を取得
     /// </summary>
     /// <param name="offset">前方へのオフセット距離</param>
@@ -432,6 +443,9 @@ private: // メンバ変数
     float moveElapsedTime_ = 0.0f;        ///< 移動経過時間
     float moveDuration_ = 0.0f;           ///< 移動所要時間
     bool isMoveInitialized_ = false;      ///< 移動初期化済みフラグ
+
+    // パリィクールダウン
+    float parryCooldownTimer_ = 0.0f;     ///< パリィクールダウン残り時間
 
     // 弾生成リクエスト
     std::vector<BulletSpawnRequest> pendingBullets_;

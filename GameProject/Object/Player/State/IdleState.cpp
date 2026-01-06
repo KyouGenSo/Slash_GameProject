@@ -37,8 +37,8 @@ void IdleState::HandleInput(Player* player)
 	
 	// 優先度順に状態遷移をチェック
 	
-	// パリィ
-	if (input->IsParrying())
+	// パリィ（クールダウン中は不可）
+	if (input->IsParrying() && player->CanParry())
 	{
 		stateMachine->ChangeState("Parry");
 		return;

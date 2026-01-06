@@ -1,0 +1,7 @@
+{
+    "ParryState": {
+        "ParryCooldown": 0.4000000059604645,
+        "ParryDuration": 0.5,
+        "ParrySuccessHealAmount": 5.0
+    }
+}

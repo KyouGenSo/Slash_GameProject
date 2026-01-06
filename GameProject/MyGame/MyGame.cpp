@@ -259,6 +259,7 @@ void MyGame::RegisterGlobalVariables()
     gv->CreateGroup("ParryState");
     gv->AddItem("ParryState", "ParryDuration", 0.5f);
     gv->AddItem("ParryState", "ParrySuccessHealAmount", 5.0f);
+    gv->AddItem("ParryState", "ParryCooldown", 1.0f);
 
     // === ShootState === //
     gv->CreateGroup("ShootState");

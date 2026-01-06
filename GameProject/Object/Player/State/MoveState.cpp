@@ -40,7 +40,7 @@ void MoveState::HandleInput(Player* player)
 	// 優先度順に状態遷移をチェック
 	
 	// パリィ
-	if (input->IsParrying())
+	if (input->IsParrying() && player->CanParry())
 	{
 		stateMachine->ChangeState("Parry");
 		return;

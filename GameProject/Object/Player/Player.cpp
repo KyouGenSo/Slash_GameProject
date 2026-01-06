@@ -123,6 +123,14 @@ void Player::Update()
     bossLookatLerp_ = gv->GetValueFloat("Player", "BossLookatLerp");
     attackMoveSpeed_ = gv->GetValueFloat("Player", "AttackMoveSpeed");
 
+    // パリィクールダウンの更新
+    if (parryCooldownTimer_ > 0.0f) {
+        parryCooldownTimer_ -= FrameTimer::GetInstance()->GetDeltaTime();
+        if (parryCooldownTimer_ < 0.0f) {
+            parryCooldownTimer_ = 0.0f;
+        }
+    }
+
     // 死亡判定
     if (hp_ <= 0.0f) isDead_ = true;
 
@@ -719,6 +727,21 @@ bool Player::IsParrying() const
 {
     if (!stateMachine_ || !stateMachine_->GetCurrentState()) return false;
     return stateMachine_->GetCurrentState()->GetName() == "Parry";
+}
+
+bool Player::CanParry() const
+{
+    return parryCooldownTimer_ <= 0.0f;
+}
+
+void Player::StartParryCooldown()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    float cooldown = gv->GetValueFloat("ParryState", "ParryCooldown");
+    if (cooldown <= 0.0f) {
+        cooldown = 1.0f;  // デフォルト1秒
+    }
+    parryCooldownTimer_ = cooldown;
 }
 
 void Player::OnParrySuccess()
