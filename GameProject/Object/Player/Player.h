@@ -120,12 +120,49 @@ public: // メンバ関数
     /// <param name="other">衝突相手のコライダー</param>
     void OnHit(float damage);
 
-    //-----------------------------Getters/Setters------------------------------//
+    /// <summary>
+    /// 動的移動範囲をクリア（無効化）
+    /// </summary>
+    void ClearDynamicBounds();
+
+    /// <summary>
+    /// パリィ成功時の処理（HP回復、エフェクト発生）
+    /// </summary>
+    void OnParrySuccess();
+
+    //-----------------------------弾生成リクエストシステム------------------------------//
+    /// <summary>
+    /// 弾生成リクエスト構造体
+    /// </summary>
+    struct BulletSpawnRequest {
+        Tako::Vector3 position;  ///< 発射位置
+        Tako::Vector3 velocity;  ///< 弾の速度ベクトル
+    };
+
+    /// <summary>
+    /// 弾生成リクエストを追加
+    /// </summary>
+    /// <param name="position">発射位置</param>
+    /// <param name="velocity">弾の速度ベクトル</param>
+    void RequestBulletSpawn(const Tako::Vector3& position, const Tako::Vector3& velocity);
+
+    /// <summary>
+    /// 保留中の弾生成リクエストを取得して消費
+    /// </summary>
+    /// <returns>弾生成リクエストのリスト</returns>
+    std::vector<BulletSpawnRequest> ConsumePendingBullets();
+
+    //----------------------------------Setters-----------------------------------//
     /// <summary>
     /// 移動速度を設定
     /// </summary>
     /// <param name="speed">新しい移動速度</param>
     void SetSpeed(float speed) { speed_ = speed; }
+
+    /// <summary>
+    /// Bossをターゲットに設定
+    /// </summary>
+    void SetBoss(Boss* target) { targetEnemy_ = target; }
 
     /// <summary>
     /// カメラを設定
@@ -180,6 +217,36 @@ public: // メンバ関数
     /// </summary>
     void SetInputHandler(InputHandler* inputHandler) { inputHandlerPtr_ = inputHandler; }
 
+    /// <summary>
+    /// 攻撃ブロックの表示/非表示を設定
+    /// </summary>
+    /// <param name="visible">true: 表示, false: 非表示</param>
+    void SetAttackBlockVisible(bool visible) { attackBlockVisible_ = visible; }
+
+    /// <summary>
+    /// 動的移動範囲を設定
+    /// </summary>
+    /// <param name="xMin">X座標の最小値</param>
+    /// <param name="xMax">X座標の最大値</param>
+    /// <param name="zMin">Z座標の最小値</param>
+    /// <param name="zMax">Z座標の最大値</param>
+    void SetDynamicBounds(float xMin, float xMax, float zMin, float zMax);
+
+    /// <summary>
+    /// 中心点と範囲から動的移動範囲を設定
+    /// </summary>
+    /// <param name="center">中心座標</param>
+    /// <param name="xRange">X方向の範囲（片側）</param>
+    /// <param name="zRange">Z方向の範囲（片側）</param>
+    void SetDynamicBoundsFromCenter(const Tako::Vector3& center, float xRange, float zRange);
+
+    /// <summary>
+    /// EmitterManagerを設定
+    /// </summary>
+    /// <param name="emitterManager">エミッターマネージャーのポインタ</param>
+    void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
+
+    //----------------------------------Getters-----------------------------------//
     /// <summary>
     /// 移動速度を取得
     /// </summary>
@@ -277,12 +344,6 @@ public: // メンバ関数
     Tako::Object3d* GetAttackBlock() const { return attackBlock_.get(); }
 
     /// <summary>
-    /// 攻撃ブロックの表示/非表示を設定
-    /// </summary>
-    /// <param name="visible">true: 表示, false: 非表示</param>
-    void SetAttackBlockVisible(bool visible) { attackBlockVisible_ = visible; }
-
-    /// <summary>
     /// 攻撃ブロックが表示中か取得
     /// </summary>
     /// <returns>true: 表示中, false: 非表示</returns>
@@ -301,44 +362,10 @@ public: // メンバ関数
     InputHandler* GetInputHandler() { return inputHandlerPtr_; };
 
     /// <summary>
-    /// 動的移動範囲を設定
-    /// </summary>
-    /// <param name="xMin">X座標の最小値</param>
-    /// <param name="xMax">X座標の最大値</param>
-    /// <param name="zMin">Z座標の最小値</param>
-    /// <param name="zMax">Z座標の最大値</param>
-    void SetDynamicBounds(float xMin, float xMax, float zMin, float zMax);
-
-    /// <summary>
-    /// 中心点と範囲から動的移動範囲を設定
-    /// </summary>
-    /// <param name="center">中心座標</param>
-    /// <param name="xRange">X方向の範囲（片側）</param>
-    /// <param name="zRange">Z方向の範囲（片側）</param>
-    void SetDynamicBoundsFromCenter(const Tako::Vector3& center, float xRange, float zRange);
-
-    /// <summary>
-    /// 動的移動範囲をクリア（無効化）
-    /// </summary>
-    void ClearDynamicBounds();
-
-    /// <summary>
-    /// Bossをターゲットに設定
-    /// </summary>
-    void SetBoss(Boss* target) { targetEnemy_ = target; }
-
-    /// <summary>
     /// ターゲットのBossを取得
     /// </summary>
     /// <returns>Bossのポインタ（未設定ならnullptr）</returns>
     Boss* GetBoss() const { return targetEnemy_; }
-
-    //-----------------------------パリィシステム------------------------------//
-    /// <summary>
-    /// EmitterManagerを設定
-    /// </summary>
-    /// <param name="emitterManager">エミッターマネージャーのポインタ</param>
-    void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
 
     /// <summary>
     /// EmitterManagerを取得
@@ -353,38 +380,11 @@ public: // メンバ関数
     bool IsParrying() const;
 
     /// <summary>
-    /// パリィ成功時の処理（HP回復、エフェクト発生）
-    /// </summary>
-    void OnParrySuccess();
-
-    /// <summary>
     /// プレイヤーの前方位置を取得
     /// </summary>
     /// <param name="offset">前方へのオフセット距離</param>
     /// <returns>前方位置のワールド座標</returns>
     Tako::Vector3 GetFrontPosition(float offset) const;
-
-    //-----------------------------弾生成リクエストシステム------------------------------//
-    /// <summary>
-    /// 弾生成リクエスト構造体
-    /// </summary>
-    struct BulletSpawnRequest {
-        Tako::Vector3 position;  ///< 発射位置
-        Tako::Vector3 velocity;  ///< 弾の速度ベクトル
-    };
-
-    /// <summary>
-    /// 弾生成リクエストを追加
-    /// </summary>
-    /// <param name="position">発射位置</param>
-    /// <param name="velocity">弾の速度ベクトル</param>
-    void RequestBulletSpawn(const Tako::Vector3& position, const Tako::Vector3& velocity);
-
-    /// <summary>
-    /// 保留中の弾生成リクエストを取得して消費
-    /// </summary>
-    /// <returns>弾生成リクエストのリスト</returns>
-    std::vector<BulletSpawnRequest> ConsumePendingBullets();
 
 private: // メンバ変数
 
@@ -435,12 +435,6 @@ private: // メンバ変数
 
     // 弾生成リクエスト
     std::vector<BulletSpawnRequest> pendingBullets_;
-
-    // 被弾Vignetteエフェクト
-    float damageVignetteTimer_ = 0.0f;                       ///< Vignetteフェードアウトタイマー
-    static constexpr float kDamageVignetteDuration_ = 0.25f; ///< フェードアウト時間
-    static constexpr float kDamageVignettePower_ = 0.2f;     ///< 初期Vignette強度
-    static constexpr float kDamageVignetteRange_ = 45.0f;    ///< Vignette範囲
 
     // 調整可能パラメータ（ImGui編集用）
     float initialY_ = 2.5f;                   ///< 初期Y座標

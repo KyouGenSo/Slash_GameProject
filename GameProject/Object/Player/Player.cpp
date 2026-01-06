@@ -167,24 +167,6 @@ void Player::Update()
         attackBlock_->Update();
     }
 
-    // 被弾Vignetteのフェードアウト
-    if (damageVignetteTimer_ > 0.0f) {
-        float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
-        damageVignetteTimer_ -= deltaTime;
-
-        float t = damageVignetteTimer_ / kDamageVignetteDuration_;
-        VignetteParam vignetteParam{};
-        vignetteParam.power = kDamageVignettePower_ * t;
-        vignetteParam.range = kDamageVignetteRange_;
-        vignetteParam.color = Vector3{1.0f, 0.0f, 0.0f};
-        PostEffectManager::GetInstance()->SetEffectParam("Vignette", vignetteParam);
-
-        if (damageVignetteTimer_ <= 0.0f) {
-            damageVignetteTimer_ = 0.0f;
-            PostEffectManager::GetInstance()->RemoveEffectFromChain("Vignette");
-        }
-    }
-
     // 攻撃範囲Colliderの更新
     UpdateAttackCollider();
 }
@@ -379,16 +361,12 @@ void Player::OnHit(float damage)
     // ゲームパット振動
     Input::GetInstance()->SetVibration(0.2f, 0.3f, 0.25f);
 
-    // 被弾Vignetteエフェクト開始
-    damageVignetteTimer_ = kDamageVignetteDuration_;
-    if (!PostEffectManager::GetInstance()->IsEffectInChain("Vignette")) {
-        PostEffectManager::GetInstance()->AddEffectToChain("Vignette");
-    }
-    VignetteParam vignetteParam{};
-    vignetteParam.power = kDamageVignettePower_;
-    vignetteParam.range = kDamageVignetteRange_;
-    vignetteParam.color = Vector3{1.0f, 0.0f, 0.0f};  // 赤
-    PostEffectManager::GetInstance()->SetEffectParam("Vignette", vignetteParam);
+    // 被弾Vignetteエフェクト（赤）
+    VignetteParam param{};
+    param.power = 0.2f;
+    param.range = 45.0f;
+    param.color = Vector3{1.0f, 0.0f, 0.0f};
+    PostEffectManager::GetInstance()->ApplyTemporaryEffect("Vignette", 0.25f, param);
 }
 
 void Player::DrawImGui()
@@ -768,6 +746,13 @@ void Player::OnParrySuccess()
 
     // コントローラー振動
     Input::GetInstance()->SetVibration(0.1f, 0.15f, 0.1f);
+
+    // パリィ成功Vignetteエフェクト（青）
+    VignetteParam vignetteParam{};
+    vignetteParam.power = 0.2f;
+    vignetteParam.range = 45.0f;
+    vignetteParam.color = Vector3{0.058f, 0.447f, 1.0f};
+    PostEffectManager::GetInstance()->ApplyTemporaryEffect("Vignette", 0.3f, vignetteParam);
 }
 
 Tako::Vector3 Player::GetFrontPosition(float offset) const
