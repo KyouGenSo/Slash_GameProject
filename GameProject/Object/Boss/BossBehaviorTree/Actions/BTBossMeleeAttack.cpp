@@ -5,6 +5,7 @@
 #include "../../../../Common/GameConst.h"
 #include "Object3d.h"
 #include "Mat4x4Func.h"
+#include "RandomEngine.h"
 #include <cmath>
 #include <algorithm>
 
@@ -53,23 +54,56 @@ BTNodeStatus BTBossMeleeAttack::Execute(BTBlackboard* blackboard) {
                 boss->GetMeleeAttackCollider()->Reset();
                 colliderActivated_ = true;
             }
-            // ★突進の初期化（Execute開始時にプレイヤー位置を確定）
+            // 突進の初期化（Execute開始時にプレイヤー位置を確定）
             InitializeRush(boss);
         }
         break;
 
     case MeleePhase::Execute:
         ProcessExecutePhase(boss, deltaTime);
-        // 攻撃時間終了でRecoveryフェーズへ
+        // 攻撃時間終了で次のフェーズへ
         if (phaseTimer_ >= attackDuration_) {
-            currentPhase_ = MeleePhase::Recovery;
-            phaseTimer_ = 0.0f;
             // コライダーを無効化
             if (boss->GetMeleeAttackCollider()) {
                 boss->GetMeleeAttackCollider()->SetActive(false);
             }
             // ブロックを非表示
             boss->SetMeleeAttackBlockVisible(false);
+
+            // 次のフェーズを決定
+            if (comboIndex_ < comboMaxCount_ - 1) {
+                // まだコンボが残っている → Intervalへ
+                currentPhase_ = MeleePhase::Interval;
+                phaseTimer_ = 0.0f;
+            } else {
+                // コンボ完了 → Recoveryへ
+                currentPhase_ = MeleePhase::Recovery;
+                phaseTimer_ = 0.0f;
+            }
+        }
+        break;
+
+    case MeleePhase::Interval:
+        ProcessIntervalPhase(boss, deltaTime);
+        // コンボ間隔終了で次の攻撃準備へ
+        if (phaseTimer_ >= comboInterval_) {
+            comboIndex_++;
+
+            // 次の攻撃の振り方向を初期化
+            InitializeSwingForCurrentCombo();
+
+            // ブロックを再表示
+            boss->SetMeleeAttackBlockVisible(true);
+
+            // 予兆エフェクトをON
+            boss->SetAttackSignEmitterActive(true);
+
+            // ブロック位置を更新
+            UpdateBlockPosition(boss);
+
+            // Prepareフェーズへ（1撃目と同じ挙動）
+            currentPhase_ = MeleePhase::Prepare;
+            phaseTimer_ = 0.0f;
         }
         break;
 
@@ -103,18 +137,35 @@ void BTBossMeleeAttack::Reset() {
     currentPhase_ = MeleePhase::Prepare;
     colliderActivated_ = false;
     rushInitialized_ = false;
+
+    // コンボ状態のリセット
+    isComboMode_ = false;
+    comboMaxCount_ = 1;
+    comboIndex_ = 0;
+    currentSwingDirection_ = 1.0f;
 }
 
 void BTBossMeleeAttack::InitializeMeleeAttack(Boss* boss) {
     // タイマーリセット
     elapsedTime_ = 0.0f;
     phaseTimer_ = 0.0f;
-    blockAngle_ = kBlockStartAngle;
     currentPhase_ = MeleePhase::Prepare;
     colliderActivated_ = false;
 
-    // totalDurationを計算
-    totalDuration_ = prepareTime_ + attackDuration_ + recoveryTime_;
+    // コンボモードをランダム決定
+    isComboMode_ = Tako::RandomEngine::GetInstance()->GetBool(comboProbability_);
+    comboMaxCount_ = isComboMode_ ? 3 : 1;
+    comboIndex_ = 0;
+
+    // 最初の攻撃の振り方向を初期化
+    InitializeSwingForCurrentCombo();
+
+    // totalDurationを計算（コンボ時は長くなる）
+    if (isComboMode_) {
+        totalDuration_ = prepareTime_ + (attackDuration_ * 3) + (comboInterval_ * 2) + recoveryTime_;
+    } else {
+        totalDuration_ = prepareTime_ + attackDuration_ + recoveryTime_;
+    }
 
     // ブロックを表示
     boss->SetMeleeAttackBlockVisible(true);
@@ -210,8 +261,8 @@ void BTBossMeleeAttack::ProcessExecutePhase(Boss* boss, float deltaTime) {
         boss->SetTranslate(newPosition);
     }
 
-    // ブロックを回転させる（右から左へ）
-    float rotationSpeed = swingAngle_ / attackDuration_;
+    // ブロックを回転させる（振り方向を考慮）
+    float rotationSpeed = swingAngle_ / attackDuration_ * currentSwingDirection_;
     blockAngle_ += rotationSpeed * deltaTime;
 
     // ブロック位置を更新
@@ -221,6 +272,23 @@ void BTBossMeleeAttack::ProcessExecutePhase(Boss* boss, float deltaTime) {
 void BTBossMeleeAttack::ProcessRecoveryPhase(Boss* boss) {
     // 硬直中は特に処理なし
     (void)boss;
+}
+
+void BTBossMeleeAttack::ProcessIntervalPhase(Boss* boss, float deltaTime) {
+    // コンボ間隔中はプレイヤー方向を向き続ける
+    AimAtPlayer(boss, deltaTime);
+}
+
+void BTBossMeleeAttack::InitializeSwingForCurrentCombo() {
+    if (comboIndex_ % 2 == 0) {
+        // 偶数撃目（0, 2）：右→左
+        blockAngle_ = kBlockStartAngle;  // -π/2
+        currentSwingDirection_ = 1.0f;
+    } else {
+        // 奇数撃目（1）：左→右
+        blockAngle_ = -kBlockStartAngle; // +π/2
+        currentSwingDirection_ = -1.0f;
+    }
 }
 
 Vector3 BTBossMeleeAttack::ClampToArea(const Vector3& position) {
@@ -310,7 +378,9 @@ nlohmann::json BTBossMeleeAttack::ExtractParameters() const {
         {"blockScale", blockScale_},
         {"swingAngle", swingAngle_},
         {"rushDistance", rushDistance_},
-        {"stopDistance", stopDistance_}
+        {"stopDistance", stopDistance_},
+        {"comboInterval", comboInterval_},
+        {"comboProbability", comboProbability_}
     };
 }
 
@@ -342,6 +412,23 @@ bool BTBossMeleeAttack::DrawImGui() {
     if (ImGui::DragFloat("Stop Distance##melee", &stopDistance_, 0.5f, 1.0f, 20.0f)) {
         changed = true;
     }
+
+    // コンボパラメータ
+    ImGui::Separator();
+    ImGui::Text("Combo Parameters:");
+    if (ImGui::SliderFloat("Combo Probability##melee", &comboProbability_, 0.0f, 1.0f)) {
+        changed = true;
+    }
+    if (ImGui::DragFloat("Combo Interval##melee", &comboInterval_, 0.05f, 0.1f, 2.0f)) {
+        changed = true;
+    }
+
+    // デバッグ表示
+    ImGui::Separator();
+    ImGui::Text("Debug Info:");
+    ImGui::Text("Mode: %s", isComboMode_ ? "COMBO (3 hits)" : "SINGLE (1 hit)");
+    ImGui::Text("Combo: %d / %d", comboIndex_ + 1, comboMaxCount_);
+    ImGui::Text("Swing Direction: %s", currentSwingDirection_ > 0 ? "Right->Left" : "Left->Right");
 
     return changed;
 }

@@ -30,6 +30,7 @@ private:
     enum class MeleePhase {
         Prepare,    ///< 準備フェーズ（プレイヤー方向を向く、予兆表示）
         Execute,    ///< 攻撃実行フェーズ（ブロック回転、ダメージ判定）
+        Interval,   ///< コンボ間隔フェーズ（次の攻撃までの待機）
         Recovery    ///< 硬直フェーズ
     };
 
@@ -103,6 +104,12 @@ public:
         if (params.contains("stopDistance")) {
             stopDistance_ = params["stopDistance"];
         }
+        if (params.contains("comboInterval")) {
+            comboInterval_ = params["comboInterval"];
+        }
+        if (params.contains("comboProbability")) {
+            comboProbability_ = params["comboProbability"];
+        }
     }
 
     /// <summary>
@@ -150,6 +157,18 @@ private:
     /// </summary>
     /// <param name="boss">ボス</param>
     void ProcessRecoveryPhase(Boss* boss);
+
+    /// <summary>
+    /// コンボ間隔フェーズの処理
+    /// </summary>
+    /// <param name="boss">ボス</param>
+    /// <param name="deltaTime">経過時間</param>
+    void ProcessIntervalPhase(Boss* boss, float deltaTime);
+
+    /// <summary>
+    /// 現在のコンボインデックスに応じた振り方向を初期化
+    /// </summary>
+    void InitializeSwingForCurrentCombo();
 
     /// <summary>
     /// ブロック位置の更新（Mat4x4使用）
@@ -205,4 +224,14 @@ private:
     Tako::Vector3 targetPosition_;        ///< 突進目標位置（Execute開始時に固定）
     Tako::Vector3 rushDirection_;         ///< 突進方向
     bool rushInitialized_ = false;  ///< 突進初期化済みフラグ
+
+    // コンボ管理
+    bool isComboMode_ = false;           ///< コンボモードフラグ
+    int comboMaxCount_ = 1;              ///< 最大攻撃回数（単発:1, コンボ:3）
+    int comboIndex_ = 0;                 ///< 現在の攻撃回数（0-indexed）
+    float currentSwingDirection_ = 1.0f; ///< 振り方向（+1:右→左, -1:左→右）
+
+    // コンボパラメータ（GlobalVariables連携）
+    float comboInterval_ = 0.5f;         ///< コンボ間隔（デフォルト0.5秒）
+    float comboProbability_ = 0.5f;      ///< コンボ発動確率（デフォルト50%）
 };
