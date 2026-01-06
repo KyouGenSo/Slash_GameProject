@@ -58,8 +58,8 @@ void IdleState::HandleInput(Player* player)
 		return;
 	}
 	
-	// ダッシュ
-	if (input->IsDashing())
+	// ダッシュ（クールダウン中は不可）
+	if (input->IsDashing() && player->CanDash())
 	{
 		stateMachine->ChangeState("Dash");
 		return;

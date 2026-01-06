@@ -131,6 +131,14 @@ void Player::Update()
         }
     }
 
+    // ダッシュクールダウンの更新
+    if (dashCooldownTimer_ > 0.0f) {
+        dashCooldownTimer_ -= FrameTimer::GetInstance()->GetDeltaTime();
+        if (dashCooldownTimer_ < 0.0f) {
+            dashCooldownTimer_ = 0.0f;
+        }
+    }
+
     // 死亡判定
     if (hp_ <= 0.0f) isDead_ = true;
 
@@ -742,6 +750,21 @@ void Player::StartParryCooldown()
         cooldown = 1.0f;  // デフォルト1秒
     }
     parryCooldownTimer_ = cooldown;
+}
+
+bool Player::CanDash() const
+{
+    return dashCooldownTimer_ <= 0.0f;
+}
+
+void Player::StartDashCooldown()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+    float cooldown = gv->GetValueFloat("DashState", "DashCooldown");
+    if (cooldown <= 0.0f) {
+        cooldown = 0.5f;  // デフォルト0.5秒
+    }
+    dashCooldownTimer_ = cooldown;
 }
 
 void Player::OnParrySuccess()

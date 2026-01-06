@@ -53,6 +53,9 @@ void DashState::Update(Player* player, float deltaTime)
 void DashState::Exit(Player* player)
 {
 	timer_ = 0.0f;
+
+	// クールダウン開始
+	player->StartDashCooldown();
 }
 
 void DashState::HandleInput(Player* player)

@@ -254,6 +254,7 @@ void MyGame::RegisterGlobalVariables()
     gv->CreateGroup("DashState");
     gv->AddItem("DashState", "Duration", 0.05f);
     gv->AddItem("DashState", "Speed", 10.0f);
+    gv->AddItem("DashState", "DashCooldown", 0.5f);
 
     // === ParryState === //
     gv->CreateGroup("ParryState");

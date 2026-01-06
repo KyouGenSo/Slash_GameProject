@@ -391,6 +391,17 @@ public: // メンバ関数
     void StartParryCooldown();
 
     /// <summary>
+    /// ダッシュ可能か判定（クールダウン中はfalse）
+    /// </summary>
+    /// <returns>ダッシュ可能ならtrue</returns>
+    bool CanDash() const;
+
+    /// <summary>
+    /// ダッシュクールダウンを開始
+    /// </summary>
+    void StartDashCooldown();
+
+    /// <summary>
     /// プレイヤーの前方位置を取得
     /// </summary>
     /// <param name="offset">前方へのオフセット距離</param>
@@ -446,6 +457,9 @@ private: // メンバ変数
 
     // パリィクールダウン
     float parryCooldownTimer_ = 0.0f;     ///< パリィクールダウン残り時間
+
+    // ダッシュクールダウン
+    float dashCooldownTimer_ = 0.0f;      ///< ダッシュクールダウン残り時間
 
     // 弾生成リクエスト
     std::vector<BulletSpawnRequest> pendingBullets_;
