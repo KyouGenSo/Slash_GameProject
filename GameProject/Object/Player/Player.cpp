@@ -363,7 +363,7 @@ void Player::OnHit(float damage)
 
     // 被弾Vignetteエフェクト（赤）
     VignetteParam param{};
-    param.power = 0.2f;
+    param.power = 0.4f;
     param.range = 45.0f;
     param.color = Vector3{1.0f, 0.0f, 0.0f};
     PostEffectManager::GetInstance()->ApplyTemporaryEffect("Vignette", 0.25f, param);
@@ -749,7 +749,7 @@ void Player::OnParrySuccess()
 
     // パリィ成功Vignetteエフェクト（青）
     VignetteParam vignetteParam{};
-    vignetteParam.power = 0.2f;
+    vignetteParam.power = 0.4f;
     vignetteParam.range = 45.0f;
     vignetteParam.color = Vector3{0.058f, 0.447f, 1.0f};
     PostEffectManager::GetInstance()->ApplyTemporaryEffect("Vignette", 0.3f, vignetteParam);
