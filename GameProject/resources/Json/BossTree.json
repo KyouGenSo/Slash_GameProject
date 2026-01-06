@@ -247,8 +247,8 @@
     }
   ],
   "metadata": {
-    "created": "2026-01-06T15:18:50",
-    "modified": "2026-01-06T15:18:50",
+    "created": "2026-01-06T17:22:53",
+    "modified": "2026-01-06T17:22:53",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -288,7 +288,7 @@
       "displayName": "Dash",
       "id": 10003,
       "parameters": {
-        "dashDuration": 0.18957248330116272,
+        "dashDuration": 0.05799569934606552,
         "dashSpeed": 200.0
       },
       "position": {
@@ -552,9 +552,11 @@
         "attackDuration": 0.20000000298023224,
         "blockRadius": 8.0,
         "blockScale": 0.5,
+        "comboInterval": 0.15000000596046448,
+        "comboProbability": 0.5,
         "prepareTime": 0.5,
         "recoveryTime": 0.30000001192092896,
-        "rushDistance": 20.0,
+        "rushDistance": 25.0,
         "stopDistance": 5.0,
         "swingAngle": 3.1415927410125732
       },
@@ -669,7 +671,7 @@
       "displayName": "Dash",
       "id": 10034,
       "parameters": {
-        "dashDuration": 0.06690774112939835,
+        "dashDuration": 0.11798316985368729,
         "dashSpeed": 200.0
       },
       "position": {
@@ -685,6 +687,8 @@
         "attackDuration": 0.20000000298023224,
         "blockRadius": 8.0,
         "blockScale": 0.5,
+        "comboInterval": 0.5,
+        "comboProbability": 0.5,
         "prepareTime": 0.5,
         "recoveryTime": 0.30000001192092896,
         "rushDistance": 20.0,
