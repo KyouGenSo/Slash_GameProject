@@ -39,24 +39,7 @@ void MyGame::Initialize()
     SceneManager::GetInstance()->ChangeScene("title", 0.0f);
 
     // テクスチャの読み込み
-    TextureManager::GetInstance()->LoadTexture("white.png");
-    TextureManager::GetInstance()->LoadTexture("black.png");
-    TextureManager::GetInstance()->LoadTexture("circle.png");
-    TextureManager::GetInstance()->LoadTexture("my_skybox.dds");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_1.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_2.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_3.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_4.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_5.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_6.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_7.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_8.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_9.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_10.png");
-    TextureManager::GetInstance()->LoadTexture("title_button.png");
-    TextureManager::GetInstance()->LoadTexture("game_button_text.png");
-    TextureManager::GetInstance()->LoadTexture("gameClear_Text.png");
-    TextureManager::GetInstance()->LoadTexture("gameOver_Text.png");
+    LoadTextrue();
 
     // GlobalVariablesにパラメータを登録
     RegisterGlobalVariables();
@@ -275,4 +258,26 @@ void MyGame::RegisterGlobalVariables()
     gv->AddItem("BossMeleeAttackCollider", "ColliderSizeY", 2.0f);
     gv->AddItem("BossMeleeAttackCollider", "ColliderSizeZ", 2.0f);
     gv->AddItem("BossMeleeAttackCollider", "OffsetZ", 3.0f);
+}
+
+void MyGame::LoadTextrue()
+{
+    TextureManager::GetInstance()->LoadTexture("white.png");
+    TextureManager::GetInstance()->LoadTexture("black.png");
+    TextureManager::GetInstance()->LoadTexture("circle.png");
+    TextureManager::GetInstance()->LoadTexture("my_skybox.dds");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_1.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_2.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_3.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_4.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_5.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_6.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_7.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_8.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_9.png");
+    TextureManager::GetInstance()->LoadTexture("title_text/title_text_10.png");
+    TextureManager::GetInstance()->LoadTexture("title_button.png");
+    TextureManager::GetInstance()->LoadTexture("game_button_text.png");
+    TextureManager::GetInstance()->LoadTexture("gameClear_Text.png");
+    TextureManager::GetInstance()->LoadTexture("gameOver_Text.png");
 }
