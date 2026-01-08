@@ -133,11 +133,13 @@ private:
     /// </summary>
     ~CameraManager() = default;
 
-    // コピー・ムーブ禁止
+    friend struct std::default_delete<CameraManager>;
+
+public:
     CameraManager(const CameraManager&) = delete;
     CameraManager& operator=(const CameraManager&) = delete;
-    CameraManager(CameraManager&&) = delete;
-    CameraManager& operator=(CameraManager&&) = delete;
+
+private:
 
     /// <summary>
     /// コントローラーを優先度順にソート
@@ -184,7 +186,7 @@ private:
     };
 
     // シングルトンインスタンス
-    static CameraManager* instance_;
+    static std::unique_ptr<CameraManager> instance_;
 
     // 管理対象カメラ
     Tako::Camera* camera_ = nullptr;

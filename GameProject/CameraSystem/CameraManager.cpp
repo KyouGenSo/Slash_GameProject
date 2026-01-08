@@ -7,13 +7,13 @@
 using namespace Tako;
 
 // シングルトンインスタンス
-CameraManager* CameraManager::instance_ = nullptr;
+std::unique_ptr<CameraManager> CameraManager::instance_ = nullptr;
 
 CameraManager* CameraManager::GetInstance() {
     if (!instance_) {
-        instance_ = new CameraManager();
+        instance_ = std::unique_ptr<CameraManager>(new CameraManager());
     }
-    return instance_;
+    return instance_.get();
 }
 
 void CameraManager::Initialize(Camera* camera) {
@@ -33,10 +33,7 @@ void CameraManager::Finalize() {
     camera_ = nullptr;
 
     // シングルトンインスタンスを削除
-    if (instance_) {
-        delete instance_;
-        instance_ = nullptr;
-    }
+    instance_.reset();
 }
 
 void CameraManager::Update(float deltaTime) {
