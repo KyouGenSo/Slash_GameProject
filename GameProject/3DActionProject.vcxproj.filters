@@ -291,6 +291,9 @@
     <ClCompile Include="Effect\TransitionEffectBase.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="UI\ControllerUI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -517,6 +520,9 @@
     </ClInclude>
     <ClInclude Include="Effect\TransitionEffectBase.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ControllerUI.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

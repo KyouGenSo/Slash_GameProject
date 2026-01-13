@@ -11,6 +11,7 @@
 #include "../Effect/ClearEffectManager.h"
 #include "../Effect/BossBorderParticleManager.h"
 #include "../Effect/DashEffectManager.h"
+#include "UI/ControllerUI.h"
 
 #include <memory>
 #include <vector>
@@ -129,4 +130,7 @@ private: // メンバ変数
     std::unique_ptr<ClearEffectManager> clearEffectManager_;         // ゲームクリア演出管理
     std::unique_ptr<BossBorderParticleManager> bossBorderManager_;   // ボーダーパーティクル管理
     std::unique_ptr<DashEffectManager> dashEffectManager_;           // ダッシュエフェクト管理
+
+    // UIマネージャー
+    std::unique_ptr<ControllerUI> controllerUI_;                     // コントローラーUI表示
 };

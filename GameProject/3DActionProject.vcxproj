@@ -169,6 +169,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="scene\SampleScene.cpp" />
     <ClCompile Include="scene\SceneFactory.cpp" />
     <ClCompile Include="scene\TitleScene.cpp" />
+    <ClCompile Include="UI\ControllerUI.cpp" />
     <ClCompile Include="UI\HPBarUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -259,6 +260,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="scene\SampleScene.h" />
     <ClInclude Include="scene\SceneFactory.h" />
     <ClInclude Include="scene\TitleScene.h" />
+    <ClInclude Include="UI\ControllerUI.h" />
     <ClInclude Include="UI\HPBarUI.h" />
   </ItemGroup>
   <ItemGroup>

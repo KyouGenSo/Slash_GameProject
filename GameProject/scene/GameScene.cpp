@@ -117,6 +117,16 @@ void GameScene::Initialize()
     toTitleSprite_->Initialize("game_button_text.png");
     toTitleSprite_->SetPos(Vector2(WinApp::clientWidth / 2.f - toTitleSprite_->GetSize().x / 2.f, 200.f));
 
+    // コントローラーUIの初期化
+    controllerUI_ = std::make_unique<ControllerUI>();
+    controllerUI_->Initialize();
+
+#ifdef _DEBUG
+    // コントローラーUIのDebugUI登録
+    DebugUIManager::GetInstance()->RegisterGameObject("ControllerUI",
+        [this]() { if (controllerUI_) controllerUI_->DrawImGui(); });
+#endif
+
     /// ----------------------3Dオブジェクトの初期化--------------------------------------------------- ///
     // SkyBoxの初期化
     skyBox_ = std::make_unique<SkyBox>();
@@ -332,6 +342,7 @@ void GameScene::Update()
     player_->Update();
     boss_->Update(FrameTimer::GetInstance()->GetDeltaTime());
     toTitleSprite_->Update();
+    controllerUI_->Update();
     cameraManager_->Update(FrameTimer::GetInstance()->GetDeltaTime());
 
     // ボスからの弾生成リクエストを処理
@@ -409,6 +420,8 @@ void GameScene::Draw()
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
+    // コントローラーUI描画
+    controllerUI_->Draw();
 
 #ifdef _DEBUG
     // コライダーのデバッグ描画
@@ -441,6 +454,9 @@ void GameScene::DrawWithoutEffect()
 
     player_->DrawSprite();
     boss_->DrawSprite();
+
+    // コントローラーUI描画
+    controllerUI_->Draw();
 }
 
 void GameScene::DrawImGui()
