@@ -7,6 +7,10 @@
 #include "Input/InputHandler.h"
 #include "../Object/Projectile/BossBullet.h"
 #include "../Object/Projectile/PlayerBullet.h"
+#include "../Effect/OverEffectManager.h"
+#include "../Effect/ClearEffectManager.h"
+#include "../Effect/BossBorderParticleManager.h"
+#include "../Effect/DashEffectManager.h"
 
 #include <memory>
 #include <vector>
@@ -61,26 +65,6 @@ public: // メンバ関数
     void DrawImGui() override;
 
     /// <summary>
-    /// ゲームオーバー演出開始
-    /// </summary>
-    void StartOverAnim();
-
-    /// <summary>
-    /// ゲームオーバー演出更新
-    /// </summary>
-    void UpdateOverAnim();
-
-    /// <summary>
-    /// ゲームクリア演出開始
-    /// </summary>
-    void StartClearAnim();
-
-    /// <summary>
-    /// ゲームクリア演出更新
-    /// </summary>
-    void UpdateClearAnim();
-
-    /// <summary>
     /// カメラモードの更新処理
     /// </summary>
     void UpdateCameraMode();
@@ -96,11 +80,6 @@ public: // メンバ関数
     void UpdateProjectiles(float deltaTime);
 
     /// <summary>
-    /// ボスフェーズ2の境界線パーティクル制御
-    /// </summary>
-    void UpdateBossBorder();
-
-    /// <summary>
     /// ボスの弾の生成処理
     /// </summary>
     void CreateBossBullet();
@@ -109,12 +88,6 @@ public: // メンバ関数
     /// プレイヤーの弾の生成処理
     /// </summary>
     void CreatePlayerBullet();
-
-    /// <summary>
-    /// ダッシュエフェクトエミッターの更新（Lerp補間）
-    /// </summary>
-    /// <param name="deltaTime">フレーム間の経過時間</param>
-    void UpdateDashEmitter(float deltaTime);
 
 private: // メンバ変数
 
@@ -146,39 +119,14 @@ private: // メンバ変数
     std::unique_ptr<Tako::Sprite> toTitleSprite_;               // タイトルに戻るボタンテキスト
 
     bool isStart_ = false;                                      // ゲーム開始フラグ
-    
-    // ボスフェーズ2境界線パーティクル管理
-    bool borderEmittersActive_ = false;                         // 境界線エミッターアクティブ状態
 
     float battleAreaSize_ = 20.0f;                              // 戦闘エリアのサイズ
 
-    // ゲームオーバー演出関連
-    float overAnimTimer_ = 0.0f;                                // ゲームオーバー演出タイマー
-    bool isOver_ = false;                                       // ゲームオーバーフラグ
-    bool isOver1Emit_ = false;                                  // ゲームオーバー演出用エミッター発生フラグ
-    bool isOver2Emit_ = false;                                  // ゲームオーバー演出用エミッター発生フラグ
-
-    // ゲームクリア演出関連
-    float clearAnimTimer_ = 0.0f;                               // ゲームクリア演出タイマー
-    bool isClear_ = false;                                      // ゲームクリアフラグ
-    bool isClear1Emit_ = false;                                 // ゲームクリア演出用エミッター発生フラグ
-    bool isClear2Emit_ = false;                                 // ゲームクリア演出用エミッター発生フラグ
-    const uint32_t kSlashEmitterMaxCount_ = 100;                // 斬撃エミッター最大数
-    const float kSlashEmitterMaxRadius_ = 10.0f;                // 斬撃エミッター最大発生半径
-    uint32_t currentSlashCount_ = 1;                            // 現在の斬撃発生数
-    float currentSlashRadius_ = 2.f;                            // 現在の斬撃発生半径
-
     bool isDebug_ = false;                                      // デバッグモードフラグ
 
-    // ダッシュエフェクト補間用
-    Tako::Vector3 dashEmitterPosition_{};                       // エミッターの補間位置
-    bool previousIsDashing_ = false;                            // 前フレームのダッシュ状態
-    bool dashEmitterActive_ = false;                            // エミッターのアクティブ状態
-
-    // 調整可能パラメータ（演出調整用）
-    float overEmit1Time_ = 2.0f;             ///< オーバー演出エミッター1発生時間
-    float overEmit2Time_ = 2.8f;             ///< オーバー演出エミッター2発生時間
-    float overTotalTime_ = 3.8f;             ///< オーバー演出総時間
-    float scaleDecreaseRate_ = 5.0f;         ///< スケール減少速度
-    float dashEmitterThreshold_ = 0.65f;     ///< ダッシュエミッター追従閾値
+    // エフェクトマネージャー
+    std::unique_ptr<OverEffectManager> overEffectManager_;           // ゲームオーバー演出管理
+    std::unique_ptr<ClearEffectManager> clearEffectManager_;         // ゲームクリア演出管理
+    std::unique_ptr<BossBorderParticleManager> bossBorderManager_;   // ボーダーパーティクル管理
+    std::unique_ptr<DashEffectManager> dashEffectManager_;           // ダッシュエフェクト管理
 };

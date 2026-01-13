@@ -123,6 +123,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Common\ShakeEffect.cpp" />
     <ClCompile Include="Common\HitFlashEffect.cpp" />
     <ClCompile Include="Common\BulletSpawner.cpp" />
+    <ClCompile Include="Effect\BossBorderParticleManager.cpp" />
+    <ClCompile Include="Effect\ClearEffectManager.cpp" />
+    <ClCompile Include="Effect\DashEffectManager.cpp" />
+    <ClCompile Include="Effect\OverEffectManager.cpp" />
+    <ClCompile Include="Effect\TransitionEffectBase.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame\MyGame.cpp" />
@@ -209,6 +214,11 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Common\BulletSpawner.h" />
     <ClInclude Include="Common\DynamicBoundary.h" />
     <ClInclude Include="Common\GameConst.h" />
+    <ClInclude Include="Effect\BossBorderParticleManager.h" />
+    <ClInclude Include="Effect\ClearEffectManager.h" />
+    <ClInclude Include="Effect\DashEffectManager.h" />
+    <ClInclude Include="Effect\OverEffectManager.h" />
+    <ClInclude Include="Effect\TransitionEffectBase.h" />
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="MyGame\MyGame.h" />
     <ClInclude Include="Object\Boss\Boss.h" />

@@ -16,6 +16,7 @@
 #include "CollisionManager.h"
 #include "GlobalVariables.h"
 #include "Vec3Func.h"
+#include "PostEffectManager.h"
 
 // Game includes
 #include "../Collision/CollisionTypeIdDef.h"
@@ -29,8 +30,6 @@
 
 #include <algorithm>
 #include <cmath>
-
-#include "PostEffectManager.h"
 
 // Debug includes
 #ifdef _DEBUG
@@ -216,9 +215,24 @@ void GameScene::Initialize()
     emitterManager_->SetEmitterActive("parry_effect", false);
     emitterManager_->SetEmitterActive("parry_success", false);
 
-    // ダッシュエミッター位置を初期化
-    dashEmitterPosition_ = player_->GetTranslate();
+    /// ----------------------エフェクトマネージャーの初期化--------------------------------------------- ///
+    // ゲームオーバー演出マネージャー
+    overEffectManager_ = std::make_unique<OverEffectManager>(emitterManager_.get());
+    overEffectManager_->SetTarget(player_.get());
 
+    // ゲームクリア演出マネージャー
+    clearEffectManager_ = std::make_unique<ClearEffectManager>(emitterManager_.get());
+    clearEffectManager_->SetTarget(boss_.get());
+
+    // ボーダーパーティクルマネージャー
+    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_.get());
+    BossBorderParticleManager::Params borderParams;
+    borderParams.areaSize = battleAreaSize_;
+    bossBorderManager_->SetParams(borderParams);
+
+    // ダッシュエフェクトマネージャー
+    dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_.get());
+    dashEffectManager_->InitializePosition(player_->GetTranslate());
 
     // ゲーム開始アニメーションを再生
     animationController_->LoadAnimationFromFile("game_start");
@@ -286,14 +300,24 @@ void GameScene::Update()
         boss_->SetIsPause(false);
     }
 
-    // ゲームクリア判定
-    if (boss_->IsDead()) {
-        StartClearAnim();
+    // ゲームクリア判定と演出開始
+    if (boss_->IsDead() && !clearEffectManager_->IsPlaying() && !clearEffectManager_->IsComplete()) {
+        cameraManager_->DeactivateAllControllers();
+        cameraManager_->ActivateController("Animation");
+        animationController_->SwitchAnimation("clear_anim");
+        animationController_->Play();
+        boss_->SetIsPause(true);
+        player_->SetScale(Vector3(0.f, 0.f, 0.f)); // プレイヤーを非表示
+        clearEffectManager_->Start();
     }
 
-    // ゲームオーバー判定
-    if (player_->IsDead()) {
-        StartOverAnim();
+    // ゲームオーバー判定と演出開始
+    if (player_->IsDead() && !overEffectManager_->IsPlaying() && !overEffectManager_->IsComplete()) {
+        cameraManager_->DeactivateAllControllers();
+        cameraManager_->ActivateController("Animation");
+        animationController_->SwitchAnimation("over_anim");
+        animationController_->Play();
+        overEffectManager_->Start();
     }
 
     // カメラモードの更新
@@ -320,26 +344,30 @@ void GameScene::Update()
     float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
     UpdateProjectiles(deltaTime);
 
-    // プレイヤーの位置にオーバー演出エミッターをセット
-    emitterManager_->SetEmitterPosition("over1", player_->GetTranslate());
-    emitterManager_->SetEmitterPosition("over2", player_->GetTranslate());
+    // ダッシュエフェクトの更新
+    bool isDashing = false;
+    if (player_ && player_->GetStateMachine() && player_->GetStateMachine()->GetCurrentState()) {
+        isDashing = (player_->GetStateMachine()->GetCurrentState()->GetName() == "Dash");
+    }
+    dashEffectManager_->Update(deltaTime, player_->GetTranslate(), isDashing);
 
-    // ダッシュエミッターのLerp補間処理
-    UpdateDashEmitter(deltaTime);
-
-    // ボスの位置にクリア演出エミッターをセット
-    emitterManager_->SetEmitterPosition("clear_slash", boss_->GetTranslate());
-
-    UpdateBossBorder();
+    // ボーダーパーティクルの更新
+    bossBorderManager_->Update(boss_->GetPhase(), boss_->GetTranslate());
 
     // エミッターマネージャーの更新
     emitterManager_->Update();
 
-    // ゲームオーバーアニメーションの更新
-    UpdateOverAnim();
+    // ゲームオーバー演出の更新
+    overEffectManager_->Update(deltaTime);
+    if (overEffectManager_->IsComplete()) {
+        SceneManager::GetInstance()->ChangeScene("over", "Fade", 0.3f);
+    }
 
-    // ゲームクリアアニメーションの更新
-    UpdateClearAnim();
+    // ゲームクリア演出の更新
+    clearEffectManager_->Update(deltaTime);
+    if (clearEffectManager_->IsComplete()) {
+        SceneManager::GetInstance()->ChangeScene("clear", "Fade", 0.3f);
+    }
 
     // 衝突判定の実行
     CollisionManager::GetInstance()->CheckAllCollisions();
@@ -420,108 +448,6 @@ void GameScene::DrawImGui()
 #ifdef _DEBUG
 
 #endif // DEBUG
-}
-
-void GameScene::StartOverAnim()
-{
-    if (isOver_) return;
-
-    cameraManager_->DeactivateAllControllers();
-    cameraManager_->ActivateController("Animation");
-    animationController_->SwitchAnimation("over_anim");
-    animationController_->Play();
-    isOver_ = true;
-}
-
-void GameScene::UpdateOverAnim()
-{
-    // オーバーアニメーションタイマーの更新
-    if (isOver_) overAnimTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
-
-    // オーバーアニメーション中のエミッター制御
-    if (overAnimTimer_ > overEmit1Time_ && !isOver1Emit_) {
-        emitterManager_->CreateTemporaryEmitterFrom("over1", "over1_temp", 0.5f);
-        isOver1Emit_ = true;
-    }
-
-    if (overAnimTimer_ > overEmit2Time_ && !isOver2Emit_) {
-        emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
-        isOver2Emit_ = true;
-    }
-
-    // プレイヤースケールの減少
-    if (isOver2Emit_) {
-        Vector3 newScale = player_->GetScale() - Vector3(scaleDecreaseRate_, scaleDecreaseRate_, scaleDecreaseRate_) * FrameTimer::GetInstance()->GetDeltaTime();
-        newScale.x = std::max<float>(newScale.x, 0.0f);
-        newScale.y = std::max<float>(newScale.y, 0.0f);
-        newScale.z = std::max<float>(newScale.z, 0.0f);
-        player_->SetScale(newScale);
-    }
-
-    // シーン遷移
-    if (overAnimTimer_ > overTotalTime_) {
-        SceneManager::GetInstance()->ChangeScene("over", "Fade", 0.3f);
-    }
-}
-
-void GameScene::StartClearAnim()
-{
-    if (isClear_) return;
-
-    cameraManager_->DeactivateAllControllers();
-    cameraManager_->ActivateController("Animation");
-    animationController_->SwitchAnimation("clear_anim");
-    animationController_->Play();
-    boss_->SetIsPause(true);
-    player_->SetScale(Vector3(0.f, 0.f, 0.f)); // プレイヤーを非表示にするためスケールを0に設定
-    isClear_ = true;
-}
-
-void GameScene::UpdateClearAnim()
-{
-    // オーバーアニメーションタイマーの更新
-    if (isClear_) clearAnimTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
-
-    // オーバーアニメーション中のエミッター制御
-    if (clearAnimTimer_ > 0.5f && !isClear1Emit_) {
-        emitterManager_->SetEmitterActive("clear_slash", true);
-        emitterManager_->SetEmitterCount("clear_slash", currentSlashCount_);
-        emitterManager_->SetEmitterRadius("clear_slash", currentSlashRadius_);
-
-        boss_->StartShake(0.4f);
-
-        if (currentSlashCount_ < kSlashEmitterMaxCount_ || currentSlashRadius_ < kSlashEmitterMaxRadius_) {
-            currentSlashCount_ += 1;
-            currentSlashRadius_ += 0.05f;
-        }
-        else {
-            emitterManager_->SetEmitterActive("clear_slash", false);
-            isClear1Emit_ = true;
-        }
-    }
-
-    if (isClear1Emit_ && !isClear2Emit_) {
-
-        boss_->StartShake(0.4f);
-
-        emitterManager_->SetEmitterPosition("over2", boss_->GetTranslate());
-        emitterManager_->CreateTemporaryEmitterFrom("over2", "over2_temp", 0.1f);
-        isClear2Emit_ = true;
-    }
-
-    // ボススケールの減少
-    if (isClear2Emit_) {
-        Vector3 newScale = boss_->GetScale() - Vector3(scaleDecreaseRate_, scaleDecreaseRate_, scaleDecreaseRate_) * FrameTimer::GetInstance()->GetDeltaTime();
-        newScale.x = std::max<float>(newScale.x, 0.0f);
-        newScale.y = std::max<float>(newScale.y, 0.0f);
-        newScale.z = std::max<float>(newScale.z, 0.0f);
-        boss_->SetScale(newScale);
-    }
-
-    // シーン遷移
-    if (boss_->GetScale().x <= 0.f) {
-        SceneManager::GetInstance()->ChangeScene("clear", "Fade", 0.3f);
-    }
 }
 
 void GameScene::UpdateCameraMode()
@@ -609,49 +535,6 @@ void GameScene::UpdateProjectiles(float deltaTime)
         });
 }
 
-void GameScene::UpdateBossBorder()
-{
-    // ボスフェーズ2の境界線パーティクル制御
-    if (boss_) {
-        bool shouldShowBorder = (boss_->GetPhase() == 2);
-
-        if (shouldShowBorder && !borderEmittersActive_) {
-            Vector3 bossPos = boss_->GetTransform().translate;
-
-            // フェーズ2突入時：境界線を有効化
-            emitterManager_->SetEmitterActive("boss_border_left", true);
-            emitterManager_->SetEmitterActive("boss_border_right", true);
-            emitterManager_->SetEmitterActive("boss_border_front", true);
-            emitterManager_->SetEmitterActive("boss_border_back", true);
-
-            borderEmittersActive_ = true;
-        }
-        else if (!shouldShowBorder && borderEmittersActive_) {
-            // フェーズ1に戻った時：境界線を無効化
-            emitterManager_->SetEmitterActive("boss_border_left", false);
-            emitterManager_->SetEmitterActive("boss_border_right", false);
-            emitterManager_->SetEmitterActive("boss_border_front", false);
-            emitterManager_->SetEmitterActive("boss_border_back", false);
-
-            borderEmittersActive_ = false;
-        }
-
-        if (borderEmittersActive_) {
-            // フェーズ2継続中：ボスの移動に追従
-            Vector3 bossPos = Vector3(boss_->GetTransform().translate.x, 0.f, boss_->GetTransform().translate.z);
-
-            emitterManager_->SetEmitterPosition("boss_border_left",
-                bossPos + Vector3(0.0f, 0.0f, -battleAreaSize_));
-            emitterManager_->SetEmitterPosition("boss_border_right",
-                bossPos + Vector3(0.0f, 0.0f, battleAreaSize_));
-            emitterManager_->SetEmitterPosition("boss_border_front",
-                bossPos + Vector3(-battleAreaSize_, 0.0f, 0.0f));
-            emitterManager_->SetEmitterPosition("boss_border_back",
-                bossPos + Vector3(battleAreaSize_, 0.0f, 0.0f));
-        }
-    }
-}
-
 void GameScene::CreateBossBullet()
 {
     for (const auto& request : boss_->ConsumePendingBullets()) {
@@ -668,50 +551,4 @@ void GameScene::CreatePlayerBullet()
         bullet->Initialize(request.position, request.velocity);
         playerBullets_.push_back(std::move(bullet));
     }
-}
-
-void GameScene::UpdateDashEmitter(float deltaTime)
-{
-    // ダッシュ状態の判定
-    bool isDashing = false;
-    if (player_ && player_->GetStateMachine() && player_->GetStateMachine()->GetCurrentState()) {
-        isDashing = (player_->GetStateMachine()->GetCurrentState()->GetName() == "Dash");
-    }
-
-    // ダッシュ開始時: エミッター有効化 & 位置リセット
-    if (isDashing && !previousIsDashing_) {
-        emitterManager_->SetEmitterActive("player_dash", true);
-        dashEmitterActive_ = true;
-        dashEmitterPosition_ = player_->GetTranslate();
-    }
-
-    // エミッターがアクティブな間は補間を継続（ダッシュ終了後も追いつくまで続ける）
-    if (dashEmitterActive_) {
-        // GlobalVariablesから補間速度を取得
-        float lerpSpeed = GlobalVariables::GetInstance()->GetValueFloat("DashEffect", "LerpSpeed");
-
-        // フレームレート非依存の指数減衰補間
-        // t = 1 - e^(-speed * dt) で、どのFPSでも同じ視覚的結果
-        float t = 1.0f - std::exp(-lerpSpeed * deltaTime);
-
-        // エミッター位置をプレイヤー位置に向かって補間
-        dashEmitterPosition_ = Vec3::Lerp(dashEmitterPosition_, player_->GetTranslate(), t);
-
-        // エミッター位置を更新
-        emitterManager_->SetEmitterPosition("player_dash", dashEmitterPosition_);
-
-        // ダッシュ終了後、エミッターがプレイヤー位置に十分近づいたら無効化
-        if (!isDashing) {
-            Vector3 diff = player_->GetTranslate() - dashEmitterPosition_;
-            float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
-
-            if (distanceSquared < dashEmitterThreshold_ * dashEmitterThreshold_) {
-                emitterManager_->SetEmitterActive("player_dash", false);
-                dashEmitterActive_ = false;
-            }
-        }
-    }
-
-    // 状態を保存
-    previousIsDashing_ = isDashing;
 }

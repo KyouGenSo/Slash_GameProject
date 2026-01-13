@@ -87,6 +87,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{17e0d532-7c4e-47a4-b507-3c19aeb05ff7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{fd705391-fd52-4064-bca3-6fb63c78106e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGame\MyGame.cpp">
@@ -272,6 +275,21 @@
     </ClCompile>
     <ClCompile Include="UI\HPBarUI.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\BossBorderParticleManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\ClearEffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\DashEffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\OverEffectManager.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\TransitionEffectBase.cpp">
+      <Filter>Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -484,6 +502,21 @@
     </ClInclude>
     <ClInclude Include="UI\HPBarUI.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\BossBorderParticleManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\ClearEffectManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\DashEffectManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\OverEffectManager.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\TransitionEffectBase.h">
+      <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
