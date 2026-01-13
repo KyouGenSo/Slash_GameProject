@@ -117,6 +117,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="CameraSystem\Controller\TopDownController.cpp" />
     <ClCompile Include="Collision\BossMeleeAttackCollider.cpp" />
     <ClCompile Include="Collision\PlayerBulletCollider.cpp" />
+    <ClCompile Include="Common\CooldownTimer.cpp" />
+    <ClCompile Include="Common\DamageFeedback.cpp" />
+    <ClCompile Include="Common\EasingMover.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame\MyGame.cpp" />
@@ -157,6 +160,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="scene\SampleScene.cpp" />
     <ClCompile Include="scene\SceneFactory.cpp" />
     <ClCompile Include="scene\TitleScene.cpp" />
+    <ClCompile Include="UI\HPBarUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\TakoEngine\project\externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -192,6 +196,10 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Collision\BossMeleeAttackCollider.h" />
     <ClInclude Include="Collision\CollisionTypeIdDef.h" />
     <ClInclude Include="Collision\PlayerBulletCollider.h" />
+    <ClInclude Include="Common\BulletSpawnRequest.h" />
+    <ClInclude Include="Common\CooldownTimer.h" />
+    <ClInclude Include="Common\DamageFeedback.h" />
+    <ClInclude Include="Common\EasingMover.h" />
     <ClInclude Include="Common\GameConst.h" />
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="MyGame\MyGame.h" />
@@ -232,6 +240,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="scene\SampleScene.h" />
     <ClInclude Include="scene\SceneFactory.h" />
     <ClInclude Include="scene\TitleScene.h" />
+    <ClInclude Include="UI\HPBarUI.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\2D.PS.hlsl">

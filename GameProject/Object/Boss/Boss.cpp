@@ -476,7 +476,7 @@ void Boss::RequestBulletSpawn(const Vector3& position, const Vector3& velocity) 
     pendingBullets_.push_back({ position, velocity });
 }
 
-std::vector<Boss::BulletSpawnRequest> Boss::ConsumePendingBullets() {
+std::vector<BulletSpawnRequest> Boss::ConsumePendingBullets() {
     auto result = std::move(pendingBullets_);
     pendingBullets_.clear();
     return result;

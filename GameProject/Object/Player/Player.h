@@ -7,9 +7,14 @@
 #include "vector2.h"
 #include "Vector3.h"
 
+// 新規クラス
+#include "../../Common/CooldownTimer.h"
+#include "../../Common/BulletSpawnRequest.h"
+#include "../../Common/EasingMover.h"
+#include "../../UI/HPBarUI.h"
+
 // Tako namespace前方宣言
 namespace Tako {
-class Sprite;
 class OBBCollider;
 class Object3d;
 class Camera;
@@ -131,14 +136,6 @@ public: // メンバ関数
     void OnParrySuccess();
 
     //-----------------------------弾生成リクエストシステム------------------------------//
-    /// <summary>
-    /// 弾生成リクエスト構造体
-    /// </summary>
-    struct BulletSpawnRequest {
-        Tako::Vector3 position;  ///< 発射位置
-        Tako::Vector3 velocity;  ///< 弾の速度ベクトル
-    };
-
     /// <summary>
     /// 弾生成リクエストを追加
     /// </summary>
@@ -448,18 +445,12 @@ private: // メンバ変数
     bool isAttackHit_ = false;
     float attackMoveSpeed_ = 2.0f;
 
-    // MoveToTarget用の状態管理
-    Tako::Vector3 moveStartPosition_;           ///< 移動開始位置
-    Tako::Vector3 moveTargetPosition_;          ///< 移動目標位置
-    float moveElapsedTime_ = 0.0f;        ///< 移動経過時間
-    float moveDuration_ = 0.0f;           ///< 移動所要時間
-    bool isMoveInitialized_ = false;      ///< 移動初期化済みフラグ
+    // MoveToTarget用イージング移動システム
+    EasingMover attackMover_;             ///< 攻撃時のイージング移動
 
-    // パリィクールダウン
-    float parryCooldownTimer_ = 0.0f;     ///< パリィクールダウン残り時間
-
-    // ダッシュクールダウン
-    float dashCooldownTimer_ = 0.0f;      ///< ダッシュクールダウン残り時間
+    // クールダウン管理
+    CooldownTimer parryCooldown_;         ///< パリィクールダウン
+    CooldownTimer dashCooldown_;          ///< ダッシュクールダウン
 
     // 弾生成リクエスト
     std::vector<BulletSpawnRequest> pendingBullets_;
@@ -471,14 +462,8 @@ private: // メンバ変数
     float attackMoveRotationLerp_ = 0.3f;     ///< 攻撃移動中の回転補間速度
     float bossLookatLerp_ = 1.15f;            ///< ボス視線追従補間速度
 
-    // HPバースプライト
-    std::unique_ptr<Tako::Sprite> hpBarSprite_;
-    std::unique_ptr<Tako::Sprite> hpBarBGSprite_;
-    Tako::Vector2 hpBarSize_{};
-
-    // HPバー画面位置（メンバー変数）
-    float hpBarScreenXRatio_ = 0.35f;   ///< HPバーX座標（画面幅に対する比率）
-    float hpBarScreenYRatio_ = 0.05f;   ///< HPバーY座標（画面高さに対する比率）
+    // HPバーUI
+    HPBarUI hpBar_;                      ///< HPバー表示
 
     // HP最大値
     static constexpr float kMaxHp = 100.0f;  ///< HP最大値

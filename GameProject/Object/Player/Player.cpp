@@ -19,13 +19,9 @@
 #include "../Boss/Boss.h"
 #include "GlobalVariables.h"
 #include "../../Common/GameConst.h"
+#include "../../Common/DamageFeedback.h"
 #include "FrameTimer.h"
-#include "Sprite.h"
-#include "../../CameraSystem/CameraManager.h"
-#include "PostEffectManager.h"
-#include "PostEffectStruct.h"
 #include "EmitterManager.h"
-#include "RandomEngine.h"
 
 #include <cmath>
 #include <algorithm>
@@ -63,24 +59,13 @@ void Player::Initialize()
 
     model_->SetTransform(transform_);
 
-    // HPバースプライトの初期化
-    hpBarSprite_ = std::make_unique<Sprite>();
-    hpBarSprite_->Initialize("white.png");
-    hpBarSize_ = Vector2(500.0f, 30.0f);
-    hpBarSprite_->SetSize(hpBarSize_);
-    hpBarSprite_->SetAnchorPoint(Vector2(1.0f, 0.0f));
-    hpBarSprite_->SetColor({ 0.3f, 1.0f, 0.3f, 1.0f });
-    hpBarSprite_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
-
-    hpBarBGSprite_ = std::make_unique<Sprite>();
-    hpBarBGSprite_->Initialize("white.png");
-    hpBarBGSprite_->SetSize(hpBarSize_);
-    hpBarBGSprite_->SetAnchorPoint(Vector2(1.0f, 0.0f));
-    hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
+    // HPバーUIの初期化
+    hpBar_.Initialize(
+        "white.png",
+        Vector2(500.0f, 30.0f),
+        0.35f,  // 画面X比率
+        0.05f,  // 画面Y比率
+        Vector4{ 0.3f, 1.0f, 0.3f, 1.0f });  // 緑色
 
     // State Machineの初期化
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);
@@ -123,40 +108,22 @@ void Player::Update()
     bossLookatLerp_ = gv->GetValueFloat("Player", "BossLookatLerp");
     attackMoveSpeed_ = gv->GetValueFloat("Player", "AttackMoveSpeed");
 
-    // パリィクールダウンの更新
-    if (parryCooldownTimer_ > 0.0f) {
-        parryCooldownTimer_ -= FrameTimer::GetInstance()->GetDeltaTime();
-        if (parryCooldownTimer_ < 0.0f) {
-            parryCooldownTimer_ = 0.0f;
-        }
-    }
+    float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
 
-    // ダッシュクールダウンの更新
-    if (dashCooldownTimer_ > 0.0f) {
-        dashCooldownTimer_ -= FrameTimer::GetInstance()->GetDeltaTime();
-        if (dashCooldownTimer_ < 0.0f) {
-            dashCooldownTimer_ = 0.0f;
-        }
-    }
+    // クールダウンの更新
+    parryCooldown_.Update(deltaTime);
+    dashCooldown_.Update(deltaTime);
 
     // 死亡判定
     if (hp_ <= 0.0f) isDead_ = true;
 
     // HPバーの更新
-    hpBarSprite_->SetSize(Vector2(hpBarSize_.x * (hp_ / kMaxHp), hpBarSize_.y));
-    hpBarSprite_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
-    hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
-    hpBarSprite_->Update();
-    hpBarBGSprite_->Update();
+    hpBar_.Update(hp_, kMaxHp);
 
     // State Machineの更新
     if (stateMachine_) {
         stateMachine_->HandleInput();
-        stateMachine_->Update(FrameTimer::GetInstance()->GetDeltaTime());
+        stateMachine_->Update(deltaTime);
     }
 
     // フェーズ2時とパリィ中はボスの方向を向く
@@ -199,8 +166,7 @@ void Player::Draw()
 
 void Player::DrawSprite()
 {
-    hpBarBGSprite_->Draw();
-    hpBarSprite_->Draw();
+    hpBar_.Draw();
 }
 
 void Player::Move(float speedMultiplier, bool isApplyDirCalulate)
@@ -239,11 +205,10 @@ void Player::MoveToTarget(Boss* target, float deltaTime)
     if (!target) return;
 
     // 初回呼び出し時の初期化
-    if (!isMoveInitialized_) {
-        moveStartPosition_ = transform_.translate;
-
+    if (!attackMover_.IsInitialized()) {
+        Vector3 startPos = transform_.translate;
         Vector3 targetPos = target->GetTransform().translate;
-        Vector3 toTarget = targetPos - moveStartPosition_;
+        Vector3 toTarget = targetPos - startPos;
         toTarget.y = 0.0f;
         float distance = toTarget.Length();
 
@@ -252,59 +217,36 @@ void Player::MoveToTarget(Boss* target, float deltaTime)
 
             // 目標位置 = ターゲット位置から attackMinDist_ 手前
             float moveDistance = distance - attackMinDist_;
-            moveTargetPosition_ = moveStartPosition_ + direction * moveDistance;
-            moveTargetPosition_.y = moveStartPosition_.y;
+            Vector3 moveTargetPos = startPos + direction * moveDistance;
+            moveTargetPos.y = startPos.y;
 
-            // 所要時間を計算
-            moveDuration_ = moveDistance / attackMoveSpeed_;
+            // イージングムーバーを初期化
+            attackMover_.InitializeWithSpeed(startPos, moveTargetPos, attackMoveSpeed_);
 
             // ターゲット方向を向く
             targetAngle_ = std::atan2(direction.x, direction.z);
         }
         else {
-            // 既に攻撃範囲内
-            moveTargetPosition_ = moveStartPosition_;
-            moveDuration_ = 0.0f;
+            // 既に攻撃範囲内（移動不要）
+            attackMover_.Initialize(startPos, startPos, 0.0f);
         }
-
-        moveElapsedTime_ = 0.0f;
-        isMoveInitialized_ = true;
     }
 
     // イージング移動
-    if (moveDuration_ > 0.0f) {
-        float t = moveElapsedTime_ / moveDuration_;
-        t = std::clamp(t, 0.0f, 1.0f);
-
-        // smoothstep イージング
-        t = t * t * (kMoveEasingCoeffA - kMoveEasingCoeffB * t);
-
-        Vector3 newPos = Vector3::Lerp(moveStartPosition_, moveTargetPosition_, t);
-        transform_.translate = newPos;
-    }
+    transform_.translate = attackMover_.Update(deltaTime);
 
     // 回転の補間
     transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, attackMoveRotationLerp_);
-
-    moveElapsedTime_ += deltaTime;
 }
 
 void Player::ResetMoveToTarget()
 {
-    isMoveInitialized_ = false;
-    moveElapsedTime_ = 0.0f;
-    moveDuration_ = 0.0f;
+    attackMover_.Reset();
 }
 
 bool Player::HasReachedTarget() const
 {
-    static constexpr float kMoveArrivalThreshold = 0.5f;
-
-    if (moveDuration_ <= 0.0f) return true;  // 移動不要
-
-    Vector3 diff = transform_.translate - moveTargetPosition_;
-    diff.y = 0.0f;
-    return diff.Length() < kMoveArrivalThreshold;
+    return attackMover_.HasReached();
 }
 
 void Player::SetupColliders()
@@ -371,18 +313,8 @@ void Player::OnHit(float damage)
     hp_ -= damage;
     hp_ = std::max<float>(hp_, 0.0f);
 
-    // カメラシェイク発動（被弾時は強めに）
-    CameraManager::GetInstance()->StartShake(0.8f);
-
-    // ゲームパット振動
-    Input::GetInstance()->SetVibration(0.2f, 0.3f, 0.25f);
-
-    // 被弾Vignetteエフェクト（赤）
-    VignetteParam param{};
-    param.power = 0.4f;
-    param.range = 45.0f;
-    param.color = Vector3{1.0f, 0.0f, 0.0f};
-    PostEffectManager::GetInstance()->ApplyTemporaryEffect("Vignette", 0.25f, param);
+    // DamageFeedbackでカメラシェイク、振動、Vignetteを一括発生
+    DamageFeedback::TriggerHitFeedback();
 }
 
 void Player::DrawImGui()
@@ -726,7 +658,7 @@ void Player::RequestBulletSpawn(const Vector3& position, const Vector3& velocity
     pendingBullets_.push_back({ position, velocity });
 }
 
-std::vector<Player::BulletSpawnRequest> Player::ConsumePendingBullets()
+std::vector<BulletSpawnRequest> Player::ConsumePendingBullets()
 {
     return std::move(pendingBullets_);
 }
@@ -739,7 +671,7 @@ bool Player::IsParrying() const
 
 bool Player::CanParry() const
 {
-    return parryCooldownTimer_ <= 0.0f;
+    return parryCooldown_.IsReady();
 }
 
 void Player::StartParryCooldown()
@@ -749,12 +681,12 @@ void Player::StartParryCooldown()
     if (cooldown <= 0.0f) {
         cooldown = 1.0f;  // デフォルト1秒
     }
-    parryCooldownTimer_ = cooldown;
+    parryCooldown_.Start(cooldown);
 }
 
 bool Player::CanDash() const
 {
-    return dashCooldownTimer_ <= 0.0f;
+    return dashCooldown_.IsReady();
 }
 
 void Player::StartDashCooldown()
@@ -764,7 +696,7 @@ void Player::StartDashCooldown()
     if (cooldown <= 0.0f) {
         cooldown = 0.5f;  // デフォルト0.5秒
     }
-    dashCooldownTimer_ = cooldown;
+    dashCooldown_.Start(cooldown);
 }
 
 void Player::OnParrySuccess()
@@ -774,31 +706,9 @@ void Player::OnParrySuccess()
     float healAmount = gv->GetValueFloat("ParryState", "ParrySuccessHealAmount");
     hp_ = std::min<float>(hp_ + healAmount, kMaxHp);
 
-    // パリィ成功エフェクト（一時エミッター）
-    if (emitterManager_) {
-        Vector3 effectPos = GetFrontPosition(2.0f);
-        emitterManager_->SetEmitterPosition("parry_success", effectPos);
-        // ユニークなエミッター名を生成（RandomEngine使用）
-        int uniqueId = RandomEngine::GetInstance()->GetInt(0, 999999);
-        emitterManager_->CreateTemporaryEmitterFrom(
-            "parry_success",
-            "parry_success_temp_" + std::to_string(uniqueId),
-            0.5f);
-        emitterManager_->SetEmitterActive("parry_success_temp_" + std::to_string(uniqueId), true);
-    }
-
-    // カメラシェイク（軽め）
-    CameraManager::GetInstance()->StartShake(0.2f);
-
-    // コントローラー振動
-    Input::GetInstance()->SetVibration(0.1f, 0.15f, 0.1f);
-
-    // パリィ成功Vignetteエフェクト（青）
-    VignetteParam vignetteParam{};
-    vignetteParam.power = 0.4f;
-    vignetteParam.range = 45.0f;
-    vignetteParam.color = Vector3{0.058f, 0.447f, 1.0f};
-    PostEffectManager::GetInstance()->ApplyTemporaryEffect("Vignette", 0.3f, vignetteParam);
+    // DamageFeedbackでパリィ成功エフェクトを一括発生
+    Vector3 effectPos = GetFrontPosition(2.0f);
+    DamageFeedback::TriggerParryFeedback(effectPos, emitterManager_);
 }
 
 Tako::Vector3 Player::GetFrontPosition(float offset) const

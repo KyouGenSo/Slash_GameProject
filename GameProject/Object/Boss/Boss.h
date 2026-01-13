@@ -8,6 +8,9 @@
 #include "Vector4.h"
 #include "Vector3.h"
 
+// 共通定義
+#include "../../Common/BulletSpawnRequest.h"
+
 // Tako namespace前方宣言
 namespace Tako {
 class Sprite;
@@ -40,15 +43,6 @@ private:
 
     // フェーズ2開始時のHP
     static constexpr float kPhase2InitialHp = 100.0f;
-
-public:
-    /// <summary>
-    /// 弾生成リクエスト構造体
-    /// </summary>
-    struct BulletSpawnRequest {
-        Tako::Vector3 position;  // 発射位置
-        Tako::Vector3 velocity;  // 弾の速度ベクトル
-    };
 
 public:
     Boss();

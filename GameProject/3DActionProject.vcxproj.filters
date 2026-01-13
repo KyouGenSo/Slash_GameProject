@@ -84,6 +84,9 @@
     <Filter Include="CameraAnimation">
       <UniqueIdentifier>{91d85fa5-151f-4004-88ba-6c651e6f09b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{17e0d532-7c4e-47a4-b507-3c19aeb05ff7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGame\MyGame.cpp">
@@ -245,6 +248,18 @@
     </ClCompile>
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRetreat.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\CooldownTimer.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\DamageFeedback.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\EasingMover.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\HPBarUI.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -427,6 +442,21 @@
     </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRetreat.h">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BulletSpawnRequest.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\CooldownTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DamageFeedback.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EasingMover.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\HPBarUI.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
