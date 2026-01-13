@@ -136,27 +136,7 @@ cameraAnimation_->SetPlaySpeed(2.0f);
 }
 ```
 
-## サンプルファイル
-
-`resources/Json/CameraAnimations/` ディレクトリに以下のサンプルが含まれています：
-
-- **sample_orbit.json**: オブジェクト周回カメラ（ループ）
-- **intro_camera.json**: イントロシーケンス（ワンショット）
-
-## ImGui デバッグUI
-
-デバッグビルドでは、以下の機能が使用できます：
-
-- 再生コントロール（Play/Pause/Stop/Reset）
-- タイムラインスライダー
-- キーフレームの追加/編集/削除
-- 現在のカメラ位置からキーフレーム作成
-- JSON保存/読み込み
-- アニメーション名の編集
-
 ## 注意事項
 
-- キーフレームは最低2つ必要です
 - 回転値はラジアン単位です
-- キーフレームは時間順に自動ソートされます
 - JSONファイルは `resources/Json/CameraAnimations/` に保存されます
