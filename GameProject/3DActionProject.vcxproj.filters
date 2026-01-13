@@ -138,6 +138,9 @@
     <ClCompile Include="Object\Boss\Boss.cpp">
       <Filter>Object\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Boss\BossPhaseManager.cpp">
+      <Filter>Object\Boss</Filter>
+    </ClCompile>
     <ClCompile Include="scene\ClearScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -258,6 +261,15 @@
     <ClCompile Include="Common\EasingMover.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Common\ShakeEffect.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\HitFlashEffect.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\BulletSpawner.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
     <ClCompile Include="UI\HPBarUI.cpp">
       <Filter>UI</Filter>
     </ClCompile>
@@ -312,6 +324,9 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Object\Boss\Boss.h">
+      <Filter>Object\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossPhaseManager.h">
       <Filter>Object\Boss</Filter>
     </ClInclude>
     <ClInclude Include="scene\ClearScene.h">
@@ -453,6 +468,18 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\EasingMover.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ShakeEffect.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\HitFlashEffect.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BulletSpawner.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DynamicBoundary.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="UI\HPBarUI.h">

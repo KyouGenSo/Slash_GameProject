@@ -130,10 +130,10 @@ void Player::Update()
     if ((targetEnemy_ || targetEnemy_->GetPhase() == 2) && IsParrying()) LookAtBoss();
 
     // 実効的な制限を計算（静的制限と動的制限の交差）
-    float effectiveXMin = std::max<float>(GameConst::kStageXMin, dynamicXMin_);
-    float effectiveXMax = std::min<float>(GameConst::kStageXMax, dynamicXMax_);
-    float effectiveZMin = std::max<float>(GameConst::kStageZMin, dynamicZMin_);
-    float effectiveZMax = std::min<float>(GameConst::kStageZMax, dynamicZMax_);
+    float effectiveXMin = std::max<float>(GameConst::kStageXMin, dynamicBounds_.xMin);
+    float effectiveXMax = std::min<float>(GameConst::kStageXMax, dynamicBounds_.xMax);
+    float effectiveZMin = std::max<float>(GameConst::kStageZMin, dynamicBounds_.zMin);
+    float effectiveZMax = std::min<float>(GameConst::kStageZMax, dynamicBounds_.zMax);
 
     // 位置制限適用
     transform_.translate.x = std::min<float>(transform_.translate.x, effectiveXMax);
@@ -630,37 +630,27 @@ bool Player::CanShoot() const
 
 void Player::SetDynamicBounds(float xMin, float xMax, float zMin, float zMax)
 {
-    dynamicXMin_ = xMin;
-    dynamicXMax_ = xMax;
-    dynamicZMin_ = zMin;
-    dynamicZMax_ = zMax;
+    dynamicBounds_.Set(xMin, xMax, zMin, zMax);
 }
 
 void Player::SetDynamicBoundsFromCenter(const Vector3& center, float xRange, float zRange)
 {
-    dynamicXMin_ = center.x - xRange;
-    dynamicXMax_ = center.x + xRange;
-    dynamicZMin_ = center.z - zRange;
-    dynamicZMax_ = center.z + zRange;
+    dynamicBounds_.SetFromCenter(center, xRange, zRange);
 }
 
 void Player::ClearDynamicBounds()
 {
-    // 非常に大きな値に設定して実質的に無効化
-    dynamicXMin_ = -kBoundaryDisabled;
-    dynamicXMax_ = kBoundaryDisabled;
-    dynamicZMin_ = -kBoundaryDisabled;
-    dynamicZMax_ = kBoundaryDisabled;
+    dynamicBounds_.Clear();
 }
 
 void Player::RequestBulletSpawn(const Vector3& position, const Vector3& velocity)
 {
-    pendingBullets_.push_back({ position, velocity });
+    bulletSpawner_.RequestSpawn(position, velocity);
 }
 
 std::vector<BulletSpawnRequest> Player::ConsumePendingBullets()
 {
-    return std::move(pendingBullets_);
+    return bulletSpawner_.Consume();
 }
 
 bool Player::IsParrying() const

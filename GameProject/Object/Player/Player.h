@@ -10,7 +10,9 @@
 // 新規クラス
 #include "../../Common/CooldownTimer.h"
 #include "../../Common/BulletSpawnRequest.h"
+#include "../../Common/BulletSpawner.h"
 #include "../../Common/EasingMover.h"
+#include "../../Common/DynamicBoundary.h"
 #include "../../UI/HPBarUI.h"
 
 // Tako namespace前方宣言
@@ -408,10 +410,7 @@ public: // メンバ関数
 private: // メンバ変数
 
     // 動的移動制限（ボス近接戦闘エリア）
-    float dynamicXMin_;
-    float dynamicXMax_;
-    float dynamicZMin_;
-    float dynamicZMax_;
+    DynamicBoundary dynamicBounds_;
 
     std::unique_ptr<Tako::Object3d> model_; ///< モデル
     Tako::Camera* camera_ = nullptr;        ///< カメラ
@@ -452,8 +451,8 @@ private: // メンバ変数
     CooldownTimer parryCooldown_;         ///< パリィクールダウン
     CooldownTimer dashCooldown_;          ///< ダッシュクールダウン
 
-    // 弾生成リクエスト
-    std::vector<BulletSpawnRequest> pendingBullets_;
+    // 弾生成管理
+    BulletSpawner bulletSpawner_;
 
     // 調整可能パラメータ（ImGui編集用）
     float initialY_ = 2.5f;                   ///< 初期Y座標

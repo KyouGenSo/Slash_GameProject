@@ -10,10 +10,14 @@
 
 // 共通定義
 #include "../../Common/BulletSpawnRequest.h"
+#include "../../Common/ShakeEffect.h"
+#include "../../Common/HitFlashEffect.h"
+#include "../../Common/BulletSpawner.h"
+#include "../../UI/HPBarUI.h"
+#include "BossPhaseManager.h"
 
 // Tako namespace前方宣言
 namespace Tako {
-class Sprite;
 class OBBCollider;
 class Object3d;
 class EmitterManager;
@@ -86,28 +90,10 @@ public:
     void OnHit(float damage, float shakeIntensityOverride = 0.0f);
 
     /// <summary>
-    /// ダメージされるとき色変わる演出の更新処理
-    /// </summary>
-    /// <param name="color">変化後の色</param>
-    /// <param name="duration">変化時間</param>
-    void UpdateHitEffect(const Tako::Vector4& color, float duration);
-
-    /// <summary>
-    /// シェイクエフェクトの更新
-    /// </summary>
-    /// <param name="deltaTime">フレーム間隔（秒）</param>
-    void UpdateShake(float deltaTime);
-
-    /// <summary>
     /// シェイクエフェクトを開始
     /// </summary>
     /// <param name="intensity">シェイク強度（0以下でデフォルト値使用）</param>
     void StartShake(float intensity = 0.0f);
-
-    /// <summary>
-    /// フェーズとlifeの更新処理
-    /// </summary>
-    void UpdatePhaseAndLive();
 
     /// <summary>
     /// 弾生成リクエストを追加
@@ -157,7 +143,7 @@ public:
     /// フェーズを設定
     /// </summary>
     /// <param name="phase">新しいフェーズ番号</param>
-    void SetPhase(uint32_t phase) { if (phase <= 2 && phase > 0) phase_ = phase; }
+    void SetPhase(uint32_t phase) { phaseManager_.SetPhase(phase); }
 
     /// <summary>
     /// プレイヤーの参照を設定
@@ -229,13 +215,19 @@ public:
     /// 現在のフェーズを取得
     /// </summary>
     /// <returns>フェーズ番号</returns>
-    uint32_t GetPhase() const { return phase_; }
+    uint32_t GetPhase() const { return phaseManager_.GetPhase(); }
 
     /// <summary>
     /// 死亡状態を取得
     /// </summary>
     /// <returns> 死亡しているかどうかの真偽値 </returns>
-    bool IsDead() const { return isDead_; }
+    bool IsDead() const { return phaseManager_.IsDead(); }
+
+    /// <summary>
+    /// フェーズマネージャーを取得
+    /// </summary>
+    /// <returns>フェーズマネージャーの参照</returns>
+    BossPhaseManager& GetPhaseManager() { return phaseManager_; }
 
     /// <summary>
     /// コライダーを取得
@@ -310,17 +302,8 @@ private:
     // ボスの現在HP（0になると撃破、初期値200）
     float hp_ = kMaxHp;
 
-    // ボスのライフ（HPが0になるたびに減少、0でゲームクリア）
-    uint8_t life_ = 1;
-
-    // 現在の戦闘フェーズ（HP200~100:フェーズ1、HP100~0:フェーズ2）
-    uint32_t phase_ = 1;
-
-    // フェーズ変更準備完了フラグ
-    bool isReadyToChangePhase_ = false;
-
-    // 死亡フラグ
-    bool isDead_ = false;
+    // フェーズ・ライフ管理
+    BossPhaseManager phaseManager_;
 
     // 一時行動停止フラグ
     bool isPause_ = false;
@@ -344,42 +327,18 @@ private:
     // 予兆エフェクト名
     std::string attackSignEmitterName_ = "boss_melee_attack_sign";
 
-    // ヒットエフェクトの再生状態を示すフラグ。
-    bool isPlayHitEffect_ = false;
+    // ===== エフェクト関連 =====
+    HitFlashEffect hitFlashEffect_;     ///< ヒット時の色変化エフェクト
+    ShakeEffect shakeEffect_;           ///< シェイクエフェクト
 
-    // ヒットエフェクトのタイマー
-    float hitEffectTimer_ = 0.0f;
+    // 弾生成管理
+    BulletSpawner bulletSpawner_;       ///< 弾生成リクエスト管理
 
-    // ===== シェイクエフェクト関連 =====
-    // シェイク再生中フラグ
-    bool isShaking_ = false;
-    // シェイクタイマー（経過時間）
-    float shakeTimer_ = 0.0f;
-    // シェイク持続時間
-    float shakeDuration_ = 0.3f;
-    // シェイク強度（デフォルト）
-    float shakeIntensity_ = 0.2f;
-    // 現在のシェイク強度（実行時）
-    float currentShakeIntensity_ = 0.0f;
-    // 描画用シェイクオフセット
-    Tako::Vector3 shakeOffset_ = { 0.0f, 0.0f, 0.0f };
-
-    // 弾生成リクエストのキュー（GameSceneが処理）
-    std::vector<BulletSpawnRequest> pendingBullets_;
-
-    // HPバースプライト
-    std::unique_ptr<Tako::Sprite> hpBarSprite1_;
-    Tako::Vector2 hpBarSize1_{};
-    std::unique_ptr<Tako::Sprite> hpBarSprite2_;
-    Tako::Vector2 hpBarSize2_{};
-    std::unique_ptr<Tako::Sprite> hpBarBGSprite_;
+    // HPバーUI
+    HPBarUI hpBar_;                      ///< HPバー表示
 
     // 初期座標
     float initialY_ = 2.5f;   ///< 初期Y座標
     float initialZ_ = 10.0f;  ///< 初期Z座標
-
-    // HPバー画面位置
-    float hpBarScreenXRatio_ = 0.65f;   ///< HPバーX座標（画面幅に対する比率）
-    float hpBarScreenYRatio_ = 0.05f;   ///< HPバーY座標（画面高さに対する比率）
 };
 

@@ -7,12 +7,10 @@
 #include "../../Collision/CollisionTypeIdDef.h"
 #include "../../Collision/BossMeleeAttackCollider.h"
 #include "FrameTimer.h"
-#include "Sprite.h"
 #include "WinApp.h"
 #include "BossBehaviorTree/BossBehaviorTree.h"
 #include "GlobalVariables.h"
 #include "EmitterManager.h"
-#include "RandomEngine.h"
 
 #ifdef _DEBUG
 #include "ImGuiManager.h"
@@ -45,31 +43,18 @@ void Boss::Initialize()
 
     model_->SetTransform(transform_);
 
-    // HPバースプライトの初期化
-    hpBarSprite1_ = std::make_unique<Sprite>();
-    hpBarSprite1_->Initialize("white.png");
-    hpBarSize1_ = Vector2(500.0f, 30.0f);
-    hpBarSprite1_->SetSize(hpBarSize1_);
-    hpBarSprite1_->SetColor({ 0.5f, 0.5f, 1.0f, 1.0f });
-    hpBarSprite1_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
+    // HPバーUIの初期化（2段バー：フェーズ1=青、フェーズ2=赤）
+    hpBar_.InitializeDual(
+        "white.png",
+        Vector2(500.0f, 30.0f),
+        0.65f,  // 画面X比率
+        0.05f,  // 画面Y比率
+        Vector4{ 0.5f, 0.5f, 1.0f, 1.0f },  // フェーズ1: 青
+        Vector4{ 1.0f, 0.3f, 0.3f, 1.0f }   // フェーズ2: 赤
+    );
 
-    hpBarSprite2_ = std::make_unique<Sprite>();
-    hpBarSprite2_->Initialize("white.png");
-    hpBarSize2_ = Vector2(500.0f, 30.0f);
-    hpBarSprite2_->SetSize(hpBarSize2_);
-    hpBarSprite2_->SetColor({ 1.0f, 0.3f, 0.3f, 1.0f });
-    hpBarSprite2_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
-
-    hpBarBGSprite_ = std::make_unique<Sprite>();
-    hpBarBGSprite_->Initialize("white.png");
-    hpBarBGSprite_->SetSize(hpBarSize1_);
-    hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
+    // フェーズマネージャーの初期化
+    phaseManager_.Initialize(kMaxHp, kPhase2Threshold, kPhase2InitialHp);
 
     // Colliderの初期化
     float bodySize = gv->GetValueFloat("Boss", "BodyColliderSize");
@@ -105,8 +90,8 @@ void Boss::Initialize()
     CollisionManager::GetInstance()->AddCollider(meleeAttackCollider_.get());
 
     // シェイクエフェクトパラメータの読み込み
-    shakeDuration_ = gv->GetValueFloat("Boss", "ShakeDuration");
-    shakeIntensity_ = gv->GetValueFloat("Boss", "ShakeIntensity");
+    shakeEffect_.SetDefaultDuration(gv->GetValueFloat("Boss", "ShakeDuration"));
+    shakeEffect_.SetDefaultIntensity(gv->GetValueFloat("Boss", "ShakeIntensity"));
 
     // ビヘイビアツリーの初期化
     behaviorTree_ = std::make_unique<BossBehaviorTree>(this, player_);
@@ -136,34 +121,14 @@ void Boss::Finalize()
 
 void Boss::Update(float deltaTime)
 {
-    // HPバーの更新
-    if (phase_ == 1) {
-        hpBarSprite1_->SetSize(Vector2(hpBarSize1_.x * (hp_ - kPhase2InitialHp) / kPhase2InitialHp, hpBarSize1_.y));
-        hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x, hpBarSize2_.y));
-    }
-    else if (phase_ == 2) {
-        hpBarSprite1_->SetSize(Vector2(0.0f, hpBarSize1_.y));
-        hpBarSprite2_->SetSize(Vector2(hpBarSize2_.x * (hp_ / kPhase2InitialHp), hpBarSize2_.y));
-    }
-    hpBarSprite1_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
-    hpBarSprite2_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
-    hpBarBGSprite_->SetPos(Vector2(
-        WinApp::clientWidth * hpBarScreenXRatio_,
-        WinApp::clientHeight * hpBarScreenYRatio_));
-
-    hpBarSprite1_->Update();
-    hpBarSprite2_->Update();
-    hpBarBGSprite_->Update();
+    // HPバーの更新（2段バー）
+    hpBar_.UpdateDual(hp_, kMaxHp, kPhase2Threshold);
 
     // フェーズとライフの更新
-    UpdatePhaseAndLive();
+    phaseManager_.Update(hp_);
 
     // AIシステムの更新
-    if (!isDead_ && !isPause_) {
+    if (!phaseManager_.IsDead() && !isPause_) {
         if (behaviorTree_) {
             // ビヘイビアツリーの更新
             behaviorTree_->Update(deltaTime);
@@ -181,15 +146,15 @@ void Boss::Update(float deltaTime)
     }
 
     // ヒットエフェクトの更新
-    float hitEffectDuration = GlobalVariables::GetInstance()->GetValueFloat("Boss", "HitEffectDuration");
-    UpdateHitEffect(Vector4(1.0f, 1.0f, 1.0f, 1.0f), hitEffectDuration);
+    static const Vector4 kOriginalColor = Vector4(1.0f, 0.0f, 0.0f, 1.0f);  // 赤（元の色）
+    hitFlashEffect_.Update(deltaTime, model_.get(), kOriginalColor);
 
     // シェイクエフェクトの更新
-    UpdateShake(deltaTime);
+    shakeEffect_.Update(deltaTime);
 
     // モデルの更新（シェイクオフセットを適用）
     Transform renderTransform = transform_;
-    renderTransform.translate += shakeOffset_;
+    renderTransform.translate += shakeEffect_.GetOffset();
     model_->SetTransform(renderTransform);
     model_->Update();
 }
@@ -206,95 +171,28 @@ void Boss::Draw()
 
 void Boss::DrawSprite()
 {
-    hpBarBGSprite_->Draw();
-    hpBarSprite2_->Draw();
-    hpBarSprite1_->Draw();
+    hpBar_.Draw();
 }
 
 void Boss::OnHit(float damage, float shakeIntensityOverride)
 {
-    if (isReadyToChangePhase_) {
-        phase_ = 2;
-        isReadyToChangePhase_ = false;
-    }
+    // フェーズ変更処理（準備完了なら変更）
+    phaseManager_.ConsumePhaseChangeRequest();
 
     hp_ -= damage;
     hp_ = std::max<float>(hp_, 0.0f);
 
-    hitEffectTimer_ = 0.f;
-    isPlayHitEffect_ = true;
+    // ヒットフラッシュエフェクト開始（白く光る）
+    float hitEffectDuration = GlobalVariables::GetInstance()->GetValueFloat("Boss", "HitEffectDuration");
+    hitFlashEffect_.Start(Vector4(1.0f, 1.0f, 1.0f, 1.0f), hitEffectDuration);
 
     // シェイクエフェクト開始
     StartShake(shakeIntensityOverride);
 }
 
-void Boss::UpdateHitEffect(const Vector4& color, float duration)
-{
-    if (!isPlayHitEffect_)  return;
-
-    hitEffectTimer_ += FrameTimer::GetInstance()->GetDeltaTime();
-
-    if (hitEffectTimer_ <= duration) {
-        model_->SetMaterialColor(color);
-    }
-    else {
-        isPlayHitEffect_ = false;
-        model_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-    }
-}
-
-void Boss::UpdateShake(float deltaTime)
-{
-    if (!isShaking_) {
-        shakeOffset_ = { 0.0f, 0.0f, 0.0f };
-        return;
-    }
-
-    shakeTimer_ += deltaTime;
-
-    if (shakeTimer_ >= shakeDuration_) {
-        isShaking_ = false;
-        shakeTimer_ = 0.0f;
-        shakeOffset_ = { 0.0f, 0.0f, 0.0f };
-        return;
-    }
-
-    // 減衰係数（1.0→0.0へ線形減衰）
-    float decay = 1.0f - (shakeTimer_ / shakeDuration_);
-
-    // ランダムオフセット生成
-    RandomEngine* rng = RandomEngine::GetInstance();
-    shakeOffset_.x = rng->GetFloat(-currentShakeIntensity_, currentShakeIntensity_) * decay;
-    shakeOffset_.y = rng->GetFloat(-currentShakeIntensity_, currentShakeIntensity_) * decay;
-    shakeOffset_.z = rng->GetFloat(-currentShakeIntensity_, currentShakeIntensity_) * decay;
-}
-
 void Boss::StartShake(float intensity)
 {
-    isShaking_ = true;
-    shakeTimer_ = 0.0f;
-    // 0以下の場合はデフォルト値を使用
-    currentShakeIntensity_ = (intensity > 0.0f) ? intensity : shakeIntensity_;
-}
-
-void Boss::UpdatePhaseAndLive()
-{
-    if (hp_ <= kPhase2Threshold) {
-        isReadyToChangePhase_ = true;
-    }
-
-    if (hp_ <= 0.0f && life_ > 0) {
-        life_--;
-
-        if (life_ == 0) {
-            isDead_ = true;
-            return;
-        }
-
-        isReadyToChangePhase_ = false;
-        hp_ = kMaxHp;
-        phase_ = 1;
-    }
+    shakeEffect_.Start(intensity);
 }
 
 void Boss::DrawImGui()
@@ -309,11 +207,11 @@ void Boss::DrawImGui()
     ImGui::ProgressBar(hp_ / kMaxHp, ImVec2(-1.0f, 0.0f), "");
 
     // ライフ、フェーズ
-    ImGui::Text("Life: %d", life_);
-    ImGui::Text("Phase: %d", phase_);
+    ImGui::Text("Life: %d", phaseManager_.GetLife());
+    ImGui::Text("Phase: %d", phaseManager_.GetPhase());
 
     // 状態フラグ（警告は赤色でハイライト）
-    if (isDead_) {
+    if (phaseManager_.IsDead()) {
         ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Dead: YES");
     }
     else {
@@ -327,7 +225,7 @@ void Boss::DrawImGui()
         ImGui::Text("Paused: NO");
     }
 
-    ImGui::Text("Ready to Change Phase: %s", isReadyToChangePhase_ ? "YES" : "NO");
+    ImGui::Text("Ready to Change Phase: %s", phaseManager_.IsReadyToChangePhase() ? "YES" : "NO");
 
     // ===== 座標情報（折りたたみ可能） =====
     if (ImGui::CollapsingHeader("Transform")) {
@@ -347,17 +245,21 @@ void Boss::DrawImGui()
 
     // ===== シェイクエフェクト（折りたたみ可能） =====
     if (ImGui::CollapsingHeader("Shake Effect")) {
-        ImGui::Text("Is Shaking: %s", isShaking_ ? "YES" : "NO");
-        ImGui::Text("Timer: %.3f / %.3f", shakeTimer_, shakeDuration_);
-        ImGui::Text("Offset: (%.3f, %.3f, %.3f)",
-            shakeOffset_.x, shakeOffset_.y, shakeOffset_.z);
+        ImGui::Text("Is Shaking: %s", shakeEffect_.IsActive() ? "YES" : "NO");
+        ImGui::Text("Timer: %.3f / %.3f", shakeEffect_.GetTimer(), shakeEffect_.GetDuration());
+        Vector3 offset = shakeEffect_.GetOffset();
+        ImGui::Text("Offset: (%.3f, %.3f, %.3f)", offset.x, offset.y, offset.z);
 
         ImGui::Separator();
-        if (ImGui::DragFloat("Duration", &shakeDuration_, 0.01f, 0.0f, 2.0f)) {
-            GlobalVariables::GetInstance()->SetValue("Boss", "ShakeDuration", shakeDuration_);
+        float duration = shakeEffect_.GetDefaultDuration();
+        if (ImGui::DragFloat("Duration", &duration, 0.01f, 0.0f, 2.0f)) {
+            shakeEffect_.SetDefaultDuration(duration);
+            GlobalVariables::GetInstance()->SetValue("Boss", "ShakeDuration", duration);
         }
-        if (ImGui::DragFloat("Intensity", &shakeIntensity_, 0.01f, 0.0f, 1.0f)) {
-            GlobalVariables::GetInstance()->SetValue("Boss", "ShakeIntensity", shakeIntensity_);
+        float intensity = shakeEffect_.GetDefaultIntensity();
+        if (ImGui::DragFloat("Intensity", &intensity, 0.01f, 0.0f, 1.0f)) {
+            shakeEffect_.SetDefaultIntensity(intensity);
+            GlobalVariables::GetInstance()->SetValue("Boss", "ShakeIntensity", intensity);
         }
 
         if (ImGui::Button("Test Shake")) {
@@ -425,7 +327,7 @@ void Boss::DrawImGui()
     if (ImGui::Button("Set Phase 1", buttonSize)) {
         SetPhase(1);
         hp_ = kMaxHp;
-        isReadyToChangePhase_ = false;
+        phaseManager_.Reset();
     }
     ImGui::SameLine();
     if (ImGui::Button("Set Phase 2", buttonSize)) {
@@ -446,7 +348,7 @@ void Boss::DrawImGui()
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 0.3f, 0.3f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.6f, 0.1f, 0.1f, 1.0f));
     if (ImGui::Button("Kill Boss", fullButtonSize)) {
-        isDead_ = true;
+        phaseManager_.SetDead(true);
     }
     ImGui::PopStyleColor(3);
 
@@ -457,10 +359,8 @@ void Boss::DrawImGui()
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 1.0f, 0.3f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
     if (ImGui::Button("Revive Boss", fullButtonSize)) {
-        isDead_ = false;
+        phaseManager_.Reset();
         hp_ = kMaxHp;
-        life_ = 1;
-        SetPhase(1);
     }
     ImGui::PopStyleColor(3);
 
@@ -473,13 +373,11 @@ void Boss::DrawImGui()
 }
 
 void Boss::RequestBulletSpawn(const Vector3& position, const Vector3& velocity) {
-    pendingBullets_.push_back({ position, velocity });
+    bulletSpawner_.RequestSpawn(position, velocity);
 }
 
 std::vector<BulletSpawnRequest> Boss::ConsumePendingBullets() {
-    auto result = std::move(pendingBullets_);
-    pendingBullets_.clear();
-    return result;
+    return bulletSpawner_.Consume();
 }
 
 void Boss::SetPlayer(Player* player) {
