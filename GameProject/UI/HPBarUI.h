@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <memory>
 #include <string>
 #include "Vector2.h"
@@ -30,7 +31,7 @@ public:
         float screenXRatio,
         float screenYRatio,
         const Tako::Vector4& barColor,
-        const Tako::Vector4& bgColor = Tako::Vector4{ 0.2f, 0.2f, 0.2f, 1.0f });
+        const Tako::Vector4& bgColor = Tako::Vector4{ 1.f, 1.f, 1.f, 1.0f });
 
     /// <summary>
     /// 初期化（2段バー、Bossフェーズ用）
@@ -49,7 +50,7 @@ public:
         float screenYRatio,
         const Tako::Vector4& bar1Color,
         const Tako::Vector4& bar2Color,
-        const Tako::Vector4& bgColor = Tako::Vector4{ 0.2f, 0.2f, 0.2f, 1.0f });
+        const Tako::Vector4& bgColor = Tako::Vector4{ 1.f, 1.f, 1.f, 1.0f });
 
     /// <summary>
     /// 更新（単一バー用）
@@ -64,7 +65,8 @@ public:
     /// <param name="currentHp">現在HP</param>
     /// <param name="maxHp">最大HP</param>
     /// <param name="phase2Threshold">フェーズ2開始閾値</param>
-    void UpdateDual(float currentHp, float maxHp, float phase2Threshold);
+    /// <param name="phase">現在のフェーズ（1 or 2）</param>
+    void UpdateDual(float currentHp, float maxHp, float phase2Threshold, uint32_t phase);
 
     /// <summary>
     /// 描画

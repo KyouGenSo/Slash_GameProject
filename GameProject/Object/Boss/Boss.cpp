@@ -122,7 +122,7 @@ void Boss::Finalize()
 void Boss::Update(float deltaTime)
 {
     // HPバーの更新（2段バー）
-    hpBar_.UpdateDual(hp_, kMaxHp, kPhase2Threshold);
+    hpBar_.UpdateDual(hp_, kMaxHp, kPhase2Threshold, phaseManager_.GetPhase());
 
     // フェーズとライフの更新
     phaseManager_.Update(hp_);

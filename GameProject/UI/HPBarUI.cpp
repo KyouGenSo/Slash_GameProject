@@ -96,35 +96,38 @@ void HPBarUI::Update(float currentValue, float maxValue)
     bgSprite_->Update();
 }
 
-void HPBarUI::UpdateDual(float currentHp, float maxHp, float phase2Threshold)
+void HPBarUI::UpdateDual(float currentHp, float maxHp, float phase2Threshold, uint32_t phase)
 {
     if (!barSprite_ || !bar2Sprite_ || !bgSprite_) return;
 
     Vector2 screenPos = CalculateScreenPosition();
 
-    // フェーズ1のHP（phase2Threshold以上の部分）
-    float phase1MaxHp = maxHp - phase2Threshold;
-    float phase1CurrentHp = std::max<float>(0.0f, currentHp - phase2Threshold);
-    float phase1Ratio = (phase1MaxHp > 0.0f) ? (phase1CurrentHp / phase1MaxHp) : 0.0f;
-    phase1Ratio = std::clamp(phase1Ratio, 0.0f, 1.0f);
+    if (phase == 1) {
+        // フェーズ1: 青バー(barSprite_)がHP減少で縮小、赤バー(bar2Sprite_)はフルサイズ
+        float phase1Hp = currentHp - phase2Threshold;
+        float phase1MaxHp = maxHp - phase2Threshold;
+        float phase1Ratio = (phase1MaxHp > 0.0f) ? (phase1Hp / phase1MaxHp) : 0.0f;
+        phase1Ratio = std::clamp(phase1Ratio, 0.0f, 1.0f);
 
-    // フェーズ2のHP（phase2Threshold以下の部分）
-    float phase2CurrentHp = std::min<float>(currentHp, phase2Threshold);
-    float phase2Ratio = (phase2Threshold > 0.0f) ? (phase2CurrentHp / phase2Threshold) : 0.0f;
-    phase2Ratio = std::clamp(phase2Ratio, 0.0f, 1.0f);
+        barSprite_->SetSize(Vector2(baseSize_.x * phase1Ratio, baseSize_.y));
+        bar2Sprite_->SetSize(baseSize_);  // フルサイズ
+    }
+    else {
+        // フェーズ2: 青バーは0幅、赤バーがHP減少で縮小
+        float phase2Ratio = (phase2Threshold > 0.0f) ? (currentHp / phase2Threshold) : 0.0f;
+        phase2Ratio = std::clamp(phase2Ratio, 0.0f, 1.0f);
 
-    // フェーズ1バー（全体の半分を使用）
-    float halfWidth = baseSize_.x * 0.5f;
-    barSprite_->SetSize(Vector2(halfWidth * phase1Ratio, baseSize_.y));
-    barSprite_->SetPos(Vector2(screenPos.x + halfWidth, screenPos.y));
-    barSprite_->Update();
+        barSprite_->SetSize(Vector2(0.0f, baseSize_.y));
+        bar2Sprite_->SetSize(Vector2(baseSize_.x * phase2Ratio, baseSize_.y));
+    }
 
-    // フェーズ2バー（全体の半分を使用）
-    bar2Sprite_->SetSize(Vector2(halfWidth * phase2Ratio, baseSize_.y));
+    // 両バーを同じ座標に配置（重なり表示）
+    barSprite_->SetPos(screenPos);
     bar2Sprite_->SetPos(screenPos);
-    bar2Sprite_->Update();
-
     bgSprite_->SetPos(screenPos);
+
+    barSprite_->Update();
+    bar2Sprite_->Update();
     bgSprite_->Update();
 }
 
