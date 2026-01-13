@@ -280,4 +280,36 @@ void MyGame::LoadTextrue()
     TextureManager::GetInstance()->LoadTexture("game_button_text.png");
     TextureManager::GetInstance()->LoadTexture("gameClear_Text.png");
     TextureManager::GetInstance()->LoadTexture("gameOver_Text.png");
+
+    TextureManager::GetInstance()->LoadTexture("button/A_Button_Down.png");
+    TextureManager::GetInstance()->LoadTexture("button/A_Button_Up.png");
+    TextureManager::GetInstance()->LoadTexture("button/B_Button_Down.png");
+    TextureManager::GetInstance()->LoadTexture("button/B_Button_Up.png");
+    TextureManager::GetInstance()->LoadTexture("button/X_Button_Down.png");
+    TextureManager::GetInstance()->LoadTexture("button/X_Button_Up.png");
+    TextureManager::GetInstance()->LoadTexture("button/Y_Button_Down.png");
+    TextureManager::GetInstance()->LoadTexture("button/Y_Button_Up.png");
+
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_01.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_02.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_03.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_04.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_05.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_06.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_07.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_08.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_01.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_02.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_03.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_04.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_05.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_06.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_07.png");
+    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_08.png");
+
+    TextureManager::GetInstance()->LoadTexture("kougeki.png");
+    TextureManager::GetInstance()->LoadTexture("dash.png");
+    TextureManager::GetInstance()->LoadTexture("parry.png");
+    TextureManager::GetInstance()->LoadTexture("shageki.png");
+    TextureManager::GetInstance()->LoadTexture("idou.png");
 }
