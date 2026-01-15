@@ -38,8 +38,7 @@ void DashEffectManager::Update(float deltaTime, const Tako::Vector3& playerPosit
 
         // ダッシュ終了後、エミッターがプレイヤー位置に十分近づいたら無効化
         if (!isDashing) {
-            Tako::Vector3 diff = playerPosition - emitterPosition_;
-            float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+            float distanceSquared = playerPosition.DistanceSquared(emitterPosition_);
 
             if (distanceSquared < params_.stopThreshold * params_.stopThreshold) {
                 emitterManager_->SetEmitterActive(params_.emitterName, false);

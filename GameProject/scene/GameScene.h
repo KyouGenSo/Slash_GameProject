@@ -108,7 +108,7 @@ private: // メンバ変数
 
     // Camera system components
     CameraManager* cameraManager_ = nullptr;                    // カメラシステム管理
-    ThirdPersonController* firstPersonController_ = nullptr;    // 一人称視点コントローラー
+    ThirdPersonController* thirdPersonController_ = nullptr;    // 一人称視点コントローラー
     TopDownController* topDownController_ = nullptr;            // トップダウン視点コントローラー
     CameraAnimationController* animationController_ = nullptr;  // カメラアニメーションコントローラー
     bool cameraMode_ = false;                                   // カメラモード (true: FirstPerson, false: TopDown)
@@ -116,8 +116,6 @@ private: // メンバ変数
     Tako::Transform groundUvTransform_{};                       // 地面のUVトランスフォーム（テクスチャスクロール等に使用）
 
     std::unique_ptr<Tako::EmitterManager> emitterManager_;      // パーティクルエミッター管理
-
-    std::unique_ptr<Tako::Sprite> toTitleSprite_;               // タイトルに戻るボタンテキスト
 
     bool isStart_ = false;                                      // ゲーム開始フラグ
 

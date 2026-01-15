@@ -3,7 +3,7 @@
 #include <string>
 
 namespace Tako {
-class EmitterManager;
+    class EmitterManager;
 }
 
 /// <summary>

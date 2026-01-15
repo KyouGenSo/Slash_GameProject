@@ -177,6 +177,14 @@ void MyGame::RegisterGlobalVariables()
     gv->CreateGroup("Input");
     gv->AddItem("Input", "TriggerThreshold", 0.5f);
 
+    // === GameScene === //
+    gv->CreateGroup("GameScene");
+    gv->AddItem("GameScene", "ShadowMaxDistance", 100.0f);
+    gv->AddItem("GameScene", "DirectionalLightZ", -0.05f);
+    // ダッシュエフェクトパラメータの登録
+    gv->CreateGroup("DashEffect");
+    gv->AddItem("DashEffect", "LerpSpeed", 35.0f);
+
     // === Player === //
     gv->CreateGroup("Player");
     gv->AddItem("Player", "BodyColliderSize", 3.2f);

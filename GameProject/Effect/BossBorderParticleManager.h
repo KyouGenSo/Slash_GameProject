@@ -68,6 +68,7 @@ private:
     /// <param name="bossPosition">ボスの位置</param>
     void UpdatePositions(const Tako::Vector3& bossPosition);
 
+private:
     Tako::EmitterManager* emitterManager_ = nullptr;  ///< エミッターマネージャー
     bool isActive_ = false;                           ///< エミッターアクティブ状態
     Params params_;                                   ///< パラメータ

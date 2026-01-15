@@ -33,7 +33,7 @@
 
 // Debug includes
 #ifdef _DEBUG
-#include"ImGui.h"
+#include "ImGui.h"
 #include "DebugCamera.h"
 #include "DebugUIManager.h"
 #include "CameraSystem/CameraDebugUI.h"
@@ -52,6 +52,10 @@ void GameScene::Initialize()
 
     // EmitterManagerの生成
     emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
+
+    // コントローラーUIの初期化
+    controllerUI_ = std::make_unique<ControllerUI>();
+    controllerUI_->Initialize();
 
 #ifdef _DEBUG
     DebugCamera::GetInstance()->Initialize();
@@ -84,6 +88,10 @@ void GameScene::Initialize()
                 FrameTimer::GetInstance()->GetDeltaTime());
         });
 
+    // コントローラーUIのDebugUI登録
+    DebugUIManager::GetInstance()->RegisterGameObject("ControllerUI",
+        [this]() { if (controllerUI_) controllerUI_->DrawImGui(); });
+
     DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
 #endif
     /// ================================== ///
@@ -94,15 +102,6 @@ void GameScene::Initialize()
     inputHandler_ = std::make_unique<InputHandler>();
     inputHandler_->Initialize();
 
-    /// ----------------------GlobalVariables設定----------------------------------------------------///
-    // GlobalVariables登録（描画品質設定
-    gvScene->CreateGroup("GameScene");
-    gvScene->AddItem("GameScene", "ShadowMaxDistance", 100.0f);
-    gvScene->AddItem("GameScene", "DirectionalLightZ", -0.05f);
-    // ダッシュエフェクトパラメータの登録
-    gvScene->CreateGroup("DashEffect");
-    gvScene->AddItem("DashEffect", "LerpSpeed", 35.0f);
-
     /// ----------------------シーンの描画設定---------------------------------------------------------///
     // シャドウマッピンの最大描画距離の設定
     float shadowMaxDist = gvScene->GetValueFloat("GameScene", "ShadowMaxDistance");
@@ -111,21 +110,6 @@ void GameScene::Initialize()
     float lightZ = gvScene->GetValueFloat("GameScene", "DirectionalLightZ");
     Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, lightZ));
 
-    /// ----------------------スプライトの初期化------------------------------------------------------ ///
-    // タイトルボタンテキストの初期化
-    toTitleSprite_ = std::make_unique<Sprite>();
-    toTitleSprite_->Initialize("game_button_text.png");
-    toTitleSprite_->SetPos(Vector2(WinApp::clientWidth / 2.f - toTitleSprite_->GetSize().x / 2.f, 200.f));
-
-    // コントローラーUIの初期化
-    controllerUI_ = std::make_unique<ControllerUI>();
-    controllerUI_->Initialize();
-
-#ifdef _DEBUG
-    // コントローラーUIのDebugUI登録
-    DebugUIManager::GetInstance()->RegisterGameObject("ControllerUI",
-        [this]() { if (controllerUI_) controllerUI_->DrawImGui(); });
-#endif
 
     /// ----------------------3Dオブジェクトの初期化--------------------------------------------------- ///
     // SkyBoxの初期化
@@ -156,7 +140,6 @@ void GameScene::Initialize()
     boss_->SetPlayer(player_.get());
     // ゲーム開始時の演出が終わるまで一時停止状態に設定
     boss_->SetIsPause(true);
-
     // プレイヤーにボスの参照を設定
     player_->SetBoss(boss_.get());
 
@@ -167,11 +150,11 @@ void GameScene::Initialize()
 
     // ThirdPersonControllerを登録
     auto tpController = std::make_unique<ThirdPersonController>();
-    firstPersonController_ = tpController.get();
-    firstPersonController_->SetTarget(&player_->GetTransform());
+    thirdPersonController_ = tpController.get();
+    thirdPersonController_->SetTarget(&player_->GetTransform());
     // ボスをセカンダリターゲットとして設定し、注視機能を有効化
-    firstPersonController_->SetSecondaryTarget(&boss_->GetTransform());
-    firstPersonController_->EnableLookAtTarget(true);
+    thirdPersonController_->SetSecondaryTarget(&boss_->GetTransform());
+    thirdPersonController_->EnableLookAtTarget(true);
     cameraManager_->RegisterController("ThirdPerson", std::move(tpController));
 
     // TopDownControllerを登録
@@ -244,6 +227,7 @@ void GameScene::Initialize()
     dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_.get());
     dashEffectManager_->InitializePosition(player_->GetTranslate());
 
+    /// ----------------------カメラアニメーション設定-------------------------------------------------- ///
     // ゲーム開始アニメーションを再生
     animationController_->LoadAnimationFromFile("game_start");
     cameraManager_->ActivateController("Animation");
@@ -327,6 +311,7 @@ void GameScene::Update()
         cameraManager_->ActivateController("Animation");
         animationController_->SwitchAnimation("over_anim");
         animationController_->Play();
+        boss_->SetIsPause(true);
         overEffectManager_->Start();
     }
 
@@ -341,7 +326,6 @@ void GameScene::Update()
     ground_->Update();
     player_->Update();
     boss_->Update(FrameTimer::GetInstance()->GetDeltaTime());
-    toTitleSprite_->Update();
     controllerUI_->Update();
     cameraManager_->Update(FrameTimer::GetInstance()->GetDeltaTime());
 
