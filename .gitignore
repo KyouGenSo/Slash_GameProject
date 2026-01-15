@@ -335,3 +335,6 @@ settings.local.json
 # Temporary null files
 nul
 *.ini
+
+# Claude Code temporary files
+tmpclaude-*
