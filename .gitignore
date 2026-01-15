@@ -334,3 +334,4 @@ settings.local.json
 
 # Temporary null files
 nul
+*.ini

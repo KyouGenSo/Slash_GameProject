@@ -1,8 +1,11 @@
 #include "ControllerUI.h"
 #include "Input.h"
-#include "imgui.h"
 #include <cmath>
 #include <string>
+
+#ifdef _DEBUG
+#include "imgui.h"
+#endif
 
 using namespace Tako;
 
@@ -196,6 +199,7 @@ void ControllerUI::Draw()
 
 void ControllerUI::DrawImGui()
 {
+#ifdef _DEBUG
     if (ImGui::TreeNode("ControllerUI")) {
         ImGui::Text("Button States:");
         ImGui::Text("  A: %s", isAPressed_ ? "Pressed" : "Released");
@@ -292,4 +296,5 @@ void ControllerUI::DrawImGui()
 
         ImGui::TreePop();
     }
+#endif
 }
