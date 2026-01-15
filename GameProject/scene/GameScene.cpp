@@ -170,8 +170,7 @@ void GameScene::Initialize()
     animationController_ = animController.get();
     cameraManager_->RegisterController("Animation", std::move(animController));
 
-    /// ----------------------衝突判定の初期化--------------------------------------------------- ///
-    // 衝突マスクの設定（どのタイプ同士が衝突判定を行うか）
+    /// ----------------------衝突マスクの設定--------------------------------------------------- ///
     collisionManager->SetCollisionMask(
         static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
         static_cast<uint32_t>(CollisionTypeId::BOSS),

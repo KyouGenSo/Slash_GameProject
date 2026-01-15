@@ -127,7 +127,7 @@ void Player::Update()
     }
 
     // フェーズ2時とパリィ中はボスの方向を向く
-    if ((targetEnemy_ || targetEnemy_->GetPhase() == 2) && IsParrying()) LookAtBoss();
+    if ((targetEnemy_ && targetEnemy_->GetPhase() == 2) || IsParrying()) LookAtBoss();
 
     // 実効的な制限を計算（静的制限と動的制限の交差）
     float effectiveXMin = std::max<float>(GameConst::kStageXMin, dynamicBounds_.xMin);
