@@ -1,0 +1,98 @@
+#pragma once
+
+#include "Projectile.h"
+#include "../../Collision/CollisionTypeIdDef.h"
+#include <memory>
+#include <string>
+
+namespace Tako {
+    class EmitterManager;
+    class ModelManager;
+}
+
+class PenetratingBossBulletCollider;
+
+/// <summary>
+/// 貫通弾クラス
+/// プレイヤーの弾と衝突しても消えず、プレイヤー本体に当たった場合のみ消える
+/// </summary>
+class PenetratingBossBullet : public Projectile {
+    //=========================================================================================
+    // 定数
+    //=========================================================================================
+private:
+    static constexpr uint32_t kIdResetThreshold = 10000;///< ID リセット閾値
+    static constexpr float kInitialScale = 0.0f;        ///< 初期スケール
+
+public:
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    PenetratingBossBullet(Tako::EmitterManager* emittermanager);
+
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
+    ~PenetratingBossBullet() override;
+
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    /// <param name="position">初期位置</param>
+    /// <param name="velocity">初期速度</param>
+    void Initialize(const Tako::Vector3& position, const Tako::Vector3& velocity) override;
+
+    /// <summary>
+    /// 終了処理
+    /// </summary>
+    void Finalize();
+
+    /// <summary>
+    /// 更新
+    /// </summary>
+    /// <param name="deltaTime">前フレームからの経過時間</param>
+    void Update(float deltaTime) override;
+
+    /// <summary>
+    /// コリジョンタイプIDを取得
+    /// </summary>
+    CollisionTypeId GetTypeId() const { return CollisionTypeId::BOSS_ATTACK; }
+
+    /// <summary>
+    /// コライダーを取得
+    /// </summary>
+    PenetratingBossBulletCollider* GetCollider() const { return collider_.get(); }
+
+private:
+    // モデルを設定
+    void SetModel();
+
+private:
+    // エフェクト用の回転速度
+    Tako::Vector3 rotationSpeed_;
+
+    // パーティクルタイマー
+    float particleTimer_ = 0.0f;
+
+    // パーティクル生成間隔
+    float particleInterval_ = 0.05f;
+
+    // 専用コライダー
+    std::unique_ptr<PenetratingBossBulletCollider> collider_;
+
+    // エミッタマネージャーへのポインタ
+    Tako::EmitterManager* emitterManager_ = nullptr;
+
+    // エミッターの名前
+    std::string bulletEmitterName_;
+    std::string explodeEmitterName_;
+
+    // id
+    static uint32_t id;
+
+    // 調整可能パラメータ
+    float rotationSpeedMin_ = -10.0f;  ///< 回転速度の最小値
+    float rotationSpeedMax_ = 10.0f;   ///< 回転速度の最大値
+    float yBoundaryMin_ = -10.0f;      ///< Y座標の下限
+    float yBoundaryMax_ = 50.0f;       ///< Y座標の上限
+};

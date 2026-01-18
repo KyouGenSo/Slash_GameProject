@@ -219,6 +219,12 @@ void MyGame::RegisterGlobalVariables()
     gv->AddItem("BossBullet", "Damage", 10.0f);
     gv->AddItem("BossBullet", "Lifetime", 5.0f);
 
+    // === PenetratingBossBullet === //
+    gv->CreateGroup("PenetratingBossBullet");
+    gv->AddItem("PenetratingBossBullet", "ColliderRadius", 1.0f);
+    gv->AddItem("PenetratingBossBullet", "Damage", 15.0f);
+    gv->AddItem("PenetratingBossBullet", "Lifetime", 5.0f);
+
     // === CameraShake === //
     gv->CreateGroup("CameraShake");
     gv->AddItem("CameraShake", "Duration", 0.3f);

@@ -7,6 +7,7 @@
 #include "Input/InputHandler.h"
 #include "../Object/Projectile/BossBullet.h"
 #include "../Object/Projectile/PlayerBullet.h"
+#include "../Object/Projectile/PenetratingBossBullet.h"
 #include "../Effect/OverEffectManager.h"
 #include "../Effect/ClearEffectManager.h"
 #include "../Effect/BossBorderParticleManager.h"
@@ -90,6 +91,11 @@ public: // メンバ関数
     /// </summary>
     void CreatePlayerBullet();
 
+    /// <summary>
+    /// 貫通弾の生成処理
+    /// </summary>
+    void CreatePenetratingBossBullet();
+
 private: // メンバ変数
 
     std::unique_ptr<Tako::SkyBox> skyBox_;                      // スカイボックス（環境マップ）
@@ -103,6 +109,8 @@ private: // メンバ変数
     std::vector<std::unique_ptr<BossBullet>> bossBullets_;      // ボスの弾のコンテナ
 
     std::vector<std::unique_ptr<PlayerBullet>> playerBullets_;  // プレイヤーの弾のコンテナ
+
+    std::vector<std::unique_ptr<PenetratingBossBullet>> penetratingBossBullets_;  // 貫通弾のコンテナ
 
     std::unique_ptr<InputHandler> inputHandler_;                // 入力ハンドラー
 

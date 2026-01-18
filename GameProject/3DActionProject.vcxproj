@@ -116,6 +116,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.cpp" />
     <ClCompile Include="CameraSystem\Controller\TopDownController.cpp" />
     <ClCompile Include="Collision\BossMeleeAttackCollider.cpp" />
+    <ClCompile Include="Collision\PenetratingBossBulletCollider.cpp" />
     <ClCompile Include="Collision\PlayerBulletCollider.cpp" />
     <ClCompile Include="Common\CooldownTimer.cpp" />
     <ClCompile Include="Common\DamageFeedback.cpp" />
@@ -162,6 +163,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Player\State\MoveState.cpp" />
     <ClCompile Include="Object\Projectile\BossBullet.cpp" />
     <ClCompile Include="Collision\BossBulletCollider.cpp" />
+    <ClCompile Include="Object\Projectile\PenetratingBossBullet.cpp" />
     <ClCompile Include="Object\Projectile\PlayerBullet.cpp" />
     <ClCompile Include="Object\Projectile\Projectile.cpp" />
     <ClCompile Include="scene\ClearScene.cpp" />
@@ -206,6 +208,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="CameraSystem\Controller\TopDownController.h" />
     <ClInclude Include="Collision\BossMeleeAttackCollider.h" />
     <ClInclude Include="Collision\CollisionTypeIdDef.h" />
+    <ClInclude Include="Collision\PenetratingBossBulletCollider.h" />
     <ClInclude Include="Collision\PlayerBulletCollider.h" />
     <ClInclude Include="Common\BulletSpawnRequest.h" />
     <ClInclude Include="Common\CooldownTimer.h" />
@@ -254,6 +257,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Player\State\MoveState.h" />
     <ClInclude Include="Object\Projectile\BossBullet.h" />
     <ClInclude Include="Collision\BossBulletCollider.h" />
+    <ClInclude Include="Object\Projectile\PenetratingBossBullet.h" />
     <ClInclude Include="Object\Projectile\PlayerBullet.h" />
     <ClInclude Include="Object\Projectile\Projectile.h" />
     <ClInclude Include="scene\ClearScene.h" />

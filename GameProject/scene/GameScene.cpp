@@ -337,6 +337,9 @@ void GameScene::Update()
     // ボスからの弾生成リクエストを処理
     CreateBossBullet();
 
+    // ボスからの貫通弾生成リクエストを処理
+    CreatePenetratingBossBullet();
+
     // プレイヤーからの弾生成リクエストを処理
     CreatePlayerBullet();
 
@@ -538,6 +541,24 @@ void GameScene::UpdateProjectiles(float deltaTime)
             }
             return false;
         });
+
+    // 貫通弾の更新
+    for (auto& bullet : penetratingBossBullets_) {
+        if (bullet && bullet->IsActive()) {
+            bullet->Update(deltaTime);
+        }
+    }
+
+    // 非アクティブな貫通弾を削除
+    std::erase_if(penetratingBossBullets_,
+        [](const std::unique_ptr<PenetratingBossBullet>& bullet) {
+            if (bullet && !bullet->IsActive()) {
+                // Finalize()で自動的にコライダーが削除される
+                bullet->Finalize();
+                return true;
+            }
+            return false;
+        });
 }
 
 void GameScene::CreateBossBullet()
@@ -555,5 +576,14 @@ void GameScene::CreatePlayerBullet()
         auto bullet = std::make_unique<PlayerBullet>(emitterManager_.get());
         bullet->Initialize(request.position, request.velocity);
         playerBullets_.push_back(std::move(bullet));
+    }
+}
+
+void GameScene::CreatePenetratingBossBullet()
+{
+    for (const auto& request : boss_->ConsumePendingPenetratingBullets()) {
+        auto bullet = std::make_unique<PenetratingBossBullet>(emitterManager_.get());
+        bullet->Initialize(request.position, request.velocity);
+        penetratingBossBullets_.push_back(std::move(bullet));
     }
 }

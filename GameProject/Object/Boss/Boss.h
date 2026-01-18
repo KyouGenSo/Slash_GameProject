@@ -108,6 +108,19 @@ public:
     /// <returns>弾生成リクエストのリスト（moveで返される）</returns>
     std::vector<BulletSpawnRequest> ConsumePendingBullets();
 
+    /// <summary>
+    /// 貫通弾生成リクエストを追加
+    /// </summary>
+    /// <param name="position">弾の発射位置</param>
+    /// <param name="velocity">弾の速度ベクトル</param>
+    void RequestPenetratingBulletSpawn(const Tako::Vector3& position, const Tako::Vector3& velocity);
+
+    /// <summary>
+    /// 保留中の貫通弾生成リクエストを取得して消費
+    /// </summary>
+    /// <returns>貫通弾生成リクエストのリスト（moveで返される）</returns>
+    std::vector<BulletSpawnRequest> ConsumePendingPenetratingBullets();
+
     //-----------------------------Getters/Setters------------------------------//
     /// <summary>
     /// 座標変換情報を設定
@@ -352,7 +365,8 @@ private:
     ShakeEffect shakeEffect_;           ///< シェイクエフェクト
 
     // 弾生成管理
-    BulletSpawner bulletSpawner_;       ///< 弾生成リクエスト管理
+    BulletSpawner bulletSpawner_;              ///< 通常弾生成リクエスト管理
+    BulletSpawner penetratingBulletSpawner_;   ///< 貫通弾生成リクエスト管理
 
     // HPバーUI
     HPBarUI hpBar_;                      ///< HPバー表示

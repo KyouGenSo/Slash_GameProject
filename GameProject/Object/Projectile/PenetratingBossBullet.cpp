@@ -1,5 +1,5 @@
-#include "BossBullet.h"
-#include "../../Collision/BossBulletCollider.h"
+#include "PenetratingBossBullet.h"
+#include "../../Collision/PenetratingBossBulletCollider.h"
 #include "../../Object/Player/Player.h"
 #include "../../Common/GameConst.h"
 #include "ModelManager.h"
@@ -11,15 +11,15 @@
 
 using namespace Tako;
 
-uint32_t BossBullet::id = 0;
+uint32_t PenetratingBossBullet::id = 0;
 
-BossBullet::BossBullet(EmitterManager* emittermanager) {
+PenetratingBossBullet::PenetratingBossBullet(EmitterManager* emittermanager) {
     // GlobalVariablesから値を取得
     GlobalVariables* gv = GlobalVariables::GetInstance();
 
     // 弾のパラメータ設定（GlobalVariablesから取得）
-    damage_ = gv->GetValueFloat("BossBullet", "Damage");
-    lifeTime_ = gv->GetValueFloat("BossBullet", "Lifetime");
+    damage_ = gv->GetValueFloat("PenetratingBossBullet", "Damage");
+    lifeTime_ = gv->GetValueFloat("PenetratingBossBullet", "Lifetime");
 
     // ランダムな回転速度を設定
     RandomEngine* rng = RandomEngine::GetInstance();
@@ -33,13 +33,13 @@ BossBullet::BossBullet(EmitterManager* emittermanager) {
     // エミッターマネージャーの設定
     emitterManager_ = emittermanager;
 
-    // エフェクトプリセットをロード
+    // 貫通弾専用エフェクトプリセットをロード
     if (emitterManager_) {
-        bulletEmitterName_ = "boss_bullet" + std::to_string(id);
-        explodeEmitterName_ = "boss_bullet_explode" + std::to_string(id);
-        emitterManager_->LoadPreset("boss_bullet", bulletEmitterName_);
+        bulletEmitterName_ = "boss_penetrate_bullet" + std::to_string(id);
+        explodeEmitterName_ = "boss_penetrate_bullet_explode" + std::to_string(id);
+        emitterManager_->LoadPreset("boss_penetrate_bullet", bulletEmitterName_);
         emitterManager_->SetEmitterActive(bulletEmitterName_, false);
-        emitterManager_->LoadPreset("boss_bullet_explode", explodeEmitterName_);
+        emitterManager_->LoadPreset("boss_penetrate_bullet_explode", explodeEmitterName_);
         emitterManager_->SetEmitterActive(explodeEmitterName_, false);
     }
 
@@ -50,9 +50,9 @@ BossBullet::BossBullet(EmitterManager* emittermanager) {
     }
 }
 
-BossBullet::~BossBullet() = default;
+PenetratingBossBullet::~PenetratingBossBullet() = default;
 
-void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
+void PenetratingBossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     // 親クラスの初期化
     Projectile::Initialize(position, velocity);
 
@@ -71,9 +71,9 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
 
     // コライダーの設定
     if (!collider_) {
-        collider_ = std::make_unique<BossBulletCollider>(this);
+        collider_ = std::make_unique<PenetratingBossBulletCollider>(this);
     }
-    float colliderRadius = GlobalVariables::GetInstance()->GetValueFloat("BossBullet", "ColliderRadius");
+    float colliderRadius = GlobalVariables::GetInstance()->GetValueFloat("PenetratingBossBullet", "ColliderRadius");
     collider_->SetTransform(&transform_);
     collider_->SetRadius(colliderRadius);
     collider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
@@ -86,7 +86,7 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     CollisionManager::GetInstance()->AddCollider(collider_.get());
 }
 
-void BossBullet::Finalize() {
+void PenetratingBossBullet::Finalize() {
     // CollisionManagerから削除
     if (collider_) {
         CollisionManager::GetInstance()->RemoveCollider(collider_.get());
@@ -102,7 +102,7 @@ void BossBullet::Finalize() {
     }
 }
 
-void BossBullet::Update(float deltaTime) {
+void PenetratingBossBullet::Update(float deltaTime) {
     if (!isActive_) {
         return;
     }
@@ -128,7 +128,7 @@ void BossBullet::Update(float deltaTime) {
     }
 }
 
-void BossBullet::SetModel() {
+void PenetratingBossBullet::SetModel() {
     if (model_) {
         // モデルをロード
         model_->SetModel("sphere.gltf");

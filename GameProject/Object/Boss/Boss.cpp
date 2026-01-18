@@ -380,6 +380,14 @@ std::vector<BulletSpawnRequest> Boss::ConsumePendingBullets() {
     return bulletSpawner_.Consume();
 }
 
+void Boss::RequestPenetratingBulletSpawn(const Vector3& position, const Vector3& velocity) {
+    penetratingBulletSpawner_.RequestSpawn(position, velocity);
+}
+
+std::vector<BulletSpawnRequest> Boss::ConsumePendingPenetratingBullets() {
+    return penetratingBulletSpawner_.Consume();
+}
+
 void Boss::SetPlayer(Player* player) {
     player_ = player;
     if (behaviorTree_) {

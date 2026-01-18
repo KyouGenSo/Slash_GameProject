@@ -297,6 +297,12 @@
     <ClCompile Include="Effect\BulletSignEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Collision\PenetratingBossBulletCollider.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Projectile\PenetratingBossBullet.cpp">
+      <Filter>Object\Projectile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -529,6 +535,12 @@
     </ClInclude>
     <ClInclude Include="Effect\BulletSignEffect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\PenetratingBossBulletCollider.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Projectile\PenetratingBossBullet.h">
+      <Filter>Object\Projectile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
