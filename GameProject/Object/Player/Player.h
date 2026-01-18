@@ -367,6 +367,12 @@ public: // メンバ関数
     Boss* GetBoss() const { return targetEnemy_; }
 
     /// <summary>
+    /// 攻撃最小距離を取得
+    /// </summary>
+    /// <returns>攻撃最小距離</returns>
+    float GetAttackMinDistance() const { return attackMinDist_; }
+
+    /// <summary>
     /// EmitterManagerを取得
     /// </summary>
     /// <returns>エミッターマネージャーのポインタ</returns>
@@ -457,7 +463,7 @@ private: // メンバ変数
     // 調整可能パラメータ（ImGui編集用）
     float initialY_ = 2.5f;                   ///< 初期Y座標
     float initialZ_ = -120.0f;                ///< 初期Z座標
-    float attackMinDist_ = 6.0f;             ///< 攻撃開始距離
+    float attackMinDist_ = 10.0f;             ///< 攻撃開始距離
     float attackMoveRotationLerp_ = 0.3f;     ///< 攻撃移動中の回転補間速度
     float bossLookatLerp_ = 1.15f;            ///< ボス視線追従補間速度
 

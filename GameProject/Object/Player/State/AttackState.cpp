@@ -147,6 +147,18 @@ void AttackState::ProcessMoveToTarget(Player* player, float deltaTime)
     // 移動実行
     player->MoveToTarget(targetEnemy_, deltaTime);
 
+    // ターゲットとの現在距離をチェック
+    Vector3 toTarget = targetEnemy_->GetTransform().translate - player->GetTransform().translate;
+    toTarget.y = 0.0f;  // 水平距離のみ
+    float currentDistance = toTarget.Length();
+
+    // ターゲットが攻撃範囲外に離れた場合、移動を終止してその場で攻撃
+    if (currentDistance > player->GetAttackMinDistance()) {
+        player->ResetMoveToTarget();
+        phase_ = ExecuteAttack;
+        return;
+    }
+
     // 位置ベースの終了判定
     if (player->HasReachedTarget()) {
         phase_ = ExecuteAttack;
