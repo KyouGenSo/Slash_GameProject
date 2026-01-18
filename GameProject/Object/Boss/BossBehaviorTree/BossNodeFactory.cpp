@@ -14,7 +14,9 @@
 #include "../BossBehaviorTree/Actions/BTBossMeleeAttack.h"
 #include "../BossBehaviorTree/Actions/BTBossApproach.h"
 #include "../BossBehaviorTree/Actions/BTBossRetreat.h"
+#include "../BossBehaviorTree/Actions/BTBossStun.h"
 #include "../BossBehaviorTree/Conditions/BTActionSelector.h"
+#include "../BossBehaviorTree/Conditions/BTCheckStunned.h"
 #include "../BossBehaviorTree/Conditions/BTBossPhaseCondition.h"
 #include "../BossBehaviorTree/Conditions/BTBossHPCondition.h"
 #include "../BossBehaviorTree/Conditions/BTBossDistanceCondition.h"
@@ -58,7 +60,13 @@ BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
     else if (nodeType == "BTBossRetreat") {
         return std::make_shared<BTBossRetreat>();
     }
+    else if (nodeType == "BTBossStun") {
+        return std::make_shared<BTBossStun>();
+    }
     // Conditionノード
+    else if (nodeType == "BTCheckStunned") {
+        return std::make_shared<BTCheckStunned>();
+    }
     else if (nodeType == "BTActionSelector") {
         return std::make_shared<BTActionSelector>(BTActionSelector::ActionType::Dash);
     }
@@ -186,8 +194,22 @@ void BossNodeFactory::InitializeNodeTypes() {
             ImVec4(0.3f, 0.7f, 0.9f, 1.0f),  // 水色（Approachと対になる色）
             false
         },
+        {
+            "BTBossStun",
+            "Stun",
+            NodeCategory::Action,
+            ImVec4(0.9f, 0.9f, 0.2f, 1.0f),  // 黄色（スタン状態）
+            false
+        },
 
         // ========== Condition ノード ==========
+        {
+            "BTCheckStunned",
+            "Check Stunned",
+            NodeCategory::Condition,
+            ImVec4(0.9f, 0.7f, 0.2f, 1.0f),  // オレンジ（スタンチェック）
+            false
+        },
         {
             "BTActionSelector",
             "Action Selector",
@@ -270,6 +292,8 @@ std::string BossNodeFactory::GetNodeType(const BTNodePtr& node) {
     if (typeInfo == typeid(BTBossMeleeAttack)) return "BTBossMeleeAttack";
     if (typeInfo == typeid(BTBossApproach)) return "BTBossApproach";
     if (typeInfo == typeid(BTBossRetreat)) return "BTBossRetreat";
+    if (typeInfo == typeid(BTBossStun)) return "BTBossStun";
+    if (typeInfo == typeid(BTCheckStunned)) return "BTCheckStunned";
     if (typeInfo == typeid(BTActionSelector)) return "BTActionSelector";
     if (typeInfo == typeid(BTBossPhaseCondition)) return "BTBossPhaseCondition";
     if (typeInfo == typeid(BTBossHPCondition)) return "BTBossHPCondition";

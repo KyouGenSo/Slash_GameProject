@@ -170,6 +170,38 @@ public:
     /// <param name="isPause">一時行動停止フラグの値</param>
     void SetIsPause(bool isPause) { isPause_ = isPause; }
 
+    //-----------------------------スタンシステム------------------------------//
+    /// <summary>
+    /// スタンをトリガー（近接攻撃ヒット時に呼ばれる）
+    /// スタン中は無視される（リセット防止）
+    /// </summary>
+    /// <param name="knockbackDirection">ノックバック方向（正規化済み）</param>
+    void TriggerStun(const Tako::Vector3& knockbackDirection);
+
+    /// <summary>
+    /// スタン状態かどうか
+    /// </summary>
+    /// <returns>スタン中ならtrue</returns>
+    bool IsStunned() const { return isStunned_; }
+
+    /// <summary>
+    /// スタンをクリア（BTBossStun終了時に呼ばれる）
+    /// </summary>
+    void ClearStun() { isStunned_ = false; }
+
+    /// <summary>
+    /// ノックバック方向を取得
+    /// </summary>
+    /// <returns>ノックバック方向ベクトル</returns>
+    const Tako::Vector3& GetStunKnockbackDirection() const { return stunKnockbackDirection_; }
+
+    /// <summary>
+    /// スタン用フラッシュを開始
+    /// </summary>
+    /// <param name="color">フラッシュ色</param>
+    /// <param name="duration">持続時間</param>
+    void StartStunFlash(const Tako::Vector4& color, float duration);
+
     /// <summary>
     /// 座標変換情報を取得
     /// </summary>
@@ -339,6 +371,10 @@ private:
 
     // 一時行動停止フラグ
     bool isPause_ = false;
+
+    // ===== スタンシステム =====
+    bool isStunned_ = false;                      ///< スタン状態フラグ
+    Tako::Vector3 stunKnockbackDirection_;        ///< ノックバック方向
 
     // ボス本体の衝突判定用AABBコライダー
     std::unique_ptr<Tako::OBBCollider> bodyCollider_;

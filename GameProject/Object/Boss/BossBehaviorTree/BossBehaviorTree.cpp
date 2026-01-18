@@ -30,6 +30,17 @@ void BossBehaviorTree::Update(float deltaTime) {
         return;
     }
 
+    // ===== スタン立ち上がりエッジ検出 =====
+    // スタンが「今」発生した瞬間のみリセット（false→true の立ち上がり）
+    Boss* boss = blackboard_->GetBoss();
+    bool isStunned = boss && boss->IsStunned();
+
+    if (isStunned && !wasStunnedLastFrame_ && rootNode_->IsRunning()) {
+        rootNode_->Reset();
+    }
+    wasStunnedLastFrame_ = isStunned;
+    // =========================================
+
     // ブラックボードにデルタータイムを設定
     blackboard_->SetDeltaTime(deltaTime);
 

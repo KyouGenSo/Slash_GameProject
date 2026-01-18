@@ -428,3 +428,16 @@ void Boss::SetBulletSignEmitterScaleRangeX(float value) {
         );
     }
 }
+
+void Boss::TriggerStun(const Vector3& knockbackDirection) {
+    // スタン中は無視（リセット防止）
+    if (isStunned_) {
+        return;
+    }
+    isStunned_ = true;
+    stunKnockbackDirection_ = knockbackDirection;
+}
+
+void Boss::StartStunFlash(const Vector4& color, float duration) {
+    hitFlashEffect_.Start(color, duration);
+}

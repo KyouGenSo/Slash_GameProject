@@ -31,6 +31,14 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
             // カメラシェイク発動（攻撃ヒット時は軽めに）
             CameraManager::GetInstance()->StartShake(0.3f);
 
+            // スタントリガー（ノックバック方向: プレイヤー → ボス）
+            Tako::Vector3 knockbackDir = enemy->GetTransform().translate - player_->GetTransform().translate;
+            knockbackDir.y = 0.0f;
+            if (knockbackDir.Length() > 0.01f) {
+                knockbackDir = knockbackDir.Normalize();
+            }
+            enemy->TriggerStun(knockbackDir);
+
             if (!detectedEnemy_) {
                 detectedEnemy_ = enemy;
             }
@@ -57,6 +65,14 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
 
                 // カメラシェイク発動（攻撃ヒット時は軽めに）
                 CameraManager::GetInstance()->StartShake(0.3f);
+
+                // スタントリガー（ノックバック方向: プレイヤー → ボス）
+                Tako::Vector3 knockbackDir = enemy->GetTransform().translate - player_->GetTransform().translate;
+                knockbackDir.y = 0.0f;
+                if (knockbackDir.Length() > 0.01f) {
+                    knockbackDir = knockbackDir.Normalize();
+                }
+                enemy->TriggerStun(knockbackDir);
 
                 canDamage = false;
             }
