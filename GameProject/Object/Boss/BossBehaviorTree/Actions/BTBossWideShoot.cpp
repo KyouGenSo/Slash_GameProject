@@ -35,6 +35,12 @@ BTNodeStatus BTBossWideShoot::Execute(BTBlackboard* blackboard) {
     }
     // 発射フェーズ
     else if (currentSweep_ < sweepCount_) {
+        // 最初の発射前にエフェクトを終了
+        if (!hasEndedEffect_) {
+            bulletSignEffect_.End(boss);
+            hasEndedEffect_ = true;
+        }
+
         // 発射間隔チェック
         timeSinceLastFire_ += deltaTime;
         if (timeSinceLastFire_ >= fireInterval_) {
@@ -61,6 +67,7 @@ BTNodeStatus BTBossWideShoot::Execute(BTBlackboard* blackboard) {
         timeSinceLastFire_ = 0.0f;
         currentSweep_ = 0;
         firedInSweep_ = 0;
+        hasEndedEffect_ = false;
         status_ = BTNodeStatus::Success;
         return BTNodeStatus::Success;
     }
@@ -77,6 +84,7 @@ void BTBossWideShoot::Reset() {
     currentSweep_ = 0;
     firedInSweep_ = 0;
     isFirstExecute_ = true;
+    hasEndedEffect_ = false;
 }
 
 void BTBossWideShoot::InitializeWideShoot(Boss* boss) {
@@ -85,12 +93,16 @@ void BTBossWideShoot::InitializeWideShoot(Boss* boss) {
     timeSinceLastFire_ = 0.0f;
     currentSweep_ = 0;
     firedInSweep_ = 0;
+    hasEndedEffect_ = false;
 
-    // 発射フェーズの時間を計算
-    float firingDuration = fireInterval_ * bulletsPerSweep_ * sweepCount_;
+    // firingDurationからfireIntervalを計算
+    int totalBullets = bulletsPerSweep_ * sweepCount_;
+    if (totalBullets > 0) {
+        fireInterval_ = firingDuration_ / static_cast<float>(totalBullets);
+    }
 
     // totalDurationを計算
-    totalDuration_ = chargeTime_ + firingDuration + recoveryTime_;
+    totalDuration_ = chargeTime_ + firingDuration_ + recoveryTime_;
 
     // 射撃予兆エフェクト開始
     bulletSignEffect_.Start(boss, chargeTime_);
@@ -214,7 +226,7 @@ nlohmann::json BTBossWideShoot::ExtractParameters() const {
     return {
         {"chargeTime", chargeTime_},
         {"recoveryTime", recoveryTime_},
-        {"fireInterval", fireInterval_},
+        {"firingDuration", firingDuration_},
         {"sweepAngle", sweepAngle_},
         {"bulletsPerSweep", bulletsPerSweep_},
         {"sweepCount", sweepCount_},
@@ -235,7 +247,7 @@ bool BTBossWideShoot::DrawImGui() {
     if (ImGui::DragFloat("Recovery Time##wide", &recoveryTime_, 0.05f, 0.0f, 3.0f)) {
         changed = true;
     }
-    if (ImGui::DragFloat("Fire Interval##wide", &fireInterval_, 0.01f, 0.01f, 0.5f)) {
+    if (ImGui::DragFloat("Firing Duration##wide", &firingDuration_, 0.1f, 0.1f, 5.0f)) {
         changed = true;
     }
 

@@ -40,8 +40,8 @@ public:
     void SetChargeTime(float time) { chargeTime_ = time; }
     float GetRecoveryTime() const { return recoveryTime_; }
     void SetRecoveryTime(float time) { recoveryTime_ = time; }
-    float GetFireInterval() const { return fireInterval_; }
-    void SetFireInterval(float interval) { fireInterval_ = interval; }
+    float GetFiringDuration() const { return firingDuration_; }
+    void SetFiringDuration(float duration) { firingDuration_ = duration; }
     float GetSweepAngle() const { return sweepAngle_; }
     void SetSweepAngle(float angle) { sweepAngle_ = angle; }
     int GetBulletsPerSweep() const { return bulletsPerSweep_; }
@@ -66,8 +66,8 @@ public:
         if (params.contains("recoveryTime")) {
             recoveryTime_ = params["recoveryTime"];
         }
-        if (params.contains("fireInterval")) {
-            fireInterval_ = params["fireInterval"];
+        if (params.contains("firingDuration")) {
+            firingDuration_ = params["firingDuration"];
         }
         if (params.contains("sweepAngle")) {
             sweepAngle_ = params["sweepAngle"];
@@ -148,7 +148,8 @@ private:
     // === 時間制御 ===
     float chargeTime_ = 0.8f;       ///< チャージ時間
     float recoveryTime_ = 0.5f;     ///< 硬直時間
-    float fireInterval_ = 0.08f;    ///< 発射間隔
+    float firingDuration_ = 1.0f;   ///< 全体の発射時間（秒）
+    float fireInterval_ = 0.0f;     ///< 発射間隔（自動計算）
 
     // === 角度制御 ===
     float sweepAngle_ = 1.0472f;    ///< スイープ角度（約60度）
@@ -171,6 +172,7 @@ private:
     int currentSweep_ = 0;          ///< 現在のスイープ回数
     int firedInSweep_ = 0;          ///< 現在のスイープで発射した弾数
     bool isFirstExecute_ = true;    ///< 初回実行フラグ
+    bool hasEndedEffect_ = false;   ///< エフェクト終了フラグ
 
     // === 方向キャッシュ ===
     Tako::Vector3 baseDirection_;   ///< 発射基準方向（プレイヤー方向）
