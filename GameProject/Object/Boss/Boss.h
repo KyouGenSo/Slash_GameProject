@@ -272,6 +272,25 @@ public:
     /// <param name="position">設定する位置</param>
     void SetAttackSignEmitterPosition(const Tako::Vector3& position);
 
+    //-----------------------------射撃予兆エフェクト------------------------------//
+    /// <summary>
+    /// 射撃予兆エフェクトをアクティブ化/非アクティブ化
+    /// </summary>
+    /// <param name="active">アクティブにする場合true</param>
+    void SetBulletSignEmitterActive(bool active);
+
+    /// <summary>
+    /// 射撃予兆エフェクトの位置を設定
+    /// </summary>
+    /// <param name="position">設定する位置</param>
+    void SetBulletSignEmitterPosition(const Tako::Vector3& position);
+
+    /// <summary>
+    /// 射撃予兆エフェクトのスケール範囲Xを設定
+    /// </summary>
+    /// <param name="value">スケール値（min=max=value）</param>
+    void SetBulletSignEmitterScaleRangeX(float value);
+
     /// <summary>
     /// EmitterManagerを設定
     /// </summary>
@@ -326,6 +345,7 @@ private:
 
     // 予兆エフェクト名
     std::string attackSignEmitterName_ = "boss_melee_attack_sign";
+    std::string bulletSignEmitterName_ = "boss_bullet_sign";
 
     // ===== エフェクト関連 =====
     HitFlashEffect hitFlashEffect_;     ///< ヒット時の色変化エフェクト

@@ -294,6 +294,9 @@
     <ClCompile Include="UI\ControllerUI.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Effect\BulletSignEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -523,6 +526,9 @@
     </ClInclude>
     <ClInclude Include="UI\ControllerUI.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\BulletSignEffect.h">
+      <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

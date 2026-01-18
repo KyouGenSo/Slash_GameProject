@@ -32,10 +32,12 @@ BTNodeStatus BTBossShoot::Execute(BTBlackboard* blackboard) {
     // プレイヤーの方向を向く（射撃準備中）
     if (elapsedTime_ < chargeTime_) {
         AimAtPlayer(boss, deltaTime);
+        bulletSignEffect_.Update(boss, deltaTime);
     }
 
     // 弾を発射
     if (elapsedTime_ >= chargeTime_ && !hasFired_) {
+        bulletSignEffect_.End(boss);
         FireBullets(boss);
         hasFired_ = true;
     }
@@ -71,6 +73,9 @@ void BTBossShoot::InitializeShoot(Boss* boss) {
 
     // totalDurationを計算
     totalDuration_ = chargeTime_ + recoveryTime_;
+
+    // 射撃予兆エフェクト開始
+    bulletSignEffect_.Start(boss, chargeTime_);
 }
 
 void BTBossShoot::AimAtPlayer(Boss* boss, float deltaTime) {

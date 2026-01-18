@@ -18,7 +18,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.013909418135881424,
+      "frequencyTime": 0.0034205224364995956,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -80,7 +80,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.013920608907938004,
+      "frequencyTime": 0.0034317653626203537,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -142,7 +142,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.012732252478599548,
+      "frequencyTime": 0.0022430550307035446,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -204,7 +204,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.001860378310084343,
+      "frequencyTime": 0.011371280997991562,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -494,6 +494,59 @@
       "velRangeZ": [
         0.0010000000474974513,
         0.0010000000474974513
+      ]
+    },
+    "boss_bullet_sign": {
+      "endColor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "frequency": 0.009999999776482582,
+      "frequencyTime": 0.003199303522706032,
+      "isActive": false,
+      "isEmitting": true,
+      "isNormalize": false,
+      "isRandomRotateZ": true,
+      "isTemporary": false,
+      "lifeTimeRange": [
+        0.10000000149011612,
+        0.15000000596046448
+      ],
+      "particleCount": 20,
+      "position": [
+        1.2999999523162842,
+        3.4000000953674316,
+        0.0
+      ],
+      "radius": 0.10000000149011612,
+      "scaleRangeX": [
+        0.009999999776482582,
+        0.009999999776482582
+      ],
+      "scaleRangeY": [
+        1.0,
+        1.0
+      ],
+      "startColor": [
+        1.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "type": 0,
+      "velRangeX": [
+        0.0,
+        0.0
+      ],
+      "velRangeY": [
+        0.0,
+        0.0
+      ],
+      "velRangeZ": [
+        0.0,
+        0.0
       ]
     },
     "boss_melee_attack_sign": {

@@ -1,6 +1,7 @@
 #pragma once
 #include "../../../../BehaviorTree/Core/BTNode.h"
 #include "../../../../BehaviorTree/Core/BTBlackboard.h"
+#include "../../../../Effect/BulletSignEffect.h"
 #include "Vector3.h"
 
 class Boss;
@@ -108,7 +109,7 @@ private:
     Tako::Vector3 CalculateDirectionToPlayer(Boss* boss);
 
     // 射撃前の準備時間
-    float chargeTime_ = 0.5f;
+    float chargeTime_ = 0.9f;
 
     // 発射する弾の数
     int bulletCount_ = 5;
@@ -136,4 +137,7 @@ private:
 
     // 初回実行フラグ
     bool isFirstExecute_ = true;
+
+    // 射撃予兆エフェクト
+    BulletSignEffect bulletSignEffect_;
 };

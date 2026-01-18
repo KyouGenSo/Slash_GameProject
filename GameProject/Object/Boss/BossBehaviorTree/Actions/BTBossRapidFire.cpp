@@ -32,9 +32,15 @@ BTNodeStatus BTBossRapidFire::Execute(BTBlackboard* blackboard) {
     // フェーズ1: チャージ中（プレイヤーに照準）
     if (elapsedTime_ < chargeTime_) {
         AimAtPlayer(boss, deltaTime);
+        bulletSignEffect_.Update(boss, deltaTime);
     }
     // フェーズ2: 連続発射中（追尾しながら発射）
     else if (firedCount_ < bulletCount_) {
+        // 最初の発射開始時にエフェクト終了
+        if (bulletSignEffect_.IsActive()) {
+            bulletSignEffect_.End(boss);
+        }
+
         // 発射中もプレイヤー方向を追尾
         AimAtPlayer(boss, deltaTime);
 
@@ -85,6 +91,9 @@ void BTBossRapidFire::InitializeRapidFire(Boss* boss) {
     // totalDurationを計算
     // チャージ時間 + (発射間隔 × 弾数) + 硬直時間
     totalDuration_ = chargeTime_ + (fireInterval_ * static_cast<float>(bulletCount_)) + recoveryTime_;
+
+    // 射撃予兆エフェクト開始
+    bulletSignEffect_.Start(boss, chargeTime_);
 }
 
 void BTBossRapidFire::AimAtPlayer(Boss* boss, float deltaTime) {

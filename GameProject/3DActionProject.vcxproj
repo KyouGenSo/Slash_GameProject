@@ -124,6 +124,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Common\HitFlashEffect.cpp" />
     <ClCompile Include="Common\BulletSpawner.cpp" />
     <ClCompile Include="Effect\BossBorderParticleManager.cpp" />
+    <ClCompile Include="Effect\BulletSignEffect.cpp" />
     <ClCompile Include="Effect\ClearEffectManager.cpp" />
     <ClCompile Include="Effect\DashEffectManager.cpp" />
     <ClCompile Include="Effect\OverEffectManager.cpp" />
@@ -216,6 +217,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Common\DynamicBoundary.h" />
     <ClInclude Include="Common\GameConst.h" />
     <ClInclude Include="Effect\BossBorderParticleManager.h" />
+    <ClInclude Include="Effect\BulletSignEffect.h" />
     <ClInclude Include="Effect\ClearEffectManager.h" />
     <ClInclude Include="Effect\DashEffectManager.h" />
     <ClInclude Include="Effect\OverEffectManager.h" />

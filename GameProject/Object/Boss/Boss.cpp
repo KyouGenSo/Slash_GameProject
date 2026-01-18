@@ -398,3 +398,25 @@ void Boss::SetAttackSignEmitterPosition(const Vector3& position) {
         emitterManager_->SetEmitterPosition(attackSignEmitterName_, position);
     }
 }
+
+void Boss::SetBulletSignEmitterActive(bool active) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterActive(bulletSignEmitterName_, active);
+    }
+}
+
+void Boss::SetBulletSignEmitterPosition(const Vector3& position) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterPosition(bulletSignEmitterName_, position);
+    }
+}
+
+void Boss::SetBulletSignEmitterScaleRangeX(float value) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterScaleRange(
+            bulletSignEmitterName_,
+            Vector2(value, value),
+            Vector2(1.0f, 1.0f)
+        );
+    }
+}
