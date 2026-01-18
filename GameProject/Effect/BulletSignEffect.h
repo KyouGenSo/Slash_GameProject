@@ -42,6 +42,7 @@ private:
     /// <returns>エミッター位置</returns>
     Tako::Vector3 CalculateEmitterPosition(Boss* boss);
 
+private:
     static constexpr float kForwardDistance = 2.0f;   ///< ボス前方距離
     static constexpr float kScaleMin = 0.01f;         ///< スケール最小値
     static constexpr float kScaleMax = 15.0f;         ///< スケール最大値

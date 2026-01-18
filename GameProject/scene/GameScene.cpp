@@ -183,6 +183,12 @@ void GameScene::Initialize()
         true
     );
 
+    collisionManager->SetCollisionMask(
+        static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
+        static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
+        true
+    );
+
     /// ----------------------エミッターマネージャーの初期化--------------------------------------------- ///
     // シーンのエミッターをまとめて読み込む
     emitterManager_->LoadScenePreset("gamescene_preset");

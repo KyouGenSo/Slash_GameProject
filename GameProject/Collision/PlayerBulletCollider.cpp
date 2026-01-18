@@ -3,6 +3,7 @@
 #include "../Object/Boss/Boss.h"
 #include "CollisionTypeIdDef.h"
 #include "CollisionManager.h"
+#include "Object/Projectile/BossBullet.h"
 
 using namespace Tako;
 
@@ -36,6 +37,9 @@ void PlayerBulletCollider::OnCollisionEnter(Collider* other) {
             // 弾を非アクティブ化
             owner_->SetActive(false);
         }
+    }
+    else if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK)) { // ボスの弾との衝突判定
+        owner_->SetActive(false);
     }
 }
 
