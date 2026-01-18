@@ -134,6 +134,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame\MyGame.cpp" />
     <ClCompile Include="Object\Boss\Boss.cpp" />
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.cpp" />
     <ClCompile Include="Object\Boss\BossPhaseManager.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossApproach.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossDash.cpp" />
@@ -228,6 +229,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="MyGame\MyGame.h" />
     <ClInclude Include="Object\Boss\Boss.h" />
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.h" />
     <ClInclude Include="Object\Boss\BossPhaseManager.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossApproach.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossDash.h" />
