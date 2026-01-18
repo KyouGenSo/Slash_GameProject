@@ -312,6 +312,9 @@
     <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckStunned.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.cpp">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -558,6 +561,9 @@
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckStunned.h">
+      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.h">
       <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClInclude>
   </ItemGroup>

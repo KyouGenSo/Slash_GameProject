@@ -441,3 +441,24 @@ void Boss::TriggerStun(const Vector3& knockbackDirection) {
 void Boss::StartStunFlash(const Vector4& color, float duration) {
     hitFlashEffect_.Start(color, duration);
 }
+
+void Boss::EnterRecovery() {
+    isInRecovery_ = true;
+}
+
+void Boss::ExitRecovery() {
+    isInRecovery_ = false;
+}
+
+void Boss::SetDashing(bool dashing) {
+    isDashing_ = dashing;
+}
+
+void Boss::TriggerRetreat(const Vector3& direction) {
+    // 既に離脱要求がある場合は無視
+    if (shouldRetreat_) {
+        return;
+    }
+    shouldRetreat_ = true;
+    retreatDirection_ = direction;
+}

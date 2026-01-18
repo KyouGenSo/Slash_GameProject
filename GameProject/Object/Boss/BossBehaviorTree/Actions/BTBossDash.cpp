@@ -30,6 +30,7 @@ BTNodeStatus BTBossDash::Execute(BTBlackboard* blackboard) {
     if (isFirstExecute_) {
         InitializeDash(boss);
         isFirstExecute_ = false;
+        boss->SetDashing(true);  // ダッシュ開始
     }
 
     // ダッシュ移動の更新
@@ -42,6 +43,9 @@ BTNodeStatus BTBossDash::Execute(BTBlackboard* blackboard) {
     if (elapsedTime_ >= dashDuration_) {
         // 最終位置に設定
         boss->SetTranslate(targetPosition_);
+
+        // ダッシュ終了
+        boss->SetDashing(false);
 
         // リセットして成功を返す
         isFirstExecute_ = true;
@@ -59,6 +63,9 @@ void BTBossDash::Reset() {
     BTNode::Reset();
     elapsedTime_ = 0.0f;
     isFirstExecute_ = true;
+    // 注意: Reset時はboss参照がないため、SetDashing(false)は呼べない
+    // BossBehaviorTree::Update()でのリセット時にも安全に動作するよう
+    // BTBossDash自体は状態を保持しない設計とする
 }
 
 void BTBossDash::InitializeDash(Boss* boss) {

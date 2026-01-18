@@ -79,6 +79,7 @@ BTNodeStatus BTBossMeleeAttack::Execute(BTBlackboard* blackboard) {
                 // コンボ完了 → Recoveryへ
                 currentPhase_ = MeleePhase::Recovery;
                 phaseTimer_ = 0.0f;
+                boss->EnterRecovery();  // 硬直フェーズ開始
             }
         }
         break;
@@ -111,6 +112,9 @@ BTNodeStatus BTBossMeleeAttack::Execute(BTBlackboard* blackboard) {
         ProcessRecoveryPhase(boss);
         // 硬直時間終了で完了
         if (phaseTimer_ >= recoveryTime_) {
+            // 硬直フェーズ終了
+            boss->ExitRecovery();
+
             // リセットして成功を返す
             isFirstExecute_ = true;
             elapsedTime_ = 0.0f;
@@ -143,6 +147,7 @@ void BTBossMeleeAttack::Reset() {
     comboMaxCount_ = 1;
     comboIndex_ = 0;
     currentSwingDirection_ = 1.0f;
+    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
 }
 
 void BTBossMeleeAttack::InitializeMeleeAttack(Boss* boss) {

@@ -202,6 +202,60 @@ public:
     /// <param name="duration">持続時間</param>
     void StartStunFlash(const Tako::Vector4& color, float duration);
 
+    //-----------------------------硬直状態システム------------------------------//
+    /// <summary>
+    /// 硬直フェーズ開始（アクションノードから呼ばれる）
+    /// </summary>
+    void EnterRecovery();
+
+    /// <summary>
+    /// 硬直フェーズ終了（アクションノードから呼ばれる）
+    /// </summary>
+    void ExitRecovery();
+
+    /// <summary>
+    /// 硬直中かどうか
+    /// </summary>
+    /// <returns>硬直中ならtrue</returns>
+    bool IsInRecovery() const { return isInRecovery_; }
+
+    //-----------------------------ダッシュ状態システム------------------------------//
+    /// <summary>
+    /// ダッシュ状態を設定
+    /// </summary>
+    /// <param name="dashing">ダッシュ中ならtrue</param>
+    void SetDashing(bool dashing);
+
+    /// <summary>
+    /// ダッシュ中かどうか
+    /// </summary>
+    /// <returns>ダッシュ中ならtrue</returns>
+    bool IsDashing() const { return isDashing_; }
+
+    //-----------------------------離脱トリガーシステム------------------------------//
+    /// <summary>
+    /// 離脱をトリガー（硬直時間外に近接攻撃を受けた時に呼ばれる）
+    /// </summary>
+    /// <param name="direction">離脱方向（正規化済み）</param>
+    void TriggerRetreat(const Tako::Vector3& direction);
+
+    /// <summary>
+    /// 離脱すべきかどうか
+    /// </summary>
+    /// <returns>離脱要求があればtrue</returns>
+    bool ShouldRetreat() const { return shouldRetreat_; }
+
+    /// <summary>
+    /// 離脱フラグをクリア（BTBossRetreat終了時に呼ばれる）
+    /// </summary>
+    void ClearRetreat() { shouldRetreat_ = false; }
+
+    /// <summary>
+    /// 離脱方向を取得
+    /// </summary>
+    /// <returns>離脱方向ベクトル</returns>
+    const Tako::Vector3& GetRetreatDirection() const { return retreatDirection_; }
+
     /// <summary>
     /// 座標変換情報を取得
     /// </summary>
@@ -375,6 +429,14 @@ private:
     // ===== スタンシステム =====
     bool isStunned_ = false;                      ///< スタン状態フラグ
     Tako::Vector3 stunKnockbackDirection_;        ///< ノックバック方向
+
+    // ===== 硬直状態システム =====
+    bool isInRecovery_ = false;                   ///< 硬直中フラグ
+    bool isDashing_ = false;                      ///< ダッシュ中フラグ
+
+    // ===== 離脱トリガーシステム =====
+    bool shouldRetreat_ = false;                  ///< 離脱要求フラグ
+    Tako::Vector3 retreatDirection_;              ///< 離脱方向
 
     // ボス本体の衝突判定用AABBコライダー
     std::unique_ptr<Tako::OBBCollider> bodyCollider_;

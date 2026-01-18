@@ -40,6 +40,7 @@ BTNodeStatus BTBossShoot::Execute(BTBlackboard* blackboard) {
         bulletSignEffect_.End(boss);
         FireBullets(boss);
         hasFired_ = true;
+        boss->EnterRecovery();  // 硬直フェーズ開始
     }
 
     // 経過時間を更新
@@ -47,6 +48,9 @@ BTNodeStatus BTBossShoot::Execute(BTBlackboard* blackboard) {
 
     // 状態終了チェック
     if (elapsedTime_ >= totalDuration_) {
+        // 硬直フェーズ終了
+        boss->ExitRecovery();
+
         // リセットして成功を返す
         isFirstExecute_ = true;
         elapsedTime_ = 0.0f;
@@ -65,6 +69,8 @@ void BTBossShoot::Reset() {
     elapsedTime_ = 0.0f;
     isFirstExecute_ = true;
     hasFired_ = false;
+    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
+    // スタン等によるリセット時は、BossBehaviorTree側で状態クリアが必要
 }
 
 void BTBossShoot::InitializeShoot(Boss* boss) {

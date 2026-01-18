@@ -124,4 +124,7 @@ private:
 
     // スタン立ち上がりエッジ検出用
     bool wasStunnedLastFrame_ = false;  ///< 前フレームのスタン状態
+
+    // 離脱立ち上がりエッジ検出用
+    bool wasRetreatRequestedLastFrame_ = false;  ///< 前フレームの離脱要求状態
 };

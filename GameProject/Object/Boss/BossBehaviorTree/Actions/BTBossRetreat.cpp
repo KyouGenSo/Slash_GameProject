@@ -41,6 +41,7 @@ BTNodeStatus BTBossRetreat::Execute(BTBlackboard* blackboard) {
 
         // 既に目標距離以上離れている場合は即座に成功
         if (retreatDuration_ <= 0.0f) {
+            boss->ClearRetreat();  // 離脱フラグをクリア
             isFirstExecute_ = true;
             status_ = BTNodeStatus::Success;
             return BTNodeStatus::Success;
@@ -62,6 +63,9 @@ BTNodeStatus BTBossRetreat::Execute(BTBlackboard* blackboard) {
     if (distanceToTarget < kArrivalThreshold) {
         // 目標位置に到達
         boss->SetTranslate(targetPosition_);
+
+        // 離脱フラグをクリア
+        boss->ClearRetreat();
 
         // リセットして成功を返す
         isFirstExecute_ = true;

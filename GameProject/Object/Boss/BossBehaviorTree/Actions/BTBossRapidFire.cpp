@@ -50,6 +50,11 @@ BTNodeStatus BTBossRapidFire::Execute(BTBlackboard* blackboard) {
             FireBullet(boss);
             firedCount_++;
             timeSinceLastFire_ = 0.0f;
+
+            // 最後の弾を発射したら硬直フェーズ開始
+            if (firedCount_ >= bulletCount_) {
+                boss->EnterRecovery();
+            }
         }
     }
     // フェーズ3: 硬直中（何もしない）
@@ -59,6 +64,9 @@ BTNodeStatus BTBossRapidFire::Execute(BTBlackboard* blackboard) {
 
     // 状態終了チェック
     if (elapsedTime_ >= totalDuration_) {
+        // 硬直フェーズ終了
+        boss->ExitRecovery();
+
         // リセットして成功を返す
         isFirstExecute_ = true;
         elapsedTime_ = 0.0f;
@@ -79,6 +87,7 @@ void BTBossRapidFire::Reset() {
     firedCount_ = 0;
     timeSinceLastFire_ = 0.0f;
     isFirstExecute_ = true;
+    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
 }
 
 void BTBossRapidFire::InitializeRapidFire(Boss* boss) {

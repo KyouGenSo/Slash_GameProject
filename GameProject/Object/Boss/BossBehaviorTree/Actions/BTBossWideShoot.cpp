@@ -52,6 +52,11 @@ BTNodeStatus BTBossWideShoot::Execute(BTBlackboard* blackboard) {
             if (firedInSweep_ >= bulletsPerSweep_) {
                 currentSweep_++;
                 firedInSweep_ = 0;
+
+                // 全スイープ完了で硬直フェーズ開始
+                if (currentSweep_ >= sweepCount_) {
+                    boss->EnterRecovery();
+                }
             }
         }
     }
@@ -61,6 +66,9 @@ BTNodeStatus BTBossWideShoot::Execute(BTBlackboard* blackboard) {
 
     // 状態終了チェック
     if (elapsedTime_ >= totalDuration_) {
+        // 硬直フェーズ終了
+        boss->ExitRecovery();
+
         // リセットして成功を返す
         isFirstExecute_ = true;
         elapsedTime_ = 0.0f;
@@ -85,6 +93,7 @@ void BTBossWideShoot::Reset() {
     firedInSweep_ = 0;
     isFirstExecute_ = true;
     hasEndedEffect_ = false;
+    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
 }
 
 void BTBossWideShoot::InitializeWideShoot(Boss* boss) {

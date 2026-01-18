@@ -25,19 +25,35 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
     if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy) {
+            // ダッシュ中は無視（何も起こらない）
+            if (enemy->IsDashing()) {
+                return;
+            }
 
-            enemy->OnHit(attackDamage_, 1.0f);
-
-            // カメラシェイク発動（攻撃ヒット時は軽めに）
-            CameraManager::GetInstance()->StartShake(0.3f);
-
-            // スタントリガー（ノックバック方向: プレイヤー → ボス）
+            // ノックバック/離脱方向を計算（プレイヤー → ボス）
             Tako::Vector3 knockbackDir = enemy->GetTransform().translate - player_->GetTransform().translate;
             knockbackDir.y = 0.0f;
             if (knockbackDir.Length() > 0.01f) {
                 knockbackDir = knockbackDir.Normalize();
             }
-            enemy->TriggerStun(knockbackDir);
+
+            // スタン中: ダメージのみ（スタン延長なし）
+            if (enemy->IsStunned()) {
+                enemy->OnHit(attackDamage_, 1.0f);
+                CameraManager::GetInstance()->StartShake(0.3f);
+            }
+            // 硬直中: ダメージ＋スタン
+            else if (enemy->IsInRecovery()) {
+                enemy->OnHit(attackDamage_, 1.0f);
+                CameraManager::GetInstance()->StartShake(0.3f);
+                enemy->TriggerStun(knockbackDir);
+            }
+            // それ以外: 離脱トリガー（ダメージなし）
+            else {
+                enemy->TriggerRetreat(knockbackDir);
+                detectedEnemy_ = enemy;  // 同一衝突セッション中の再トリガー防止
+                return;  // 離脱トリガー後は他の処理をスキップ
+            }
 
             if (!detectedEnemy_) {
                 detectedEnemy_ = enemy;
@@ -58,21 +74,36 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
     if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy && !detectedEnemy_) {
+            // ダッシュ中は無視（何も起こらない）
+            if (enemy->IsDashing()) {
+                return;
+            }
+
             detectedEnemy_ = enemy;
             if (canDamage)
             {
-                enemy->OnHit(attackDamage_, 1.0f);
-
-                // カメラシェイク発動（攻撃ヒット時は軽めに）
-                CameraManager::GetInstance()->StartShake(0.3f);
-
-                // スタントリガー（ノックバック方向: プレイヤー → ボス）
+                // ノックバック/離脱方向を計算（プレイヤー → ボス）
                 Tako::Vector3 knockbackDir = enemy->GetTransform().translate - player_->GetTransform().translate;
                 knockbackDir.y = 0.0f;
                 if (knockbackDir.Length() > 0.01f) {
                     knockbackDir = knockbackDir.Normalize();
                 }
-                enemy->TriggerStun(knockbackDir);
+
+                // スタン中: ダメージのみ（スタン延長なし）
+                if (enemy->IsStunned()) {
+                    enemy->OnHit(attackDamage_, 1.0f);
+                    CameraManager::GetInstance()->StartShake(0.3f);
+                }
+                // 硬直中: ダメージ＋スタン
+                else if (enemy->IsInRecovery()) {
+                    enemy->OnHit(attackDamage_, 1.0f);
+                    CameraManager::GetInstance()->StartShake(0.3f);
+                    enemy->TriggerStun(knockbackDir);
+                }
+                // それ以外: 離脱トリガー（ダメージなし）
+                else {
+                    enemy->TriggerRetreat(knockbackDir);
+                }
 
                 canDamage = false;
             }

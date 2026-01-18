@@ -136,6 +136,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Object\Boss\Boss.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossStun.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.cpp" />
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckStunned.cpp" />
     <ClCompile Include="Object\Boss\BossPhaseManager.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossApproach.cpp" />
@@ -233,6 +234,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Object\Boss\Boss.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossStun.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.h" />
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckStunned.h" />
     <ClInclude Include="Object\Boss\BossPhaseManager.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossApproach.h" />
