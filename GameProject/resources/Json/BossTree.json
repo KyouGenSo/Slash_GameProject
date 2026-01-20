@@ -321,11 +321,25 @@
       "sourcePinId": 20017,
       "targetNodeId": 10046,
       "targetPinId": 20065
+    },
+    {
+      "id": 30046,
+      "sourceNodeId": 10034,
+      "sourcePinId": 20050,
+      "targetNodeId": 10047,
+      "targetPinId": 20066
+    },
+    {
+      "id": 30047,
+      "sourceNodeId": 10040,
+      "sourcePinId": 20058,
+      "targetNodeId": 10048,
+      "targetPinId": 20067
     }
   ],
   "metadata": {
-    "created": "2026-01-20T11:53:30",
-    "modified": "2026-01-20T11:53:30",
+    "created": "2026-01-20T13:57:44",
+    "modified": "2026-01-20T13:57:44",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -343,7 +357,7 @@
       "displayName": "Dash",
       "id": 10001,
       "parameters": {
-        "dashDuration": 0.14649412035942078,
+        "dashDuration": 0.09670718014240265,
         "dashSpeed": 200.0
       },
       "position": {
@@ -932,6 +946,30 @@
         "y": 100.0
       },
       "type": "BTBossRetreat"
+    },
+    {
+      "displayName": "Idle",
+      "id": 10047,
+      "parameters": {
+        "idleDuration": 0.5
+      },
+      "position": {
+        "x": 100.0,
+        "y": 100.0
+      },
+      "type": "BTBossIdle"
+    },
+    {
+      "displayName": "Idle",
+      "id": 10048,
+      "parameters": {
+        "idleDuration": 0.5
+      },
+      "position": {
+        "x": 130.0,
+        "y": 120.0
+      },
+      "type": "BTBossIdle"
     }
   ],
   "version": "1.0"
