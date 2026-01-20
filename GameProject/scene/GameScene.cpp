@@ -45,6 +45,9 @@ using namespace Tako;
 
 void GameScene::Initialize()
 {
+    /// ================================== ///
+    ///              初期化処理             ///
+    /// ================================== ///
     // CollisionManagerを取得
     CollisionManager* collisionManager = CollisionManager::GetInstance();
     collisionManager->Initialize();
@@ -54,6 +57,18 @@ void GameScene::Initialize()
 
     // EmitterManagerの生成
     emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
+
+    // PostEffectの初期化
+    PostEffectManager::GetInstance()->AddEffectToChain("RGBSplit");
+    PostEffectManager::GetInstance()->AddEffectToChain("DepthBasedOutline");
+    RGBSplitParam rgbParam{
+        .redOffset = Vector2(-0.01f, 0.0f),
+        .greenOffset = Vector2(0.01f, 0.0f),
+        .blueOffset = Vector2(0.0f, 0.0f),
+        .intensity = 0.1f };
+    DepthOutlineParam outlineParam{ .outlineThickness = 0.4f};
+    PostEffectManager::GetInstance()->SetEffectParam("RGBSplit", rgbParam);
+    PostEffectManager::GetInstance()->SetEffectParam("DepthBasedOutline", outlineParam);
 
     // コントローラーUIの初期化
     controllerUI_ = std::make_unique<ControllerUI>();
@@ -96,9 +111,6 @@ void GameScene::Initialize()
 
     DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
 #endif
-    /// ================================== ///
-    ///              初期化処理             ///
-    /// ================================== ///
 
     // Input Handlerの初期化
     inputHandler_ = std::make_unique<InputHandler>();
