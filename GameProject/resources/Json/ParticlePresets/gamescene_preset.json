@@ -18,7 +18,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.0034205224364995956,
+      "frequencyTime": 0.005980024114251137,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -80,7 +80,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.0034317653626203537,
+      "frequencyTime": 0.005991281941533089,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -142,7 +142,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.0022430550307035446,
+      "frequencyTime": 0.0048024337738752365,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -204,7 +204,7 @@
         1.0
       ],
       "frequency": 0.019999999552965164,
-      "frequencyTime": 0.011371280997991562,
+      "frequencyTime": 0.013930600136518478,
       "isActive": true,
       "isEmitting": true,
       "isNormalize": false,
@@ -257,7 +257,7 @@
       "boxSize": [
         1.0,
         1.0,
-        40.0
+        60.0
       ],
       "endColor": [
         1.0,
@@ -266,8 +266,8 @@
         1.0
       ],
       "frequency": 0.04500000178813934,
-      "frequencyTime": 0.031017690896987915,
-      "isActive": false,
+      "frequencyTime": 0.03359305113554001,
+      "isActive": true,
       "isEmitting": false,
       "isNormalize": false,
       "isRandomRotateZ": false,
@@ -278,9 +278,9 @@
       ],
       "particleCount": 440,
       "position": [
-        -20.0,
+        -15.115581512451172,
         0.0,
-        9.800000190734863
+        9.973603248596191
       ],
       "scaleRangeX": [
         0.20000000298023224,
@@ -319,7 +319,7 @@
       "boxSize": [
         1.0,
         1.0,
-        40.0
+        60.0
       ],
       "endColor": [
         1.0,
@@ -328,8 +328,8 @@
         1.0
       ],
       "frequency": 0.04500000178813934,
-      "frequencyTime": 0.031017690896987915,
-      "isActive": false,
+      "frequencyTime": 0.03359305113554001,
+      "isActive": true,
       "isEmitting": false,
       "isNormalize": false,
       "isRandomRotateZ": false,
@@ -340,9 +340,9 @@
       ],
       "particleCount": 440,
       "position": [
-        -20.0,
+        -75.11558532714844,
         0.0,
-        9.800000190734863
+        9.973603248596191
       ],
       "scaleRangeX": [
         0.20000000298023224,
@@ -379,7 +379,7 @@
         0.0
       ],
       "boxSize": [
-        40.0,
+        60.0,
         1.0,
         1.0
       ],
@@ -390,8 +390,8 @@
         1.0
       ],
       "frequency": 0.04500000178813934,
-      "frequencyTime": 0.03256239742040634,
-      "isActive": false,
+      "frequencyTime": 0.03513770550489426,
+      "isActive": true,
       "isEmitting": false,
       "isNormalize": false,
       "isRandomRotateZ": false,
@@ -402,9 +402,9 @@
       ],
       "particleCount": 440,
       "position": [
+        -45.11558151245117,
         0.0,
-        0.0,
-        -10.0
+        -20.026397705078125
       ],
       "scaleRangeX": [
         0.20000000298023224,
@@ -441,7 +441,7 @@
         0.0
       ],
       "boxSize": [
-        40.0,
+        60.0,
         1.0,
         1.0
       ],
@@ -452,8 +452,8 @@
         1.0
       ],
       "frequency": 0.04500000178813934,
-      "frequencyTime": 0.03256239742040634,
-      "isActive": false,
+      "frequencyTime": 0.03513770550489426,
+      "isActive": true,
       "isEmitting": false,
       "isNormalize": false,
       "isRandomRotateZ": false,
@@ -464,9 +464,9 @@
       ],
       "particleCount": 440,
       "position": [
+        -45.11558151245117,
         0.0,
-        0.0,
-        -10.0
+        39.973602294921875
       ],
       "scaleRangeX": [
         0.20000000298023224,
@@ -504,7 +504,7 @@
         1.0
       ],
       "frequency": 0.009999999776482582,
-      "frequencyTime": 0.003199303522706032,
+      "frequencyTime": 0.001134166494011879,
       "isActive": false,
       "isEmitting": true,
       "isNormalize": false,
@@ -516,14 +516,14 @@
       ],
       "particleCount": 20,
       "position": [
-        1.2999999523162842,
-        3.4000000953674316,
-        0.0
+        -27.8012638092041,
+        2.5,
+        30.908117294311523
       ],
       "radius": 0.10000000149011612,
       "scaleRangeX": [
-        0.009999999776482582,
-        0.009999999776482582
+        15.0,
+        15.0
       ],
       "scaleRangeY": [
         1.0,
@@ -557,7 +557,7 @@
         1.0
       ],
       "frequency": 0.3499999940395355,
-      "frequencyTime": 0.055917758494615555,
+      "frequencyTime": 0.11343013495206833,
       "isActive": false,
       "isEmitting": false,
       "isNormalize": false,
@@ -569,9 +569,9 @@
       ],
       "particleCount": 100,
       "position": [
-        -33.05976104736328,
+        -51.857017517089844,
         2.5,
-        -76.91895294189453
+        14.280930519104004
       ],
       "radius": 0.10000000149011612,
       "scaleRangeX": [
@@ -769,7 +769,7 @@
         1.0
       ],
       "frequency": 0.0010000000474974513,
-      "frequencyTime": 0.0009954777779057622,
+      "frequencyTime": 4.684575833380222e-05,
       "isActive": false,
       "isEmitting": true,
       "isNormalize": false,
@@ -781,9 +781,9 @@
       ],
       "particleCount": 10,
       "position": [
-        0.0,
-        0.0,
-        0.0
+        -25.224895477294922,
+        2.5,
+        -40.02164840698242
       ],
       "radius": 0.10000000149011612,
       "scaleRangeX": [
@@ -875,7 +875,7 @@
         1.0
       ],
       "frequency": 0.0010000000474974513,
-      "frequencyTime": 0.0006692243041470647,
+      "frequencyTime": 0.0007482153596356511,
       "isActive": false,
       "isEmitting": true,
       "isNormalize": false,
@@ -887,9 +887,9 @@
       ],
       "particleCount": 2,
       "position": [
-        34.17811584472656,
+        -45.89171600341797,
         2.5,
-        -13.439217567443848
+        -10.801046371459961
       ],
       "radius": 1.0,
       "scaleRangeX": [
