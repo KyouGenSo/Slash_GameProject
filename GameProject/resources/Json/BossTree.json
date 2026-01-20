@@ -293,11 +293,39 @@
       "sourcePinId": 20001,
       "targetNodeId": 10026,
       "targetPinId": 20038
+    },
+    {
+      "id": 30042,
+      "sourceNodeId": 10045,
+      "sourcePinId": 20064,
+      "targetNodeId": 10044,
+      "targetPinId": 20062
+    },
+    {
+      "id": 30043,
+      "sourceNodeId": 10045,
+      "sourcePinId": 20064,
+      "targetNodeId": 10043,
+      "targetPinId": 20061
+    },
+    {
+      "id": 30044,
+      "sourceNodeId": 10018,
+      "sourcePinId": 20028,
+      "targetNodeId": 10045,
+      "targetPinId": 20063
+    },
+    {
+      "id": 30045,
+      "sourceNodeId": 10011,
+      "sourcePinId": 20017,
+      "targetNodeId": 10046,
+      "targetPinId": 20065
     }
   ],
   "metadata": {
-    "created": "2026-01-19T06:11:26",
-    "modified": "2026-01-19T06:11:26",
+    "created": "2026-01-20T11:53:30",
+    "modified": "2026-01-20T11:53:30",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -315,7 +343,7 @@
       "displayName": "Dash",
       "id": 10001,
       "parameters": {
-        "dashDuration": 0.03094515949487686,
+        "dashDuration": 0.14649412035942078,
         "dashSpeed": 200.0
       },
       "position": {
@@ -580,7 +608,7 @@
         "blockRadius": 8.0,
         "blockScale": 0.5,
         "comboInterval": 0.15000000596046448,
-        "comboProbability": 0.5,
+        "comboProbability": 0.4009999930858612,
         "prepareTime": 0.5,
         "recoveryTime": 1.0,
         "rushDistance": 25.0,
@@ -701,11 +729,11 @@
         "attackDuration": 0.20000000298023224,
         "blockRadius": 8.0,
         "blockScale": 0.5,
-        "comboInterval": 0.5,
+        "comboInterval": 0.15000000596046448,
         "comboProbability": 0.5,
         "prepareTime": 0.5,
         "recoveryTime": 1.0,
-        "rushDistance": 20.0,
+        "rushDistance": 25.0,
         "stopDistance": 5.0,
         "swingAngle": 3.1415927410125732
       },
@@ -801,11 +829,11 @@
         "attackDuration": 0.20000000298023224,
         "blockRadius": 8.0,
         "blockScale": 0.5,
-        "comboInterval": 0.5,
+        "comboInterval": 0.15000000596046448,
         "comboProbability": 0.5,
         "prepareTime": 0.5,
         "recoveryTime": 1.0,
-        "rushDistance": 20.0,
+        "rushDistance": 25.0,
         "stopDistance": 5.0,
         "swingAngle": 3.1415927410125732
       },
@@ -845,6 +873,63 @@
       "position": {
         "x": 160.0,
         "y": 140.0
+      },
+      "type": "BTBossRetreat"
+    },
+    {
+      "displayName": "Melee Attack",
+      "id": 10043,
+      "parameters": {
+        "attackDuration": 0.20000000298023224,
+        "blockRadius": 8.0,
+        "blockScale": 0.5,
+        "comboInterval": 0.15000000596046448,
+        "comboProbability": 0.7020000219345093,
+        "prepareTime": 0.5,
+        "recoveryTime": 1.0,
+        "rushDistance": 25.0,
+        "stopDistance": 5.0,
+        "swingAngle": 3.1415927410125732
+      },
+      "position": {
+        "x": 130.0,
+        "y": 120.0
+      },
+      "type": "BTBossMeleeAttack"
+    },
+    {
+      "displayName": "Approach",
+      "id": 10044,
+      "parameters": {
+        "approachSpeed": 150.0,
+        "targetDistance": 12.0
+      },
+      "position": {
+        "x": 160.0,
+        "y": 140.0
+      },
+      "type": "BTBossApproach"
+    },
+    {
+      "displayName": "CloseMeleeSequence",
+      "id": 10045,
+      "parameters": null,
+      "position": {
+        "x": 190.0,
+        "y": 160.0
+      },
+      "type": "BTSequence"
+    },
+    {
+      "displayName": "Retreat",
+      "id": 10046,
+      "parameters": {
+        "retreatSpeed": 200.0,
+        "targetDistance": 30.0
+      },
+      "position": {
+        "x": 100.0,
+        "y": 100.0
       },
       "type": "BTBossRetreat"
     }
