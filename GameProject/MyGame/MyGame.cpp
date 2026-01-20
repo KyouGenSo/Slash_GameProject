@@ -241,11 +241,38 @@ void MyGame::RegisterGlobalVariables()
     gv->CreateGroup("AttackState");
     gv->AddItem("AttackState", "SearchTime", 0.1f);
     gv->AddItem("AttackState", "MoveTime", 0.1f);
-    gv->AddItem("AttackState", "AttackDuration", 0.1f);
-    gv->AddItem("AttackState", "MaxCombo", 2);
-    gv->AddItem("AttackState", "ComboWindow", 1.0f);
     gv->AddItem("AttackState", "BlockRadius", 4.0f);
     gv->AddItem("AttackState", "BlockScale", 0.5f);
+    gv->AddItem("AttackState", "RecoveryTime", 0.5f);   // 4コンボ完走時の硬直
+    gv->AddItem("AttackState", "MaxCombo", 4);
+
+    // Combo0: 左振り（水平）- 左から開始して前を通って右へ
+    gv->AddItem("AttackState", "Combo0_StartAngle", -1.5708f);
+    gv->AddItem("AttackState", "Combo0_SwingAngle", 3.14159f);
+    gv->AddItem("AttackState", "Combo0_SwingDirection", 1.0f);
+    gv->AddItem("AttackState", "Combo0_AttackDuration", 0.15f);
+    gv->AddItem("AttackState", "Combo0_Axis", 0);       // 0=水平
+
+    // Combo1: 右振り（水平）- 右から開始して前を通って左へ
+    gv->AddItem("AttackState", "Combo1_StartAngle", 1.5708f);
+    gv->AddItem("AttackState", "Combo1_SwingAngle", 3.14159f);
+    gv->AddItem("AttackState", "Combo1_SwingDirection", -1.0f);
+    gv->AddItem("AttackState", "Combo1_AttackDuration", 0.15f);
+    gv->AddItem("AttackState", "Combo1_Axis", 0);
+
+    // Combo2: 縦切り（垂直）- 下から開始して前を通って上へ
+    gv->AddItem("AttackState", "Combo2_StartAngle", -1.5708f);
+    gv->AddItem("AttackState", "Combo2_SwingAngle", 3.14159f);
+    gv->AddItem("AttackState", "Combo2_SwingDirection", 1.0f);
+    gv->AddItem("AttackState", "Combo2_AttackDuration", 0.2f);
+    gv->AddItem("AttackState", "Combo2_Axis", 1);       // 1=垂直
+
+    // Combo3: 大回転（水平360度）- 前から開始して反時計回り
+    gv->AddItem("AttackState", "Combo3_StartAngle", 0.0f);
+    gv->AddItem("AttackState", "Combo3_SwingAngle", 6.28318f);
+    gv->AddItem("AttackState", "Combo3_SwingDirection", -1.0f);
+    gv->AddItem("AttackState", "Combo3_AttackDuration", 0.3f);
+    gv->AddItem("AttackState", "Combo3_Axis", 0);
 
     // === DashState === //
     gv->CreateGroup("DashState");
