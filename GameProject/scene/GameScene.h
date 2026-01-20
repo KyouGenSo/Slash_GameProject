@@ -96,6 +96,46 @@ public: // メンバ関数
     /// </summary>
     void CreatePenetratingBossBullet();
 
+    /// <summary>
+    /// デバッグ用オプション初期化
+    /// </summary>
+    void InitializeDebugOption();
+
+    /// <summary>
+    /// ポストエフェクト初期化
+    /// </summary>
+    void InitializePostEffect();
+
+    /// <summary>
+    /// Object3d初期化
+    /// </summary>
+    void InitializeObject3d();
+
+    /// <summary>
+    /// カメラシステム初期化
+    /// </summary>
+    void InitializeCameraSystem();
+
+    /// <summary>
+    /// 衝突判定マスクの設定
+    /// </summary>
+    void SetCollisionMask();
+
+    /// <summary>
+    /// エミッターマネージャー初期化
+    /// </summary>
+    void InitializeEmitterManger();
+
+    /// <summary>
+    /// エフェクトマネージャー初期化
+    /// </summary>
+    void InitializeEffectManager();
+
+    /// <summary>
+    /// カメラアニメーションの設定
+    /// </summary>
+    void SetCameraAnimation();
+
 private: // メンバ変数
 
     std::unique_ptr<Tako::SkyBox> skyBox_;                      // スカイボックス（環境マップ）

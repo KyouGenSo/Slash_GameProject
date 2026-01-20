@@ -48,75 +48,29 @@ void GameScene::Initialize()
     /// ================================== ///
     ///              初期化処理             ///
     /// ================================== ///
-    // CollisionManagerを取得
-    CollisionManager* collisionManager = CollisionManager::GetInstance();
-    collisionManager->Initialize();
 
-    // GlobalVariablesを取得
-    GlobalVariables* gvScene = GlobalVariables::GetInstance();
+    /// ----------------------エンジンクラス初期化---------------------------------------------------------///
+    // CollisionManagerの初期化
+    CollisionManager::GetInstance()->Initialize();
 
     // EmitterManagerの生成
     emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
-
-    // PostEffectの初期化
-    RGBSplitParam rgbParam{
-        .redOffset = Vector2(-0.01f, 0.0f),
-        .greenOffset = Vector2(0.01f, 0.0f),
-        .blueOffset = Vector2(0.0f, 0.0f),
-        .intensity = 0.1f };
-    DepthOutlineParam outlineParam{ .outlineThickness = 0.4f};
-    PostEffectManager::GetInstance()->AddEffectToChain("DepthBasedOutline");
-    PostEffectManager::GetInstance()->AddEffectToChain("RGBSplit");
-    PostEffectManager::GetInstance()->SetEffectParam("DepthBasedOutline", outlineParam);
-    PostEffectManager::GetInstance()->SetEffectParam("RGBSplit", rgbParam);
-
-    // コントローラーUIの初期化
-    controllerUI_ = std::make_unique<ControllerUI>();
-    controllerUI_->Initialize();
-
-#ifdef _DEBUG
-    DebugCamera::GetInstance()->Initialize();
-    Object3dBasic::GetInstance()->SetDebug(false);
-    Draw2D::GetInstance()->SetDebug(false);
-    GPUParticle::GetInstance()->SetIsDebug(false);
-
-    // デバッグビルドではコライダー表示をデフォルトでON
-    collisionManager->SetDebugDrawEnabled(true);
-
-    // DebugUIManagerにシーン名を設定
-    DebugUIManager::GetInstance()->SetSceneName("GameScene");
-
-    // ゲームオブジェクトをDebugUIManagerに登録
-    DebugUIManager::GetInstance()->RegisterGameObject("Player",
-        [this]() { if (player_) player_->DrawImGui(); });
-    DebugUIManager::GetInstance()->RegisterGameObject("Boss",
-        [this]() { if (boss_) boss_->DrawImGui(); });
-
-    // CameraSystemデバッグUI登録
-    DebugUIManager::GetInstance()->RegisterGameObject("CameraSystem",
-        []() { CameraDebugUI::Draw(); });
-
-    // CameraAnimationEditorデバッグUI登録
-    DebugUIManager::GetInstance()->RegisterGameObject("CameraAnimationEditor",
-        []() {
-            CameraDebugUI::DrawAnimationEditorOnly();
-            // 更新処理も呼び出す
-            CameraDebugUI::UpdateAnimationEditor(
-                FrameTimer::GetInstance()->GetDeltaTime());
-        });
-
-    // コントローラーUIのDebugUI登録
-    DebugUIManager::GetInstance()->RegisterGameObject("ControllerUI",
-        [this]() { if (controllerUI_) controllerUI_->DrawImGui(); });
-
-    DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
-#endif
 
     // Input Handlerの初期化
     inputHandler_ = std::make_unique<InputHandler>();
     inputHandler_->Initialize();
 
+    // コントローラーUIの初期化
+    controllerUI_ = std::make_unique<ControllerUI>();
+    controllerUI_->Initialize();
+
+    InitializePostEffect();
+
+    InitializeDebugOption();
+
     /// ----------------------シーンの描画設定---------------------------------------------------------///
+    // GlobalVariablesを取得
+    GlobalVariables* gvScene = GlobalVariables::GetInstance();
     // シャドウマッピンの最大描画距離の設定
     float shadowMaxDist = gvScene->GetValueFloat("GameScene", "ShadowMaxDistance");
     ShadowRenderer::GetInstance()->SetMaxShadowDistance(shadowMaxDist);
@@ -125,141 +79,23 @@ void GameScene::Initialize()
     Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, lightZ));
 
 
-    /// ----------------------3Dオブジェクトの初期化--------------------------------------------------- ///
-    // SkyBoxの初期化
-    skyBox_ = std::make_unique<SkyBox>();
-    skyBox_->Initialize("my_skybox.dds");
+    // 3Dオブジェクトの初期化
+    InitializeObject3d();
 
-    // 床モデルのUV変換設定
-    groundUvTransform_.translate = Vector3(0.0f, 0.0f, 0.0f);
-    groundUvTransform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
-    groundUvTransform_.scale = Vector3(100.0f, 100.0f, 100.0f);
-    // 床モデルの初期化
-    ground_ = std::make_unique<Object3d>();
-    ground_->Initialize();
-    ground_->SetModel("ground_black.gltf");
-    ground_->SetUvTransform(groundUvTransform_);
-    ground_->SetEnableHighlight(false);
+    // カメラシステムの初期化
+    InitializeCameraSystem();
 
-    //-----------Playerの初期化----------------//
-    player_ = std::make_unique<Player>();
-    player_->Initialize();
-    player_->SetCamera((*Object3dBasic::GetInstance()->GetCamera()));
-    player_->SetInputHandler(inputHandler_.get());
+    // エミッターマネージャーの初期化
+    InitializeEmitterManger();
 
-    //-----------Bossの初期化--------------------//
-    boss_ = std::make_unique<Boss>();
-    boss_->Initialize();
-    // ボスにプレイヤーの参照を設定
-    boss_->SetPlayer(player_.get());
-    // ゲーム開始時の演出が終わるまで一時停止状態に設定
-    boss_->SetIsPause(true);
-    // プレイヤーにボスの参照を設定
-    player_->SetBoss(boss_.get());
+    // エフェクトマネージャーの初期化
+    InitializeEffectManager();
 
-    /// ----------------------カメラシステムの初期化------------------------------------------------- ///
-    // カメラマネージャーの初期化
-    cameraManager_ = CameraManager::GetInstance();
-    cameraManager_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
+    // 衝突マスクの設定
+    SetCollisionMask();
 
-    // ThirdPersonControllerを登録
-    auto tpController = std::make_unique<ThirdPersonController>();
-    thirdPersonController_ = tpController.get();
-    thirdPersonController_->SetTarget(&player_->GetTransform());
-    // ボスをセカンダリターゲットとして設定し、注視機能を有効化
-    thirdPersonController_->SetSecondaryTarget(&boss_->GetTransform());
-    thirdPersonController_->EnableLookAtTarget(true);
-    cameraManager_->RegisterController("ThirdPerson", std::move(tpController));
-
-    // TopDownControllerを登録
-    auto tdController = std::make_unique<TopDownController>();
-    topDownController_ = tdController.get();
-    topDownController_->SetTarget(&player_->GetTransform());
-    std::vector<const Transform*> additionalTargets = { &boss_->GetTransform() };
-    topDownController_->SetAdditionalTargets(additionalTargets);
-    cameraManager_->RegisterController("TopDown", std::move(tdController));
-
-    // CameraAnimationControllerを登録
-    auto animController = std::make_unique<CameraAnimationController>();
-    animationController_ = animController.get();
-    cameraManager_->RegisterController("Animation", std::move(animController));
-
-    /// ----------------------衝突マスクの設定--------------------------------------------------- ///
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
-        static_cast<uint32_t>(CollisionTypeId::BOSS),
-        true
-    );
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER),
-        static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
-        true
-    );
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
-        static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
-        true
-    );
-
-    /// ----------------------エミッターマネージャーの初期化--------------------------------------------- ///
-    // シーンのエミッターをまとめて読み込む
-    emitterManager_->LoadScenePreset("gamescene_preset");
-
-    // ボスフェーズ2用の境界線初期状態は無効化（ボスフェーズ2まで非表示）
-    emitterManager_->SetEmitterActive("boss_border_left", false);
-    emitterManager_->SetEmitterActive("boss_border_right", false);
-    emitterManager_->SetEmitterActive("boss_border_front", false);
-    emitterManager_->SetEmitterActive("boss_border_back", false);
-
-    // ボス近接攻撃予兆エフェクトの読み込みと初期化
-    emitterManager_->LoadPreset("boss_attack_sign", "boss_melee_attack_sign");
-    emitterManager_->SetEmitterActive("boss_melee_attack_sign", false);
-
-    // ボスのフェーズチェンジエフェクトの読み込み
-    emitterManager_->LoadPreset("can_attack_sign", "can_attack_sign");
-
-    // ボスにEmitterManagerを設定
-    boss_->SetEmitterManager(emitterManager_.get());
-
-    // プレイヤーにEmitterManagerを設定
-    player_->SetEmitterManager(emitterManager_.get());
-
-    // パリィエフェクトの初期状態を設定（gamescene_presetで読み込み済み）
-    emitterManager_->SetEmitterActive("parry_effect", false);
-    emitterManager_->SetEmitterActive("parry_success", false);
-
-    /// ----------------------エフェクトマネージャーの初期化--------------------------------------------- ///
-    // ゲームオーバー演出マネージャー
-    overEffectManager_ = std::make_unique<OverEffectManager>(emitterManager_.get());
-    overEffectManager_->SetTarget(player_.get());
-
-    // ゲームクリア演出マネージャー
-    clearEffectManager_ = std::make_unique<ClearEffectManager>(emitterManager_.get());
-    clearEffectManager_->SetTarget(boss_.get());
-
-    // ボーダーパーティクルマネージャー
-    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_.get(), GameConst::kBossPhase2AreaSize);
-
-    // ダッシュエフェクトマネージャー
-    dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_.get());
-    dashEffectManager_->InitializePosition(player_->GetTranslate());
-
-    /// ----------------------カメラアニメーション設定-------------------------------------------------- ///
-    // ゲーム開始アニメーションを再生
-    animationController_->LoadAnimationFromFile("game_start");
-    cameraManager_->ActivateController("Animation");
-    animationController_->SwitchAnimation("game_start");
-    animationController_->Play();
-
-    // オーバー演出アニメーションの読み込みと設定
-    animationController_->LoadAnimationFromFile("over_anim");
-    animationController_->SetAnimationTargetByName("over_anim", player_->GetTransformPtr());
-
-    // クリア演出アニメーションの読み込みと設定
-    animationController_->LoadAnimationFromFile("clear_anim");
-    animationController_->SetAnimationTargetByName("clear_anim", boss_->GetTransformPtr());
+    // カメラアニメーション設定
+    SetCameraAnimation();
 }
 
 void GameScene::Finalize()
@@ -600,4 +436,208 @@ void GameScene::CreatePenetratingBossBullet()
         bullet->Initialize(request.position, request.velocity);
         penetratingBossBullets_.push_back(std::move(bullet));
     }
+}
+
+void GameScene::InitializeDebugOption()
+{
+#ifdef _DEBUG
+    DebugCamera::GetInstance()->Initialize();
+    Object3dBasic::GetInstance()->SetDebug(false);
+    Draw2D::GetInstance()->SetDebug(false);
+    GPUParticle::GetInstance()->SetIsDebug(false);
+
+    // DebugUIManagerにシーン名を設定
+    DebugUIManager::GetInstance()->SetSceneName("GameScene");
+
+    // ゲームオブジェクトをDebugUIManagerに登録
+    DebugUIManager::GetInstance()->RegisterGameObject("Player",
+        [this]() { if (player_) player_->DrawImGui(); });
+    DebugUIManager::GetInstance()->RegisterGameObject("Boss",
+        [this]() { if (boss_) boss_->DrawImGui(); });
+
+    // CameraSystemデバッグUI登録
+    DebugUIManager::GetInstance()->RegisterGameObject("CameraSystem",
+        []() { CameraDebugUI::Draw(); });
+
+    // CameraAnimationEditorデバッグUI登録
+    DebugUIManager::GetInstance()->RegisterGameObject("CameraAnimationEditor",
+        []() {
+            CameraDebugUI::DrawAnimationEditorOnly();
+            // 更新処理も呼び出す
+            CameraDebugUI::UpdateAnimationEditor(
+                FrameTimer::GetInstance()->GetDeltaTime());
+        });
+
+    // コントローラーUIのDebugUI登録
+    DebugUIManager::GetInstance()->RegisterGameObject("ControllerUI",
+        [this]() { if (controllerUI_) controllerUI_->DrawImGui(); });
+
+    DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
+#endif
+}
+
+void GameScene::InitializePostEffect()
+{
+    // PostEffectの初期化
+    RGBSplitParam rgbParam{
+        .redOffset = Vector2(-0.01f, 0.0f),
+        .greenOffset = Vector2(0.01f, 0.0f),
+        .blueOffset = Vector2(0.0f, 0.0f),
+        .intensity = 0.1f };
+    DepthOutlineParam outlineParam{ .outlineThickness = 0.4f };
+    PostEffectManager::GetInstance()->AddEffectToChain("DepthBasedOutline");
+    PostEffectManager::GetInstance()->AddEffectToChain("RGBSplit");
+    PostEffectManager::GetInstance()->SetEffectParam("DepthBasedOutline", outlineParam);
+    PostEffectManager::GetInstance()->SetEffectParam("RGBSplit", rgbParam);
+}
+
+void GameScene::InitializeObject3d()
+{
+    // SkyBoxの初期化
+    skyBox_ = std::make_unique<SkyBox>();
+    skyBox_->Initialize("my_skybox.dds");
+
+    // 床モデルのUV変換設定
+    groundUvTransform_.translate = Vector3(0.0f, 0.0f, 0.0f);
+    groundUvTransform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
+    groundUvTransform_.scale = Vector3(100.0f, 100.0f, 100.0f);
+    // 床モデルの初期化
+    ground_ = std::make_unique<Object3d>();
+    ground_->Initialize();
+    ground_->SetModel("ground_black.gltf");
+    ground_->SetUvTransform(groundUvTransform_);
+    ground_->SetEnableHighlight(false);
+
+    //-----------Playerの初期化----------------//
+    player_ = std::make_unique<Player>();
+    player_->Initialize();
+    player_->SetCamera((*Object3dBasic::GetInstance()->GetCamera()));
+    player_->SetInputHandler(inputHandler_.get());
+
+    //-----------Bossの初期化--------------------//
+    boss_ = std::make_unique<Boss>();
+    boss_->Initialize();
+    // ボスにプレイヤーの参照を設定
+    boss_->SetPlayer(player_.get());
+    // ゲーム開始時の演出が終わるまで一時停止状態に設定
+    boss_->SetIsPause(true);
+    // プレイヤーにボスの参照を設定
+    player_->SetBoss(boss_.get());
+}
+
+void GameScene::InitializeCameraSystem()
+{
+    // カメラマネージャーの初期化
+    cameraManager_ = CameraManager::GetInstance();
+    cameraManager_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
+
+    // ThirdPersonControllerを登録
+    auto tpController = std::make_unique<ThirdPersonController>();
+    thirdPersonController_ = tpController.get();
+    thirdPersonController_->SetTarget(&player_->GetTransform());
+    // ボスをセカンダリターゲットとして設定し、注視機能を有効化
+    thirdPersonController_->SetSecondaryTarget(&boss_->GetTransform());
+    thirdPersonController_->EnableLookAtTarget(true);
+    cameraManager_->RegisterController("ThirdPerson", std::move(tpController));
+
+    // TopDownControllerを登録
+    auto tdController = std::make_unique<TopDownController>();
+    topDownController_ = tdController.get();
+    topDownController_->SetTarget(&player_->GetTransform());
+    std::vector<const Transform*> additionalTargets = { &boss_->GetTransform() };
+    topDownController_->SetAdditionalTargets(additionalTargets);
+    cameraManager_->RegisterController("TopDown", std::move(tdController));
+
+    // CameraAnimationControllerを登録
+    auto animController = std::make_unique<CameraAnimationController>();
+    animationController_ = animController.get();
+    cameraManager_->RegisterController("Animation", std::move(animController));
+}
+
+void GameScene::SetCollisionMask()
+{
+    // CollisionManagerを取得
+    CollisionManager* collisionManager = CollisionManager::GetInstance();
+
+    collisionManager->SetCollisionMask(
+        static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
+        static_cast<uint32_t>(CollisionTypeId::BOSS),
+        true
+    );
+
+    collisionManager->SetCollisionMask(
+        static_cast<uint32_t>(CollisionTypeId::PLAYER),
+        static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
+        true
+    );
+
+    collisionManager->SetCollisionMask(
+        static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
+        static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
+        true
+    );
+}
+
+void GameScene::InitializeEmitterManger()
+{
+    // シーンのエミッターをまとめて読み込む
+    emitterManager_->LoadScenePreset("gamescene_preset");
+
+    // ボスフェーズ2用の境界線初期状態は無効化（ボスフェーズ2まで非表示）
+    emitterManager_->SetEmitterActive("boss_border_left", false);
+    emitterManager_->SetEmitterActive("boss_border_right", false);
+    emitterManager_->SetEmitterActive("boss_border_front", false);
+    emitterManager_->SetEmitterActive("boss_border_back", false);
+
+    // ボス近接攻撃予兆エフェクトの読み込みと初期化
+    emitterManager_->LoadPreset("boss_attack_sign", "boss_melee_attack_sign");
+    emitterManager_->SetEmitterActive("boss_melee_attack_sign", false);
+
+    // ボスのフェーズチェンジエフェクトの読み込み
+    emitterManager_->LoadPreset("can_attack_sign", "can_attack_sign");
+
+    // ボスにEmitterManagerを設定
+    boss_->SetEmitterManager(emitterManager_.get());
+
+    // プレイヤーにEmitterManagerを設定
+    player_->SetEmitterManager(emitterManager_.get());
+
+    // パリィエフェクトの初期状態を設定（gamescene_presetで読み込み済み）
+    emitterManager_->SetEmitterActive("parry_effect", false);
+    emitterManager_->SetEmitterActive("parry_success", false);
+}
+
+void GameScene::InitializeEffectManager()
+{
+    // ゲームオーバー演出マネージャー
+    overEffectManager_ = std::make_unique<OverEffectManager>(emitterManager_.get());
+    overEffectManager_->SetTarget(player_.get());
+
+    // ゲームクリア演出マネージャー
+    clearEffectManager_ = std::make_unique<ClearEffectManager>(emitterManager_.get());
+    clearEffectManager_->SetTarget(boss_.get());
+
+    // ボーダーパーティクルマネージャー
+    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_.get(), GameConst::kBossPhase2AreaSize);
+
+    // ダッシュエフェクトマネージャー
+    dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_.get());
+    dashEffectManager_->InitializePosition(player_->GetTranslate());
+}
+
+void GameScene::SetCameraAnimation()
+{
+    // ゲーム開始アニメーションを再生
+    animationController_->LoadAnimationFromFile("game_start");
+    cameraManager_->ActivateController("Animation");
+    animationController_->SwitchAnimation("game_start");
+    animationController_->Play();
+
+    // オーバー演出アニメーションの読み込みと設定
+    animationController_->LoadAnimationFromFile("over_anim");
+    animationController_->SetAnimationTargetByName("over_anim", player_->GetTransformPtr());
+
+    // クリア演出アニメーションの読み込みと設定
+    animationController_->LoadAnimationFromFile("clear_anim");
+    animationController_->SetAnimationTargetByName("clear_anim", boss_->GetTransformPtr());
 }
