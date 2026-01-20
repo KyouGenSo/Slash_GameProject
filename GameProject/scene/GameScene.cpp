@@ -31,6 +31,8 @@
 #include <algorithm>
 #include <cmath>
 
+#include "Common/GameConst.h"
+
 // Debug includes
 #ifdef _DEBUG
 #include "ImGui.h"
@@ -223,10 +225,7 @@ void GameScene::Initialize()
     clearEffectManager_->SetTarget(boss_.get());
 
     // ボーダーパーティクルマネージャー
-    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_.get());
-    BossBorderParticleManager::Params borderParams;
-    borderParams.areaSize = battleAreaSize_;
-    bossBorderManager_->SetParams(borderParams);
+    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_.get(), GameConst::kBossPhase2AreaSize);
 
     // ダッシュエフェクトマネージャー
     dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_.get());
@@ -473,7 +472,7 @@ void GameScene::UpdateCameraMode()
         cameraMode_ = true;
         // フェーズ2: ボス中心の戦闘エリアに移動制限
         Vector3 bossPos = boss_->GetTransform().translate;
-        player_->SetDynamicBoundsFromCenter(bossPos, battleAreaSize_, battleAreaSize_);
+        player_->SetDynamicBoundsFromCenter(bossPos, GameConst::kBossPhase2AreaSize, GameConst::kBossPhase2AreaSize);
     }
 
     if (cameraMode_) {

@@ -127,8 +127,6 @@ private: // メンバ変数
 
     bool isStart_ = false;                                      // ゲーム開始フラグ
 
-    float battleAreaSize_ = 20.0f;                              // 戦闘エリアのサイズ
-
     bool isDebug_ = false;                                      // デバッグモードフラグ
 
     // エフェクトマネージャー

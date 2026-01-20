@@ -25,6 +25,10 @@ namespace GameConst {
     /// エリア境界からのマージン
     /// ボスがステージ端に近づきすぎないための距離
     /// </summary>
-    inline constexpr float kAreaMargin = 5.0f;
+    inline constexpr float kAreaMargin = 10.0f;
 
+    /// <summary>
+    /// ボスフェーズ2の戦闘エリアの範囲
+    /// </summary>
+    constexpr float kBossPhase2AreaSize = 30.0f;
 }

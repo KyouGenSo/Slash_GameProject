@@ -1,8 +1,8 @@
 #include "BossBorderParticleManager.h"
 #include "EmitterManager.h"
 
-BossBorderParticleManager::BossBorderParticleManager(Tako::EmitterManager* emitterManager)
-    : emitterManager_(emitterManager)
+BossBorderParticleManager::BossBorderParticleManager(Tako::EmitterManager* emitterManager, float areaSize)
+    : emitterManager_(emitterManager), areaSize_(areaSize)
 {
 }
 
@@ -44,7 +44,7 @@ void BossBorderParticleManager::UpdatePositions(const Tako::Vector3& bossPositio
 {
     // Y座標を0に固定してボス周囲に配置
     Tako::Vector3 basePos = Tako::Vector3(bossPosition.x, 0.0f, bossPosition.z);
-    float areaSize = params_.areaSize;
+    float areaSize = areaSize_;
 
     emitterManager_->SetEmitterPosition("boss_border_left",
         basePos + Tako::Vector3(0.0f, 0.0f, -areaSize));

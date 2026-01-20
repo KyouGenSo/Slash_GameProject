@@ -13,17 +13,10 @@ class BossBorderParticleManager
 {
 public:
     /// <summary>
-    /// パラメータ構造体
-    /// </summary>
-    struct Params {
-        float areaSize = 20.0f;  ///< 戦闘エリアサイズ
-    };
-
-    /// <summary>
     /// コンストラクタ
     /// </summary>
     /// <param name="emitterManager">エミッターマネージャー（依存注入）</param>
-    explicit BossBorderParticleManager(Tako::EmitterManager* emitterManager);
+    explicit BossBorderParticleManager(Tako::EmitterManager* emitterManager, float areaSize);
 
     /// <summary>
     /// デストラクタ
@@ -50,16 +43,16 @@ public:
     bool IsActive() const { return isActive_; }
 
     /// <summary>
-    /// パラメータを設定
+    /// 戦闘エリアサイズを設定
     /// </summary>
     /// <param name="params">パラメータ</param>
-    void SetParams(const Params& params) { params_ = params; }
+    void SetAreaSize(float areaSize) { areaSize_ = areaSize; }
 
     /// <summary>
-    /// パラメータを取得
+    /// 戦闘エリアサイズを取得
     /// </summary>
     /// <returns>現在のパラメータ</returns>
-    const Params& GetParams() const { return params_; }
+    float GetAreaSize() const { return areaSize_; }
 
 private:
     /// <summary>
@@ -71,5 +64,5 @@ private:
 private:
     Tako::EmitterManager* emitterManager_ = nullptr;  ///< エミッターマネージャー
     bool isActive_ = false;                           ///< エミッターアクティブ状態
-    Params params_;                                   ///< パラメータ
+    float areaSize_ = 0.0f;                           ///< 戦闘エリアサイズ
 };
