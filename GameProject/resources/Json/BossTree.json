@@ -335,11 +335,18 @@
       "sourcePinId": 20058,
       "targetNodeId": 10048,
       "targetPinId": 20067
+    },
+    {
+      "id": 30048,
+      "sourceNodeId": 10009,
+      "sourcePinId": 20014,
+      "targetNodeId": 10049,
+      "targetPinId": 20068
     }
   ],
   "metadata": {
-    "created": "2026-01-20T13:57:44",
-    "modified": "2026-01-20T13:57:44",
+    "created": "2026-01-20T15:13:45",
+    "modified": "2026-01-20T15:13:45",
     "name": "Boss Behavior Tree"
   },
   "nodes": [
@@ -357,7 +364,7 @@
       "displayName": "Dash",
       "id": 10001,
       "parameters": {
-        "dashDuration": 0.09670718014240265,
+        "dashDuration": 0.051509007811546326,
         "dashSpeed": 200.0
       },
       "position": {
@@ -371,7 +378,7 @@
       "id": 10002,
       "parameters": {
         "bulletCount": 8,
-        "bulletSpeed": 250.0,
+        "bulletSpeed": 200.0,
         "chargeTime": 0.5,
         "fireInterval": 0.15000000596046448,
         "recoveryTime": 1.0
@@ -970,6 +977,27 @@
         "y": 120.0
       },
       "type": "BTBossIdle"
+    },
+    {
+      "displayName": "Barrage",
+      "id": 10049,
+      "parameters": {
+        "chargeTime": 0.800000011920929,
+        "fireInterval": 0.019999999552965164,
+        "firingDuration": 3.0,
+        "moveDuration": 0.5,
+        "normalBulletSpeedMax": 200.0,
+        "normalBulletSpeedMin": 150.0,
+        "penetratingBulletSpeedMax": 80.0,
+        "penetratingBulletSpeedMin": 50.0,
+        "penetratingRatio": 0.30000001192092896,
+        "recoveryTime": 1.0
+      },
+      "position": {
+        "x": 100.0,
+        "y": 100.0
+      },
+      "type": "BTBossBarrage"
     }
   ],
   "version": "1.0"

@@ -315,6 +315,9 @@
     <ClCompile Include="Effect\HitFlashEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossBarrage.cpp">
+      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Collision\CollisionTypeIdDef.h">
@@ -565,6 +568,9 @@
     </ClInclude>
     <ClInclude Include="Effect\HitFlashEffect.h">
       <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossBarrage.h">
+      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
