@@ -3,6 +3,7 @@
 #include "../Object/Boss/Boss.h"
 #include "CollisionTypeIdDef.h"
 #include "CollisionManager.h"
+#include "CameraSystem/CameraManager.h"
 #include "Object/Projectile/BossBullet.h"
 
 using namespace Tako;
@@ -30,9 +31,11 @@ void PlayerBulletCollider::OnCollisionEnter(Collider* other) {
             hitBoss_ = boss;
             hitTargets_.insert(targetPtr);
 
-            // ボスにダメージを与える
-            boss->OnHit(owner_->GetDamage(), 0.5f);
-            hasDealtDamage_ = true;
+            // フェーズ移行スタン状態でなければダメージを与える
+            if (!boss->IsInPhaseTransitionStun()) {
+                boss->OnHit(owner_->GetDamage(), 0.5f);
+                hasDealtDamage_ = true;
+            }
 
             // 弾を非アクティブ化
             owner_->SetActive(false);
