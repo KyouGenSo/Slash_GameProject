@@ -121,8 +121,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="Common\CooldownTimer.cpp" />
     <ClCompile Include="Common\DamageFeedback.cpp" />
     <ClCompile Include="Common\EasingMover.cpp" />
-    <ClCompile Include="Common\ShakeEffect.cpp" />
-    <ClCompile Include="Common\HitFlashEffect.cpp" />
+    <ClCompile Include="Effect\ShakeEffect.cpp" />
+    <ClCompile Include="Effect\HitFlashEffect.cpp" />
     <ClCompile Include="Common\BulletSpawner.cpp" />
     <ClCompile Include="Effect\BossBorderParticleManager.cpp" />
     <ClCompile Include="Effect\BulletSignEffect.cpp" />
@@ -218,8 +218,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="Common\CooldownTimer.h" />
     <ClInclude Include="Common\DamageFeedback.h" />
     <ClInclude Include="Common\EasingMover.h" />
-    <ClInclude Include="Common\ShakeEffect.h" />
-    <ClInclude Include="Common\HitFlashEffect.h" />
+    <ClInclude Include="Effect\ShakeEffect.h" />
+    <ClInclude Include="Effect\HitFlashEffect.h" />
     <ClInclude Include="Common\BulletSpawner.h" />
     <ClInclude Include="Common\DynamicBoundary.h" />
     <ClInclude Include="Common\GameConst.h" />

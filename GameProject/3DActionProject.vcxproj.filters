@@ -264,12 +264,6 @@
     <ClCompile Include="Common\EasingMover.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Common\ShakeEffect.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\HitFlashEffect.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="Common\BulletSpawner.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -314,6 +308,12 @@
     </ClCompile>
     <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\ShakeEffect.cpp">
+      <Filter>Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect\HitFlashEffect.cpp">
+      <Filter>Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -512,12 +512,6 @@
     <ClInclude Include="Common\EasingMover.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\ShakeEffect.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\HitFlashEffect.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Common\BulletSpawner.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -565,6 +559,12 @@
     </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.h">
       <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\ShakeEffect.h">
+      <Filter>Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect\HitFlashEffect.h">
+      <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

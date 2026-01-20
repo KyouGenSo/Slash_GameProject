@@ -10,8 +10,8 @@
 
 // 共通定義
 #include "../../Common/BulletSpawnRequest.h"
-#include "../../Common/ShakeEffect.h"
-#include "../../Common/HitFlashEffect.h"
+#include "../../Effect/ShakeEffect.h"
+#include "../../Effect/HitFlashEffect.h"
 #include "../../Common/BulletSpawner.h"
 #include "../../UI/HPBarUI.h"
 #include "BossPhaseManager.h"
