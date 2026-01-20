@@ -37,10 +37,18 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
                 knockbackDir = knockbackDir.Normalize();
             }
 
-            // スタン中: ダメージのみ（スタン延長なし）
+            // スタン中の処理
             if (enemy->IsStunned()) {
-                enemy->OnHit(attackDamage_, 1.0f);
-                CameraManager::GetInstance()->StartShake(0.3f);
+                // フェーズ移行スタン中: フェーズ2へ移行
+                if (enemy->IsInPhaseTransitionStun()) {
+                    enemy->CompletePhaseTransition();
+                    CameraManager::GetInstance()->StartShake(0.3f);
+                }
+                // 通常スタン中: ダメージのみ（スタン延長なし）
+                else {
+                    enemy->OnHit(attackDamage_, 1.0f);
+                    CameraManager::GetInstance()->StartShake(0.3f);
+                }
             }
             // 硬直中: ダメージ＋スタン
             else if (enemy->IsInRecovery()) {
@@ -89,10 +97,18 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
                     knockbackDir = knockbackDir.Normalize();
                 }
 
-                // スタン中: ダメージのみ（スタン延長なし）
+                // スタン中の処理
                 if (enemy->IsStunned()) {
-                    enemy->OnHit(attackDamage_, 1.0f);
-                    CameraManager::GetInstance()->StartShake(0.3f);
+                    // フェーズ移行スタン中: フェーズ2へ移行
+                    if (enemy->IsInPhaseTransitionStun()) {
+                        enemy->CompletePhaseTransition();
+                        CameraManager::GetInstance()->StartShake(0.3f);
+                    }
+                    // 通常スタン中: ダメージのみ（スタン延長なし）
+                    else {
+                        enemy->OnHit(attackDamage_, 1.0f);
+                        CameraManager::GetInstance()->StartShake(0.3f);
+                    }
                 }
                 // 硬直中: ダメージ＋スタン
                 else if (enemy->IsInRecovery()) {

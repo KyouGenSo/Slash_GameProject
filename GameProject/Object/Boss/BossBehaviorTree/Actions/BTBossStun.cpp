@@ -44,8 +44,8 @@ BTNodeStatus BTBossStun::Execute(BTBlackboard* blackboard) {
         UpdateFlash(boss);
     }
 
-    // スタン終了判定
-    if (elapsedTime_ >= stunDuration_) {
+    // スタン終了判定（フェーズ移行スタン中はタイムアウトしない）
+    if (!boss->IsInPhaseTransitionStun() && elapsedTime_ >= stunDuration_) {
         boss->ClearStun();
 
         // リセットして成功を返す

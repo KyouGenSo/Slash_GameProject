@@ -59,16 +59,16 @@ void GameScene::Initialize()
     emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
 
     // PostEffectの初期化
-    PostEffectManager::GetInstance()->AddEffectToChain("RGBSplit");
-    PostEffectManager::GetInstance()->AddEffectToChain("DepthBasedOutline");
     RGBSplitParam rgbParam{
         .redOffset = Vector2(-0.01f, 0.0f),
         .greenOffset = Vector2(0.01f, 0.0f),
         .blueOffset = Vector2(0.0f, 0.0f),
         .intensity = 0.1f };
     DepthOutlineParam outlineParam{ .outlineThickness = 0.4f};
-    PostEffectManager::GetInstance()->SetEffectParam("RGBSplit", rgbParam);
+    PostEffectManager::GetInstance()->AddEffectToChain("DepthBasedOutline");
+    PostEffectManager::GetInstance()->AddEffectToChain("RGBSplit");
     PostEffectManager::GetInstance()->SetEffectParam("DepthBasedOutline", outlineParam);
+    PostEffectManager::GetInstance()->SetEffectParam("RGBSplit", rgbParam);
 
     // コントローラーUIの初期化
     controllerUI_ = std::make_unique<ControllerUI>();
@@ -216,6 +216,9 @@ void GameScene::Initialize()
     // ボス近接攻撃予兆エフェクトの読み込みと初期化
     emitterManager_->LoadPreset("boss_attack_sign", "boss_melee_attack_sign");
     emitterManager_->SetEmitterActive("boss_melee_attack_sign", false);
+
+    // ボスのフェーズチェンジエフェクトの読み込み
+    emitterManager_->LoadPreset("can_attack_sign", "can_attack_sign");
 
     // ボスにEmitterManagerを設定
     boss_->SetEmitterManager(emitterManager_.get());

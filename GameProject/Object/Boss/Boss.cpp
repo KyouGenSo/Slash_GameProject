@@ -145,6 +145,11 @@ void Boss::Update(float deltaTime)
         }
     }
 
+    // フェーズ移行スタン中はパーティクル位置を追従させる
+    if (IsInPhaseTransitionStun()) {
+        SetCanAttackSignEmitterPosition(transform_.translate);
+    }
+
     // ヒットエフェクトの更新
     static const Vector4 kOriginalColor = Vector4(1.0f, 0.0f, 0.0f, 1.0f);  // 赤（元の色）
     hitFlashEffect_.Update(deltaTime, model_.get(), kOriginalColor);
@@ -181,6 +186,17 @@ void Boss::OnHit(float damage, float shakeIntensityOverride)
 
     hp_ -= damage;
     hp_ = std::max<float>(hp_, 0.0f);
+
+    // フェーズ移行スタン条件チェック
+    // 条件: フェーズ1 && HP <= 110 && 未トリガー && スタン中でない
+    if (phaseManager_.GetPhase() == 1 &&
+        hp_ <= kPhaseTransitionStunThreshold &&
+        !hasTriggeredPhaseTransitionStun_) {
+        // HPを110に固定
+        hp_ = kPhaseTransitionStunThreshold;
+        // フェーズ移行スタンを発動
+        TriggerPhaseTransitionStun();
+    }
 
     // ヒットフラッシュエフェクト開始（白く光る）
     float hitEffectDuration = GlobalVariables::GetInstance()->GetValueFloat("Boss", "HitEffectDuration");
@@ -461,4 +477,54 @@ void Boss::TriggerRetreat(const Vector3& direction) {
     }
     shouldRetreat_ = true;
     retreatDirection_ = direction;
+}
+
+void Boss::ClearStun() {
+    isStunned_ = false;
+    // フェーズ移行スタン中の場合、パーティクルも無効化
+    if (isInPhaseTransitionStun_) {
+        SetCanAttackSignEmitterActive(false);
+        isInPhaseTransitionStun_ = false;
+    }
+}
+
+void Boss::TriggerPhaseTransitionStun() {
+    // 既にトリガー済み、またはスタン中は無視
+    if (hasTriggeredPhaseTransitionStun_) {
+        return;
+    }
+
+    hasTriggeredPhaseTransitionStun_ = true;
+    isInPhaseTransitionStun_ = true;
+    isStunned_ = true;
+
+    // ノックバック方向はゼロ（その場でスタン）
+    stunKnockbackDirection_ = Vector3(0.0f, 0.0f, 0.0f);
+
+    // 攻撃可能サインパーティクルを有効化
+    SetCanAttackSignEmitterActive(true);
+    SetCanAttackSignEmitterPosition(transform_.translate);
+}
+
+void Boss::CompletePhaseTransition() {
+    // HPを100に設定
+    hp_ = kPhase2InitialHp;
+
+    // フェーズ2に移行
+    phaseManager_.SetPhase(2);
+
+    // スタン解除
+    ClearStun();
+}
+
+void Boss::SetCanAttackSignEmitterActive(bool active) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterActive(canAttackSignEmitterName_, active);
+    }
+}
+
+void Boss::SetCanAttackSignEmitterPosition(const Vector3& position) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterPosition(canAttackSignEmitterName_, position);
+    }
 }

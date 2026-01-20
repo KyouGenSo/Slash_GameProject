@@ -48,6 +48,9 @@ private:
     // フェーズ2開始時のHP
     static constexpr float kPhase2InitialHp = 100.0f;
 
+    // フェーズ移行スタン発動HP閾値
+    static constexpr float kPhaseTransitionStunThreshold = 105.0f;
+
 public:
     Boss();
     ~Boss();
@@ -187,7 +190,7 @@ public:
     /// <summary>
     /// スタンをクリア（BTBossStun終了時に呼ばれる）
     /// </summary>
-    void ClearStun() { isStunned_ = false; }
+    void ClearStun();
 
     /// <summary>
     /// ノックバック方向を取得
@@ -201,6 +204,35 @@ public:
     /// <param name="color">フラッシュ色</param>
     /// <param name="duration">持続時間</param>
     void StartStunFlash(const Tako::Vector4& color, float duration);
+
+    //-----------------------------フェーズ移行スタンシステム------------------------------//
+    /// <summary>
+    /// フェーズ移行スタンを発動（HP110以下で初めて呼ばれる）
+    /// </summary>
+    void TriggerPhaseTransitionStun();
+
+    /// <summary>
+    /// フェーズ移行を完了（スタン中に近距離攻撃を受けた時に呼ばれる）
+    /// </summary>
+    void CompletePhaseTransition();
+
+    /// <summary>
+    /// フェーズ移行スタン中かどうか
+    /// </summary>
+    /// <returns>フェーズ移行スタン中ならtrue</returns>
+    bool IsInPhaseTransitionStun() const { return isInPhaseTransitionStun_; }
+
+    /// <summary>
+    /// 攻撃可能サインエミッターの有効/無効を設定
+    /// </summary>
+    /// <param name="active">有効にする場合true</param>
+    void SetCanAttackSignEmitterActive(bool active);
+
+    /// <summary>
+    /// 攻撃可能サインエミッターの位置を設定
+    /// </summary>
+    /// <param name="position">設定する位置</param>
+    void SetCanAttackSignEmitterPosition(const Tako::Vector3& position);
 
     //-----------------------------硬直状態システム------------------------------//
     /// <summary>
@@ -429,6 +461,11 @@ private:
     // ===== スタンシステム =====
     bool isStunned_ = false;                      ///< スタン状態フラグ
     Tako::Vector3 stunKnockbackDirection_;        ///< ノックバック方向
+
+    // ===== フェーズ移行スタンシステム =====
+    bool hasTriggeredPhaseTransitionStun_ = false;  ///< 一度きりのトリガーフラグ
+    bool isInPhaseTransitionStun_ = false;          ///< フェーズ移行スタン中フラグ
+    std::string canAttackSignEmitterName_ = "can_attack_sign";  ///< 攻撃可能サインエミッター名
 
     // ===== 硬直状態システム =====
     bool isInRecovery_ = false;                   ///< 硬直中フラグ
