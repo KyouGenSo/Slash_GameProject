@@ -48,10 +48,6 @@ bool CameraAnimationController::IsActive() const {
 
 void CameraAnimationController::Activate() {
     isActive_ = true;
-    //auto* animation = GetCurrentAnimation();
-    //if (animation) {
-    //    animation->Play();
-    //}
 }
 
 void CameraAnimationController::Deactivate() {

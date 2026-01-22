@@ -124,54 +124,6 @@ const std::string& BossBehaviorTree::GetCurrentNodeName() const {
     return currentNodeName_;
 }
 
-void BossBehaviorTree::BuildTree() {
-    // ルートノードは行動ツリー
-    rootNode_ = BuildActionTree();
-}
-
-BTNodePtr BossBehaviorTree::BuildActionTree() {
-    // ルートシーケンス（Idle → Action を繰り返す）
-    auto rootSequence = std::make_shared<BTSequence>();
-    rootSequence->SetName("MainLoop");
-
-    // 1. Idle（待機）
-    auto idleNode = std::make_shared<BTBossIdle>();
-    rootSequence->AddChild(idleNode);
-
-    // 2. Action選択（DashかShootか）
-    auto actionSelector = std::make_shared<BTSelector>();
-    actionSelector->SetName("ActionSelector");
-
-    // 2-1. Dashブランチ（偶数カウンター）
-    auto dashSequence = std::make_shared<BTSequence>();
-    dashSequence->SetName("DashSequence");
-
-    auto dashCondition = std::make_shared<BTActionSelector>(BTActionSelector::ActionType::Dash);
-    auto dashAction = std::make_shared<BTBossDash>();
-
-    dashSequence->AddChild(dashCondition);
-    dashSequence->AddChild(dashAction);
-
-    // 2-2. Shootブランチ（奇数カウンター）
-    auto shootSequence = std::make_shared<BTSequence>();
-    shootSequence->SetName("ShootSequence");
-
-    auto shootCondition = std::make_shared<BTActionSelector>(BTActionSelector::ActionType::Shoot);
-    auto shootAction = std::make_shared<BTBossShoot>();
-
-    shootSequence->AddChild(shootCondition);
-    shootSequence->AddChild(shootAction);
-
-    // アクション選択にブランチを追加
-    actionSelector->AddChild(dashSequence);
-    actionSelector->AddChild(shootSequence);
-
-    // ルートシーケンスにアクション選択を追加
-    rootSequence->AddChild(actionSelector);
-
-    return rootSequence;
-}
-
 /// <summary>
 /// ルートノードを外部から設定
 /// </summary>

@@ -19,7 +19,7 @@ namespace GameConst {
     /// 方向ベクトルの有効判定閾値
     /// これより小さい長さのベクトルは無効とみなす
     /// </summary>
-    constexpr float kDirectionEpsilon = 0.01f;
+    inline constexpr float kDirectionEpsilon = 0.01f;
 
     /// <summary>
     /// エリア境界からのマージン
@@ -30,5 +30,5 @@ namespace GameConst {
     /// <summary>
     /// ボスフェーズ2の戦闘エリアの範囲
     /// </summary>
-    constexpr float kBossPhase2AreaSize = 30.0f;
+    inline constexpr float kBossPhase2AreaSize = 30.0f;
 }

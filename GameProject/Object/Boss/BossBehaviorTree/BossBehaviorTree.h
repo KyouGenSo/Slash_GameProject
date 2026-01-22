@@ -81,17 +81,6 @@ public:
 
 private:
     /// <summary>
-    /// ビヘイビアツリーの構築
-    /// </summary>
-    void BuildTree();
-
-    /// <summary>
-    /// 行動ツリーの構築（Idle → Dash/Shoot の選択）
-    /// </summary>
-    /// <returns>構築したノード</returns>
-    BTNodePtr BuildActionTree();
-
-    /// <summary>
     /// JSONからノードツリーを再帰的に構築
     /// </summary>
     /// <param name="nodeJson">ノードのJSON</param>
