@@ -334,7 +334,12 @@ settings.local.json
 
 # Temporary null files
 nul
+
+# .ini files
 *.ini
+
+
+GameProject/imgui.ini
 
 # Claude Code temporary files
 tmpclaude-*
