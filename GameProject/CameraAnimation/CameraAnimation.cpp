@@ -24,7 +24,7 @@ CameraAnimation::CameraAnimation() {
     keyframes_.reserve(CameraConfig::Animation::KEYFRAME_RESERVE_COUNT); // 予め領域を確保
 
     // FOV復元用変数の初期化
-    originalFov_ = kDefaultFov;
+    originalFov_ = CameraConfig::Animation::DEFAULT_FOV_DEGREES;
     hasOriginalFov_ = false;
 }
 
@@ -648,7 +648,7 @@ bool CameraAnimation::LoadFromJson(const std::string& filepath) {
         // 開始モード設定を読み込み（後方互換性のためデフォルト値を設定）
         int startModeInt = json.value("start_mode", static_cast<int>(StartMode::JUMP_CUT));
         startMode_ = static_cast<StartMode>(startModeInt);
-        blendDuration_ = json.value("blend_duration", 0.5f);
+        blendDuration_ = json.value("blend_duration", CameraConfig::Animation::DEFAULT_BLEND_DURATION);
 
         // キーフレームをクリア
         keyframes_.clear();
@@ -785,7 +785,9 @@ void CameraAnimation::DrawImGui() {
 
     // 再生設定
     ImGui::Checkbox("Loop", &isLooping_);
-    ImGui::SliderFloat("Play Speed", &playSpeed_, -2.0f, 2.0f, "%.2f");
+    ImGui::SliderFloat("Play Speed", &playSpeed_,
+        CameraConfig::Animation::MIN_PLAY_SPEED,
+        CameraConfig::Animation::MAX_PLAY_SPEED, "%.2f");
 
     // タイムラインスライダー
     float tempTime = currentTime_;
@@ -812,7 +814,8 @@ void CameraAnimation::DrawImGui() {
             static float newKeyTime = 0.0f;
             static int interpType = 0;
             static int coordType = 0;
-            ImGui::DragFloat("New Keyframe Time", &newKeyTime, 0.1f, 0.0f, FLT_MAX);
+            ImGui::DragFloat("New Keyframe Time", &newKeyTime,
+                CameraConfig::Animation::KEYFRAME_DRAG_STEP, 0.0f, FLT_MAX);
             ImGui::Combo("Interpolation", &interpType,
                 "LINEAR\0EASE_IN\0EASE_OUT\0EASE_IN_OUT\0");
             ImGui::Combo("Coordinate Type", &coordType,
@@ -944,7 +947,9 @@ void CameraAnimation::DrawImGui() {
 
             // FOV（度単位で表示）
             float fovDegrees = DirectX::XMConvertToDegrees(tempKeyframe_.fov);
-            if (ImGui::DragFloat("FOV (deg)", &fovDegrees, 0.5f, 10.0f, 120.0f)) {
+            if (ImGui::DragFloat("FOV (deg)", &fovDegrees, 0.5f,
+                CameraConfig::Animation::FOV_MIN_DEGREES,
+                CameraConfig::Animation::FOV_MAX_DEGREES)) {
                 tempKeyframe_.fov = DirectX::XMConvertToRadians(fovDegrees);
                 ApplyKeyframeToCamera(selectedKeyframeIndex_);
             }

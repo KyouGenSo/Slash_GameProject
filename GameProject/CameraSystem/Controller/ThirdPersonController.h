@@ -153,22 +153,22 @@ private:
     Tako::Vector3 interpolatedTargetPos_ = {};
     // CameraConfig::FirstPersonは実際にはThirdPerson用の設定
     Tako::Vector3 offset_ = {
-        CameraConfig::FirstPerson::DEFAULT_OFFSET_X,
-        CameraConfig::FirstPerson::DEFAULT_OFFSET_Y,
-        CameraConfig::FirstPerson::DEFAULT_OFFSET_Z
+        CameraConfig::ThirdPerson::DEFAULT_OFFSET_X,
+        CameraConfig::ThirdPerson::DEFAULT_OFFSET_Y,
+        CameraConfig::ThirdPerson::DEFAULT_OFFSET_Z
     };
     Tako::Vector3 offsetOrigin_ = offset_;
 
     // 回転関連（すべてラジアン単位）
-    // CameraConfig::FirstPerson::DEFAULT_ANGLE_Xはラジアン単位（約8度）
-    float destinationAngleX_ = CameraConfig::FirstPerson::DEFAULT_ANGLE_X;  // ラジアン単位
+    // CameraConfig::ThirdPerson::DEFAULT_ANGLE_Xはラジアン単位（約8度）
+    float destinationAngleX_ = CameraConfig::ThirdPerson::DEFAULT_ANGLE_X;  // ラジアン単位
     float destinationAngleY_ = 0.0f;  // ラジアン
     float destinationAngleZ_ = 0.0f;  // ラジアン
 
     // パラメータ
     // CameraConfig::FirstPersonは実際にはThirdPerson用の設定
     // 回転速度をラジアン単位に変換（0.05度 ≈ 0.00087ラジアン）
-    float rotateSpeed_ = CameraConfig::FirstPerson::DEFAULT_ROTATE_SPEED * (std::numbers::pi_v<float> / 180.0f);
+    float rotateSpeed_ = CameraConfig::ThirdPerson::DEFAULT_ROTATE_SPEED * (std::numbers::pi_v<float> / 180.0f);
     float followSmoothness_ = CameraConfig::FOLLOW_SMOOTHNESS;
     float offsetLerpSpeed_ = CameraConfig::OFFSET_LERP_SPEED;
     float rotationLerpSpeed_ = CameraConfig::ROTATION_LERP_SPEED;

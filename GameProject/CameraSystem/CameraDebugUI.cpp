@@ -83,14 +83,14 @@ void CameraDebugUI::DrawManagerInfo() {
 
         // 各行を解析して表示（簡易的な実装）
         if (manager->GetControllerCount() > 0) {
-            // FirstPerson
+            // ThirdPerson
             ImGui::TableNextRow();
             ImGui::TableNextColumn();
-            ImGui::Text("FirstPerson");
+            ImGui::Text("ThirdPerson");
             ImGui::TableNextColumn();
             ImGui::Text("50");  // FOLLOW_DEFAULT priority
             ImGui::TableNextColumn();
-            bool isFPActive = (manager->GetActiveControllerName() == "FirstPerson");
+            bool isFPActive = (manager->GetActiveControllerName() == "ThirdPerson");
             ImGui::TextColored(isFPActive ? ImVec4(0.2f, 1.0f, 0.2f, 1.0f) : ImVec4(0.5f, 0.5f, 0.5f, 1.0f),
                              isFPActive ? "Active" : "Inactive");
 
@@ -126,9 +126,9 @@ void CameraDebugUI::DrawFirstPersonControllerInfo(ThirdPersonController* control
         return;
     }
 
-    ImGui::PushID("FirstPerson");  // 一意のIDスコープ開始
+    ImGui::PushID("ThirdPerson");  // 一意のIDスコープ開始
 
-    ImGui::Text("=== FirstPerson Controller ===");
+    ImGui::Text("=== ThirdPerson Controller ===");
     ImGui::Text("Active: %s", controller->IsActive() ? "Yes" : "No");
 
     if (!controller->IsActive()) {
@@ -151,7 +151,7 @@ void CameraDebugUI::DrawFirstPersonControllerInfo(ThirdPersonController* control
     }
 
     // 回転速度（変数名を明確に）
-    static float fpRotateSpeed = CameraConfig::FirstPerson::DEFAULT_ROTATE_SPEED;
+    static float fpRotateSpeed = CameraConfig::ThirdPerson::DEFAULT_ROTATE_SPEED;
     if (ImGui::SliderFloat("Rotate Speed", &fpRotateSpeed, 0.01f, 0.2f)) {
         controller->SetRotateSpeed(fpRotateSpeed);
     }
@@ -355,10 +355,10 @@ void CameraDebugUI::DrawControllerSwitcher() {
 
     ImGui::Separator();
 
-    // FirstPerson/TopDownの簡単切り替え
-    if (ImGui::Button("Activate FirstPerson")) {
+    // ThirdPerson/TopDownの簡単切り替え
+    if (ImGui::Button("Activate ThirdPerson")) {
         manager->DeactivateAllControllers();
-        manager->ActivateController("FirstPerson");
+        manager->ActivateController("ThirdPerson");
     }
     ImGui::SameLine();
     if (ImGui::Button("Activate TopDown")) {
@@ -369,9 +369,9 @@ void CameraDebugUI::DrawControllerSwitcher() {
     ImGui::Separator();
 
     // 各コントローラーの詳細情報
-    if (ImGui::CollapsingHeader("FirstPerson Controller Details")) {
+    if (ImGui::CollapsingHeader("ThirdPerson Controller Details")) {
         auto* fpController = dynamic_cast<ThirdPersonController*>(
-            manager->GetController("FirstPerson"));
+            manager->GetController("ThirdPerson"));
         DrawFirstPersonControllerInfo(fpController);
     }
 

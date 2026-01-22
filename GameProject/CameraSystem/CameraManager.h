@@ -1,5 +1,6 @@
 #pragma once
 #include "Controller/ICameraController.h"
+#include "CameraConfig.h"
 #include "Camera.h"
 #include "Vector3.h"
 #include <vector>
@@ -206,9 +207,9 @@ private:
     /// シェイクタイマー（経過時間）
     float shakeTimer_ = 0.0f;
     /// シェイク持続時間
-    float shakeDuration_ = 0.3f;
+    float shakeDuration_ = CameraConfig::Shake::DEFAULT_DURATION;
     /// シェイク強度（デフォルト）
-    float shakeIntensity_ = 0.5f;
+    float shakeIntensity_ = CameraConfig::Shake::DEFAULT_INTENSITY;
     /// 現在のシェイク強度（実行時）
     float currentShakeIntensity_ = 0.0f;
     /// 描画用シェイクオフセット

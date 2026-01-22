@@ -159,7 +159,7 @@ private: // メンバ変数
     ThirdPersonController* thirdPersonController_ = nullptr;    // 一人称視点コントローラー
     TopDownController* topDownController_ = nullptr;            // トップダウン視点コントローラー
     CameraAnimationController* animationController_ = nullptr;  // カメラアニメーションコントローラー
-    bool cameraMode_ = false;                                   // カメラモード (true: FirstPerson, false: TopDown)
+    bool cameraMode_ = false;                                   // カメラモード (true: ThirdPerson, false: TopDown)
 
     Tako::Transform groundUvTransform_{};                       // 地面のUVトランスフォーム（テクスチャスクロール等に使用）
 

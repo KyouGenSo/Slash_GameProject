@@ -1,5 +1,6 @@
 #pragma once
 #include "CameraKeyframe.h"
+#include "CameraSystem/CameraConfig.h"
 #include "Camera.h"
 #include "Quaternion.h"
 #include "Transform.h"
@@ -12,10 +13,6 @@
 /// キーフレーム間の補間によって滑らかなカメラ動作を実現
 /// </summary>
 class CameraAnimation {
-    // 定数
-private:
-    static constexpr float kDefaultFov = 45.0f;    ///< デフォルトFOV値
-
 public:
     /// <summary>
     /// 再生状態

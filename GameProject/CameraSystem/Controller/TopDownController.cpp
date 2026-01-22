@@ -7,8 +7,8 @@ using namespace Tako;
 
 TopDownController::TopDownController() {
     // デフォルト値設定
-    currentHeight_ = 88.f;
-    currentBackOffset_ = -205.f;
+    currentHeight_ = CameraConfig::TopDown::INITIAL_HEIGHT;
+    currentBackOffset_ = CameraConfig::TopDown::INITIAL_BACK_OFFSET;
 }
 
 void TopDownController::Update(float deltaTime) {

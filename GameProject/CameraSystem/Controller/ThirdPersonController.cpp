@@ -49,8 +49,8 @@ void ThirdPersonController::Reset() {
   // カメラをターゲットの向きに合わせる（回転はラジアン単位）
   camera_->SetRotate(Vector3(0.0f, primaryTarget_->rotate.y, 0.0f));
   destinationAngleY_ = primaryTarget_->rotate.y;
-  // CameraConfig::FirstPerson::DEFAULT_ANGLE_Xはすでにラジアン単位
-  destinationAngleX_ = CameraConfig::FirstPerson::DEFAULT_ANGLE_X;
+  // CameraConfig::ThirdPerson::DEFAULT_ANGLE_Xはすでにラジアン単位
+  destinationAngleX_ = CameraConfig::ThirdPerson::DEFAULT_ANGLE_X;
   destinationAngleZ_ = 0.0f;
 
   // オフセットをリセット
@@ -74,7 +74,7 @@ void ThirdPersonController::ProcessInput(float deltaTime) {
     float rotateX = input_->GetRightStick().x;
     // rotateSpeed_はラジアン/フレーム単位（約0.00087ラジアン = 約0.05度/フレーム）
     destinationAngleY_ += rotateX * rotateSpeed_ *
-      CameraConfig::FirstPerson::GAMEPAD_ROTATE_MULTIPLIER;
+      CameraConfig::ThirdPerson::GAMEPAD_ROTATE_MULTIPLIER;
   } else {
     isRotating_ = false;
   }
@@ -161,9 +161,8 @@ Vector3 ThirdPersonController::CalculateLookAtRotation() const {
   float horizontalDistance = std::sqrt(direction.x * direction.x + direction.z * direction.z);
   float angleX = -std::atan2(direction.y, horizontalDistance);
 
-  // 三人称視点用の見下ろし角度を追加（15度をラジアンで）
-  const float THIRD_PERSON_LOOK_DOWN_ANGLE = DirectX::XMConvertToRadians(15.0f);
-  angleX += THIRD_PERSON_LOOK_DOWN_ANGLE;
+  // 三人称視点用の見下ろし角度を追加
+  angleX += CameraConfig::ThirdPerson::LOOK_DOWN_ANGLE;
 
   // ラジアン単位のまま返す（UpdateRotationもラジアンで処理）
   return Vector3(angleX, angleY, 0.0f);
