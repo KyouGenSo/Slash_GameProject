@@ -37,12 +37,44 @@ void PauseMenu::Initialize()
         buttonSprites_[i]->SetAnchorPoint({ 0.5f, 0.5f });
     }
 
-    // DPAD操作ガイドスプライト
+    // DPAD操作ガイドスプライト（ControllerUIと同じ座標・サイズ）
     dpadGuideSprite_ = std::make_unique<Sprite>();
-    dpadGuideSprite_->Initialize("button/DPAD_Neutral_Xbox.png");
-    dpadGuideSprite_->SetPos({ 960.0f, 900.0f });
-    dpadGuideSprite_->SetSize({ 100.0f, 100.0f });
-    dpadGuideSprite_->SetAnchorPoint({ 0.5f, 0.5f });
+    dpadGuideSprite_->Initialize("button/DPAD_Neutral.png");
+    dpadGuideSprite_->SetPos({ 323.0f, 869.0f });
+    dpadGuideSprite_->SetSize({ 150.0f, 150.0f });
+
+    dpadUpSprite_ = std::make_unique<Sprite>();
+    dpadUpSprite_->Initialize("button/DPAD_Up.png");
+    dpadUpSprite_->SetPos({ 323.0f, 869.0f });
+    dpadUpSprite_->SetSize({ 150.0f, 150.0f });
+
+    dpadDownSprite_ = std::make_unique<Sprite>();
+    dpadDownSprite_->Initialize("button/DPAD_Down.png");
+    dpadDownSprite_->SetPos({ 323.0f, 869.0f });
+    dpadDownSprite_->SetSize({ 150.0f, 150.0f });
+
+    // Aボタンスプライト（ControllerUIと同じ座標・サイズ）
+    aButtonUpSprite_ = std::make_unique<Sprite>();
+    aButtonUpSprite_->Initialize("button/A_Button_Up.png");
+    aButtonUpSprite_->SetPos({ 1565.0f, 948.0f });
+    aButtonUpSprite_->SetSize({ 60.0f, 60.0f });
+
+    aButtonDownSprite_ = std::make_unique<Sprite>();
+    aButtonDownSprite_->Initialize("button/A_Button_Down.png");
+    aButtonDownSprite_->SetPos({ 1565.0f, 948.0f });
+    aButtonDownSprite_->SetSize({ 60.0f, 60.0f });
+
+    // 選択テキスト（ControllerUIと同じ座標・サイズ）
+    sentakuSprite_ = std::make_unique<Sprite>();
+    sentakuSprite_->Initialize("sentaku.png");
+    sentakuSprite_->SetPos({ 450.0f, 892.0f });
+    sentakuSprite_->SetSize({ 150.0f, 50.0f });
+
+    // 決定テキスト（ControllerUIと同じ座標・サイズ）
+    ketteiSprite_ = std::make_unique<Sprite>();
+    ketteiSprite_->Initialize("kettei.png");
+    ketteiSprite_->SetPos({ 1518.0f, 997.0f });
+    ketteiSprite_->SetSize({ 150.0f, 50.0f });
 
     // 初期選択状態を設定
     Reset();
@@ -51,6 +83,11 @@ void PauseMenu::Initialize()
 PauseMenu::Action PauseMenu::Update()
 {
     Input* input = Input::GetInstance();
+
+    // 入力状態を取得（描画用）
+    isDPadUpPressed_ = input->PushButton(XButtons.DPad_Up);
+    isDPadDownPressed_ = input->PushButton(XButtons.DPad_Down);
+    isAPressed_ = input->PushButton(XButtons.A);
 
     // DPAD上下で選択移動
     if (input->TriggerButton(XButtons.DPad_Up)) {
@@ -78,6 +115,12 @@ PauseMenu::Action PauseMenu::Update()
         button->Update();
     }
     dpadGuideSprite_->Update();
+    dpadUpSprite_->Update();
+    dpadDownSprite_->Update();
+    aButtonUpSprite_->Update();
+    aButtonDownSprite_->Update();
+    ketteiSprite_->Update();
+    sentakuSprite_->Update();
 
     return Action::None;
 }
@@ -95,8 +138,29 @@ void PauseMenu::Draw()
         button->Draw();
     }
 
-    // DPAD操作ガイド
-    dpadGuideSprite_->Draw();
+    // === 操作説明UI ===
+
+    // 選択テキスト
+    sentakuSprite_->Draw();
+
+    // DPAD（入力に応じて切り替え）
+    if (isDPadUpPressed_) {
+        dpadUpSprite_->Draw();
+    } else if (isDPadDownPressed_) {
+        dpadDownSprite_->Draw();
+    } else {
+        dpadGuideSprite_->Draw();
+    }
+
+    // 決定テキスト
+    ketteiSprite_->Draw();
+
+    // Aボタン（入力に応じて切り替え）
+    if (isAPressed_) {
+        aButtonDownSprite_->Draw();
+    } else {
+        aButtonUpSprite_->Draw();
+    }
 }
 
 void PauseMenu::Reset()

@@ -70,7 +70,22 @@ private:
     std::unique_ptr<Tako::Sprite> overlaySprite_;
 
     // DPAD操作ガイドスプライト
-    std::unique_ptr<Tako::Sprite> dpadGuideSprite_;
+    std::unique_ptr<Tako::Sprite> dpadGuideSprite_;   ///< DPAD中立状態
+    std::unique_ptr<Tako::Sprite> dpadUpSprite_;      ///< DPAD上押下
+    std::unique_ptr<Tako::Sprite> dpadDownSprite_;    ///< DPAD下押下
+
+    // Aボタンスプライト
+    std::unique_ptr<Tako::Sprite> aButtonUpSprite_;   ///< Aボタン通常
+    std::unique_ptr<Tako::Sprite> aButtonDownSprite_; ///< Aボタン押下
+
+    // テキストスプライト
+    std::unique_ptr<Tako::Sprite> ketteiSprite_;      ///< 決定テキスト
+    std::unique_ptr<Tako::Sprite> sentakuSprite_;     ///< 選択テキスト
+
+    // 入力状態（描画用）
+    bool isDPadUpPressed_ = false;   ///< DPAD上ボタン押下状態
+    bool isDPadDownPressed_ = false; ///< DPAD下ボタン押下状態
+    bool isAPressed_ = false;        ///< Aボタン押下状態
 
     // 現在選択中のボタンインデックス（0:Resume, 1:Title, 2:Exit）
     int selectedIndex_ = 0;

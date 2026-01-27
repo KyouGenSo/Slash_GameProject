@@ -102,6 +102,7 @@ void ControllerUI::Initialize()
     pauseHintTextSprite_->Initialize("PauseMenu_Text.png");
     pauseHintTextSprite_->SetPos({ 124.0f, 120.0f });
     pauseHintTextSprite_->SetSize({ 240.0f, 120.0f });
+
 }
 
 void ControllerUI::Update()
@@ -176,7 +177,7 @@ int ControllerUI::GetStickDirectionIndex(const Vector2& stick) const
 
 void ControllerUI::Draw()
 {
-    // ポーズ中はpauseHintのみ描画
+    // ポーズ中はポーズ操作ヒントのみ描画（操作説明UIはPauseMenuが描画）
     if (isPaused_) {
         pauseHintIconSprite_->Draw();
         pauseHintTextSprite_->Draw();

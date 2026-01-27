@@ -335,6 +335,9 @@ void MyGame::LoadTextrue()
     TextureManager::GetInstance()->LoadTexture("button/Y_Button_Down.png");
     TextureManager::GetInstance()->LoadTexture("button/Y_Button_Up.png");
     TextureManager::GetInstance()->LoadTexture("button/Menu_Button_Up.png");
+    TextureManager::GetInstance()->LoadTexture("button/DPAD_Neutral.png");
+    TextureManager::GetInstance()->LoadTexture("button/DPAD_Up.png");
+    TextureManager::GetInstance()->LoadTexture("button/DPAD_Down.png");
 
     TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_01.png");
     TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_02.png");
@@ -358,4 +361,6 @@ void MyGame::LoadTextrue()
     TextureManager::GetInstance()->LoadTexture("parry.png");
     TextureManager::GetInstance()->LoadTexture("shageki.png");
     TextureManager::GetInstance()->LoadTexture("idou.png");
+    TextureManager::GetInstance()->LoadTexture("kettei.png");
+    TextureManager::GetInstance()->LoadTexture("sentaku.png");
 }
