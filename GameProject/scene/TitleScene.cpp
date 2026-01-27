@@ -426,7 +426,7 @@ void TitleScene::InitializeSprites()
 
   // スタートボタンテキストの初期化
   startButtonText_ = make_unique<Sprite>();
-  startButtonText_->Initialize("title_button.png");
+  startButtonText_->Initialize("titlescene_button.png");
   startButtonText_->SetPos(Vector2(
     WinApp::clientWidth / 2.f - startButtonText_->GetSize().x / 2.f,
     WinApp::clientHeight - startButtonBottomOffset_));

@@ -178,6 +178,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="scene\TitleScene.cpp" />
     <ClCompile Include="UI\ControllerUI.cpp" />
     <ClCompile Include="UI\HPBarUI.cpp" />
+    <ClCompile Include="UI\PauseMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\TakoEngine\project\externals\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -277,6 +278,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="scene\TitleScene.h" />
     <ClInclude Include="UI\ControllerUI.h" />
     <ClInclude Include="UI\HPBarUI.h" />
+    <ClInclude Include="UI\PauseMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="resources\shaders\2D.PS.hlsl">

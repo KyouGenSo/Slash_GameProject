@@ -100,6 +100,9 @@ void Player::Finalize()
 
 void Player::Update()
 {
+    // ポーズ中は更新をスキップ
+    if (isPause_) return;
+
     // GlobalVariablesから値を同期
     GlobalVariables* gv = GlobalVariables::GetInstance();
     speed_ = gv->GetValueFloat("Player", "Speed");

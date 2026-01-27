@@ -317,10 +317,14 @@ void MyGame::LoadTextrue()
     TextureManager::GetInstance()->LoadTexture("title_text/title_text_8.png");
     TextureManager::GetInstance()->LoadTexture("title_text/title_text_9.png");
     TextureManager::GetInstance()->LoadTexture("title_text/title_text_10.png");
-    TextureManager::GetInstance()->LoadTexture("title_button.png");
+    TextureManager::GetInstance()->LoadTexture("titlescene_button.png");
     TextureManager::GetInstance()->LoadTexture("game_button_text.png");
     TextureManager::GetInstance()->LoadTexture("gameClear_Text.png");
     TextureManager::GetInstance()->LoadTexture("gameOver_Text.png");
+    TextureManager::GetInstance()->LoadTexture("PauseButton_Resume.png");
+    TextureManager::GetInstance()->LoadTexture("PauseButton_Title.png");
+    TextureManager::GetInstance()->LoadTexture("PauseButton_Exit.png");
+    TextureManager::GetInstance()->LoadTexture("PauseMenu_Text.png");
 
     TextureManager::GetInstance()->LoadTexture("button/A_Button_Down.png");
     TextureManager::GetInstance()->LoadTexture("button/A_Button_Up.png");
@@ -330,6 +334,7 @@ void MyGame::LoadTextrue()
     TextureManager::GetInstance()->LoadTexture("button/X_Button_Up.png");
     TextureManager::GetInstance()->LoadTexture("button/Y_Button_Down.png");
     TextureManager::GetInstance()->LoadTexture("button/Y_Button_Up.png");
+    TextureManager::GetInstance()->LoadTexture("button/Menu_Button_Up.png");
 
     TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_01.png");
     TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_02.png");

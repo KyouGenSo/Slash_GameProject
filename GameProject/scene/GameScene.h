@@ -13,6 +13,7 @@
 #include "../Effect/BossBorderParticleManager.h"
 #include "../Effect/DashEffectManager.h"
 #include "UI/ControllerUI.h"
+#include "UI/PauseMenu.h"
 
 #include <memory>
 #include <vector>
@@ -177,4 +178,11 @@ private: // メンバ変数
 
     // UIマネージャー
     std::unique_ptr<ControllerUI> controllerUI_;                     // コントローラーUI表示
+    std::unique_ptr<PauseMenu> pauseMenu_;                           // ポーズメニュー
+    bool isPaused_ = false;                                          // ポーズ中フラグ
+
+    /// <summary>
+    /// ポーズメニューの更新処理
+    /// </summary>
+    void UpdatePause();
 };

@@ -245,6 +245,12 @@ public: // メンバ関数
     /// <param name="emitterManager">エミッターマネージャーのポインタ</param>
     void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
 
+    /// <summary>
+    /// ポーズ状態を設定
+    /// </summary>
+    /// <param name="isPause">ポーズ中ならtrue</param>
+    void SetIsPause(bool isPause) { isPause_ = isPause; }
+
     //----------------------------------Getters-----------------------------------//
     /// <summary>
     /// 移動速度を取得
@@ -431,6 +437,7 @@ private: // メンバ変数
     bool isDisModelDebugInfo_ = false;///< モデルデバッグ情報の表示
 
     bool isInvincible_ = false;       ///< 無敵フラグ
+    bool isPause_ = false;            ///< ポーズ中フラグ
 
     // システム
     std::unique_ptr<PlayerStateMachine> stateMachine_;

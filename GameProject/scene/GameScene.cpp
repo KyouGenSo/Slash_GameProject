@@ -1,5 +1,6 @@
 // Engine includes
 #include "GameScene.h"
+#include "WinApp.h"
 #include "ModelManager.h"
 #include "Object3dBasic.h"
 #include "SpriteBasic.h"
@@ -64,6 +65,10 @@ void GameScene::Initialize()
     controllerUI_ = std::make_unique<ControllerUI>();
     controllerUI_->Initialize();
 
+    // ポーズメニューの初期化
+    pauseMenu_ = std::make_unique<PauseMenu>();
+    pauseMenu_->Initialize();
+
     InitializePostEffect();
 
     InitializeDebugOption();
@@ -127,6 +132,9 @@ void GameScene::Finalize()
 
     // PostEffecをクリア
     PostEffectManager::GetInstance()->ClearEffectChain();
+
+    // ポーズメニューのクリア
+    pauseMenu_.reset();
 }
 
 void GameScene::Update()
@@ -142,6 +150,31 @@ void GameScene::Update()
     }
 
 #endif
+
+    // ポーズ中でも入力は更新（メニュー操作に必要、かつポーズトグル判定の前に実行する必要がある）
+    inputHandler_->Update();
+
+    // ポーズ入力チェック（ゲーム開始後、演出中以外、生存中のみ）
+    if (isStart_ && !player_->IsDead() && !boss_->IsDead() &&
+        animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING) {
+        if (inputHandler_->IsPaused()) {
+            isPaused_ = !isPaused_;
+            if (isPaused_) {
+                player_->SetIsPause(true);
+                boss_->SetIsPause(true);
+                pauseMenu_->Reset();
+            } else {
+                player_->SetIsPause(false);
+                boss_->SetIsPause(false);
+            }
+        }
+    }
+
+    // ポーズ中はメニュー更新のみ
+    if (isPaused_) {
+        UpdatePause();
+        return;
+    }
 
     // ゲーム開始演出終了後、ボスの一時停止を解除
     if (animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING && !isStart_) {
@@ -299,6 +332,11 @@ void GameScene::DrawWithoutEffect()
 
     // コントローラーUI描画
     controllerUI_->Draw();
+
+    // ポーズメニュー描画（最前面）
+    if (isPaused_) {
+        pauseMenu_->Draw();
+    }
 }
 
 void GameScene::DrawImGui()
@@ -340,16 +378,13 @@ void GameScene::UpdateCameraMode()
 
 void GameScene::UpdateInput()
 {
-    // 入力ハンドラーの更新。カメラアニメーション再生中、デバッグカメラ操作中は入力をリセットし、操作を受け付けない
-    if (animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING
+    // 入力更新はUpdate()冒頭で実行済み
+    // カメラアニメーション再生中やデバッグカメラ操作中は入力をリセット
+    if (animationController_->GetPlayState() == CameraAnimation::PlayState::PLAYING
 #ifdef  _DEBUG
-        && !Object3dBasic::GetInstance()->GetDebug()
+        || Object3dBasic::GetInstance()->GetDebug()
 #endif
         ) {
-        inputHandler_->Update();
-
-    }
-    else {
         inputHandler_->ResetInputs();
     }
 }
@@ -640,4 +675,24 @@ void GameScene::SetCameraAnimation()
     // クリア演出アニメーションの読み込みと設定
     animationController_->LoadAnimationFromFile("clear_anim");
     animationController_->SetAnimationTargetByName("clear_anim", boss_->GetTransformPtr());
+}
+
+void GameScene::UpdatePause()
+{
+    PauseMenu::Action action = pauseMenu_->Update();
+    switch (action) {
+    case PauseMenu::Action::Resume:
+        isPaused_ = false;
+        player_->SetIsPause(false);
+        boss_->SetIsPause(false);
+        break;
+    case PauseMenu::Action::ToTitle:
+        SceneManager::GetInstance()->ChangeScene("title", "Fade", 0.3f);
+        break;
+    case PauseMenu::Action::ExitGame:
+        PostQuitMessage(0);
+        break;
+    default:
+        break;
+    }
 }
