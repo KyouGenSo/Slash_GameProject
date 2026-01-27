@@ -1,5 +1,6 @@
 #include "ControllerUI.h"
 #include "Input.h"
+#include "Object/Boss/Boss.h"
 #include <cmath>
 #include <string>
 
@@ -175,6 +176,18 @@ int ControllerUI::GetStickDirectionIndex(const Vector2& stick) const
 
 void ControllerUI::Draw()
 {
+    // ポーズ中はpauseHintのみ描画
+    if (isPaused_) {
+        pauseHintIconSprite_->Draw();
+        pauseHintTextSprite_->Draw();
+        return;
+    }
+
+    // === 以下、通常時の描画 ===
+
+    // フェーズ2判定（ボス参照が有効かつフェーズ2の場合）
+    bool isPhase2 = boss_ && boss_->GetPhase() == 2;
+
     // ボタン描画（押されているかどうかで切り替え）
     if (isAPressed_) {
         aButtonDownSprite_->Draw();
@@ -200,18 +213,27 @@ void ControllerUI::Draw()
         yButtonUpSprite_->Draw();
     }
 
-    // ジョイスティック描画（現在の方向に対応するスプライトのみ）
+    // 左ジョイスティック描画（常に表示）
     lJoystickSprites_[leftStickDir_]->Draw();
-    rJoystickSprites_[rightStickDir_]->Draw();
+
+    // 右ジョイスティック描画（フェーズ2以外で表示）
+    if (!isPhase2) {
+        rJoystickSprites_[rightStickDir_]->Draw();
+    }
 
     // アクションアイコン描画
     kougekiSprite_->Draw();
     dashSprite_->Draw();
     parrySprite_->Draw();
-    shagekiSprite_->Draw();
+
+    // 射撃アイコン描画（フェーズ2以外で表示）
+    if (!isPhase2) {
+        shagekiSprite_->Draw();
+    }
+
     idouSprite_->Draw();
 
-    // ポーズ操作ヒント描画
+    // ポーズ操作ヒント描画（通常時も表示）
     pauseHintIconSprite_->Draw();
     pauseHintTextSprite_->Draw();
 }

@@ -159,6 +159,7 @@ void GameScene::Update()
         animationController_->GetPlayState() != CameraAnimation::PlayState::PLAYING) {
         if (inputHandler_->IsPaused()) {
             isPaused_ = !isPaused_;
+            controllerUI_->SetIsPaused(isPaused_);
             if (isPaused_) {
                 player_->SetIsPause(true);
                 boss_->SetIsPause(true);
@@ -295,8 +296,7 @@ void GameScene::Draw()
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
-    // コントローラーUI描画
-    controllerUI_->Draw();
+
 
 #ifdef _DEBUG
     // コライダーのデバッグ描画
@@ -558,6 +558,9 @@ void GameScene::InitializeObject3d()
     boss_->SetIsPause(true);
     // プレイヤーにボスの参照を設定
     player_->SetBoss(boss_.get());
+
+    // コントローラーUIにボス参照を設定（フェーズ判定用）
+    controllerUI_->SetBoss(boss_.get());
 }
 
 void GameScene::InitializeCameraSystem()
@@ -683,6 +686,7 @@ void GameScene::UpdatePause()
     switch (action) {
     case PauseMenu::Action::Resume:
         isPaused_ = false;
+        controllerUI_->SetIsPaused(false);
         player_->SetIsPause(false);
         boss_->SetIsPause(false);
         break;

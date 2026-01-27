@@ -4,6 +4,9 @@
 #include "Sprite.h"
 #include "Vector2.h"
 
+// 前方宣言
+class Boss;
+
 /// <summary>
 /// コントローラーUI表示クラス
 /// ゲームパッドの入力状態を視覚的に表示
@@ -38,6 +41,18 @@ public:
     /// 各スプライトの位置・サイズ等を調整可能
     /// </summary>
     void DrawImGui();
+
+    /// <summary>
+    /// ボスへの参照を設定（フェーズ判定用）
+    /// </summary>
+    /// <param name="boss">ボスへのポインタ</param>
+    void SetBoss(Boss* boss) { boss_ = boss; }
+
+    /// <summary>
+    /// ポーズ状態を設定
+    /// </summary>
+    /// <param name="isPaused">ポーズ中かどうか</param>
+    void SetIsPaused(bool isPaused) { isPaused_ = isPaused; }
 
 private:
     /// <summary>
@@ -82,4 +97,8 @@ private:
 
     // デッドゾーン閾値（スティック入力がこの値未満なら無視）
     float stickDeadzone_ = 0.3f;
+
+    // 状態参照用
+    Boss* boss_ = nullptr;  ///< ボスへの参照（フェーズ判定用）
+    bool isPaused_ = false; ///< ポーズ状態
 };

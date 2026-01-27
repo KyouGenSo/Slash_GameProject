@@ -43,7 +43,7 @@ void ClearScene::Initialize()
     titleText_->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextHalfWidth_, titleTextY_));
 
     pressButtonText_ = std::make_unique<Sprite>();
-    pressButtonText_->Initialize("title_button.png");
+    pressButtonText_->Initialize("titlescene_button.png");
     pressButtonText_->SetPos(Vector2(
         WinApp::clientWidth / 2.f - pressButtonText_->GetSize().x / 2.f,
         WinApp::clientHeight - buttonBottomOffset_));
