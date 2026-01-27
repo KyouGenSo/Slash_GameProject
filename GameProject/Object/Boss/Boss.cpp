@@ -117,6 +117,16 @@ void Boss::Finalize()
     if (meleeAttackCollider_) {
         CollisionManager::GetInstance()->RemoveCollider(meleeAttackCollider_.get());
     }
+
+#ifdef _DEBUG
+    // ノードエディタを明示的にクリーンアップ
+    // ImGuiコンテキストが有効なうちに破棄する必要がある
+    // （Bossデストラクタ時点ではImGuiが既に終了している可能性があるため）
+    if (nodeEditor_) {
+        nodeEditor_->Finalize();
+        nodeEditor_.reset();
+    }
+#endif
 }
 
 void Boss::Update(float deltaTime)

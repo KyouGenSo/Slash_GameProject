@@ -64,6 +64,7 @@ void BossNodeEditor::Initialize() {
 /// </summary>
 void BossNodeEditor::Finalize() {
     if (editorContext_) {
+        ed::SetCurrentEditor(editorContext_);
         ed::DestroyEditor(editorContext_);
         editorContext_ = nullptr;
     }
