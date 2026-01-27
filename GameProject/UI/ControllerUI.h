@@ -68,6 +68,10 @@ private:
     std::unique_ptr<Tako::Sprite> shagekiSprite_;
     std::unique_ptr<Tako::Sprite> idouSprite_;
 
+    // ポーズ操作ヒントスプライト
+    std::unique_ptr<Tako::Sprite> pauseHintIconSprite_;   ///< Menuボタンアイコン
+    std::unique_ptr<Tako::Sprite> pauseHintTextSprite_;   ///< PAUSEテキスト
+
     // 現在の表示状態
     bool isAPressed_ = false;
     bool isBPressed_ = false;

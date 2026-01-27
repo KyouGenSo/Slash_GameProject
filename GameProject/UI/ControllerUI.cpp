@@ -90,6 +90,17 @@ void ControllerUI::Initialize()
     idouSprite_->Initialize("idou.png");
     idouSprite_->SetPos({ 450.0f, 892.0f });
     idouSprite_->SetSize({ 150.0f, 50.0f });
+
+    // ポーズ操作ヒント初期化（HPバーの下、画面左上付近）
+    pauseHintIconSprite_ = std::make_unique<Sprite>();
+    pauseHintIconSprite_->Initialize("button/Menu_Button_Up.png");
+    pauseHintIconSprite_->SetPos({ 30.0f, 157.0f });
+    pauseHintIconSprite_->SetSize({ 80.0f, 80.0f });
+
+    pauseHintTextSprite_ = std::make_unique<Sprite>();
+    pauseHintTextSprite_->Initialize("PauseMenu_Text.png");
+    pauseHintTextSprite_->SetPos({ 124.0f, 120.0f });
+    pauseHintTextSprite_->SetSize({ 240.0f, 120.0f });
 }
 
 void ControllerUI::Update()
@@ -130,6 +141,10 @@ void ControllerUI::Update()
     parrySprite_->Update();
     shagekiSprite_->Update();
     idouSprite_->Update();
+
+    // ポーズ操作ヒントの更新
+    pauseHintIconSprite_->Update();
+    pauseHintTextSprite_->Update();
 }
 
 int ControllerUI::GetStickDirectionIndex(const Vector2& stick) const
@@ -195,6 +210,10 @@ void ControllerUI::Draw()
     parrySprite_->Draw();
     shagekiSprite_->Draw();
     idouSprite_->Draw();
+
+    // ポーズ操作ヒント描画
+    pauseHintIconSprite_->Draw();
+    pauseHintTextSprite_->Draw();
 }
 
 void ControllerUI::DrawImGui()
@@ -289,6 +308,18 @@ void ControllerUI::DrawImGui()
             }
             if (ImGui::TreeNode("Idou")) {
                 idouSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Pause Hint")) {
+            if (ImGui::TreeNode("Icon")) {
+                pauseHintIconSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("Text")) {
+                pauseHintTextSprite_->DrawImGui();
                 ImGui::TreePop();
             }
             ImGui::TreePop();
