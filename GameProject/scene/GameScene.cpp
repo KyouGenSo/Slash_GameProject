@@ -693,6 +693,7 @@ void GameScene::UpdatePause()
     switch (action) {
     case PauseMenu::Action::Resume:
         isPaused_ = false;
+        PostEffectManager::GetInstance()->RemoveEffectFromChain("GaussianBlur");
         controllerUI_->SetIsPaused(false);
         player_->SetIsPause(false);
         boss_->SetIsPause(false);
