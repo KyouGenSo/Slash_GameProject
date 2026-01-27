@@ -144,8 +144,17 @@ void Player::Update()
     transform_.translate.z = std::min<float>(transform_.translate.z, effectiveZMax);
     transform_.translate.z = std::max<float>(transform_.translate.z, effectiveZMin);
 
-    // モデルの更新
-    model_->SetTransform(transform_);
+    // ヒットエフェクトの更新
+    static const Vector4 kOriginalColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);  // 白（元の色）
+    hitFlashEffect_.Update(deltaTime, model_.get(), kOriginalColor);
+
+    // シェイクエフェクトの更新
+    shakeEffect_.Update(deltaTime);
+
+    // モデルの更新（シェイクオフセットを適用）
+    Transform renderTransform = transform_;
+    renderTransform.translate += shakeEffect_.GetOffset();
+    model_->SetTransform(renderTransform);
     model_->Update();
 
     // 攻撃ブロックの更新（表示中のみ）
@@ -315,6 +324,12 @@ void Player::OnHit(float damage)
 
     hp_ -= damage;
     hp_ = std::max<float>(hp_, 0.0f);
+
+    // ヒットフラッシュエフェクト開始（赤く光る）
+    hitFlashEffect_.Start(Vector4(1.0f, 0.0f, 0.0f, 1.0f), 0.05f);
+
+    // シェイクエフェクト開始（強度0.5）
+    shakeEffect_.Start(0.5f);
 
     // DamageFeedbackでカメラシェイク、振動、Vignetteを一括発生
     DamageFeedback::TriggerHitFeedback();

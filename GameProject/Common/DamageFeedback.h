@@ -33,9 +33,9 @@ public:
     /// </summary>
     struct ParryParams {
         float shakeIntensity = 0.2f;         ///< カメラシェイク強度（軽め）
-        float vibrationLow = 0.1f;           ///< ゲームパッド振動（低周波）
-        float vibrationHigh = 0.15f;         ///< ゲームパッド振動（高周波）
-        float vibrationDuration = 0.1f;      ///< 振動持続時間
+        float vibrationLow = 0.15f;           ///< ゲームパッド振動（低周波）
+        float vibrationHigh = 0.3f;         ///< ゲームパッド振動（高周波）
+        float vibrationDuration = 0.15f;      ///< 振動持続時間
         float vignettePower = 0.4f;          ///< Vignette強度
         float vignetteRange = 45.0f;         ///< Vignetteの範囲
         Tako::Vector3 vignetteColor = { 0.058f, 0.447f, 1.0f };  ///< Vignette色（青）

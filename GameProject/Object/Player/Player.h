@@ -14,6 +14,8 @@
 #include "../../Common/EasingMover.h"
 #include "../../Common/DynamicBoundary.h"
 #include "../../UI/HPBarUI.h"
+#include "../../Effect/HitFlashEffect.h"
+#include "../../Effect/ShakeEffect.h"
 
 // Tako namespace前方宣言
 namespace Tako {
@@ -479,5 +481,9 @@ private: // メンバ変数
 
     // HP最大値
     static constexpr float kMaxHp = 100.0f;  ///< HP最大値
+
+    // ===== エフェクト関連 =====
+    HitFlashEffect hitFlashEffect_;     ///< ヒット時の色変化エフェクト
+    ShakeEffect shakeEffect_;           ///< シェイクエフェクト
 };
 
