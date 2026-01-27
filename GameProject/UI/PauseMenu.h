@@ -1,9 +1,12 @@
 #pragma once
 #include <array>
 #include <memory>
+#include <cstdint>
 
 namespace Tako {
 class Sprite;
+class WinApp;
+struct Vector2;
 }
 
 /// <summary>
@@ -25,7 +28,7 @@ public:
     };
 
     PauseMenu() = default;
-    ~PauseMenu() = default;
+    ~PauseMenu();
 
     /// <summary>
     /// 初期化
@@ -51,6 +54,12 @@ public:
     /// メニュー再表示時にResumeが選択された状態に戻す
     /// </summary>
     void Reset();
+
+    /// <summary>
+    /// ImGuiでパラメータ調整
+    /// 各スプライトの位置・サイズ等を調整可能
+    /// </summary>
+    void DrawImGui();
 
 private:
     /// <summary>
@@ -99,4 +108,19 @@ private:
     static constexpr float kUnselectedColorR = 0.5f;
     static constexpr float kUnselectedColorG = 0.5f;
     static constexpr float kUnselectedColorB = 0.5f;
+
+    /// <summary>
+    /// ウィンドウリサイズ時のコールバック
+    /// 全スプライトの位置・サイズを新しいウィンドウサイズに合わせて再計算
+    /// </summary>
+    /// <param name="newSize">新しいウィンドウサイズ</param>
+    void OnResize(const Tako::Vector2& newSize);
+
+    // 基準解像度定数（UI設計時の想定解像度）
+    static constexpr float kBaseWidth = 1920.0f;
+    static constexpr float kBaseHeight = 1080.0f;
+
+    // リサイズコールバック管理
+    Tako::WinApp* winApp_ = nullptr;   ///< WinAppへの参照
+    uint32_t onResizeId_ = 0;          ///< 登録されたコールバックのID
 };

@@ -1,11 +1,13 @@
 #pragma once
 #include <memory>
 #include <array>
+#include <cstdint>
 #include "Sprite.h"
 #include "Vector2.h"
 
 // 前方宣言
 class Boss;
+namespace Tako { class WinApp; }
 
 /// <summary>
 /// コントローラーUI表示クラス
@@ -16,7 +18,7 @@ class ControllerUI
 {
 public:
     ControllerUI() = default;
-    ~ControllerUI() = default;
+    ~ControllerUI();
 
     /// <summary>
     /// 初期化
@@ -61,6 +63,21 @@ private:
     /// <param name="stick">スティック入力ベクトル</param>
     /// <returns>方向インデックス (0:上, 1:左上, 2:左, 3:左下, 4:下, 5:右下, 6:右, 7:右上)</returns>
     int GetStickDirectionIndex(const Tako::Vector2& stick) const;
+
+    /// <summary>
+    /// ウィンドウリサイズ時のコールバック
+    /// 全スプライトの位置・サイズを新しいウィンドウサイズに合わせて再計算
+    /// </summary>
+    /// <param name="newSize">新しいウィンドウサイズ</param>
+    void OnResize(const Tako::Vector2& newSize);
+
+    // 基準解像度定数（UI設計時の想定解像度）
+    static constexpr float kBaseWidth = 1920.0f;
+    static constexpr float kBaseHeight = 1080.0f;
+
+    // リサイズコールバック管理
+    Tako::WinApp* winApp_ = nullptr;   ///< WinAppへの参照
+    uint32_t onResizeId_ = 0;          ///< 登録されたコールバックのID
 
     // ボタンスプライト（Up/Down各4ボタン）
     std::unique_ptr<Tako::Sprite> aButtonUpSprite_;

@@ -1,8 +1,22 @@
 #include "PauseMenu.h"
 #include "Sprite.h"
 #include "Input.h"
+#include "WinApp.h"
+#include <functional>
+
+#ifdef _DEBUG
+#include "imgui.h"
+#endif
 
 using namespace Tako;
+
+PauseMenu::~PauseMenu()
+{
+    // リサイズコールバックを解除（ダングリングポインタ防止）
+    if (winApp_ && onResizeId_ != 0) {
+        winApp_->UnregisterOnResizeFunc(onResizeId_);
+    }
+}
 
 void PauseMenu::Initialize()
 {
@@ -10,7 +24,7 @@ void PauseMenu::Initialize()
     overlaySprite_ = std::make_unique<Sprite>();
     overlaySprite_->Initialize("white.png");
     overlaySprite_->SetPos({ 0.0f, 0.0f });
-    overlaySprite_->SetSize({ 1920.0f, 1080.0f });
+    overlaySprite_->SetSize({ static_cast<float>(WinApp::clientWidth),  static_cast<float>(WinApp::clientHeight) });
     overlaySprite_->SetColor({ 0.0f, 0.0f, 0.0f, 0.5f });
 
     // タイトルスプライト（PAUSE表示）
@@ -67,22 +81,33 @@ void PauseMenu::Initialize()
     // 選択テキスト（ControllerUIと同じ座標・サイズ）
     sentakuSprite_ = std::make_unique<Sprite>();
     sentakuSprite_->Initialize("sentaku.png");
-    sentakuSprite_->SetPos({ 450.0f, 892.0f });
+    sentakuSprite_->SetPos({ 460.0f, 910.0f });
     sentakuSprite_->SetSize({ 150.0f, 50.0f });
 
     // 決定テキスト（ControllerUIと同じ座標・サイズ）
     ketteiSprite_ = std::make_unique<Sprite>();
     ketteiSprite_->Initialize("kettei.png");
-    ketteiSprite_->SetPos({ 1518.0f, 997.0f });
+    ketteiSprite_->SetPos({ 1518.0f, 1000.0f });
     ketteiSprite_->SetSize({ 150.0f, 50.0f });
 
     // 初期選択状態を設定
     Reset();
+
+    // リサイズコールバック登録
+    winApp_ = WinApp::GetInstance();
+    if (winApp_) {
+        onResizeId_ = winApp_->RegisterOnResizeFunc(
+            std::bind(&PauseMenu::OnResize, this, std::placeholders::_1)
+        );
+    }
 }
 
 PauseMenu::Action PauseMenu::Update()
 {
     Input* input = Input::GetInstance();
+
+    // オーバーレイサイズを画面サイズに合わせる
+    overlaySprite_->SetSize({ static_cast<float>(WinApp::clientWidth),  static_cast<float>(WinApp::clientHeight) });
 
     // 入力状態を取得（描画用）
     isDPadUpPressed_ = input->PushButton(XButtons.DPad_Up);
@@ -180,4 +205,136 @@ void PauseMenu::UpdateButtonColors()
             buttonSprites_[i]->SetColor({ kUnselectedColorR, kUnselectedColorG, kUnselectedColorB, 1.0f });
         }
     }
+}
+
+void PauseMenu::OnResize(const Vector2& newSize)
+{
+    // スケールファクターを計算
+    float scaleX = newSize.x / kBaseWidth;
+    float scaleY = newSize.y / kBaseHeight;
+
+    // オーバーレイは画面全体にフィット
+    overlaySprite_->SetPos({ 0.0f, 0.0f });
+    overlaySprite_->SetSize({ newSize.x, newSize.y });
+
+    // タイトルスプライト（中央配置）
+    titleSprite_->SetPos({ 960.0f * scaleX, 200.0f * scaleY });
+    titleSprite_->SetSize({ 400.0f * scaleX, 100.0f * scaleY });
+
+    // ボタンスプライト
+    const float buttonY[kButtonCount] = { 400.0f, 550.0f, 700.0f };
+    for (int i = 0; i < kButtonCount; ++i) {
+        buttonSprites_[i]->SetPos({ 960.0f * scaleX, buttonY[i] * scaleY });
+        buttonSprites_[i]->SetSize({ 300.0f * scaleX, 100.0f * scaleY });
+    }
+
+    // DPAD操作ガイドスプライト
+    dpadGuideSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
+    dpadGuideSprite_->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
+
+    dpadUpSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
+    dpadUpSprite_->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
+
+    dpadDownSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
+    dpadDownSprite_->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
+
+    // Aボタンスプライト
+    aButtonUpSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
+    aButtonUpSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
+
+    aButtonDownSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
+    aButtonDownSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
+
+    // 選択テキスト
+    sentakuSprite_->SetPos({ 460.0f * scaleX, 910.0f * scaleY });
+    sentakuSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
+
+    // 決定テキスト
+    ketteiSprite_->SetPos({ 1518.0f * scaleX, 1000.0f * scaleY });
+    ketteiSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
+}
+
+void PauseMenu::DrawImGui()
+{
+#ifdef _DEBUG
+    if (ImGui::TreeNode("PauseMenu")) {
+        // 現在の状態表示
+        ImGui::Text("Selected Index: %d", selectedIndex_);
+        ImGui::Text("Input States:");
+        ImGui::Text("  DPad Up: %s", isDPadUpPressed_ ? "Pressed" : "Released");
+        ImGui::Text("  DPad Down: %s", isDPadDownPressed_ ? "Pressed" : "Released");
+        ImGui::Text("  A Button: %s", isAPressed_ ? "Pressed" : "Released");
+
+        ImGui::Separator();
+
+        // 背景オーバーレイ
+        if (ImGui::TreeNode("Overlay Sprite")) {
+            overlaySprite_->DrawImGui();
+            ImGui::TreePop();
+        }
+
+        // タイトルスプライト
+        if (ImGui::TreeNode("Title Sprite (PAUSE)")) {
+            titleSprite_->DrawImGui();
+            ImGui::TreePop();
+        }
+
+        // ボタンスプライト
+        if (ImGui::TreeNode("Button Sprites")) {
+            const char* buttonNames[kButtonCount] = { "Resume", "Title", "Exit" };
+            for (int i = 0; i < kButtonCount; ++i) {
+                if (ImGui::TreeNode(buttonNames[i])) {
+                    buttonSprites_[i]->DrawImGui();
+                    ImGui::TreePop();
+                }
+            }
+            ImGui::TreePop();
+        }
+
+        // DPAD操作ガイド
+        if (ImGui::TreeNode("DPAD Guide Sprites")) {
+            if (ImGui::TreeNode("DPAD Neutral")) {
+                dpadGuideSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("DPAD Up")) {
+                dpadUpSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("DPAD Down")) {
+                dpadDownSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            ImGui::TreePop();
+        }
+
+        // Aボタンスプライト
+        if (ImGui::TreeNode("A Button Sprites")) {
+            if (ImGui::TreeNode("A Button Up")) {
+                aButtonUpSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("A Button Down")) {
+                aButtonDownSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            ImGui::TreePop();
+        }
+
+        // テキストスプライト
+        if (ImGui::TreeNode("Text Sprites")) {
+            if (ImGui::TreeNode("Kettei (決定)")) {
+                ketteiSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            if (ImGui::TreeNode("Sentaku (選択)")) {
+                sentakuSprite_->DrawImGui();
+                ImGui::TreePop();
+            }
+            ImGui::TreePop();
+        }
+
+        ImGui::TreePop();
+    }
+#endif
 }
