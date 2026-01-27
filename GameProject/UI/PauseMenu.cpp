@@ -99,6 +99,12 @@ void PauseMenu::Initialize()
         onResizeId_ = winApp_->RegisterOnResizeFunc(
             std::bind(&PauseMenu::OnResize, this, std::placeholders::_1)
         );
+
+        // 現在のウィンドウサイズに合わせて位置調整（シーン再入場対応）
+        Vector2 currentSize = { static_cast<float>(WinApp::clientWidth), static_cast<float>(WinApp::clientHeight) };
+        if (currentSize.x != kBaseWidth || currentSize.y != kBaseHeight) {
+            OnResize(currentSize);
+        }
     }
 }
 
@@ -215,43 +221,33 @@ void PauseMenu::OnResize(const Vector2& newSize)
 
     // オーバーレイは画面全体にフィット
     overlaySprite_->SetPos({ 0.0f, 0.0f });
-    overlaySprite_->SetSize({ newSize.x, newSize.y });
 
     // タイトルスプライト（中央配置）
     titleSprite_->SetPos({ 960.0f * scaleX, 200.0f * scaleY });
-    titleSprite_->SetSize({ 400.0f * scaleX, 100.0f * scaleY });
 
     // ボタンスプライト
     const float buttonY[kButtonCount] = { 400.0f, 550.0f, 700.0f };
     for (int i = 0; i < kButtonCount; ++i) {
         buttonSprites_[i]->SetPos({ 960.0f * scaleX, buttonY[i] * scaleY });
-        buttonSprites_[i]->SetSize({ 300.0f * scaleX, 100.0f * scaleY });
     }
 
     // DPAD操作ガイドスプライト
     dpadGuideSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
-    dpadGuideSprite_->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
 
     dpadUpSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
-    dpadUpSprite_->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
 
     dpadDownSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
-    dpadDownSprite_->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
 
     // Aボタンスプライト
     aButtonUpSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
-    aButtonUpSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
 
     aButtonDownSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
-    aButtonDownSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
 
     // 選択テキスト
     sentakuSprite_->SetPos({ 460.0f * scaleX, 910.0f * scaleY });
-    sentakuSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
 
     // 決定テキスト
     ketteiSprite_->SetPos({ 1518.0f * scaleX, 1000.0f * scaleY });
-    ketteiSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
 }
 
 void PauseMenu::DrawImGui()

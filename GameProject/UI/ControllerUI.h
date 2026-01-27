@@ -71,6 +71,8 @@ private:
     /// <param name="newSize">新しいウィンドウサイズ</param>
     void OnResize(const Tako::Vector2& newSize);
 
+private:
+
     // 基準解像度定数（UI設計時の想定解像度）
     static constexpr float kBaseWidth = 1920.0f;
     static constexpr float kBaseHeight = 1080.0f;

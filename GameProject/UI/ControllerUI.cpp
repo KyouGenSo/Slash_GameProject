@@ -1,6 +1,6 @@
 #include "ControllerUI.h"
-#include "Input.h"
 #include "WinApp.h"
+#include "Input.h"
 #include "Object/Boss/Boss.h"
 #include <cmath>
 #include <string>
@@ -119,6 +119,12 @@ void ControllerUI::Initialize()
         onResizeId_ = winApp_->RegisterOnResizeFunc(
             std::bind(&ControllerUI::OnResize, this, std::placeholders::_1)
         );
+
+        // 現在のウィンドウサイズに合わせて位置調整（シーン再入場対応）
+        Vector2 currentSize = { static_cast<float>(WinApp::clientWidth), static_cast<float>(WinApp::clientHeight) };
+        if (currentSize.x != kBaseWidth || currentSize.y != kBaseHeight) {
+            OnResize(currentSize);
+        }
     }
 }
 
@@ -378,57 +384,40 @@ void ControllerUI::OnResize(const Vector2& newSize)
 
     // Aボタン
     aButtonUpSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
-    aButtonUpSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
     aButtonDownSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
-    aButtonDownSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
 
     // Bボタン
     bButtonUpSprite_->SetPos({ 1640.0f * scaleX, 869.0f * scaleY });
-    bButtonUpSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
     bButtonDownSprite_->SetPos({ 1640.0f * scaleX, 869.0f * scaleY });
-    bButtonDownSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
 
     // Xボタン
     xButtonUpSprite_->SetPos({ 1488.0f * scaleX, 869.0f * scaleY });
-    xButtonUpSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
     xButtonDownSprite_->SetPos({ 1488.0f * scaleX, 869.0f * scaleY });
-    xButtonDownSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
 
     // Yボタン
     yButtonUpSprite_->SetPos({ 1565.0f * scaleX, 803.0f * scaleY });
-    yButtonUpSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
     yButtonDownSprite_->SetPos({ 1565.0f * scaleX, 803.0f * scaleY });
-    yButtonDownSprite_->SetSize({ 60.0f * scaleX, 60.0f * scaleY });
 
     // ジョイスティック（8方向）
     for (int i = 0; i < 8; ++i) {
         lJoystickSprites_[i]->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
-        lJoystickSprites_[i]->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
 
         rJoystickSprites_[i]->SetPos({ 791.0f * scaleX, 869.0f * scaleY });
-        rJoystickSprites_[i]->SetSize({ 150.0f * scaleX, 150.0f * scaleY });
     }
 
     // アクションアイコン
     kougekiSprite_->SetPos({ 1349.0f * scaleX, 871.0f * scaleY });
-    kougekiSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
 
     dashSprite_->SetPos({ 1518.0f * scaleX, 997.0f * scaleY });
-    dashSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
 
     parrySprite_->SetPos({ 1701.0f * scaleX, 871.0f * scaleY });
-    parrySprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
 
     shagekiSprite_->SetPos({ 913.0f * scaleX, 892.0f * scaleY });
-    shagekiSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
 
     idouSprite_->SetPos({ 450.0f * scaleX, 892.0f * scaleY });
-    idouSprite_->SetSize({ 150.0f * scaleX, 50.0f * scaleY });
 
     // ポーズ操作ヒント
     pauseHintIconSprite_->SetPos({ 30.0f * scaleX, 157.0f * scaleY });
-    pauseHintIconSprite_->SetSize({ 80.0f * scaleX, 80.0f * scaleY });
 
     pauseHintTextSprite_->SetPos({ 124.0f * scaleX, 120.0f * scaleY });
-    pauseHintTextSprite_->SetSize({ 240.0f * scaleX, 120.0f * scaleY });
 }

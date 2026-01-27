@@ -68,6 +68,15 @@ private:
     /// </summary>
     void UpdateButtonColors();
 
+    /// <summary>
+    /// ウィンドウリサイズ時のコールバック
+    /// 全スプライトの位置・サイズを新しいウィンドウサイズに合わせて再計算
+    /// </summary>
+    /// <param name="newSize">新しいウィンドウサイズ</param>
+    void OnResize(const Tako::Vector2& newSize);
+
+private:
+
     // ボタンスプライト（Resume, Title, Exit）
     static constexpr int kButtonCount = 3;
     std::array<std::unique_ptr<Tako::Sprite>, kButtonCount> buttonSprites_;
@@ -108,13 +117,6 @@ private:
     static constexpr float kUnselectedColorR = 0.5f;
     static constexpr float kUnselectedColorG = 0.5f;
     static constexpr float kUnselectedColorB = 0.5f;
-
-    /// <summary>
-    /// ウィンドウリサイズ時のコールバック
-    /// 全スプライトの位置・サイズを新しいウィンドウサイズに合わせて再計算
-    /// </summary>
-    /// <param name="newSize">新しいウィンドウサイズ</param>
-    void OnResize(const Tako::Vector2& newSize);
 
     // 基準解像度定数（UI設計時の想定解像度）
     static constexpr float kBaseWidth = 1920.0f;

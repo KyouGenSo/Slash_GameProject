@@ -161,10 +161,13 @@ void GameScene::Update()
             isPaused_ = !isPaused_;
             controllerUI_->SetIsPaused(isPaused_);
             if (isPaused_) {
+                PostEffectManager::GetInstance()->SetEffectParam("GaussianBlur", GaussianBlurParam{ .sigma = 20.0f, .kernelSize = 30 });
+                PostEffectManager::GetInstance()->AddEffectToChain("GaussianBlur");
                 player_->SetIsPause(true);
                 boss_->SetIsPause(true);
                 pauseMenu_->Reset();
             } else {
+                PostEffectManager::GetInstance()->RemoveEffectFromChain("GaussianBlur");
                 player_->SetIsPause(false);
                 boss_->SetIsPause(false);
             }
@@ -506,6 +509,10 @@ void GameScene::InitializeDebugOption()
     // コントローラーUIのDebugUI登録
     DebugUIManager::GetInstance()->RegisterGameObject("ControllerUI",
         [this]() { if (controllerUI_) controllerUI_->DrawImGui(); });
+
+    // ポーズメニューのDebugUI登録
+    DebugUIManager::GetInstance()->RegisterGameObject("PauseMenu",
+        [this]() { if (pauseMenu_) pauseMenu_->DrawImGui(); });
 
     DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
 #endif
