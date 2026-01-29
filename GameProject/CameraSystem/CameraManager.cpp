@@ -1,6 +1,6 @@
 #include "CameraManager.h"
 #include <algorithm>
-#include <sstream>
+#include <format>
 #include "RandomEngine.h"
 #include "GlobalVariables.h"
 
@@ -156,21 +156,19 @@ std::string CameraManager::GetActiveControllerName() const {
 }
 
 std::string CameraManager::GetDebugInfo() const {
-    std::stringstream ss;
-    ss << "=== Camera Manager Debug Info ===" << '\n';
-    ss << "Total Controllers: " << controllers_.size() << '\n';
-    ss << "Active Controller: " << GetActiveControllerName() << '\n';
-    ss << '\n';
+    std::string result = std::format("=== Camera Manager Debug Info ===\n");
+    result += std::format("Total Controllers: {}\n", controllers_.size());
+    result += std::format("Active Controller: {}\n\n", GetActiveControllerName());
 
-    ss << "Controller List (Priority Order):" << '\n';
+    result += "Controller List (Priority Order):\n";
     for (const auto& entry : controllers_) {
-        ss << "  - " << entry.name;
-        ss << " [Priority: " << static_cast<int>(entry.controller->GetPriority()) << "]";
-        ss << " [Active: " << (entry.controller->IsActive() ? "Yes" : "No") << "]";
-        ss << '\n';
+        result += std::format("  - {} [Priority: {}] [Active: {}]\n",
+            entry.name,
+            static_cast<int>(entry.controller->GetPriority()),
+            entry.controller->IsActive() ? "Yes" : "No");
     }
 
-    return ss.str();
+    return result;
 }
 
 void CameraManager::SortControllersByPriority() {

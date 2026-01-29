@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Object/Boss/Boss.h"
 #include <cmath>
+#include <DirectXMath.h>
 #include <string>
 #include <functional>
 
@@ -185,7 +186,7 @@ int ControllerUI::GetStickDirectionIndex(const Vector2& stick) const
     // 角度計算
     // atan2(x, y)で「上」を0度基準に変換
     // 上→左上→左→左下→下→右下→右→右上
-    float angle = std::atan2(stick.x, stick.y) * 180.0f / 3.14159265f;
+    float angle = DirectX::XMConvertToDegrees(std::atan2(stick.x, stick.y));
 
     // 22.5度オフセットを加えて、境界を方向の「間」に配置
     angle += 22.5f;
