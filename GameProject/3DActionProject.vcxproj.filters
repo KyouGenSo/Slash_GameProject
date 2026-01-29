@@ -60,9 +60,6 @@
     <Filter Include="BehaviorTree">
       <UniqueIdentifier>{09a017ea-3980-4572-a8f0-95ab2716a08d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BehaviorTree\Composite">
-      <UniqueIdentifier>{54752936-db44-4750-ae6b-d9594579c3b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BehaviorTree\Core">
       <UniqueIdentifier>{e36fa40f-3ecd-4b49-ab2a-3d9574a50ab8}</UniqueIdentifier>
     </Filter>
@@ -89,6 +86,9 @@
     </Filter>
     <Filter Include="Effect">
       <UniqueIdentifier>{fd705391-fd52-4064-bca3-6fb63c78106e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BehaviorTree\Composites">
+      <UniqueIdentifier>{54752936-db44-4750-ae6b-d9594579c3b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,13 +190,13 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorTree\Composites\BTSelector.cpp">
-      <Filter>BehaviorTree\Composite</Filter>
+      <Filter>BehaviorTree\Composites</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorTree\Composites\BTSequence.cpp">
-      <Filter>BehaviorTree\Composite</Filter>
+      <Filter>BehaviorTree\Composites</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorTree\Composites\BTRandomSelector.cpp">
-      <Filter>BehaviorTree\Composite</Filter>
+      <Filter>BehaviorTree\Composites</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorTree\Core\BTComposite.cpp">
       <Filter>BehaviorTree\Core</Filter>
@@ -429,13 +429,13 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree\Composites\BTSelector.h">
-      <Filter>BehaviorTree\Composite</Filter>
+      <Filter>BehaviorTree\Composites</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree\Composites\BTSequence.h">
-      <Filter>BehaviorTree\Composite</Filter>
+      <Filter>BehaviorTree\Composites</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree\Composites\BTRandomSelector.h">
-      <Filter>BehaviorTree\Composite</Filter>
+      <Filter>BehaviorTree\Composites</Filter>
     </ClInclude>
     <ClInclude Include="BehaviorTree\Core\BTBlackboard.h">
       <Filter>BehaviorTree\Core</Filter>
