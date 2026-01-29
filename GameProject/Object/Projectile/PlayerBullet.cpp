@@ -55,18 +55,14 @@ void PlayerBullet::Initialize(const Vector3& position, const Vector3& velocity) 
     Projectile::Initialize(position, velocity);
 
     // モデルをロード
-    SetModel();
-
+    Projectile::SetDefaultModel();
     model_->Update();
 
     // スケールを設定（パーティクル描画のため0に設定）
     transform_.scale = Vector3(kInitialScale, kInitialScale, kInitialScale);
 
     // エミッターを有効化
-    if (emitterManager_) {
-        emitterManager_->SetEmitterActive(bulletEmitterName_, true);
-        emitterManager_->SetEmitterPosition(bulletEmitterName_, position);
-    }
+    Projectile::ActivateBulletEmitter(position);
 
     // コライダーの設定
     if (!collider_) {
@@ -97,15 +93,8 @@ void PlayerBullet::Finalize() {
         CollisionManager::GetInstance()->RemoveCollider(collider_.get());
     }
 
-    // 爆発エフェクトを生成
-    if (emitterManager_) {
-        emitterManager_->CreateTemporaryEmitterFrom(
-            explodeEmitterName_,
-            explodeEmitterName_ + "temp",
-            0.5f);
-        emitterManager_->RemoveEmitter(bulletEmitterName_);
-        emitterManager_->RemoveEmitter(explodeEmitterName_);
-    }
+    // エミッター終了処理
+    Projectile::FinalizeEmitters();
 }
 
 void PlayerBullet::Update(float deltaTime) {
@@ -131,14 +120,3 @@ void PlayerBullet::Update(float deltaTime) {
     }
 }
 
-void PlayerBullet::SetModel() {
-    if (model_) {
-        // モデルをロード（実際には非表示だが、Object3dの初期化に必要）
-        model_->SetModel("sphere.gltf");
-
-        if (!model_->GetModel()) {
-            // sphereモデルがない場合は、代替モデルを使用
-            model_->SetModel("white_cube.gltf");
-        }
-    }
-}

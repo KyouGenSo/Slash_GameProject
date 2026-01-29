@@ -429,6 +429,32 @@ public:
     void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
 
 private:
+    /// <summary>
+    /// モデルとトランスフォームの初期化
+    /// </summary>
+    void InitializeModel();
+
+    /// <summary>
+    /// HPバーとフェーズマネージャーの初期化
+    /// </summary>
+    void InitializeHealth();
+
+    /// <summary>
+    /// コライダーの初期化
+    /// </summary>
+    void InitializeColliders();
+
+    /// <summary>
+    /// エフェクトパラメータの初期化
+    /// </summary>
+    void InitializeEffects();
+
+    /// <summary>
+    /// AIシステム（ビヘイビアツリー）の初期化
+    /// </summary>
+    void InitializeAI();
+
+private:
     // ボスの3Dモデルオブジェクト（描画とアニメーション管理）
     std::unique_ptr<Tako::Object3d> model_;
 

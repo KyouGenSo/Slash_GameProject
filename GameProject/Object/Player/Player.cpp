@@ -100,19 +100,31 @@ void Player::Finalize()
 
 void Player::Update()
 {
-    // ポーズ中は更新をスキップ
     if (isPause_) return;
 
-    // GlobalVariablesから値を同期
+    SyncGlobalVariables();
+
+    float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
+
+    UpdateCombat(deltaTime);
+    UpdateStateMachine(deltaTime);
+    UpdateVisuals(deltaTime);
+    UpdateAttackCollider();
+    UpdateTransform();
+}
+
+void Player::SyncGlobalVariables()
+{
     GlobalVariables* gv = GlobalVariables::GetInstance();
     speed_ = gv->GetValueFloat("Player", "Speed");
     attackMinDist_ = gv->GetValueFloat("Player", "AttackStartDistance");
     attackMoveRotationLerp_ = gv->GetValueFloat("Player", "AttackMoveRotationLerp");
     bossLookatLerp_ = gv->GetValueFloat("Player", "BossLookatLerp");
     attackMoveSpeed_ = gv->GetValueFloat("Player", "AttackMoveSpeed");
+}
 
-    float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
-
+void Player::UpdateCombat(float deltaTime)
+{
     // クールダウンの更新
     parryCooldown_.Update(deltaTime);
     dashCooldown_.Update(deltaTime);
@@ -122,16 +134,23 @@ void Player::Update()
 
     // HPバーの更新
     hpBar_.Update(hp_, kMaxHp);
+}
 
-    // State Machineの更新
+void Player::UpdateStateMachine(float deltaTime)
+{
     if (stateMachine_) {
         stateMachine_->HandleInput();
         stateMachine_->Update(deltaTime);
     }
 
     // フェーズ2時とパリィ中はボスの方向を向く
-    if ((targetEnemy_ && targetEnemy_->GetPhase() == 2) || IsParrying()) LookAtBoss();
+    if ((targetEnemy_ && targetEnemy_->GetPhase() == 2) || IsParrying()) {
+        LookAtBoss();
+    }
+}
 
+void Player::UpdateTransform()
+{
     // 実効的な制限を計算（静的制限と動的制限の交差）
     float effectiveXMin = std::max<float>(GameConst::kStageXMin, dynamicBounds_.xMin);
     float effectiveXMax = std::min<float>(GameConst::kStageXMax, dynamicBounds_.xMax);
@@ -139,13 +158,14 @@ void Player::Update()
     float effectiveZMax = std::min<float>(GameConst::kStageZMax, dynamicBounds_.zMax);
 
     // 位置制限適用
-    transform_.translate.x = std::min<float>(transform_.translate.x, effectiveXMax);
-    transform_.translate.x = std::max<float>(transform_.translate.x, effectiveXMin);
-    transform_.translate.z = std::min<float>(transform_.translate.z, effectiveZMax);
-    transform_.translate.z = std::max<float>(transform_.translate.z, effectiveZMin);
+    transform_.translate.x = std::clamp(transform_.translate.x, effectiveXMin, effectiveXMax);
+    transform_.translate.z = std::clamp(transform_.translate.z, effectiveZMin, effectiveZMax);
+}
 
+void Player::UpdateVisuals(float deltaTime)
+{
     // ヒットエフェクトの更新
-    static const Vector4 kOriginalColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);  // 白（元の色）
+    static const Vector4 kOriginalColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
     hitFlashEffect_.Update(deltaTime, model_.get(), kOriginalColor);
 
     // シェイクエフェクトの更新
@@ -161,9 +181,6 @@ void Player::Update()
     if (attackBlockVisible_ && attackBlock_) {
         attackBlock_->Update();
     }
-
-    // 攻撃範囲Colliderの更新
-    UpdateAttackCollider();
 }
 
 void Player::Draw()

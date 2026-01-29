@@ -68,9 +68,54 @@ private: // プライベートメンバ関数
     void RegisterStateVariables();
 
     /// <summary>
+    /// AttackState関連パラメータを登録
+    /// </summary>
+    void RegisterAttackStateVariables();
+
+    /// <summary>
+    /// DashState関連パラメータを登録
+    /// </summary>
+    void RegisterDashStateVariables();
+
+    /// <summary>
+    /// ParryState関連パラメータを登録
+    /// </summary>
+    void RegisterParryStateVariables();
+
+    /// <summary>
+    /// ShootState関連パラメータを登録
+    /// </summary>
+    void RegisterShootStateVariables();
+
+    /// <summary>
     /// テクスチャリソースの読み込み
     /// </summary>
     void LoadTextrue();
+
+    /// <summary>
+    /// 基本テクスチャを読み込み
+    /// </summary>
+    void LoadBasicTextures();
+
+    /// <summary>
+    /// タイトル画面用テクスチャを読み込み
+    /// </summary>
+    void LoadTitleTextures();
+
+    /// <summary>
+    /// ボタン画像を読み込み
+    /// </summary>
+    void LoadButtonTextures();
+
+    /// <summary>
+    /// ジョイスティック画像を読み込み
+    /// </summary>
+    void LoadJoystickTextures();
+
+    /// <summary>
+    /// アクションアイコンを読み込み
+    /// </summary>
+    void LoadActionIconTextures();
 
 private: // メンバ変数
 

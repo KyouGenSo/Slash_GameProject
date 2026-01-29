@@ -3,11 +3,13 @@
 #include "Transform.h"
 #include "Vector3.h"
 #include <memory>
+#include <string>
 
 namespace Tako
 {
     class Object3d;
     class Model;
+    class EmitterManager;
 }
 
 
@@ -102,6 +104,24 @@ protected:
     /// </summary>
     virtual void Move(float deltaTime);
 
+    /// <summary>
+    /// デフォルトモデルを設定
+    /// sphere.gltfを試し、なければwhite_cube.gltfを使用
+    /// </summary>
+    void SetDefaultModel();
+
+    /// <summary>
+    /// エミッターを有効化し位置を設定
+    /// </summary>
+    /// <param name="position">エミッターの位置</param>
+    void ActivateBulletEmitter(const Tako::Vector3& position);
+
+    /// <summary>
+    /// エミッター終了処理
+    /// 爆発エフェクトを生成し、エミッターを削除
+    /// </summary>
+    void FinalizeEmitters();
+
 protected:
     /// <summary>
     /// 3Dモデルオブジェクト（描画用）
@@ -137,4 +157,19 @@ protected:
     /// 経過時間
     /// </summary>
     float elapsedTime_ = 0.0f;
+
+    /// <summary>
+    /// エミッターマネージャーへのポインタ
+    /// </summary>
+    Tako::EmitterManager* emitterManager_ = nullptr;
+
+    /// <summary>
+    /// 弾丸エミッター名
+    /// </summary>
+    std::string bulletEmitterName_;
+
+    /// <summary>
+    /// 爆発エミッター名
+    /// </summary>
+    std::string explodeEmitterName_;
 };

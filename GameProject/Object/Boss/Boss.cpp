@@ -29,9 +29,15 @@ Boss::~Boss()
 
 void Boss::Initialize()
 {
-    // GlobalVariablesから値を取得
-    GlobalVariables* gv = GlobalVariables::GetInstance();
+    InitializeModel();
+    InitializeHealth();
+    InitializeColliders();
+    InitializeEffects();
+    InitializeAI();
+}
 
+void Boss::InitializeModel()
+{
     model_ = std::make_unique<Object3d>();
     model_->Initialize();
     model_->SetModel("white_cube.gltf");
@@ -42,7 +48,10 @@ void Boss::Initialize()
     transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
     model_->SetTransform(transform_);
+}
 
+void Boss::InitializeHealth()
+{
     // HPバーUIの初期化（2段バー：フェーズ1=青、フェーズ2=赤）
     hpBar_.InitializeDual(
         "white.png",
@@ -55,8 +64,13 @@ void Boss::Initialize()
 
     // フェーズマネージャーの初期化
     phaseManager_.Initialize(kMaxHp, kPhase2Threshold, kPhase2InitialHp);
+}
 
-    // Colliderの初期化
+void Boss::InitializeColliders()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
+    // 本体コライダーの初期化
     float bodySize = gv->GetValueFloat("Boss", "BodyColliderSize");
     bodyCollider_ = std::make_unique<OBBCollider>();
     bodyCollider_->SetTransform(&transform_);
@@ -64,15 +78,13 @@ void Boss::Initialize()
     bodyCollider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
     bodyCollider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::BOSS));
     bodyCollider_->SetOwner(this);
-
-    // CollisionManagerに登録
     CollisionManager::GetInstance()->AddCollider(bodyCollider_.get());
 
     // 近接攻撃用ブロックの初期化
     meleeAttackBlock_ = std::make_unique<Object3d>();
     meleeAttackBlock_->Initialize();
     meleeAttackBlock_->SetModel("white_cube.gltf");
-    meleeAttackBlock_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));  // オレンジ色
+    meleeAttackBlock_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
     // 近接攻撃コライダーの初期化
     float meleeColliderSizeX = gv->GetValueFloat("BossMeleeAttackCollider", "ColliderSizeX");
@@ -84,20 +96,21 @@ void Boss::Initialize()
     meleeAttackCollider_->SetSize(Vector3(meleeColliderSizeX, meleeColliderSizeY, meleeColliderSizeZ));
     meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, meleeOffsetZ));
     meleeAttackCollider_->SetOwner(this);
-
-
-    // 近接攻撃コライダーをCollisionManagerに登録
     CollisionManager::GetInstance()->AddCollider(meleeAttackCollider_.get());
+}
 
-    // シェイクエフェクトパラメータの読み込み
+void Boss::InitializeEffects()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
     shakeEffect_.SetDefaultDuration(gv->GetValueFloat("Boss", "ShakeDuration"));
     shakeEffect_.SetDefaultIntensity(gv->GetValueFloat("Boss", "ShakeIntensity"));
+}
 
-    // ビヘイビアツリーの初期化
+void Boss::InitializeAI()
+{
     behaviorTree_ = std::make_unique<BossBehaviorTree>(this, player_);
 
 #ifdef _DEBUG
-    // ノードエディタの初期化
     nodeEditor_ = std::make_unique<BossNodeEditor>();
     nodeEditor_->Initialize();
     BTNodePtr runtimeTree = nodeEditor_->BuildRuntimeTree();
@@ -105,7 +118,6 @@ void Boss::Initialize()
         behaviorTree_->SetRootNode(runtimeTree);
     }
 #endif
-
 }
 
 void Boss::Finalize()

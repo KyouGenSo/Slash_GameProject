@@ -1,6 +1,7 @@
 #include "Projectile.h"
 #include "Object3d.h"
 #include "Model.h"
+#include "EmitterManager.h"
 
 using namespace Tako;
 
@@ -70,4 +71,34 @@ void Projectile::UpdateLifetime(float deltaTime) {
 void Projectile::Move(float deltaTime) {
     // 速度に基づいて移動
     transform_.translate += velocity_ * deltaTime;
+}
+
+void Projectile::SetDefaultModel() {
+    if (model_) {
+        model_->SetModel("sphere.gltf");
+        if (!model_->GetModel()) {
+            // sphereモデルがない場合は代替モデルを使用
+            model_->SetModel("white_cube.gltf");
+        }
+    }
+}
+
+void Projectile::ActivateBulletEmitter(const Vector3& position) {
+    if (emitterManager_) {
+        emitterManager_->SetEmitterActive(bulletEmitterName_, true);
+        emitterManager_->SetEmitterPosition(bulletEmitterName_, position);
+    }
+}
+
+void Projectile::FinalizeEmitters() {
+    if (emitterManager_) {
+        // 爆発エフェクトを一時的に生成
+        emitterManager_->CreateTemporaryEmitterFrom(
+            explodeEmitterName_,
+            explodeEmitterName_ + "temp",
+            0.5f);
+        // エミッターを削除
+        emitterManager_->RemoveEmitter(bulletEmitterName_);
+        emitterManager_->RemoveEmitter(explodeEmitterName_);
+    }
 }

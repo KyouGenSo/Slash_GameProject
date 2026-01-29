@@ -58,17 +58,14 @@ void PenetratingBossBullet::Initialize(const Vector3& position, const Vector3& v
     Projectile::Initialize(position, velocity);
 
     // モデルをロード
-    SetModel();
-
+    Projectile::SetDefaultModel();
     model_->Update();
 
     // スケールを設定（球体モデルのサイズ調整）
     transform_.scale = Vector3(kInitialScale, kInitialScale, kInitialScale);
 
-    if (emitterManager_) {
-        emitterManager_->SetEmitterActive(bulletEmitterName_, true);
-        emitterManager_->SetEmitterPosition(bulletEmitterName_, position);
-    }
+    // エミッターを有効化
+    Projectile::ActivateBulletEmitter(position);
 
     // コライダーの設定
     if (!collider_) {
@@ -81,7 +78,7 @@ void PenetratingBossBullet::Initialize(const Vector3& position, const Vector3& v
     collider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK));
     collider_->SetOwner(this);
     collider_->SetActive(true);
-    collider_->Reset();  // 状態をリセット
+    collider_->Reset();
 
     // CollisionManagerに登録
     CollisionManager::GetInstance()->AddCollider(collider_.get());
@@ -93,14 +90,8 @@ void PenetratingBossBullet::Finalize() {
         CollisionManager::GetInstance()->RemoveCollider(collider_.get());
     }
 
-    if (emitterManager_) {
-        emitterManager_->CreateTemporaryEmitterFrom(
-            explodeEmitterName_,
-            explodeEmitterName_ + "temp",
-            0.5f);
-        emitterManager_->RemoveEmitter(bulletEmitterName_);
-        emitterManager_->RemoveEmitter(explodeEmitterName_);
-    }
+    // エミッター終了処理
+    Projectile::FinalizeEmitters();
 }
 
 void PenetratingBossBullet::Update(float deltaTime) {
@@ -129,14 +120,3 @@ void PenetratingBossBullet::Update(float deltaTime) {
     }
 }
 
-void PenetratingBossBullet::SetModel() {
-    if (model_) {
-        // モデルをロード
-        model_->SetModel("sphere.gltf");
-
-        if (!model_->GetModel()) {
-            // sphereモデルがない場合は、代替モデルを使用
-            model_->SetModel("white_cube.gltf");
-        }
-    }
-}

@@ -266,9 +266,16 @@ void MyGame::RegisterProjectileVariables()
 
 void MyGame::RegisterStateVariables()
 {
+    RegisterAttackStateVariables();
+    RegisterDashStateVariables();
+    RegisterParryStateVariables();
+    RegisterShootStateVariables();
+}
+
+void MyGame::RegisterAttackStateVariables()
+{
     GlobalVariables* gv = GlobalVariables::GetInstance();
 
-    // AttackState
     gv->CreateGroup("AttackState");
     gv->AddItem("AttackState", "SearchTime", 0.1f);
     gv->AddItem("AttackState", "MoveTime", 0.1f);
@@ -304,20 +311,32 @@ void MyGame::RegisterStateVariables()
     gv->AddItem("AttackState", "Combo3_SwingDirection", -1.0f);
     gv->AddItem("AttackState", "Combo3_AttackDuration", 0.3f);
     gv->AddItem("AttackState", "Combo3_Axis", 0);
+}
 
-    // DashState
+void MyGame::RegisterDashStateVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
     gv->CreateGroup("DashState");
     gv->AddItem("DashState", "Duration", 0.05f);
     gv->AddItem("DashState", "Speed", 10.0f);
     gv->AddItem("DashState", "DashCooldown", 0.5f);
+}
 
-    // ParryState
+void MyGame::RegisterParryStateVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
     gv->CreateGroup("ParryState");
     gv->AddItem("ParryState", "ParryDuration", 0.5f);
     gv->AddItem("ParryState", "ParrySuccessHealAmount", 5.0f);
     gv->AddItem("ParryState", "ParryCooldown", 1.0f);
+}
 
-    // ShootState
+void MyGame::RegisterShootStateVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
     gv->CreateGroup("ShootState");
     gv->AddItem("ShootState", "FireRate", 0.2f);
     gv->AddItem("ShootState", "MoveSpeedMultiplier", 0.5f);
@@ -326,64 +345,101 @@ void MyGame::RegisterStateVariables()
 
 void MyGame::LoadTextrue()
 {
-    TextureManager::GetInstance()->LoadTexture("white.png");
-    TextureManager::GetInstance()->LoadTexture("black.png");
-    TextureManager::GetInstance()->LoadTexture("circle.png");
-    TextureManager::GetInstance()->LoadTexture("my_skybox.dds");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_1.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_2.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_3.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_4.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_5.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_6.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_7.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_8.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_9.png");
-    TextureManager::GetInstance()->LoadTexture("title_text/title_text_10.png");
-    TextureManager::GetInstance()->LoadTexture("titlescene_button.png");
-    TextureManager::GetInstance()->LoadTexture("game_button_text.png");
-    TextureManager::GetInstance()->LoadTexture("gameClear_Text.png");
-    TextureManager::GetInstance()->LoadTexture("gameOver_Text.png");
-    TextureManager::GetInstance()->LoadTexture("PauseButton_Resume.png");
-    TextureManager::GetInstance()->LoadTexture("PauseButton_Title.png");
-    TextureManager::GetInstance()->LoadTexture("PauseButton_Exit.png");
-    TextureManager::GetInstance()->LoadTexture("PauseMenu_Text.png");
+    LoadBasicTextures();
+    LoadTitleTextures();
+    LoadButtonTextures();
+    LoadJoystickTextures();
+    LoadActionIconTextures();
+}
 
-    TextureManager::GetInstance()->LoadTexture("button/A_Button_Down.png");
-    TextureManager::GetInstance()->LoadTexture("button/A_Button_Up.png");
-    TextureManager::GetInstance()->LoadTexture("button/B_Button_Down.png");
-    TextureManager::GetInstance()->LoadTexture("button/B_Button_Up.png");
-    TextureManager::GetInstance()->LoadTexture("button/X_Button_Down.png");
-    TextureManager::GetInstance()->LoadTexture("button/X_Button_Up.png");
-    TextureManager::GetInstance()->LoadTexture("button/Y_Button_Down.png");
-    TextureManager::GetInstance()->LoadTexture("button/Y_Button_Up.png");
-    TextureManager::GetInstance()->LoadTexture("button/Menu_Button_Up.png");
-    TextureManager::GetInstance()->LoadTexture("button/DPAD_Neutral.png");
-    TextureManager::GetInstance()->LoadTexture("button/DPAD_Up.png");
-    TextureManager::GetInstance()->LoadTexture("button/DPAD_Down.png");
+void MyGame::LoadBasicTextures()
+{
+    TextureManager* tm = TextureManager::GetInstance();
+    tm->LoadTexture("white.png");
+    tm->LoadTexture("black.png");
+    tm->LoadTexture("circle.png");
+    tm->LoadTexture("my_skybox.dds");
+}
 
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_01.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_02.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_03.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_04.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_05.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_06.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_07.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/L_Joystick_08.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_01.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_02.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_03.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_04.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_05.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_06.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_07.png");
-    TextureManager::GetInstance()->LoadTexture("joystick/R_Joystick_08.png");
+void MyGame::LoadTitleTextures()
+{
+    TextureManager* tm = TextureManager::GetInstance();
 
-    TextureManager::GetInstance()->LoadTexture("kougeki.png");
-    TextureManager::GetInstance()->LoadTexture("dash.png");
-    TextureManager::GetInstance()->LoadTexture("parry.png");
-    TextureManager::GetInstance()->LoadTexture("shageki.png");
-    TextureManager::GetInstance()->LoadTexture("idou.png");
-    TextureManager::GetInstance()->LoadTexture("kettei.png");
-    TextureManager::GetInstance()->LoadTexture("sentaku.png");
+    // タイトルテキストアニメーション用
+    tm->LoadTexture("title_text/title_text_1.png");
+    tm->LoadTexture("title_text/title_text_2.png");
+    tm->LoadTexture("title_text/title_text_3.png");
+    tm->LoadTexture("title_text/title_text_4.png");
+    tm->LoadTexture("title_text/title_text_5.png");
+    tm->LoadTexture("title_text/title_text_6.png");
+    tm->LoadTexture("title_text/title_text_7.png");
+    tm->LoadTexture("title_text/title_text_8.png");
+    tm->LoadTexture("title_text/title_text_9.png");
+    tm->LoadTexture("title_text/title_text_10.png");
+
+    // シーン遷移用テキスト
+    tm->LoadTexture("titlescene_button.png");
+    tm->LoadTexture("game_button_text.png");
+    tm->LoadTexture("gameClear_Text.png");
+    tm->LoadTexture("gameOver_Text.png");
+
+    // ポーズメニュー用
+    tm->LoadTexture("PauseButton_Resume.png");
+    tm->LoadTexture("PauseButton_Title.png");
+    tm->LoadTexture("PauseButton_Exit.png");
+    tm->LoadTexture("PauseMenu_Text.png");
+}
+
+void MyGame::LoadButtonTextures()
+{
+    TextureManager* tm = TextureManager::GetInstance();
+    tm->LoadTexture("button/A_Button_Down.png");
+    tm->LoadTexture("button/A_Button_Up.png");
+    tm->LoadTexture("button/B_Button_Down.png");
+    tm->LoadTexture("button/B_Button_Up.png");
+    tm->LoadTexture("button/X_Button_Down.png");
+    tm->LoadTexture("button/X_Button_Up.png");
+    tm->LoadTexture("button/Y_Button_Down.png");
+    tm->LoadTexture("button/Y_Button_Up.png");
+    tm->LoadTexture("button/Menu_Button_Up.png");
+    tm->LoadTexture("button/DPAD_Neutral.png");
+    tm->LoadTexture("button/DPAD_Up.png");
+    tm->LoadTexture("button/DPAD_Down.png");
+}
+
+void MyGame::LoadJoystickTextures()
+{
+    TextureManager* tm = TextureManager::GetInstance();
+
+    // 左スティック
+    tm->LoadTexture("joystick/L_Joystick_01.png");
+    tm->LoadTexture("joystick/L_Joystick_02.png");
+    tm->LoadTexture("joystick/L_Joystick_03.png");
+    tm->LoadTexture("joystick/L_Joystick_04.png");
+    tm->LoadTexture("joystick/L_Joystick_05.png");
+    tm->LoadTexture("joystick/L_Joystick_06.png");
+    tm->LoadTexture("joystick/L_Joystick_07.png");
+    tm->LoadTexture("joystick/L_Joystick_08.png");
+
+    // 右スティック
+    tm->LoadTexture("joystick/R_Joystick_01.png");
+    tm->LoadTexture("joystick/R_Joystick_02.png");
+    tm->LoadTexture("joystick/R_Joystick_03.png");
+    tm->LoadTexture("joystick/R_Joystick_04.png");
+    tm->LoadTexture("joystick/R_Joystick_05.png");
+    tm->LoadTexture("joystick/R_Joystick_06.png");
+    tm->LoadTexture("joystick/R_Joystick_07.png");
+    tm->LoadTexture("joystick/R_Joystick_08.png");
+}
+
+void MyGame::LoadActionIconTextures()
+{
+    TextureManager* tm = TextureManager::GetInstance();
+    tm->LoadTexture("kougeki.png");
+    tm->LoadTexture("dash.png");
+    tm->LoadTexture("parry.png");
+    tm->LoadTexture("shageki.png");
+    tm->LoadTexture("idou.png");
+    tm->LoadTexture("kettei.png");
+    tm->LoadTexture("sentaku.png");
 }

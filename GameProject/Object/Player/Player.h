@@ -421,6 +421,35 @@ public: // メンバ関数
     /// <returns>前方位置のワールド座標</returns>
     Tako::Vector3 GetFrontPosition(float offset) const;
 
+private:
+    /// <summary>
+    /// GlobalVariablesから値を同期
+    /// </summary>
+    void SyncGlobalVariables();
+
+    /// <summary>
+    /// 戦闘関連の更新（HP、クールダウン、死亡判定）
+    /// </summary>
+    /// <param name="deltaTime">フレーム時間</param>
+    void UpdateCombat(float deltaTime);
+
+    /// <summary>
+    /// ステートマシンの更新
+    /// </summary>
+    /// <param name="deltaTime">フレーム時間</param>
+    void UpdateStateMachine(float deltaTime);
+
+    /// <summary>
+    /// 座標変換の更新（位置制限、回転）
+    /// </summary>
+    void UpdateTransform();
+
+    /// <summary>
+    /// 視覚エフェクトの更新
+    /// </summary>
+    /// <param name="deltaTime">フレーム時間</param>
+    void UpdateVisuals(float deltaTime);
+
 private: // メンバ変数
 
     // 動的移動制限（ボス近接戦闘エリア）

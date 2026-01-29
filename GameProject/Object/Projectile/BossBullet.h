@@ -63,28 +63,11 @@ public:
     BossBulletCollider* GetCollider() const { return collider_.get(); }
 
 private:
-    // モデルを設定
-    void SetModel();
-
-private:
     // エフェクト用の回転速度
     Tako::Vector3 rotationSpeed_;
 
-    // パーティクルタイマー
-    float particleTimer_ = 0.0f;
-
-    // パーティクル生成間隔
-    float particleInterval_ = 0.05f;
-
     // 専用コライダー
     std::unique_ptr<BossBulletCollider> collider_;
-
-    // エミッタマネージャャーへのポインタ
-    Tako::EmitterManager* emitterManager_ = nullptr;
-
-    // エミッターの名前
-    std::string bulletEmitterName_;
-    std::string explodeEmitterName_;
 
     // id
     static uint32_t id;

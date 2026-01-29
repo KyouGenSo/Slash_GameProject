@@ -65,19 +65,8 @@ public:
     PlayerBulletCollider* GetCollider() const { return collider_.get(); }
 
 private:
-    // モデルを設定
-    void SetModel();
-
-private:
     // 専用コライダー
     std::unique_ptr<PlayerBulletCollider> collider_;
-
-    // エミッタマネージャーへのポインタ
-    Tako::EmitterManager* emitterManager_ = nullptr;
-
-    // エミッターの名前
-    std::string bulletEmitterName_ = "";
-    std::string explodeEmitterName_ = "";
 
     // id（複数弾の識別用）
     static uint32_t id;
