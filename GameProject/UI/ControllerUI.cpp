@@ -4,7 +4,7 @@
 #include "Object/Boss/Boss.h"
 #include <cmath>
 #include <DirectXMath.h>
-#include <string>
+#include <format>
 #include <functional>
 
 #ifdef _DEBUG
@@ -67,12 +67,12 @@ void ControllerUI::Initialize()
     // ジョイスティックスプライト初期化（8方向）
     for (int i = 0; i < 8; ++i) {
         lJoystickSprites_[i] = std::make_unique<Sprite>();
-        lJoystickSprites_[i]->Initialize("joystick/L_Joystick_0" + std::to_string(i + 1) + ".png");
+        lJoystickSprites_[i]->Initialize(std::format("joystick/L_Joystick_{:02d}.png", i + 1));
         lJoystickSprites_[i]->SetPos({ 323.0f, 869.0f });
         lJoystickSprites_[i]->SetSize({ 150.0f, 150.0f });
 
         rJoystickSprites_[i] = std::make_unique<Sprite>();
-        rJoystickSprites_[i]->Initialize("joystick/R_Joystick_0" + std::to_string(i + 1) + ".png");
+        rJoystickSprites_[i]->Initialize(std::format("joystick/R_Joystick_{:02d}.png", i + 1));
         rJoystickSprites_[i]->SetPos({ 791.0f, 869.0f });
         rJoystickSprites_[i]->SetSize({ 150.0f, 150.0f });
     }
@@ -320,14 +320,14 @@ void ControllerUI::DrawImGui()
 
         if (ImGui::TreeNode("Joystick Sprites")) {
             for (int i = 0; i < 8; ++i) {
-                std::string lName = "L Joystick " + std::to_string(i + 1);
+                std::string lName = std::format("L Joystick {}", i + 1);
                 if (ImGui::TreeNode(lName.c_str())) {
                     lJoystickSprites_[i]->DrawImGui();
                     ImGui::TreePop();
                 }
             }
             for (int i = 0; i < 8; ++i) {
-                std::string rName = "R Joystick " + std::to_string(i + 1);
+                std::string rName = std::format("R Joystick {}", i + 1);
                 if (ImGui::TreeNode(rName.c_str())) {
                     rJoystickSprites_[i]->DrawImGui();
                     ImGui::TreePop();

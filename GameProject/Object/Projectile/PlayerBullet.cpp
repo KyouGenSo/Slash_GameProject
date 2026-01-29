@@ -6,6 +6,7 @@
 #include "CollisionManager.h"
 #include "EmitterManager.h"
 #include "GlobalVariables.h"
+#include <format>
 
 using namespace Tako;
 
@@ -32,8 +33,8 @@ PlayerBullet::PlayerBullet(EmitterManager* emitterManager) {
 
     // エフェクトプリセットをロード
     if (emitterManager_) {
-        bulletEmitterName_ = "player_bullet" + std::to_string(id);
-        explodeEmitterName_ = "player_bullet_explode" + std::to_string(id);
+        bulletEmitterName_ = std::format("player_bullet{}", id);
+        explodeEmitterName_ = std::format("player_bullet_explode{}", id);
         emitterManager_->LoadPreset("player_bullet", bulletEmitterName_);
         emitterManager_->SetEmitterActive(bulletEmitterName_, false);
         emitterManager_->LoadPreset("player_bullet_explode", explodeEmitterName_);

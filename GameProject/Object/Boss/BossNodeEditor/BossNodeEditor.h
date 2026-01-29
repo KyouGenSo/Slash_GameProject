@@ -128,35 +128,11 @@ public:
     /// エディタのクリア
     /// </summary>
     void Clear();
-
 private:
-    // ax::NodeEditor コンテキスト
-    ed::EditorContext* editorContext_;
-    std::unique_ptr<ed::Config> editorConfig_;
-
-    // エディタデータ
-    std::vector<EditorNode> nodes_;
-    std::vector<EditorLink> links_;
-    std::vector<EditorPin> pins_;
-
-    // ID管理（ID範囲を分離して競合を防ぐ）
-    int nextNodeId_;    // 10000番台
-    int nextLinkId_;    // 30000番台
-    int nextPinId_;     // 20000番台
-
-    // エディタ状態
-    bool isVisible_;
-    bool firstFrame_;
-    int highlightedNodeId_;  // 現在ハイライト中のノードID（実行デバッグ用）
-    float highlightStartTime_;  // ハイライト開始時刻（パルスエフェクト用）
-    int selectedNodeId_ = -1;  // 選択中のノードID（インスペクター用）
-
-    // 内部処理
     void DrawNodes();
     void DrawNode(const EditorNode& node);
     void DrawLinks();
     void DrawPin(const EditorPin& pin);
-    void HandleNodeCreation();
     void HandleLinkCreation();
     void HandleDeletion();
     void DrawContextMenu();
@@ -186,6 +162,28 @@ private:
     // ノードパラメータの保存・復元
     nlohmann::json ExtractNodeParameters(const EditorNode& node);
     void ApplyNodeParameters(EditorNode& node, const nlohmann::json& params);
+
+private:
+    // ax::NodeEditor コンテキスト
+    ed::EditorContext* editorContext_;
+    std::unique_ptr<ed::Config> editorConfig_;
+
+    // エディタデータ
+    std::vector<EditorNode> nodes_;
+    std::vector<EditorLink> links_;
+    std::vector<EditorPin> pins_;
+
+    // ID管理（ID範囲を分離して競合を防ぐ）
+    int nextNodeId_;    // 10000番台
+    int nextLinkId_;    // 30000番台
+    int nextPinId_;     // 20000番台
+
+    // エディタ状態
+    bool isVisible_;
+    bool firstFrame_;
+    int highlightedNodeId_;  // 現在ハイライト中のノードID（実行デバッグ用）
+    float highlightStartTime_;  // ハイライト開始時刻（パルスエフェクト用）
+    int selectedNodeId_ = -1;  // 選択中のノードID（インスペクター用）
 
     // ノード・ピンIDマッピング管理
     std::unordered_map<BTNode*, int> runtimeNodeToEditorId_;

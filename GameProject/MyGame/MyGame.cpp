@@ -154,8 +154,6 @@ void MyGame::Draw()
 
     TakoFramework::Draw();
 
-    //SceneManager::GetInstance()->DrawImGui();
-
     Draw2D::GetInstance()->ImGui();
 
     imguiManager_->End();

@@ -39,9 +39,29 @@ private:
 public:
     AttackState() : PlayerState("Attack") {}
 
+    /// <summary>
+    /// 攻撃状態開始時の処理
+    /// </summary>
+    /// <param name="player">プレイヤーインスタンス</param>
     void Enter(Player* player) override;
+
+    /// <summary>
+    /// 攻撃状態の更新処理
+    /// </summary>
+    /// <param name="player">プレイヤーインスタンス</param>
+    /// <param name="deltaTime">前フレームからの経過時間</param>
     void Update(Player* player, float deltaTime) override;
+
+    /// <summary>
+    /// 攻撃状態終了時の処理
+    /// </summary>
+    /// <param name="player">プレイヤーインスタンス</param>
     void Exit(Player* player) override;
+
+    /// <summary>
+    /// 入力処理（プリインプット対応）
+    /// </summary>
+    /// <param name="player">プレイヤーインスタンス</param>
     void HandleInput(Player* player) override;
 
 private:

@@ -15,8 +15,7 @@
 #include <json.hpp>
 #include <fstream>
 #include <chrono>
-#include <iomanip>
-#include <sstream>
+#include <format>
 #include <filesystem>
 
 using namespace Tako;
@@ -97,12 +96,8 @@ void BossNodeEditor::Update() {
         DrawLinks();
 
         // インタラクション処理
-        HandleNodeCreation();
         HandleLinkCreation();
         HandleDeletion();
-
-        // コンテキストメニュー
-        // DrawContextMenu();
 
         // 選択ノードの取得（ed::End()前に実行必須）
         {
@@ -497,16 +492,7 @@ void BossNodeEditor::DrawLinks() {
 }
 
 /// <summary>
-/// ノード作成処理
-/// </summary>
-void BossNodeEditor::HandleNodeCreation() {
-    // HandleLinkCreation内のBeginCreateと競合しないように、
-    // この関数は現在空実装のままとする。
-    // ノード作成はコンテキストメニューから行う。
-}
-
-/// <summary>
-/// リンク作成処理（仮実装）
+/// リンク作成処理
 /// </summary>
 void BossNodeEditor::HandleLinkCreation() {
     if (ed::BeginCreate()) {
@@ -554,7 +540,7 @@ void BossNodeEditor::HandleLinkCreation() {
 }
 
 /// <summary>
-/// 削除処理（仮実装）
+/// 削除処理
 /// </summary>
 void BossNodeEditor::HandleDeletion() {
     if (ed::BeginDelete()) {
@@ -688,15 +674,6 @@ void BossNodeEditor::DrawContextMenu() {
             ImGui::EndMenu();
         }
 
-        ImGui::EndPopup();
-    }
-
-    // ノード個別メニュー
-    if (ImGui::BeginPopup("NodeContextMenu")) {
-        if (ImGui::MenuItem("Delete")) {
-            // 削除は既にHandleDeletion()で処理されるので、ここでは何もしない
-            // または、削除フラグを立てる処理を追加
-        }
         ImGui::EndPopup();
     }
 
@@ -866,7 +843,7 @@ bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
             "[BossNodeEditor] Successfully loaded from: " + filepath,
             DebugUIManager::LogType::Info);
         DebugUIManager::GetInstance()->AddLog(
-            "[BossNodeEditor] Loaded " + std::to_string(nodes_.size()) + " nodes and " + std::to_string(links_.size()) + " links",
+            std::format("[BossNodeEditor] Loaded {} nodes and {} links", nodes_.size(), links_.size()),
             DebugUIManager::LogType::Info);
         return true;
     }
@@ -890,21 +867,13 @@ bool BossNodeEditor::SaveToJSON(const std::string& filepath) {
 
         // メタデータ
         auto now = std::chrono::system_clock::now();
-        auto time_t = std::chrono::system_clock::to_time_t(now);
-        std::stringstream ss;
-
-        // Windows環境用のlocaltime_s使用
-        struct tm timeinfo;
-#ifdef _WIN32
-        localtime_s(&timeinfo, &time_t);
-#else
-        localtime_r(&time_t, &timeinfo);
-#endif
-        ss << std::put_time(&timeinfo, "%Y-%m-%dT%H:%M:%S");
+        auto localTime = std::chrono::current_zone()->to_local(now);
+        std::string timestamp = std::format("{:%Y-%m-%dT%H:%M:%S}",
+            std::chrono::floor<std::chrono::seconds>(localTime));
 
         json["metadata"]["name"] = "Boss Behavior Tree";
-        json["metadata"]["created"] = ss.str();
-        json["metadata"]["modified"] = ss.str();
+        json["metadata"]["created"] = timestamp;
+        json["metadata"]["modified"] = timestamp;
 
         // ノード情報を保存
         json["nodes"] = nlohmann::json::array();
@@ -1217,9 +1186,6 @@ int BossNodeEditor::CreateNodeWithId(int nodeId, const std::string& nodeType, co
     if (newNode.runtimeNode) {
         runtimeNodeToEditorId_[newNode.runtimeNode.get()] = nodeId;
     }
-
-    // ノード位置を設定
-    //ed::SetNodePosition(nodeId, position);
 
     return nodeId;
 }

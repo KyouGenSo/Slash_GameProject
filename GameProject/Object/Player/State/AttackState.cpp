@@ -8,6 +8,7 @@
 #include "Object3d.h"
 #include "GlobalVariables.h"
 #include <cmath>
+#include <format>
 
 #ifdef _DEBUG
 #include "ImGuiManager.h"
@@ -33,7 +34,7 @@ void AttackState::LoadComboData()
 
     // 各コンボデータの読み込み
     for (int i = 0; i < kMaxComboCount; ++i) {
-        std::string prefix = "Combo" + std::to_string(i) + "_";
+        std::string prefix = std::format("Combo{}_", i);
 
         combos_[i].startAngle = gv->GetValueFloat("AttackState", prefix + "StartAngle");
         combos_[i].swingAngle = gv->GetValueFloat("AttackState", prefix + "SwingAngle");

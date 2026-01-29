@@ -790,12 +790,6 @@ void CameraAnimation::DrawImGui() {
         CameraConfig::Animation::MIN_PLAY_SPEED,
         CameraConfig::Animation::MAX_PLAY_SPEED, "%.2f");
 
-    // タイムラインスライダー
-    float tempTime = currentTime_;
-    if (ImGui::SliderFloat("Timeline", &tempTime, 0.0f, duration_, "%.2f")) {
-        //SetCurrentTime(tempTime);
-    }
-
     ImGui::Separator();
 
     // キーフレーム管理

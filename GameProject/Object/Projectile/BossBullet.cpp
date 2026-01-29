@@ -8,6 +8,7 @@
 #include "EmitterManager.h"
 #include "RandomEngine.h"
 #include "GlobalVariables.h"
+#include <format>
 
 using namespace Tako;
 
@@ -35,8 +36,8 @@ BossBullet::BossBullet(EmitterManager* emittermanager) {
 
     // エフェクトプリセットをロード
     if (emitterManager_) {
-        bulletEmitterName_ = "boss_bullet" + std::to_string(id);
-        explodeEmitterName_ = "boss_bullet_explode" + std::to_string(id);
+        bulletEmitterName_ = std::format("boss_bullet{}", id);
+        explodeEmitterName_ = std::format("boss_bullet_explode{}", id);
         emitterManager_->LoadPreset("boss_bullet", bulletEmitterName_);
         emitterManager_->SetEmitterActive(bulletEmitterName_, false);
         emitterManager_->LoadPreset("boss_bullet_explode", explodeEmitterName_);

@@ -9,6 +9,7 @@
 #include "GPUParticle.h"
 #include <cmath>
 #include <numbers>
+#include <format>
 
 #ifdef _DEBUG
 #include"ImGui.h"
@@ -363,7 +364,7 @@ void TitleScene::InitializeDebugUI()
 
   // タイトルテキストスプライトのデバッグUI登録（10枚）
   for (int i = 0; i < 10; ++i) {
-    DebugUIManager::GetInstance()->RegisterGameObject("TitleText" + std::to_string(i + 1),
+    DebugUIManager::GetInstance()->RegisterGameObject(std::format("TitleText{}", i + 1),
       [this, i]() {
         titleTextSprites_[i]->DrawImGui();
       });
@@ -416,7 +417,7 @@ void TitleScene::InitializeSprites()
   // タイトルテキストの初期化（10枚のアニメーション用画像）
   titleTextSprites_.reserve(10);  // 10枚分のメモリを確保
   for (int i = 0; i < 10; ++i) {
-    std::string texturePath = "title_text/title_text_" + std::to_string(i + 1) + ".png";
+    std::string texturePath = std::format("title_text/title_text_{}.png", i + 1);
     auto sprite = make_unique<Sprite>();
     sprite->Initialize(texturePath);
     sprite->SetSize(Vector2(titleTextWidth_, titleTextHeight_));
