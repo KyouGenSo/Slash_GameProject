@@ -1,7 +1,7 @@
 #ifdef _DEBUG
 
 #include "CameraAnimationHistory.h"
-#include <sstream>
+#include <format>
 
 // AddKeyframeAction実装
 void CameraAnimationHistory::AddKeyframeAction::Execute(CameraAnimation* animation) {
@@ -164,26 +164,16 @@ void CameraAnimationHistory::LimitHistorySize() {
 }
 
 std::string CameraAnimationHistory::GetHistoryInfo() const {
-    std::stringstream ss;
-    ss << "History: " << currentIndex_ << "/" << history_.size() << "\n";
+    std::string result = std::format("History: {}/{}\n", currentIndex_, history_.size());
 
     for (size_t i = 0; i < history_.size(); ++i) {
-        if (i == currentIndex_) {
-            ss << "> ";
-        } else {
-            ss << "  ";
-        }
+        const char* prefix = (i == currentIndex_) ? "> " : "  ";
+        const char* suffix = (i == currentIndex_ - 1) ? " <-- Current" : "";
 
-        ss << i << ": " << history_[i]->GetDescription();
-
-        if (i == currentIndex_ - 1) {
-            ss << " <-- Current";
-        }
-
-        ss << "\n";
+        result += std::format("{}{}: {}{}\n", prefix, i, history_[i]->GetDescription(), suffix);
     }
 
-    return ss.str();
+    return result;
 }
 
 #endif // _DEBUG

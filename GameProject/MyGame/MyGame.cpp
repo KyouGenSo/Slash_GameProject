@@ -171,21 +171,42 @@ void MyGame::Draw()
 
 void MyGame::RegisterGlobalVariables()
 {
+    RegisterInputVariables();
+    RegisterGameSceneVariables();
+    RegisterPlayerVariables();
+    RegisterBossVariables();
+    RegisterProjectileVariables();
+    RegisterStateVariables();
+}
+
+void MyGame::RegisterInputVariables()
+{
     GlobalVariables* gv = GlobalVariables::GetInstance();
 
-    // === Input === //
     gv->CreateGroup("Input");
     gv->AddItem("Input", "TriggerThreshold", 0.5f);
+}
 
-    // === GameScene === //
+void MyGame::RegisterGameSceneVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
     gv->CreateGroup("GameScene");
     gv->AddItem("GameScene", "ShadowMaxDistance", 100.0f);
     gv->AddItem("GameScene", "DirectionalLightZ", -0.05f);
-    // ダッシュエフェクトパラメータの登録
+
     gv->CreateGroup("DashEffect");
     gv->AddItem("DashEffect", "LerpSpeed", 35.0f);
 
-    // === Player === //
+    gv->CreateGroup("CameraShake");
+    gv->AddItem("CameraShake", "Duration", 0.3f);
+    gv->AddItem("CameraShake", "Intensity", 0.5f);
+}
+
+void MyGame::RegisterPlayerVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
     gv->CreateGroup("Player");
     gv->AddItem("Player", "BodyColliderSize", 3.2f);
     gv->AddItem("Player", "MeleeColliderX", 5.0f);
@@ -202,103 +223,107 @@ void MyGame::RegisterGlobalVariables()
     gv->AddItem("Player", "BossLookatLerp", 1.15f);
     gv->AddItem("Player", "AttackMoveSpeed", 50.0f);
 
-    // === MeleeAttack === //
     gv->CreateGroup("MeleeAttack");
     gv->AddItem("MeleeAttack", "AttackDamage", 10.0f);
+}
 
-    // === Boss === //
+void MyGame::RegisterBossVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
     gv->CreateGroup("Boss");
     gv->AddItem("Boss", "BodyColliderSize", 3.2f);
     gv->AddItem("Boss", "HitEffectDuration", 0.1f);
     gv->AddItem("Boss", "ShakeDuration", 0.3f);
     gv->AddItem("Boss", "ShakeIntensity", 0.2f);
 
-    // === BossBullet === //
-    gv->CreateGroup("BossBullet");
-    gv->AddItem("BossBullet", "ColliderRadius", 1.0f);
-    gv->AddItem("BossBullet", "Damage", 10.0f);
-    gv->AddItem("BossBullet", "Lifetime", 5.0f);
-
-    // === PenetratingBossBullet === //
-    gv->CreateGroup("PenetratingBossBullet");
-    gv->AddItem("PenetratingBossBullet", "ColliderRadius", 1.0f);
-    gv->AddItem("PenetratingBossBullet", "Damage", 15.0f);
-    gv->AddItem("PenetratingBossBullet", "Lifetime", 5.0f);
-
-    // === CameraShake === //
-    gv->CreateGroup("CameraShake");
-    gv->AddItem("CameraShake", "Duration", 0.3f);
-    gv->AddItem("CameraShake", "Intensity", 0.5f);
-
-    // === PlayerBullet === //
-    gv->CreateGroup("PlayerBullet");
-    gv->AddItem("PlayerBullet", "Damage", 10.0f);
-    gv->AddItem("PlayerBullet", "Lifetime", 3.0f);
-    gv->AddItem("PlayerBullet", "ColliderRadius", 0.5f);
-    gv->AddItem("PlayerBullet", "Speed", 30.0f);
-
-    // === AttackState === //
-    gv->CreateGroup("AttackState");
-    gv->AddItem("AttackState", "SearchTime", 0.1f);
-    gv->AddItem("AttackState", "MoveTime", 0.1f);
-    gv->AddItem("AttackState", "BlockRadius", 4.0f);
-    gv->AddItem("AttackState", "BlockScale", 0.5f);
-    gv->AddItem("AttackState", "RecoveryTime", 0.5f);   // 4コンボ完走時の硬直
-    gv->AddItem("AttackState", "MaxCombo", 4);
-
-    // Combo0: 左振り（水平）- 左から開始して前を通って右へ
-    gv->AddItem("AttackState", "Combo0_StartAngle", -1.5708f);
-    gv->AddItem("AttackState", "Combo0_SwingAngle", 3.14159f);
-    gv->AddItem("AttackState", "Combo0_SwingDirection", 1.0f);
-    gv->AddItem("AttackState", "Combo0_AttackDuration", 0.15f);
-    gv->AddItem("AttackState", "Combo0_Axis", 0);       // 0=水平
-
-    // Combo1: 右振り（水平）- 右から開始して前を通って左へ
-    gv->AddItem("AttackState", "Combo1_StartAngle", 1.5708f);
-    gv->AddItem("AttackState", "Combo1_SwingAngle", 3.14159f);
-    gv->AddItem("AttackState", "Combo1_SwingDirection", -1.0f);
-    gv->AddItem("AttackState", "Combo1_AttackDuration", 0.15f);
-    gv->AddItem("AttackState", "Combo1_Axis", 0);
-
-    // Combo2: 縦切り（垂直）- 下から開始して前を通って上へ
-    gv->AddItem("AttackState", "Combo2_StartAngle", -1.5708f);
-    gv->AddItem("AttackState", "Combo2_SwingAngle", 3.14159f);
-    gv->AddItem("AttackState", "Combo2_SwingDirection", 1.0f);
-    gv->AddItem("AttackState", "Combo2_AttackDuration", 0.2f);
-    gv->AddItem("AttackState", "Combo2_Axis", 1);       // 1=垂直
-
-    // Combo3: 大回転（水平360度）- 前から開始して反時計回り
-    gv->AddItem("AttackState", "Combo3_StartAngle", 0.0f);
-    gv->AddItem("AttackState", "Combo3_SwingAngle", 6.28318f);
-    gv->AddItem("AttackState", "Combo3_SwingDirection", -1.0f);
-    gv->AddItem("AttackState", "Combo3_AttackDuration", 0.3f);
-    gv->AddItem("AttackState", "Combo3_Axis", 0);
-
-    // === DashState === //
-    gv->CreateGroup("DashState");
-    gv->AddItem("DashState", "Duration", 0.05f);
-    gv->AddItem("DashState", "Speed", 10.0f);
-    gv->AddItem("DashState", "DashCooldown", 0.5f);
-
-    // === ParryState === //
-    gv->CreateGroup("ParryState");
-    gv->AddItem("ParryState", "ParryDuration", 0.5f);
-    gv->AddItem("ParryState", "ParrySuccessHealAmount", 5.0f);
-    gv->AddItem("ParryState", "ParryCooldown", 1.0f);
-
-    // === ShootState === //
-    gv->CreateGroup("ShootState");
-    gv->AddItem("ShootState", "FireRate", 0.2f);
-    gv->AddItem("ShootState", "MoveSpeedMultiplier", 0.5f);
-    gv->AddItem("ShootState", "AimRotationLerp", 0.3f);
-
-    // === BossMeleeAttackCollider === //
     gv->CreateGroup("BossMeleeAttackCollider");
     gv->AddItem("BossMeleeAttackCollider", "Damage", 10.0f);
     gv->AddItem("BossMeleeAttackCollider", "ColliderSizeX", 2.0f);
     gv->AddItem("BossMeleeAttackCollider", "ColliderSizeY", 2.0f);
     gv->AddItem("BossMeleeAttackCollider", "ColliderSizeZ", 2.0f);
     gv->AddItem("BossMeleeAttackCollider", "OffsetZ", 3.0f);
+}
+
+void MyGame::RegisterProjectileVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
+    gv->CreateGroup("BossBullet");
+    gv->AddItem("BossBullet", "ColliderRadius", 1.0f);
+    gv->AddItem("BossBullet", "Damage", 10.0f);
+    gv->AddItem("BossBullet", "Lifetime", 5.0f);
+
+    gv->CreateGroup("PenetratingBossBullet");
+    gv->AddItem("PenetratingBossBullet", "ColliderRadius", 1.0f);
+    gv->AddItem("PenetratingBossBullet", "Damage", 15.0f);
+    gv->AddItem("PenetratingBossBullet", "Lifetime", 5.0f);
+
+    gv->CreateGroup("PlayerBullet");
+    gv->AddItem("PlayerBullet", "Damage", 10.0f);
+    gv->AddItem("PlayerBullet", "Lifetime", 3.0f);
+    gv->AddItem("PlayerBullet", "ColliderRadius", 0.5f);
+    gv->AddItem("PlayerBullet", "Speed", 30.0f);
+}
+
+void MyGame::RegisterStateVariables()
+{
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
+    // AttackState
+    gv->CreateGroup("AttackState");
+    gv->AddItem("AttackState", "SearchTime", 0.1f);
+    gv->AddItem("AttackState", "MoveTime", 0.1f);
+    gv->AddItem("AttackState", "BlockRadius", 4.0f);
+    gv->AddItem("AttackState", "BlockScale", 0.5f);
+    gv->AddItem("AttackState", "RecoveryTime", 0.5f);
+    gv->AddItem("AttackState", "MaxCombo", 4);
+
+    // Combo0: 左振り（水平）
+    gv->AddItem("AttackState", "Combo0_StartAngle", -1.5708f);
+    gv->AddItem("AttackState", "Combo0_SwingAngle", 3.14159f);
+    gv->AddItem("AttackState", "Combo0_SwingDirection", 1.0f);
+    gv->AddItem("AttackState", "Combo0_AttackDuration", 0.15f);
+    gv->AddItem("AttackState", "Combo0_Axis", 0);
+
+    // Combo1: 右振り（水平）
+    gv->AddItem("AttackState", "Combo1_StartAngle", 1.5708f);
+    gv->AddItem("AttackState", "Combo1_SwingAngle", 3.14159f);
+    gv->AddItem("AttackState", "Combo1_SwingDirection", -1.0f);
+    gv->AddItem("AttackState", "Combo1_AttackDuration", 0.15f);
+    gv->AddItem("AttackState", "Combo1_Axis", 0);
+
+    // Combo2: 縦切り（垂直）
+    gv->AddItem("AttackState", "Combo2_StartAngle", -1.5708f);
+    gv->AddItem("AttackState", "Combo2_SwingAngle", 3.14159f);
+    gv->AddItem("AttackState", "Combo2_SwingDirection", 1.0f);
+    gv->AddItem("AttackState", "Combo2_AttackDuration", 0.2f);
+    gv->AddItem("AttackState", "Combo2_Axis", 1);
+
+    // Combo3: 大回転（水平360度）
+    gv->AddItem("AttackState", "Combo3_StartAngle", 0.0f);
+    gv->AddItem("AttackState", "Combo3_SwingAngle", 6.28318f);
+    gv->AddItem("AttackState", "Combo3_SwingDirection", -1.0f);
+    gv->AddItem("AttackState", "Combo3_AttackDuration", 0.3f);
+    gv->AddItem("AttackState", "Combo3_Axis", 0);
+
+    // DashState
+    gv->CreateGroup("DashState");
+    gv->AddItem("DashState", "Duration", 0.05f);
+    gv->AddItem("DashState", "Speed", 10.0f);
+    gv->AddItem("DashState", "DashCooldown", 0.5f);
+
+    // ParryState
+    gv->CreateGroup("ParryState");
+    gv->AddItem("ParryState", "ParryDuration", 0.5f);
+    gv->AddItem("ParryState", "ParrySuccessHealAmount", 5.0f);
+    gv->AddItem("ParryState", "ParryCooldown", 1.0f);
+
+    // ShootState
+    gv->CreateGroup("ShootState");
+    gv->AddItem("ShootState", "FireRate", 0.2f);
+    gv->AddItem("ShootState", "MoveSpeedMultiplier", 0.5f);
+    gv->AddItem("ShootState", "AimRotationLerp", 0.3f);
 }
 
 void MyGame::LoadTextrue()

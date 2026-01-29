@@ -5,6 +5,7 @@
 #include "Controller/CameraAnimationController.h"
 #include "FrameTimer.h"
 #include "ImGuiManager.h"
+#include <DirectXMath.h>
 #include <sstream>
 
 using namespace Tako;
@@ -205,9 +206,9 @@ void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
     }
 
     // カメラ角度（変数名を明確に）
-    static float tdAngleXDegrees = CameraConfig::TopDown::DEFAULT_ANGLE_X * 57.2958f;
+    static float tdAngleXDegrees = DirectX::XMConvertToDegrees(CameraConfig::TopDown::DEFAULT_ANGLE_X);
     if (ImGui::SliderFloat("Camera Angle (deg)", &tdAngleXDegrees, 0.0f, 90.0f)) {
-        controller->SetCameraAngle(tdAngleXDegrees * 0.0174533f);
+        controller->SetCameraAngle(DirectX::XMConvertToRadians(tdAngleXDegrees));
     }
 
     // 追従の滑らかさ（変数名を明確に）
@@ -399,10 +400,10 @@ void CameraDebugUI::DrawCameraState() {
     // 回転（度単位）
     Vector3 rot = camera->GetRotate();
     ImGui::Text("Rotation: (%.1f°, %.1f°, %.1f°)",
-               rot.x * 57.2958f, rot.y * 57.2958f, rot.z * 57.2958f);
+               DirectX::XMConvertToDegrees(rot.x), DirectX::XMConvertToDegrees(rot.y), DirectX::XMConvertToDegrees(rot.z));
 
     // FOV（度単位）
-    float fov = camera->GetFovY() * 57.2958f;
+    float fov = DirectX::XMConvertToDegrees(camera->GetFovY());
     ImGui::Text("FOV: %.1f°", fov);
 
     // アスペクト比

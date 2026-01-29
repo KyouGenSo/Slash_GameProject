@@ -3,6 +3,7 @@
 #include "CameraAnimationCurveEditor.h"
 #include <algorithm>
 #include <cmath>
+#include <format>
 
 CameraAnimationCurveEditor::CameraAnimationCurveEditor() {
     // カーブ色の初期化
@@ -216,11 +217,10 @@ void CameraAnimationCurveEditor::DrawKeyPoint(int index, float x, float y, bool 
 
     // 値表示
     if (showValues_ && isSelected) {
-        char label[64];
         const CameraKeyframe& kf = animation_->GetKeyframe(index);
         float value = GetCurveValue(kf, activeCurve_);
-        snprintf(label, sizeof(label), "%.2f", value);
-        drawList->AddText(ImVec2(x + 10, y - 10), IM_COL32(255, 255, 255, 255), label);
+        std::string label = std::format("{:.2f}", value);
+        drawList->AddText(ImVec2(x + 10, y - 10), IM_COL32(255, 255, 255, 255), label.c_str());
     }
 }
 

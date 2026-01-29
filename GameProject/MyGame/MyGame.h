@@ -38,6 +38,36 @@ private: // プライベートメンバ関数
     void RegisterGlobalVariables();
 
     /// <summary>
+    /// 入力関連パラメータを登録
+    /// </summary>
+    void RegisterInputVariables();
+
+    /// <summary>
+    /// ゲームシーン関連パラメータを登録
+    /// </summary>
+    void RegisterGameSceneVariables();
+
+    /// <summary>
+    /// プレイヤー関連パラメータを登録
+    /// </summary>
+    void RegisterPlayerVariables();
+
+    /// <summary>
+    /// ボス関連パラメータを登録
+    /// </summary>
+    void RegisterBossVariables();
+
+    /// <summary>
+    /// 弾丸関連パラメータを登録
+    /// </summary>
+    void RegisterProjectileVariables();
+
+    /// <summary>
+    /// 状態関連パラメータを登録
+    /// </summary>
+    void RegisterStateVariables();
+
+    /// <summary>
     /// テクスチャリソースの読み込み
     /// </summary>
     void LoadTextrue();

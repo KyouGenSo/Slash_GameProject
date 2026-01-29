@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <cmath>
 #include <numbers>
+#include <format>
 #include <DirectXMath.h>
 
 #ifdef _DEBUG
@@ -883,14 +884,13 @@ void CameraAnimation::DrawImGui() {
                 ImGui::PushID(static_cast<int>(i));
 
                 bool isSelected = (selectedKeyframeIndex_ == static_cast<int>(i));
-                char label[64];
                 const char* coordTypeStr = (keyframes_[i].coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE)
                     ? "[REL]" : "[WLD]";
-                snprintf(label, sizeof(label), "%s KF %zu: %.2fs", coordTypeStr, i, keyframes_[i].time);
+                std::string label = std::format("{} KF {}: {:.2f}s", coordTypeStr, i, keyframes_[i].time);
 
                 // Selectableのサイズを制限して削除ボタンのスペースを確保
                 float availWidth = ImGui::GetContentRegionAvail().x;
-                if (ImGui::Selectable(label, isSelected, 0, ImVec2(availWidth - 30, 0))) {
+                if (ImGui::Selectable(label.c_str(), isSelected, 0, ImVec2(availWidth - 30, 0))) {
                     selectedKeyframeIndex_ = static_cast<int>(i);
                     tempKeyframe_ = keyframes_[i];
                     // 選択したキーフレームを即座にカメラに適用

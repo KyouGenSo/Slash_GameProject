@@ -3,6 +3,7 @@
 #include "CameraAnimationTimeline.h"
 #include <algorithm>
 #include <cmath>
+#include <format>
 
 CameraAnimationTimeline::CameraAnimationTimeline() {
   // トラック可視性の初期化（サマリートラックのみ表示）
@@ -133,12 +134,11 @@ void CameraAnimationTimeline::DrawTimeRuler() {
       IM_COL32(200, 200, 200, 255));
 
     // 時間ラベル
-    char label[32];
-    snprintf(label, sizeof(label), "%.1f", time);
+    std::string label = std::format("{:.1f}", time);
     drawList->AddText(
       ImVec2(canvasPos.x + x - 10, canvasPos.y + 2),
       IM_COL32(200, 200, 200, 255),
-      label);
+      label.c_str());
 
     // 副目盛り（0.1秒刻み）
     if (timeStep >= 1.0f) {
