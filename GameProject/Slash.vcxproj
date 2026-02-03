@@ -16,7 +16,7 @@
     <ProjectGuid>{19540cf1-6fc6-4a6e-8612-a1e088f1b26e}</ProjectGuid>
     <RootNamespace>My3DActionProject</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>01_3DActionProject</ProjectName>
+    <ProjectName>01_Slash_GameProject</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
