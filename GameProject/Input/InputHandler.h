@@ -1,8 +1,6 @@
 #pragma once
 #include <memory>
-#include "dinput.h"
 #include "vector2.h"
-#include "Xinput.h"
 
 class Player;
 
