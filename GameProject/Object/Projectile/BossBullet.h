@@ -5,7 +5,8 @@
 #include <memory>
 #include <string>
 
-namespace Tako {
+namespace Tako
+{
     class EmitterManager;
     class ModelManager;
 }
@@ -15,13 +16,13 @@ class BossBulletCollider;
 /// <summary>
 /// ボスの弾クラス
 /// </summary>
-class BossBullet : public Projectile {
+class BossBullet : public Projectile
+{
     //=========================================================================================
     // 定数
     //=========================================================================================
-private:
-    static constexpr uint32_t kIdResetThreshold = 10000;///< ID リセット閾値
-    static constexpr float kInitialScale = 0.0f;        ///< 初期スケール
+    static constexpr uint32_t kIdResetThreshold = 10000; ///< ID リセット閾値
+    static constexpr float kInitialScale = 0.0f; ///< 初期スケール
 
 public:
     /// <summary>
@@ -73,8 +74,8 @@ private:
     static uint32_t id;
 
     // 調整可能パラメータ
-    float rotationSpeedMin_ = -10.0f;  ///< 回転速度の最小値
-    float rotationSpeedMax_ = 10.0f;   ///< 回転速度の最大値
-    float yBoundaryMin_ = -10.0f;      ///< Y座標の下限
-    float yBoundaryMax_ = 50.0f;       ///< Y座標の上限
+    float rotationSpeedMin_ = -10.0f; ///< 回転速度の最小値
+    float rotationSpeedMax_ = 10.0f; ///< 回転速度の最大値
+    float yBoundaryMin_ = -10.0f; ///< Y座標の下限
+    float yBoundaryMax_ = 50.0f; ///< Y座標の上限
 };

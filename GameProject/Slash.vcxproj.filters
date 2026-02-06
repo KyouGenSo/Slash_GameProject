@@ -98,9 +98,6 @@
     <ClCompile Include="scene\GameScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="scene\SampleScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="scene\SceneFactory.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -330,9 +327,6 @@
       <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="scene\GameScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\SampleScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="scene\SceneFactory.h">
