@@ -355,9 +355,9 @@ void MyGame::LoadTextures()
 void MyGame::LoadBasicTextures()
 {
     TextureManager* tm = TextureManager::GetInstance();
-    tm->LoadTexture("white.png");
-    tm->LoadTexture("black.png");
-    tm->LoadTexture("circle.png");
+    tm->LoadTexture("white.dds");
+    tm->LoadTexture("black.dds");
+    tm->LoadTexture("circle.dds");
     tm->LoadTexture("my_skybox.dds");
 }
 
@@ -366,45 +366,45 @@ void MyGame::LoadTitleTextures()
     TextureManager* tm = TextureManager::GetInstance();
 
     // タイトルテキストアニメーション用
-    tm->LoadTexture("title_text/title_text_1.png");
-    tm->LoadTexture("title_text/title_text_2.png");
-    tm->LoadTexture("title_text/title_text_3.png");
-    tm->LoadTexture("title_text/title_text_4.png");
-    tm->LoadTexture("title_text/title_text_5.png");
-    tm->LoadTexture("title_text/title_text_6.png");
-    tm->LoadTexture("title_text/title_text_7.png");
-    tm->LoadTexture("title_text/title_text_8.png");
-    tm->LoadTexture("title_text/title_text_9.png");
-    tm->LoadTexture("title_text/title_text_10.png");
+    tm->LoadTexture("title_text/title_text_1.dds");
+    tm->LoadTexture("title_text/title_text_2.dds");
+    tm->LoadTexture("title_text/title_text_3.dds");
+    tm->LoadTexture("title_text/title_text_4.dds");
+    tm->LoadTexture("title_text/title_text_5.dds");
+    tm->LoadTexture("title_text/title_text_6.dds");
+    tm->LoadTexture("title_text/title_text_7.dds");
+    tm->LoadTexture("title_text/title_text_8.dds");
+    tm->LoadTexture("title_text/title_text_9.dds");
+    tm->LoadTexture("title_text/title_text_10.dds");
 
     // シーン遷移用テキスト
-    tm->LoadTexture("titlescene_button.png");
-    tm->LoadTexture("game_button_text.png");
-    tm->LoadTexture("gameClear_Text.png");
-    tm->LoadTexture("gameOver_Text.png");
+    tm->LoadTexture("titlescene_button.dds");
+    tm->LoadTexture("game_button_text.dds");
+    tm->LoadTexture("gameClear_Text.dds");
+    tm->LoadTexture("gameOver_Text.dds");
 
     // ポーズメニュー用
-    tm->LoadTexture("PauseButton_Resume.png");
-    tm->LoadTexture("PauseButton_Title.png");
-    tm->LoadTexture("PauseButton_Exit.png");
-    tm->LoadTexture("PauseMenu_Text.png");
+    tm->LoadTexture("PauseButton_Resume.dds");
+    tm->LoadTexture("PauseButton_Title.dds");
+    tm->LoadTexture("PauseButton_Exit.dds");
+    tm->LoadTexture("PauseMenu_Text.dds");
 }
 
 void MyGame::LoadButtonTextures()
 {
     TextureManager* tm = TextureManager::GetInstance();
-    tm->LoadTexture("button/A_Button_Down.png");
-    tm->LoadTexture("button/A_Button_Up.png");
-    tm->LoadTexture("button/B_Button_Down.png");
-    tm->LoadTexture("button/B_Button_Up.png");
-    tm->LoadTexture("button/X_Button_Down.png");
-    tm->LoadTexture("button/X_Button_Up.png");
-    tm->LoadTexture("button/Y_Button_Down.png");
-    tm->LoadTexture("button/Y_Button_Up.png");
-    tm->LoadTexture("button/Menu_Button_Up.png");
-    tm->LoadTexture("button/DPAD_Neutral.png");
-    tm->LoadTexture("button/DPAD_Up.png");
-    tm->LoadTexture("button/DPAD_Down.png");
+    tm->LoadTexture("button/A_Button_Down.dds");
+    tm->LoadTexture("button/A_Button_Up.dds");
+    tm->LoadTexture("button/B_Button_Down.dds");
+    tm->LoadTexture("button/B_Button_Up.dds");
+    tm->LoadTexture("button/X_Button_Down.dds");
+    tm->LoadTexture("button/X_Button_Up.dds");
+    tm->LoadTexture("button/Y_Button_Down.dds");
+    tm->LoadTexture("button/Y_Button_Up.dds");
+    tm->LoadTexture("button/Menu_Button_Up.dds");
+    tm->LoadTexture("button/DPAD_Neutral.dds");
+    tm->LoadTexture("button/DPAD_Up.dds");
+    tm->LoadTexture("button/DPAD_Down.dds");
 }
 
 void MyGame::LoadJoystickTextures()
@@ -412,34 +412,34 @@ void MyGame::LoadJoystickTextures()
     TextureManager* tm = TextureManager::GetInstance();
 
     // 左スティック
-    tm->LoadTexture("joystick/L_Joystick_01.png");
-    tm->LoadTexture("joystick/L_Joystick_02.png");
-    tm->LoadTexture("joystick/L_Joystick_03.png");
-    tm->LoadTexture("joystick/L_Joystick_04.png");
-    tm->LoadTexture("joystick/L_Joystick_05.png");
-    tm->LoadTexture("joystick/L_Joystick_06.png");
-    tm->LoadTexture("joystick/L_Joystick_07.png");
-    tm->LoadTexture("joystick/L_Joystick_08.png");
+    tm->LoadTexture("joystick/L_Joystick_01.dds");
+    tm->LoadTexture("joystick/L_Joystick_02.dds");
+    tm->LoadTexture("joystick/L_Joystick_03.dds");
+    tm->LoadTexture("joystick/L_Joystick_04.dds");
+    tm->LoadTexture("joystick/L_Joystick_05.dds");
+    tm->LoadTexture("joystick/L_Joystick_06.dds");
+    tm->LoadTexture("joystick/L_Joystick_07.dds");
+    tm->LoadTexture("joystick/L_Joystick_08.dds");
 
     // 右スティック
-    tm->LoadTexture("joystick/R_Joystick_01.png");
-    tm->LoadTexture("joystick/R_Joystick_02.png");
-    tm->LoadTexture("joystick/R_Joystick_03.png");
-    tm->LoadTexture("joystick/R_Joystick_04.png");
-    tm->LoadTexture("joystick/R_Joystick_05.png");
-    tm->LoadTexture("joystick/R_Joystick_06.png");
-    tm->LoadTexture("joystick/R_Joystick_07.png");
-    tm->LoadTexture("joystick/R_Joystick_08.png");
+    tm->LoadTexture("joystick/R_Joystick_01.dds");
+    tm->LoadTexture("joystick/R_Joystick_02.dds");
+    tm->LoadTexture("joystick/R_Joystick_03.dds");
+    tm->LoadTexture("joystick/R_Joystick_04.dds");
+    tm->LoadTexture("joystick/R_Joystick_05.dds");
+    tm->LoadTexture("joystick/R_Joystick_06.dds");
+    tm->LoadTexture("joystick/R_Joystick_07.dds");
+    tm->LoadTexture("joystick/R_Joystick_08.dds");
 }
 
 void MyGame::LoadActionIconTextures()
 {
     TextureManager* tm = TextureManager::GetInstance();
-    tm->LoadTexture("kougeki.png");
-    tm->LoadTexture("dash.png");
-    tm->LoadTexture("parry.png");
-    tm->LoadTexture("shageki.png");
-    tm->LoadTexture("idou.png");
-    tm->LoadTexture("kettei.png");
-    tm->LoadTexture("sentaku.png");
+    tm->LoadTexture("kougeki.dds");
+    tm->LoadTexture("dash.dds");
+    tm->LoadTexture("parry.dds");
+    tm->LoadTexture("shageki.dds");
+    tm->LoadTexture("idou.dds");
+    tm->LoadTexture("kettei.dds");
+    tm->LoadTexture("sentaku.dds");
 }

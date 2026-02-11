@@ -61,7 +61,7 @@ void Player::Initialize()
 
     // HPバーUIの初期化
     hpBar_.Initialize(
-        "white.png",
+        "white.dds",
         Vector2(500.0f, 30.0f),
         0.35f,  // 画面X比率
         0.05f,  // 画面Y比率

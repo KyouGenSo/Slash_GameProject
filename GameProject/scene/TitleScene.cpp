@@ -410,14 +410,14 @@ void TitleScene::InitializeSprites()
 {
   // 背景画像の初期化
   titleBG_ = make_unique<Sprite>();
-  titleBG_->Initialize("black.png");
+  titleBG_->Initialize("black.dds");
   titleBG_->SetPos(Vector2(0.f, 0.f));
   titleBG_->SetSize(Vector2(static_cast<float>(WinApp::clientWidth), static_cast<float>(WinApp::clientHeight)));
 
   // タイトルテキストの初期化（10枚のアニメーション用画像）
   titleTextSprites_.reserve(10);  // 10枚分のメモリを確保
   for (int i = 0; i < 10; ++i) {
-    std::string texturePath = std::format("title_text/title_text_{}.png", i + 1);
+    std::string texturePath = std::format("title_text/title_text_{}.dds", i + 1);
     auto sprite = make_unique<Sprite>();
     sprite->Initialize(texturePath);
     sprite->SetSize(Vector2(titleTextWidth_, titleTextHeight_));
@@ -427,14 +427,14 @@ void TitleScene::InitializeSprites()
 
   // スタートボタンテキストの初期化
   startButtonText_ = make_unique<Sprite>();
-  startButtonText_->Initialize("titlescene_button.png");
+  startButtonText_->Initialize("titlescene_button.dds");
   startButtonText_->SetPos(Vector2(
     WinApp::clientWidth / 2.f - startButtonText_->GetSize().x / 2.f,
     WinApp::clientHeight - startButtonBottomOffset_));
 
   // タイトルテキストエフェクトの初期化（拡大フェードアウト用）
   titleTextEffect_ = make_unique<Sprite>();
-  titleTextEffect_->Initialize("title_text/title_text_10.png");
+  titleTextEffect_->Initialize("title_text/title_text_10.dds");
   titleTextEffect_->SetSize(Vector2(titleTextWidth_, titleTextHeight_));
   titleTextEffect_->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextWidth_ / 2.f, titleTextY_));
   titleTextEffect_->SetAlpha(0.0f);  // 初期状態では非表示

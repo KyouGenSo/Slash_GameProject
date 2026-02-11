@@ -35,16 +35,16 @@ void OverScene::Initialize()
 
     // spriteの初期化
     backGround_ = std::make_unique<Sprite>();
-    backGround_->Initialize("black.png");
+    backGround_->Initialize("black.dds");
     backGround_->SetPos(Vector2(0.f, 0.f));
     backGround_->SetSize(Vector2(static_cast<float>(WinApp::clientWidth), static_cast<float>(WinApp::clientHeight)));
 
     titleText_ = std::make_unique<Sprite>();
-    titleText_->Initialize("gameOver_Text.png");
+    titleText_->Initialize("gameOver_Text.dds");
     titleText_->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextHalfWidth_, titleTextY_));
 
     pressButtonText_ = std::make_unique<Sprite>();
-    pressButtonText_->Initialize("titlescene_button.png");
+    pressButtonText_->Initialize("titlescene_button.dds");
     pressButtonText_->SetPos(Vector2(
         WinApp::clientWidth / 2.f - pressButtonText_->GetSize().x / 2.f,
         WinApp::clientHeight - buttonBottomOffset_));

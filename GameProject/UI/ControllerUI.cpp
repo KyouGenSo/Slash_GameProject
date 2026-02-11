@@ -25,92 +25,92 @@ void ControllerUI::Initialize()
 {
     // ボタンスプライト初期化（Up状態）
     aButtonUpSprite_ = std::make_unique<Sprite>();
-    aButtonUpSprite_->Initialize("button/A_Button_Up.png");
+    aButtonUpSprite_->Initialize("button/A_Button_Up.dds");
     aButtonUpSprite_->SetPos({ 1565.0f, 948.0f });
     aButtonUpSprite_->SetSize({ 60.0f, 60.0f });
 
     aButtonDownSprite_ = std::make_unique<Sprite>();
-    aButtonDownSprite_->Initialize("button/A_Button_Down.png");
+    aButtonDownSprite_->Initialize("button/A_Button_Down.dds");
     aButtonDownSprite_->SetPos({ 1565.0f, 948.0f });
     aButtonDownSprite_->SetSize({ 60.0f, 60.0f });
 
     bButtonUpSprite_ = std::make_unique<Sprite>();
-    bButtonUpSprite_->Initialize("button/B_Button_Up.png");
+    bButtonUpSprite_->Initialize("button/B_Button_Up.dds");
     bButtonUpSprite_->SetPos({ 1640.0f, 869.0f });
     bButtonUpSprite_->SetSize({ 60.0f, 60.0f });
 
     bButtonDownSprite_ = std::make_unique<Sprite>();
-    bButtonDownSprite_->Initialize("button/B_Button_Down.png");
+    bButtonDownSprite_->Initialize("button/B_Button_Down.dds");
     bButtonDownSprite_->SetPos({ 1640.0f, 869.0f });
     bButtonDownSprite_->SetSize({ 60.0f, 60.0f });
 
     xButtonUpSprite_ = std::make_unique<Sprite>();
-    xButtonUpSprite_->Initialize("button/X_Button_Up.png");
+    xButtonUpSprite_->Initialize("button/X_Button_Up.dds");
     xButtonUpSprite_->SetPos({ 1488.0f, 869.0f });
     xButtonUpSprite_->SetSize({ 60.0f, 60.0f });
 
     xButtonDownSprite_ = std::make_unique<Sprite>();
-    xButtonDownSprite_->Initialize("button/X_Button_Down.png");
+    xButtonDownSprite_->Initialize("button/X_Button_Down.dds");
     xButtonDownSprite_->SetPos({ 1488.0f, 869.0f });
     xButtonDownSprite_->SetSize({ 60.0f, 60.0f });
 
     yButtonUpSprite_ = std::make_unique<Sprite>();
-    yButtonUpSprite_->Initialize("button/Y_Button_Up.png");
+    yButtonUpSprite_->Initialize("button/Y_Button_Up.dds");
     yButtonUpSprite_->SetPos({ 1565.0f, 803.0f });
     yButtonUpSprite_->SetSize({ 60.0f, 60.0f });
 
     yButtonDownSprite_ = std::make_unique<Sprite>();
-    yButtonDownSprite_->Initialize("button/Y_Button_Down.png");
+    yButtonDownSprite_->Initialize("button/Y_Button_Down.dds");
     yButtonDownSprite_->SetPos({ 1565.0f, 803.0f });
     yButtonDownSprite_->SetSize({ 60.0f, 60.0f });
 
     // ジョイスティックスプライト初期化（8方向）
     for (int i = 0; i < 8; ++i) {
         lJoystickSprites_[i] = std::make_unique<Sprite>();
-        lJoystickSprites_[i]->Initialize(std::format("joystick/L_Joystick_{:02d}.png", i + 1));
+        lJoystickSprites_[i]->Initialize(std::format("joystick/L_Joystick_{:02d}.dds", i + 1));
         lJoystickSprites_[i]->SetPos({ 323.0f, 869.0f });
         lJoystickSprites_[i]->SetSize({ 150.0f, 150.0f });
 
         rJoystickSprites_[i] = std::make_unique<Sprite>();
-        rJoystickSprites_[i]->Initialize(std::format("joystick/R_Joystick_{:02d}.png", i + 1));
+        rJoystickSprites_[i]->Initialize(std::format("joystick/R_Joystick_{:02d}.dds", i + 1));
         rJoystickSprites_[i]->SetPos({ 791.0f, 869.0f });
         rJoystickSprites_[i]->SetSize({ 150.0f, 150.0f });
     }
 
     // アクションアイコン初期化
     kougekiSprite_ = std::make_unique<Sprite>();
-    kougekiSprite_->Initialize("kougeki.png");
+    kougekiSprite_->Initialize("kougeki.dds");
     kougekiSprite_->SetPos({ 1349.0f, 871.0f });
     kougekiSprite_->SetSize({ 150.0f, 50.0f });
 
     dashSprite_ = std::make_unique<Sprite>();
-    dashSprite_->Initialize("dash.png");
+    dashSprite_->Initialize("dash.dds");
     dashSprite_->SetPos({ 1518.0f, 997.0f });
     dashSprite_->SetSize({ 150.0f, 50.0f });
 
     parrySprite_ = std::make_unique<Sprite>();
-    parrySprite_->Initialize("parry.png");
+    parrySprite_->Initialize("parry.dds");
     parrySprite_->SetPos({ 1701.0f, 871.0f });
     parrySprite_->SetSize({ 150.0f, 50.0f });
 
     shagekiSprite_ = std::make_unique<Sprite>();
-    shagekiSprite_->Initialize("shageki.png");
+    shagekiSprite_->Initialize("shageki.dds");
     shagekiSprite_->SetPos({ 913.0f, 892.0f });
     shagekiSprite_->SetSize({ 150.0f, 50.0f });
 
     idouSprite_ = std::make_unique<Sprite>();
-    idouSprite_->Initialize("idou.png");
+    idouSprite_->Initialize("idou.dds");
     idouSprite_->SetPos({ 450.0f, 892.0f });
     idouSprite_->SetSize({ 150.0f, 50.0f });
 
     // ポーズ操作ヒント初期化（HPバーの下、画面左上付近）
     pauseHintIconSprite_ = std::make_unique<Sprite>();
-    pauseHintIconSprite_->Initialize("button/Menu_Button_Up.png");
+    pauseHintIconSprite_->Initialize("button/Menu_Button_Up.dds");
     pauseHintIconSprite_->SetPos({ 30.0f, 157.0f });
     pauseHintIconSprite_->SetSize({ 80.0f, 80.0f });
 
     pauseHintTextSprite_ = std::make_unique<Sprite>();
-    pauseHintTextSprite_->Initialize("PauseMenu_Text.png");
+    pauseHintTextSprite_->Initialize("PauseMenu_Text.dds");
     pauseHintTextSprite_->SetPos({ 124.0f, 120.0f });
     pauseHintTextSprite_->SetSize({ 240.0f, 120.0f });
 

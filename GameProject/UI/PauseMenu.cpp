@@ -22,23 +22,23 @@ void PauseMenu::Initialize()
 {
     // 半透明黒背景オーバーレイ
     overlaySprite_ = std::make_unique<Sprite>();
-    overlaySprite_->Initialize("white.png");
+    overlaySprite_->Initialize("white.dds");
     overlaySprite_->SetPos({ 0.0f, 0.0f });
     overlaySprite_->SetSize({ static_cast<float>(WinApp::clientWidth),  static_cast<float>(WinApp::clientHeight) });
     overlaySprite_->SetColor({ 0.0f, 0.0f, 0.0f, 0.5f });
 
     // タイトルスプライト（PAUSE表示）
     titleSprite_ = std::make_unique<Sprite>();
-    titleSprite_->Initialize("PauseMenu_Text.png");
+    titleSprite_->Initialize("PauseMenu_Text.dds");
     titleSprite_->SetPos({ 960.0f, 200.0f });
     titleSprite_->SetSize({ 400.0f, 100.0f });
     titleSprite_->SetAnchorPoint({ 0.5f, 0.5f });
 
     // ボタンスプライト初期化
     const char* buttonTextures[kButtonCount] = {
-        "PauseButton_Resume.png",
-        "PauseButton_Title.png",
-        "PauseButton_Exit.png"
+        "PauseButton_Resume.dds",
+        "PauseButton_Title.dds",
+        "PauseButton_Exit.dds"
     };
 
     const float buttonY[kButtonCount] = { 400.0f, 550.0f, 700.0f };
@@ -53,40 +53,40 @@ void PauseMenu::Initialize()
 
     // DPAD操作ガイドスプライト（ControllerUIと同じ座標・サイズ）
     dpadGuideSprite_ = std::make_unique<Sprite>();
-    dpadGuideSprite_->Initialize("button/DPAD_Neutral.png");
+    dpadGuideSprite_->Initialize("button/DPAD_Neutral.dds");
     dpadGuideSprite_->SetPos({ 323.0f, 869.0f });
     dpadGuideSprite_->SetSize({ 150.0f, 150.0f });
 
     dpadUpSprite_ = std::make_unique<Sprite>();
-    dpadUpSprite_->Initialize("button/DPAD_Up.png");
+    dpadUpSprite_->Initialize("button/DPAD_Up.dds");
     dpadUpSprite_->SetPos({ 323.0f, 869.0f });
     dpadUpSprite_->SetSize({ 150.0f, 150.0f });
 
     dpadDownSprite_ = std::make_unique<Sprite>();
-    dpadDownSprite_->Initialize("button/DPAD_Down.png");
+    dpadDownSprite_->Initialize("button/DPAD_Down.dds");
     dpadDownSprite_->SetPos({ 323.0f, 869.0f });
     dpadDownSprite_->SetSize({ 150.0f, 150.0f });
 
     // Aボタンスプライト（ControllerUIと同じ座標・サイズ）
     aButtonUpSprite_ = std::make_unique<Sprite>();
-    aButtonUpSprite_->Initialize("button/A_Button_Up.png");
+    aButtonUpSprite_->Initialize("button/A_Button_Up.dds");
     aButtonUpSprite_->SetPos({ 1565.0f, 948.0f });
     aButtonUpSprite_->SetSize({ 60.0f, 60.0f });
 
     aButtonDownSprite_ = std::make_unique<Sprite>();
-    aButtonDownSprite_->Initialize("button/A_Button_Down.png");
+    aButtonDownSprite_->Initialize("button/A_Button_Down.dds");
     aButtonDownSprite_->SetPos({ 1565.0f, 948.0f });
     aButtonDownSprite_->SetSize({ 60.0f, 60.0f });
 
     // 選択テキスト（ControllerUIと同じ座標・サイズ）
     sentakuSprite_ = std::make_unique<Sprite>();
-    sentakuSprite_->Initialize("sentaku.png");
+    sentakuSprite_->Initialize("sentaku.dds");
     sentakuSprite_->SetPos({ 460.0f, 910.0f });
     sentakuSprite_->SetSize({ 150.0f, 50.0f });
 
     // 決定テキスト（ControllerUIと同じ座標・サイズ）
     ketteiSprite_ = std::make_unique<Sprite>();
-    ketteiSprite_->Initialize("kettei.png");
+    ketteiSprite_->Initialize("kettei.dds");
     ketteiSprite_->SetPos({ 1518.0f, 1000.0f });
     ketteiSprite_->SetSize({ 150.0f, 50.0f });
 

@@ -54,7 +54,7 @@ void Boss::InitializeHealth()
 {
     // HPバーUIの初期化（2段バー：フェーズ1=青、フェーズ2=赤）
     hpBar_.InitializeDual(
-        "white.png",
+        "white.dds",
         Vector2(500.0f, 30.0f),
         0.65f,  // 画面X比率
         0.05f,  // 画面Y比率
