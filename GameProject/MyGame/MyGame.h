@@ -90,7 +90,7 @@ private: // プライベートメンバ関数
     /// <summary>
     /// テクスチャリソースの読み込み
     /// </summary>
-    void LoadTextrue();
+    void LoadTextures();
 
     /// <summary>
     /// 基本テクスチャを読み込み

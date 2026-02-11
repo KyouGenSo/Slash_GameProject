@@ -39,7 +39,7 @@ void MyGame::Initialize()
     SceneManager::GetInstance()->ChangeScene("title", 0.0f);
 
     // テクスチャの読み込み
-    LoadTextrue();
+    LoadTextures();
 
     // GlobalVariablesにパラメータを登録
     RegisterGlobalVariables();
@@ -343,7 +343,7 @@ void MyGame::RegisterShootStateVariables()
     gv->AddItem("ShootState", "AimRotationLerp", 0.3f);
 }
 
-void MyGame::LoadTextrue()
+void MyGame::LoadTextures()
 {
     LoadBasicTextures();
     LoadTitleTextures();
