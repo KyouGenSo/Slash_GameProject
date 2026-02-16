@@ -36,12 +36,6 @@ public:
 	virtual ~MeleeAttackCollider() = default;
 
 	/// <summary>
-	/// 衝突開始時のコールバック（敵を検出してリストに追加）
-	/// </summary>
-	/// <param name="other">衝突相手のコライダー</param>
-	void OnCollisionEnter(Tako::Collider* other) override;
-
-	/// <summary>
 	/// 衝突継続中のコールバック
 	/// </summary>
 	/// <param name="other">衝突相手のコライダー</param>

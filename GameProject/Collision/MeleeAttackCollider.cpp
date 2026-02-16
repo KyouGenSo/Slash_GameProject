@@ -17,63 +17,6 @@ MeleeAttackCollider::MeleeAttackCollider(Player* player)
     SetActive(false);
 }
 
-void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
-    if (!other) return;
-
-    uint32_t typeID = other->GetTypeID();
-
-    if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
-        Boss* enemy = static_cast<Boss*>(other->GetOwner());
-        if (enemy) {
-            // ダッシュ中は無視（何も起こらない）
-            if (enemy->IsDashing()) {
-                return;
-            }
-
-            // ノックバック/離脱方向を計算（プレイヤー → ボス）
-            Tako::Vector3 knockbackDir = enemy->GetTransform().translate - player_->GetTransform().translate;
-            knockbackDir.y = 0.0f;
-            if (knockbackDir.Length() > 0.01f) {
-                knockbackDir = knockbackDir.Normalize();
-            }
-
-            // スタン中の処理
-            if (enemy->IsStunned()) {
-                // フェーズ移行スタン中: フェーズ2へ移行
-                if (enemy->IsInPhaseTransitionStun()) {
-                    enemy->CompletePhaseTransition();
-                    CameraManager::GetInstance()->StartShake(0.3f);
-                }
-                // 通常スタン中: ダメージ（+ 4コンボ目ならノックバック有効化）
-                else {
-                    enemy->OnHit(attackDamage_, 1.0f);
-                    CameraManager::GetInstance()->StartShake(0.3f);
-                    // 4コンボ目: スタン中にノックバックを有効化
-                    if (knockbackEnabled_) {
-                        enemy->SetStunKnockback(true, knockbackDir);
-                    }
-                }
-            }
-            // 硬直中: ダメージ＋スタン
-            else if (enemy->IsInRecovery()) {
-                enemy->OnHit(attackDamage_, 1.0f);
-                CameraManager::GetInstance()->StartShake(0.3f);
-                enemy->TriggerStun(knockbackDir, knockbackEnabled_);
-            }
-            // それ以外: 離脱トリガー（ダメージなし）
-            else {
-                enemy->TriggerRetreat(knockbackDir);
-                detectedEnemy_ = enemy;  // 同一衝突セッション中の再トリガー防止
-                return;  // 離脱トリガー後は他の処理をスキップ
-            }
-
-            if (!detectedEnemy_) {
-                detectedEnemy_ = enemy;
-            }
-        }
-    }
-}
-
 void MeleeAttackCollider::OnCollisionStay(Collider* other) {
     if (!other) return;
 
