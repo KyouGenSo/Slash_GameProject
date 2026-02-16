@@ -231,7 +231,7 @@ void Boss::OnHit(float damage, float shakeIntensityOverride)
     if (phaseManager_.GetPhase() == 1 &&
         hp_ <= kPhaseTransitionStunThreshold &&
         !hasTriggeredPhaseTransitionStun_) {
-        // HPを110に固定
+        // HPを固定
         hp_ = kPhaseTransitionStunThreshold;
         // フェーズ移行スタンを発動
         TriggerPhaseTransitionStun();
