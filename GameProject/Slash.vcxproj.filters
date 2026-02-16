@@ -90,6 +90,9 @@
     <Filter Include="BehaviorTree\Composites">
       <UniqueIdentifier>{54752936-db44-4750-ae6b-d9594579c3b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Boss\State">
+      <UniqueIdentifier>{36347a97-464a-45da-bd0b-a4064425c6fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGame\MyGame.cpp">
@@ -297,15 +300,6 @@
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossStun.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckStunned.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
-    </ClCompile>
     <ClCompile Include="Effect\ShakeEffect.cpp">
       <Filter>Effect</Filter>
     </ClCompile>
@@ -317,6 +311,24 @@
     </ClCompile>
     <ClCompile Include="UI\PauseMenu.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\State\BossDeadState.cpp">
+      <Filter>Object\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\State\BossNormalState.cpp">
+      <Filter>Object\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\State\BossPhaseTransitionStunState.cpp">
+      <Filter>Object\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\State\BossRetreatingState.cpp">
+      <Filter>Object\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\State\BossStateMachine.cpp">
+      <Filter>Object\Boss\State</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Boss\State\BossStunnedState.cpp">
+      <Filter>Object\Boss\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -551,15 +563,6 @@
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.h">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossStun.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckStunned.h">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTCheckRetreat.h">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
-    </ClInclude>
     <ClInclude Include="Effect\ShakeEffect.h">
       <Filter>Effect</Filter>
     </ClInclude>
@@ -571,6 +574,27 @@
     </ClInclude>
     <ClInclude Include="UI\PauseMenu.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\State\BossDeadState.h">
+      <Filter>Object\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\State\BossNormalState.h">
+      <Filter>Object\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\State\BossPhaseTransitionStunState.h">
+      <Filter>Object\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\State\BossRetreatingState.h">
+      <Filter>Object\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\State\BossState.h">
+      <Filter>Object\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\State\BossStateMachine.h">
+      <Filter>Object\Boss\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Boss\State\BossStunnedState.h">
+      <Filter>Object\Boss\State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,6 @@
 #include "../Object/Boss/Boss.h"
 #include "CollisionTypeIdDef.h"
 #include "GlobalVariables.h"
-#include "../CameraSystem/CameraManager.h"
 
 using namespace Tako;
 
@@ -29,49 +28,16 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
     if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy && !detectedEnemy_) {
-            // ダッシュ中は無視（何も起こらない）
-            if (enemy->IsDashing()) {
-                return;
-            }
-
             detectedEnemy_ = enemy;
-            if (canDamage)
-            {
-                // ノックバック/離脱方向を計算（プレイヤー → ボス）
+            if (canDamage) {
+                // ノックバック方向を計算（プレイヤー → ボス）
                 Tako::Vector3 knockbackDir = enemy->GetTransform().translate - player_->GetTransform().translate;
                 knockbackDir.y = 0.0f;
                 if (knockbackDir.Length() > 0.01f) {
                     knockbackDir = knockbackDir.Normalize();
                 }
-
-                // スタン中の処理
-                if (enemy->IsStunned()) {
-                    // フェーズ移行スタン中: フェーズ2へ移行
-                    if (enemy->IsInPhaseTransitionStun()) {
-                        enemy->CompletePhaseTransition();
-                        CameraManager::GetInstance()->StartShake(0.3f);
-                    }
-                    // 通常スタン中: ダメージ（+ 4コンボ目ならノックバック有効化）
-                    else {
-                        enemy->OnHit(attackDamage_, 1.0f);
-                        CameraManager::GetInstance()->StartShake(0.3f);
-                        // 4コンボ目: スタン中にノックバックを有効化
-                        if (knockbackEnabled_) {
-                            enemy->SetStunKnockback(true, knockbackDir);
-                        }
-                    }
-                }
-                // 硬直中: ダメージ＋スタン
-                else if (enemy->IsInRecovery()) {
-                    enemy->OnHit(attackDamage_, 1.0f);
-                    CameraManager::GetInstance()->StartShake(0.3f);
-                    enemy->TriggerStun(knockbackDir, knockbackEnabled_);
-                }
-                // それ以外: 離脱トリガー（ダメージなし）
-                else {
-                    enemy->TriggerRetreat(knockbackDir);
-                }
-
+                // ボス側で状態に応じた判定を行う
+                enemy->OnMeleeAttackHit(attackDamage_, knockbackDir, knockbackEnabled_);
                 canDamage = false;
             }
         }

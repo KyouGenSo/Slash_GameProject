@@ -11,6 +11,13 @@
 #include "BossBehaviorTree/BossBehaviorTree.h"
 #include "GlobalVariables.h"
 #include "EmitterManager.h"
+#include "State/BossStateMachine.h"
+#include "State/BossNormalState.h"
+#include "State/BossStunnedState.h"
+#include "State/BossRetreatingState.h"
+#include "State/BossPhaseTransitionStunState.h"
+#include "State/BossDeadState.h"
+#include "../../CameraSystem/CameraManager.h"
 
 #ifdef _DEBUG
 #include "ImGuiManager.h"
@@ -34,6 +41,18 @@ void Boss::Initialize()
     InitializeColliders();
     InitializeEffects();
     InitializeAI();
+    InitializeStateMachine();
+}
+
+void Boss::InitializeStateMachine()
+{
+    stateMachine_ = std::make_unique<BossStateMachine>(this);
+    stateMachine_->RegisterState("Normal", std::make_unique<BossNormalState>());
+    stateMachine_->RegisterState("Stunned", std::make_unique<BossStunnedState>());
+    stateMachine_->RegisterState("Retreating", std::make_unique<BossRetreatingState>());
+    stateMachine_->RegisterState("PhaseTransitionStun", std::make_unique<BossPhaseTransitionStunState>());
+    stateMachine_->RegisterState("Dead", std::make_unique<BossDeadState>());
+    stateMachine_->ChangeState("Normal");
 }
 
 void Boss::InitializeModel()
@@ -149,31 +168,29 @@ void Boss::Update(float deltaTime)
     // フェーズとライフの更新
     phaseManager_.Update(hp_);
 
-    // AIシステムの更新
-    if (!phaseManager_.IsDead() && !isPause_) {
-        if (behaviorTree_) {
-            // ビヘイビアツリーの更新
-            behaviorTree_->Update(deltaTime);
-
-#ifdef _DEBUG
-            // エディタが有効な場合、実行中のノードをハイライト
-            if (nodeEditor_ && showNodeEditor_) {
-                BTNodePtr currentNode = behaviorTree_->GetCurrentRunningNode();
-                if (currentNode) {
-                    nodeEditor_->HighlightRunningNode(currentNode);
-                }
-            }
-#endif
-        }
+    // 死亡判定 → Dead状態へ遷移
+    if (phaseManager_.IsDead() && stateMachine_->GetCurrentStateName() != "Dead") {
+        stateMachine_->ChangeState("Dead");
     }
 
-    // フェーズ移行スタン中はパーティクル位置を追従させる
-    if (IsInPhaseTransitionStun()) {
-        SetCanAttackSignEmitterPosition(transform_.translate);
+    // ステートマシンが全てを駆動（Normal内でBTが動く）
+    if (!isPause_) {
+        stateMachine_->Update(deltaTime);
+
+#ifdef _DEBUG
+        // エディタが有効な場合、実行中のノードをハイライト
+        if (stateMachine_->GetCurrentStateName() == "Normal" &&
+            nodeEditor_ && showNodeEditor_ && behaviorTree_) {
+            BTNodePtr currentNode = behaviorTree_->GetCurrentRunningNode();
+            if (currentNode) {
+                nodeEditor_->HighlightRunningNode(currentNode);
+            }
+        }
+#endif
     }
 
     // ヒットエフェクトの更新
-    static const Vector4 kOriginalColor = Vector4(1.0f, 0.0f, 0.0f, 1.0f);  // 赤（元の色）
+    static const Vector4 kOriginalColor = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
     hitFlashEffect_.Update(deltaTime, model_.get(), kOriginalColor);
 
     // シェイクエフェクトの更新
@@ -261,6 +278,11 @@ void Boss::DrawImGui()
     }
     else {
         ImGui::Text("Paused: NO");
+    }
+
+    // ステートマシン状態
+    if (stateMachine_) {
+        ImGui::Text("State: %s", stateMachine_->GetCurrentStateName().c_str());
     }
 
     ImGui::Text("Ready to Change Phase: %s", phaseManager_.IsReadyToChangePhase() ? "YES" : "NO");
@@ -467,16 +489,6 @@ void Boss::SetBulletSignEmitterScaleRangeX(float value) {
     }
 }
 
-void Boss::TriggerStun(const Vector3& knockbackDirection, bool withKnockback) {
-    // スタン中は無視（リセット防止）
-    if (isStunned_) {
-        return;
-    }
-    isStunned_ = true;
-    stunKnockbackDirection_ = knockbackDirection;
-    stunWithKnockback_ = withKnockback;
-}
-
 void Boss::StartStunFlash(const Vector4& color, float duration) {
     hitFlashEffect_.Start(color, duration);
 }
@@ -493,41 +505,78 @@ void Boss::SetDashing(bool dashing) {
     isDashing_ = dashing;
 }
 
-void Boss::TriggerRetreat(const Vector3& direction) {
-    // 既に離脱要求がある場合は無視
-    if (shouldRetreat_) {
-        return;
-    }
-    shouldRetreat_ = true;
-    retreatDirection_ = direction;
+bool Boss::IsStunned() const {
+    if (!stateMachine_) return false;
+    const std::string& state = stateMachine_->GetCurrentStateName();
+    return state == "Stunned" || state == "PhaseTransitionStun";
 }
 
-void Boss::ClearStun() {
-    isStunned_ = false;
-    stunWithKnockback_ = true;  // デフォルトに戻す
-    // フェーズ移行スタン中の場合、パーティクルも無効化
-    if (isInPhaseTransitionStun_) {
-        SetCanAttackSignEmitterActive(false);
-        isInPhaseTransitionStun_ = false;
+bool Boss::IsInPhaseTransitionStun() const {
+    if (!stateMachine_) return false;
+    return stateMachine_->GetCurrentStateName() == "PhaseTransitionStun";
+}
+
+void Boss::ResetActionState() {
+    isInRecovery_ = false;
+    isDashing_ = false;
+    meleeAttackBlockVisible_ = false;
+    SetAttackSignEmitterActive(false);
+    SetBulletSignEmitterActive(false);
+    if (meleeAttackCollider_) {
+        meleeAttackCollider_->SetActive(false);
+    }
+}
+
+void Boss::OnMeleeAttackHit(float damage, const Vector3& knockbackDir, bool isKnockbackCombo) {
+    // ダッシュ中は無視
+    if (isDashing_) return;
+
+    const std::string& currentState = stateMachine_->GetCurrentStateName();
+
+    if (currentState == "Stunned") {
+        // スタン中: ダメージのみ（+ 4コンボ目ならノックバック有効化）
+        OnHit(damage, 1.0f);
+        if (isKnockbackCombo) {
+            auto* stunnedState = static_cast<BossStunnedState*>(
+                stateMachine_->GetState("Stunned"));
+            stunnedState->EnableKnockback(knockbackDir);
+        }
+        CameraManager::GetInstance()->StartShake(0.3f);
+        return;
+    }
+
+    if (currentState == "PhaseTransitionStun") {
+        // フェーズ移行スタン中: フェーズ2へ移行
+        CompletePhaseTransition();
+        CameraManager::GetInstance()->StartShake(0.3f);
+        return;
+    }
+
+    if (currentState == "Normal") {
+        if (isInRecovery_) {
+            // 硬直中: ダメージ + スタンへ遷移
+            OnHit(damage, 1.0f);
+            CameraManager::GetInstance()->StartShake(0.3f);
+            pendingStunDirection_ = knockbackDir;
+            pendingStunWithKnockback_ = isKnockbackCombo;
+            stateMachine_->ChangeState("Stunned");
+        }
+        else {
+            // 非硬直: 離脱へ遷移
+            stateMachine_->ChangeState("Retreating");
+        }
+        return;
     }
 }
 
 void Boss::TriggerPhaseTransitionStun() {
-    // 既にトリガー済み、またはスタン中は無視
     if (hasTriggeredPhaseTransitionStun_) {
         return;
     }
-
     hasTriggeredPhaseTransitionStun_ = true;
-    isInPhaseTransitionStun_ = true;
-    isStunned_ = true;
 
-    // ノックバック方向はゼロ（その場でスタン）
-    stunKnockbackDirection_ = Vector3(0.0f, 0.0f, 0.0f);
-
-    // 攻撃可能サインパーティクルを有効化
-    SetCanAttackSignEmitterActive(true);
-    SetCanAttackSignEmitterPosition(transform_.translate);
+    // ステートマシンでPhaseTransitionStun状態へ遷移
+    stateMachine_->ChangeState("PhaseTransitionStun");
 }
 
 void Boss::CompletePhaseTransition() {
@@ -537,8 +586,8 @@ void Boss::CompletePhaseTransition() {
     // フェーズ2に移行
     phaseManager_.SetPhase(2);
 
-    // スタン解除
-    ClearStun();
+    // Normalへ復帰（PhaseTransitionStunState::Exit()でパーティクル無効化）
+    stateMachine_->ChangeState("Normal");
 }
 
 void Boss::SetCanAttackSignEmitterActive(bool active) {

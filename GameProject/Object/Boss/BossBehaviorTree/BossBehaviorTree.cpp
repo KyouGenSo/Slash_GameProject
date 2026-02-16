@@ -11,7 +11,6 @@
 #include "../BossBehaviorTree/BossNodeFactory.h"
 #include <fstream>
 #include <unordered_map>
-#include "../../../Collision/BossMeleeAttackCollider.h"
 
 BossBehaviorTree::BossBehaviorTree(Boss* boss, Player* player) {
     // ブラックボードの初期化
@@ -31,50 +30,6 @@ void BossBehaviorTree::Update(float deltaTime) {
         return;
     }
 
-    // ===== スタン立ち上がりエッジ検出 =====
-    // スタンが「今」発生した瞬間のみリセット（false→true の立ち上がり）
-    Boss* boss = blackboard_->GetBoss();
-    bool isStunned = boss && boss->IsStunned();
-
-    if (isStunned && !wasStunnedLastFrame_ && rootNode_->IsRunning()) {
-        // リセット前に状態フラグをクリア（ノードのReset()では参照できないため）
-        if (boss) {
-            boss->ExitRecovery();
-            boss->SetDashing(false);
-            // shouldRetreat_はクリアしない（スタン中に離脱要求が来る可能性がある）
-            // エフェクトクリーンアップ（攻撃中断時にエフェクトを消す）
-            boss->SetMeleeAttackBlockVisible(false);
-            boss->SetAttackSignEmitterActive(false);
-            boss->SetBulletSignEmitterActive(false);
-            if (boss->GetMeleeAttackCollider()) {
-                boss->GetMeleeAttackCollider()->SetActive(false);
-            }
-        }
-        rootNode_->Reset();
-    }
-    wasStunnedLastFrame_ = isStunned;
-
-    // ===== 離脱立ち上がりエッジ検出 =====
-    // 離脱が「今」要求された瞬間のみリセット（false→true の立ち上がり）
-    bool shouldRetreat = boss && boss->ShouldRetreat();
-    if (shouldRetreat && !wasRetreatRequestedLastFrame_ && !isStunned && rootNode_->IsRunning()) {
-        // スタン中でなければリセットして離脱を優先
-        if (boss) {
-            boss->ExitRecovery();
-            boss->SetDashing(false);
-            // エフェクトクリーンアップ（攻撃中断時にエフェクトを消す）
-            boss->SetMeleeAttackBlockVisible(false);
-            boss->SetAttackSignEmitterActive(false);
-            boss->SetBulletSignEmitterActive(false);
-            if (boss->GetMeleeAttackCollider()) {
-                boss->GetMeleeAttackCollider()->SetActive(false);
-            }
-        }
-        rootNode_->Reset();
-    }
-    wasRetreatRequestedLastFrame_ = shouldRetreat;
-    // =========================================
-
     // ブラックボードにデルタータイムを設定
     blackboard_->SetDeltaTime(deltaTime);
 
@@ -89,20 +44,6 @@ void BossBehaviorTree::Update(float deltaTime) {
 
     // 完了したらリセット
     if (status != BTNodeStatus::Running) {
-        // リセット前に状態フラグをクリア
-        if (boss) {
-            boss->ExitRecovery();
-            boss->SetDashing(false);
-            // shouldRetreat_はツリー完了時にクリア
-            boss->ClearRetreat();
-            // エフェクトクリーンアップ（攻撃完了時にエフェクトを消す）
-            boss->SetMeleeAttackBlockVisible(false);
-            boss->SetAttackSignEmitterActive(false);
-            boss->SetBulletSignEmitterActive(false);
-            if (boss->GetMeleeAttackCollider()) {
-                boss->GetMeleeAttackCollider()->SetActive(false);
-            }
-        }
         rootNode_->Reset();
     }
 }
@@ -112,21 +53,8 @@ void BossBehaviorTree::Reset() {
         rootNode_->Reset();
     }
     blackboard_->SetInt("ActionCounter", 0);
-
-    // ボスの状態フラグをクリア
-    Boss* boss = blackboard_->GetBoss();
-    if (boss) {
-        boss->ExitRecovery();
-        boss->SetDashing(false);
-        boss->ClearRetreat();
-        // エフェクトクリーンアップ（完全リセット時にエフェクトを消す）
-        boss->SetMeleeAttackBlockVisible(false);
-        boss->SetAttackSignEmitterActive(false);
-        boss->SetBulletSignEmitterActive(false);
-        if (boss->GetMeleeAttackCollider()) {
-            boss->GetMeleeAttackCollider()->SetActive(false);
-        }
-    }
+    // 状態フラグのクリーンアップはBoss::ResetActionState()に集約
+    // NormalState::Exit()から呼ばれる
 }
 
 void BossBehaviorTree::SetPlayer(Player* player) {

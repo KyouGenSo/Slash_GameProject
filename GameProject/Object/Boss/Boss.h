@@ -25,10 +25,10 @@ class EmitterManager;
 
 // GameProject前方宣言
 class BossStateMachine;
+class BossStunnedState;
 class BossBehaviorTree;
 class BossNodeEditor;
 class Player;
-class BossShootState;
 class BossMeleeAttackCollider;
 
 /// <summary>
@@ -173,44 +173,44 @@ public:
     /// <param name="isPause">一時行動停止フラグの値</param>
     void SetIsPause(bool isPause) { isPause_ = isPause; }
 
-    //-----------------------------スタンシステム------------------------------//
+    //-----------------------------ステートマシン------------------------------//
     /// <summary>
-    /// スタンをトリガー（近接攻撃ヒット時に呼ばれる）
-    /// スタン中は無視される（リセット防止）
+    /// ステートマシンを取得
     /// </summary>
-    /// <param name="knockbackDirection">ノックバック方向（正規化済み）</param>
-    void TriggerStun(const Tako::Vector3& knockbackDirection, bool withKnockback = true);
+    /// <returns>ステートマシンのポインタ</returns>
+    BossStateMachine* GetStateMachine() const { return stateMachine_.get(); }
 
     /// <summary>
-    /// スタン状態かどうか
+    /// ビヘイビアツリーを取得
+    /// </summary>
+    /// <returns>ビヘイビアツリーのポインタ</returns>
+    BossBehaviorTree* GetBehaviorTree() const { return behaviorTree_.get(); }
+
+    /// <summary>
+    /// 近接攻撃ヒット時の統合処理
+    /// 現在のステートに応じてダメージ・スタン・離脱を判定
+    /// </summary>
+    /// <param name="damage">攻撃ダメージ</param>
+    /// <param name="knockbackDir">ノックバック方向（正規化済み）</param>
+    /// <param name="isKnockbackCombo">4コンボ目のノックバック付き攻撃かどうか</param>
+    void OnMeleeAttackHit(float damage, const Tako::Vector3& knockbackDir, bool isKnockbackCombo);
+
+    /// <summary>
+    /// 行動状態をリセット（BT中断時のクリーンアップ）
+    /// </summary>
+    void ResetActionState();
+
+    /// <summary>
+    /// スタン状態かどうか（ステートマシン経由）
     /// </summary>
     /// <returns>スタン中ならtrue</returns>
-    bool IsStunned() const { return isStunned_; }
+    bool IsStunned() const;
 
     /// <summary>
-    /// スタンをクリア（BTBossStun終了時に呼ばれる）
+    /// フェーズ移行スタン中かどうか（ステートマシン経由）
     /// </summary>
-    void ClearStun();
-
-    /// <summary>
-    /// ノックバック方向を取得
-    /// </summary>
-    /// <returns>ノックバック方向ベクトル</returns>
-    const Tako::Vector3& GetStunKnockbackDirection() const { return stunKnockbackDirection_; }
-
-    /// <summary>
-    /// スタン時ノックバック移動が有効かどうか
-    /// </summary>
-    /// <returns>ノックバック移動が有効ならtrue</returns>
-    bool ShouldStunKnockback() const { return stunWithKnockback_; }
-
-    /// <summary>
-    /// スタン中にノックバックを有効化する（4コンボ目ヒット時）
-    /// </summary>
-    void SetStunKnockback(bool enabled, const Tako::Vector3& direction) {
-        stunWithKnockback_ = enabled;
-        stunKnockbackDirection_ = direction;
-    }
+    /// <returns>フェーズ移行スタン中ならtrue</returns>
+    bool IsInPhaseTransitionStun() const;
 
     /// <summary>
     /// スタン用フラッシュを開始
@@ -218,23 +218,6 @@ public:
     /// <param name="color">フラッシュ色</param>
     /// <param name="duration">持続時間</param>
     void StartStunFlash(const Tako::Vector4& color, float duration);
-
-    //-----------------------------フェーズ移行スタンシステム------------------------------//
-    /// <summary>
-    /// フェーズ移行スタンを発動（HP110以下で初めて呼ばれる）
-    /// </summary>
-    void TriggerPhaseTransitionStun();
-
-    /// <summary>
-    /// フェーズ移行を完了（スタン中に近距離攻撃を受けた時に呼ばれる）
-    /// </summary>
-    void CompletePhaseTransition();
-
-    /// <summary>
-    /// フェーズ移行スタン中かどうか
-    /// </summary>
-    /// <returns>フェーズ移行スタン中ならtrue</returns>
-    bool IsInPhaseTransitionStun() const { return isInPhaseTransitionStun_; }
 
     /// <summary>
     /// 攻撃可能サインエミッターの有効/無効を設定
@@ -247,6 +230,16 @@ public:
     /// </summary>
     /// <param name="position">設定する位置</param>
     void SetCanAttackSignEmitterPosition(const Tako::Vector3& position);
+
+    /// <summary>
+    /// 保留中のスタン方向を取得（BossStunnedState::Enter用）
+    /// </summary>
+    const Tako::Vector3& GetPendingStunDirection() const { return pendingStunDirection_; }
+
+    /// <summary>
+    /// 保留中のスタンノックバック有効フラグを取得
+    /// </summary>
+    bool GetPendingStunWithKnockback() const { return pendingStunWithKnockback_; }
 
     //-----------------------------硬直状態システム------------------------------//
     /// <summary>
@@ -278,29 +271,12 @@ public:
     /// <returns>ダッシュ中ならtrue</returns>
     bool IsDashing() const { return isDashing_; }
 
-    //-----------------------------離脱トリガーシステム------------------------------//
+    //-----------------------------離脱（互換性スタブ）------------------------------//
     /// <summary>
-    /// 離脱をトリガー（硬直時間外に近接攻撃を受けた時に呼ばれる）
+    /// 離脱フラグをクリア（BTBossRetreat互換スタブ）
+    /// ステートマシン導入後は不要だが、AI駆動のBTBossRetreatが呼ぶため残す
     /// </summary>
-    /// <param name="direction">離脱方向（正規化済み）</param>
-    void TriggerRetreat(const Tako::Vector3& direction);
-
-    /// <summary>
-    /// 離脱すべきかどうか
-    /// </summary>
-    /// <returns>離脱要求があればtrue</returns>
-    bool ShouldRetreat() const { return shouldRetreat_; }
-
-    /// <summary>
-    /// 離脱フラグをクリア（BTBossRetreat終了時に呼ばれる）
-    /// </summary>
-    void ClearRetreat() { shouldRetreat_ = false; }
-
-    /// <summary>
-    /// 離脱方向を取得
-    /// </summary>
-    /// <returns>離脱方向ベクトル</returns>
-    const Tako::Vector3& GetRetreatDirection() const { return retreatDirection_; }
+    void ClearRetreat() { /* ステートマシンが管理するため何もしない */ }
 
     /// <summary>
     /// 座標変換情報を取得
@@ -468,6 +444,21 @@ private:
     /// </summary>
     void InitializeAI();
 
+    /// <summary>
+    /// ステートマシンの初期化
+    /// </summary>
+    void InitializeStateMachine();
+
+    /// <summary>
+    /// フェーズ移行スタンを発動（HP閾値以下で呼ばれる）
+    /// </summary>
+    void TriggerPhaseTransitionStun();
+
+    /// <summary>
+    /// フェーズ移行を完了（PhaseTransitionStun中に近接攻撃を受けた時）
+    /// </summary>
+    void CompletePhaseTransition();
+
 private:
     // ボスの3Dモデルオブジェクト（描画とアニメーション管理）
     std::unique_ptr<Tako::Object3d> model_;
@@ -475,7 +466,10 @@ private:
     // ボスの座標変換情報（位置、回転、スケール）
     Tako::Transform transform_{};
 
-    // ビヘイビアツリー
+    // ステートマシン（外部イベント駆動の状態管理）
+    std::unique_ptr<BossStateMachine> stateMachine_;
+
+    // ビヘイビアツリー（AI意思決定）
     std::unique_ptr<BossBehaviorTree> behaviorTree_;
 
 #ifdef _DEBUG
@@ -498,23 +492,17 @@ private:
     // 一時行動停止フラグ
     bool isPause_ = false;
 
-    // ===== スタンシステム =====
-    bool isStunned_ = false;                      ///< スタン状態フラグ
-    Tako::Vector3 stunKnockbackDirection_;        ///< ノックバック方向
-    bool stunWithKnockback_ = true;              ///< スタン時ノックバック移動の有効フラグ
+    // ===== ステートマシン遷移用データ =====
+    Tako::Vector3 pendingStunDirection_;          ///< スタン遷移時のノックバック方向
+    bool pendingStunWithKnockback_ = true;       ///< スタン遷移時のノックバック有効フラグ
 
-    // ===== フェーズ移行スタンシステム =====
+    // ===== フェーズ移行スタン =====
     bool hasTriggeredPhaseTransitionStun_ = false;  ///< 一度きりのトリガーフラグ
-    bool isInPhaseTransitionStun_ = false;          ///< フェーズ移行スタン中フラグ
     std::string canAttackSignEmitterName_ = "can_attack_sign";  ///< 攻撃可能サインエミッター名
 
-    // ===== 硬直状態システム =====
-    bool isInRecovery_ = false;                   ///< 硬直中フラグ
-    bool isDashing_ = false;                      ///< ダッシュ中フラグ
-
-    // ===== 離脱トリガーシステム =====
-    bool shouldRetreat_ = false;                  ///< 離脱要求フラグ
-    Tako::Vector3 retreatDirection_;              ///< 離脱方向
+    // ===== BT内サブ状態フラグ（ステートマシンの責務外） =====
+    bool isInRecovery_ = false;                   ///< 硬直中フラグ（BTアクションが設定）
+    bool isDashing_ = false;                      ///< ダッシュ中フラグ（BTアクションが設定）
 
     // ボス本体の衝突判定用AABBコライダー
     std::unique_ptr<Tako::OBBCollider> bodyCollider_;
