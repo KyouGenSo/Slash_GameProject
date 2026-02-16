@@ -11,6 +11,7 @@
 #include "../BossBehaviorTree/BossNodeFactory.h"
 #include <fstream>
 #include <unordered_map>
+#include "../../../Collision/BossMeleeAttackCollider.h"
 
 BossBehaviorTree::BossBehaviorTree(Boss* boss, Player* player) {
     // ブラックボードの初期化
@@ -45,6 +46,9 @@ void BossBehaviorTree::Update(float deltaTime) {
             boss->SetMeleeAttackBlockVisible(false);
             boss->SetAttackSignEmitterActive(false);
             boss->SetBulletSignEmitterActive(false);
+            if (boss->GetMeleeAttackCollider()) {
+                boss->GetMeleeAttackCollider()->SetActive(false);
+            }
         }
         rootNode_->Reset();
     }
@@ -62,6 +66,9 @@ void BossBehaviorTree::Update(float deltaTime) {
             boss->SetMeleeAttackBlockVisible(false);
             boss->SetAttackSignEmitterActive(false);
             boss->SetBulletSignEmitterActive(false);
+            if (boss->GetMeleeAttackCollider()) {
+                boss->GetMeleeAttackCollider()->SetActive(false);
+            }
         }
         rootNode_->Reset();
     }
@@ -92,6 +99,9 @@ void BossBehaviorTree::Update(float deltaTime) {
             boss->SetMeleeAttackBlockVisible(false);
             boss->SetAttackSignEmitterActive(false);
             boss->SetBulletSignEmitterActive(false);
+            if (boss->GetMeleeAttackCollider()) {
+                boss->GetMeleeAttackCollider()->SetActive(false);
+            }
         }
         rootNode_->Reset();
     }
@@ -113,6 +123,9 @@ void BossBehaviorTree::Reset() {
         boss->SetMeleeAttackBlockVisible(false);
         boss->SetAttackSignEmitterActive(false);
         boss->SetBulletSignEmitterActive(false);
+        if (boss->GetMeleeAttackCollider()) {
+            boss->GetMeleeAttackCollider()->SetActive(false);
+        }
     }
 }
 

@@ -45,7 +45,7 @@ BTNodeStatus BTRandomSelector::Execute(BTBlackboard* blackboard) {
 }
 
 void BTRandomSelector::Reset() {
-    BTNode::Reset();
+    BTComposite::Reset();  // 子ノードへのリセット伝播を含む
     currentShuffledIdx_ = 0;
     needsShuffle_ = true;
 }
