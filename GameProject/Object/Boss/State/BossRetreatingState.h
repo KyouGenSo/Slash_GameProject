@@ -47,8 +47,8 @@ private:
 	static constexpr float kMinRetreatDistance = 10.0f;
 
 	// パラメータ
-	float retreatSpeed_ = 60.0f;
-	float targetDistance_ = 55.0f;
+	float retreatSpeed_ = 250.0f;
+	float targetDistance_ = 60.0f;
 
 	// 状態管理
 	Tako::Vector3 startPosition_;
