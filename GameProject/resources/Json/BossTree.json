@@ -225,20 +225,6 @@
       "targetPinId": 20049
     },
     {
-      "id": 30032,
-      "sourceNodeId": 10000,
-      "sourcePinId": 20001,
-      "targetNodeId": 10008,
-      "targetPinId": 20011
-    },
-    {
-      "id": 30033,
-      "sourceNodeId": 10000,
-      "sourcePinId": 20001,
-      "targetNodeId": 10026,
-      "targetPinId": 20038
-    },
-    {
       "id": 30034,
       "sourceNodeId": 10037,
       "sourcePinId": 20053,
@@ -272,11 +258,25 @@
       "sourcePinId": 20014,
       "targetNodeId": 10039,
       "targetPinId": 20055
+    },
+    {
+      "id": 30039,
+      "sourceNodeId": 10000,
+      "sourcePinId": 20001,
+      "targetNodeId": 10026,
+      "targetPinId": 20038
+    },
+    {
+      "id": 30040,
+      "sourceNodeId": 10000,
+      "sourcePinId": 20001,
+      "targetNodeId": 10008,
+      "targetPinId": 20011
     }
   ],
   "metadata": {
-    "created": "2026-02-16T14:52:31",
-    "modified": "2026-02-16T14:52:31",
+    "created": "2026-02-16T15:35:40",
+    "modified": "2026-02-16T15:35:40",
     "name": "Boss Behavior Tree"
   },
   "nodes": [

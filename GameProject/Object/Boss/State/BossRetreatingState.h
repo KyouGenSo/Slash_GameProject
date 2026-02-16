@@ -49,8 +49,6 @@ private:
 	// パラメータ
 	float retreatSpeed_ = 250.0f;
 	float targetDistance_ = 60.0f;
-
-	// 状態管理
 	Tako::Vector3 startPosition_;
 	Tako::Vector3 targetPosition_;
 	float elapsedTime_ = 0.0f;
