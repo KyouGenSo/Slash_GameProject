@@ -44,17 +44,21 @@ void MeleeAttackCollider::OnCollisionEnter(Collider* other) {
                     enemy->CompletePhaseTransition();
                     CameraManager::GetInstance()->StartShake(0.3f);
                 }
-                // 通常スタン中: ダメージのみ（スタン延長なし）
+                // 通常スタン中: ダメージ（+ 4コンボ目ならノックバック有効化）
                 else {
                     enemy->OnHit(attackDamage_, 1.0f);
                     CameraManager::GetInstance()->StartShake(0.3f);
+                    // 4コンボ目: スタン中にノックバックを有効化
+                    if (knockbackEnabled_) {
+                        enemy->SetStunKnockback(true, knockbackDir);
+                    }
                 }
             }
             // 硬直中: ダメージ＋スタン
             else if (enemy->IsInRecovery()) {
                 enemy->OnHit(attackDamage_, 1.0f);
                 CameraManager::GetInstance()->StartShake(0.3f);
-                enemy->TriggerStun(knockbackDir);
+                enemy->TriggerStun(knockbackDir, knockbackEnabled_);
             }
             // それ以外: 離脱トリガー（ダメージなし）
             else {
@@ -104,17 +108,21 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
                         enemy->CompletePhaseTransition();
                         CameraManager::GetInstance()->StartShake(0.3f);
                     }
-                    // 通常スタン中: ダメージのみ（スタン延長なし）
+                    // 通常スタン中: ダメージ（+ 4コンボ目ならノックバック有効化）
                     else {
                         enemy->OnHit(attackDamage_, 1.0f);
                         CameraManager::GetInstance()->StartShake(0.3f);
+                        // 4コンボ目: スタン中にノックバックを有効化
+                        if (knockbackEnabled_) {
+                            enemy->SetStunKnockback(true, knockbackDir);
+                        }
                     }
                 }
                 // 硬直中: ダメージ＋スタン
                 else if (enemy->IsInRecovery()) {
                     enemy->OnHit(attackDamage_, 1.0f);
                     CameraManager::GetInstance()->StartShake(0.3f);
-                    enemy->TriggerStun(knockbackDir);
+                    enemy->TriggerStun(knockbackDir, knockbackEnabled_);
                 }
                 // それ以外: 離脱トリガー（ダメージなし）
                 else {

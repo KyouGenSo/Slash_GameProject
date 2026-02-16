@@ -78,6 +78,7 @@ void AttackState::InitializeComboAttack(Player* player)
     if (player->GetMeleeAttackCollider()) {
         player->GetMeleeAttackCollider()->SetActive(true);
         player->GetMeleeAttackCollider()->Reset();
+        player->GetMeleeAttackCollider()->SetKnockbackEnabled(comboIndex_ == maxCombo_ - 1);
     }
 
     // 攻撃ブロックを表示して初期位置設定

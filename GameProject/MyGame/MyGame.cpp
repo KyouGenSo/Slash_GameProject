@@ -65,6 +65,7 @@ void MyGame::Finalize()
     Audio::GetInstance()->Finalize();
 
     // 入力クラスの解放
+    Input::GetInstance()->SetVibration(0.0f, 0.0f, 0.0f);
     Input::GetInstance()->Finalize();
 
     TakoFramework::Finalize();

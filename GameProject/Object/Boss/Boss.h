@@ -179,7 +179,7 @@ public:
     /// スタン中は無視される（リセット防止）
     /// </summary>
     /// <param name="knockbackDirection">ノックバック方向（正規化済み）</param>
-    void TriggerStun(const Tako::Vector3& knockbackDirection);
+    void TriggerStun(const Tako::Vector3& knockbackDirection, bool withKnockback = true);
 
     /// <summary>
     /// スタン状態かどうか
@@ -197,6 +197,20 @@ public:
     /// </summary>
     /// <returns>ノックバック方向ベクトル</returns>
     const Tako::Vector3& GetStunKnockbackDirection() const { return stunKnockbackDirection_; }
+
+    /// <summary>
+    /// スタン時ノックバック移動が有効かどうか
+    /// </summary>
+    /// <returns>ノックバック移動が有効ならtrue</returns>
+    bool ShouldStunKnockback() const { return stunWithKnockback_; }
+
+    /// <summary>
+    /// スタン中にノックバックを有効化する（4コンボ目ヒット時）
+    /// </summary>
+    void SetStunKnockback(bool enabled, const Tako::Vector3& direction) {
+        stunWithKnockback_ = enabled;
+        stunKnockbackDirection_ = direction;
+    }
 
     /// <summary>
     /// スタン用フラッシュを開始
@@ -487,6 +501,7 @@ private:
     // ===== スタンシステム =====
     bool isStunned_ = false;                      ///< スタン状態フラグ
     Tako::Vector3 stunKnockbackDirection_;        ///< ノックバック方向
+    bool stunWithKnockback_ = true;              ///< スタン時ノックバック移動の有効フラグ
 
     // ===== フェーズ移行スタンシステム =====
     bool hasTriggeredPhaseTransitionStun_ = false;  ///< 一度きりのトリガーフラグ

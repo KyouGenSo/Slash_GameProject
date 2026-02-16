@@ -116,7 +116,7 @@ public: // メンバ関数
     /// <summary>
     /// 攻撃コライダーの更新
     /// </summary>
-    void UpdateAttackCollider();
+    void UpdateCollider();
 
     /// <summary>
     /// ボス方向を向く

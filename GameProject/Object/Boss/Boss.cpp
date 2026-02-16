@@ -467,13 +467,14 @@ void Boss::SetBulletSignEmitterScaleRangeX(float value) {
     }
 }
 
-void Boss::TriggerStun(const Vector3& knockbackDirection) {
+void Boss::TriggerStun(const Vector3& knockbackDirection, bool withKnockback) {
     // スタン中は無視（リセット防止）
     if (isStunned_) {
         return;
     }
     isStunned_ = true;
     stunKnockbackDirection_ = knockbackDirection;
+    stunWithKnockback_ = withKnockback;
 }
 
 void Boss::StartStunFlash(const Vector4& color, float duration) {
@@ -503,6 +504,7 @@ void Boss::TriggerRetreat(const Vector3& direction) {
 
 void Boss::ClearStun() {
     isStunned_ = false;
+    stunWithKnockback_ = true;  // デフォルトに戻す
     // フェーズ移行スタン中の場合、パーティクルも無効化
     if (isInPhaseTransitionStun_) {
         SetCanAttackSignEmitterActive(false);

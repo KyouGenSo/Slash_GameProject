@@ -115,4 +115,6 @@ private:
     float flashTimer_ = 0.0f;             ///< フラッシュタイマー
     bool isFirstExecute_ = true;          ///< 初回実行フラグ
     bool knockbackComplete_ = false;      ///< ノックバック完了フラグ
+    float knockbackTimer_ = 0.0f;         ///< ノックバック専用タイマー
+    bool knockbackWasSkipped_ = false;    ///< ノックバックがスキップされたフラグ
 };

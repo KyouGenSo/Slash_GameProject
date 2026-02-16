@@ -109,7 +109,7 @@ void Player::Update()
     UpdateCombat(deltaTime);
     UpdateStateMachine(deltaTime);
     UpdateVisuals(deltaTime);
-    UpdateAttackCollider();
+    UpdateCollider();
     UpdateTransform();
 }
 
@@ -308,8 +308,15 @@ void Player::SetupColliders()
     collisionManager->AddCollider(meleeAttackCollider_.get());
 }
 
-void Player::UpdateAttackCollider()
+void Player::UpdateCollider()
 {
+    GlobalVariables* gv = GlobalVariables::GetInstance();
+
+    if (!bodyCollider_) return;
+
+    float bodySize = gv->GetValueFloat("Player", "BodyColliderSize");
+    bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
+
     if (!meleeAttackCollider_) return;
 
     // 攻撃状態の時のみ前方に配置
@@ -317,6 +324,14 @@ void Player::UpdateAttackCollider()
         // プレイヤーの回転行列を作成（Y軸回転のみ）
         Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(transform_.rotate.y);
         meleeAttackCollider_->SetOrientation(rotationMatrix);
+
+        float meleeX = gv->GetValueFloat("Player", "MeleeColliderX");
+        float meleeY = gv->GetValueFloat("Player", "MeleeColliderY");
+        float meleeZ = gv->GetValueFloat("Player", "MeleeColliderZ");
+        float meleeOffsetZ = gv->GetValueFloat("Player", "MeleeColliderOffsetZ");
+
+        meleeAttackCollider_->SetSize(Vector3(meleeX, meleeY, meleeZ));
+        meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, meleeOffsetZ));
     }
 }
 

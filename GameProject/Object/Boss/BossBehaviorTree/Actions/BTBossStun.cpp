@@ -32,8 +32,28 @@ BTNodeStatus BTBossStun::Execute(BTBlackboard* blackboard) {
 
     elapsedTime_ += deltaTime;
 
-    // ノックバック処理（スタン開始直後のみ）
+    // ノックバックがスキップされたが、後から有効化された場合（4コンボ目ヒット）
+    if (knockbackWasSkipped_ && boss->ShouldStunKnockback()) {
+        knockbackWasSkipped_ = false;
+        knockbackComplete_ = false;
+        knockbackTimer_ = 0.0f;
+        startPosition_ = boss->GetTransform().translate;
+
+        Vector3 knockbackDir = boss->GetStunKnockbackDirection();
+        if (knockbackDir.Length() < kDirectionEpsilon) {
+            float angle = boss->GetTransform().rotate.y;
+            knockbackDir = Vector3(-sinf(angle), 0.0f, -cosf(angle));
+        }
+        knockbackDir.y = 0.0f;
+        knockbackDir = knockbackDir.Normalize();
+
+        targetPosition_ = startPosition_ + knockbackDir * knockbackDistance_;
+        targetPosition_ = ClampToArea(targetPosition_);
+    }
+
+    // ノックバック処理
     if (!knockbackComplete_) {
+        knockbackTimer_ += deltaTime;
         UpdateKnockback(boss);
     }
 
@@ -44,15 +64,17 @@ BTNodeStatus BTBossStun::Execute(BTBlackboard* blackboard) {
         UpdateFlash(boss);
     }
 
-    // スタン終了判定（フェーズ移行スタン中はタイムアウトしない）
-    if (!boss->IsInPhaseTransitionStun() && elapsedTime_ >= stunDuration_) {
+    // スタン終了判定（フェーズ移行スタン中はタイムアウトしない、ノックバック完了も必要）
+    if (!boss->IsInPhaseTransitionStun() && elapsedTime_ >= stunDuration_ && knockbackComplete_) {
         boss->ClearStun();
 
         // リセットして成功を返す
         isFirstExecute_ = true;
         elapsedTime_ = 0.0f;
         flashTimer_ = 0.0f;
+        knockbackTimer_ = 0.0f;
         knockbackComplete_ = false;
+        knockbackWasSkipped_ = false;
         status_ = BTNodeStatus::Success;
         return BTNodeStatus::Success;
     }
@@ -66,16 +88,30 @@ void BTBossStun::Reset() {
     BTNode::Reset();
     elapsedTime_ = 0.0f;
     flashTimer_ = 0.0f;
+    knockbackTimer_ = 0.0f;
     isFirstExecute_ = true;
     knockbackComplete_ = false;
+    knockbackWasSkipped_ = false;
 }
 
 void BTBossStun::InitializeStun(Boss* boss) {
     elapsedTime_ = 0.0f;
     flashTimer_ = 0.0f;
     knockbackComplete_ = false;
+    knockbackTimer_ = 0.0f;
 
     startPosition_ = boss->GetTransform().translate;
+
+    // ノックバック無効時は移動をスキップ（その場でスタン）
+    if (!boss->ShouldStunKnockback()) {
+        targetPosition_ = startPosition_;
+        knockbackComplete_ = true;
+        knockbackWasSkipped_ = true;
+        UpdateFlash(boss);
+        return;
+    }
+
+    knockbackWasSkipped_ = false;
 
     // ノックバック方向を取得
     Vector3 knockbackDir = boss->GetStunKnockbackDirection();
@@ -99,13 +135,13 @@ void BTBossStun::InitializeStun(Boss* boss) {
 }
 
 void BTBossStun::UpdateKnockback(Boss* boss) {
-    if (elapsedTime_ >= knockbackDuration_) {
+    if (knockbackTimer_ >= knockbackDuration_) {
         knockbackComplete_ = true;
         boss->SetTranslate(targetPosition_);
         return;
     }
 
-    float t = elapsedTime_ / knockbackDuration_;
+    float t = knockbackTimer_ / knockbackDuration_;
     t = std::clamp(t, 0.0f, 1.0f);
 
     // イージング（加速→減速）: smoothstep

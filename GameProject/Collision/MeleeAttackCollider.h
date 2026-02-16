@@ -17,6 +17,7 @@ private:
 	Boss* detectedEnemy_ = nullptr;  ///< 現在検出されている敵への参照
 	bool canDamage = false;  ///< ダメージを与えられる状態かどうか
 	float attackDamage_ = 10.0f;  ///< 攻撃ダメージ量（GlobalVariablesから取得）
+	bool knockbackEnabled_ = true;  ///< ノックバック有効フラグ（4コンボ目のみtrue）
 
 #ifdef _DEBUG
 	int collisionCount_ = 0;  ///< デバッグ用：衝突検出回数
@@ -70,6 +71,12 @@ public:
 	/// <param name="enemyId">チェックする敵のID</param>
 	/// <returns>ヒット済みならtrue</returns>
 	bool HasHitEnemy(uint32_t enemyId) const;
+
+	/// <summary>
+	/// ノックバック有効フラグを設定（4コンボ目のみtrue）
+	/// </summary>
+	/// <param name="enabled">有効にする場合true</param>
+	void SetKnockbackEnabled(bool enabled) { knockbackEnabled_ = enabled; }
 
 #ifdef _DEBUG
 	/// <summary>

@@ -7,10 +7,10 @@
         "BossLookatLerp": 1.149999976158142,
         "InitialY": 2.5,
         "InitialZ": -120.0,
-        "MeleeColliderOffsetZ": 10.0,
+        "MeleeColliderOffsetZ": 4.699999809265137,
         "MeleeColliderX": 9.0,
         "MeleeColliderY": 3.5,
-        "MeleeColliderZ": 10.0,
+        "MeleeColliderZ": 9.899999618530273,
         "MoveInputDeadzone": 0.10000000149011612,
         "RotationLerpSpeed": 0.20000000298023224,
         "Speed": 0.5
