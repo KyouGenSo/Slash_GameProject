@@ -49,11 +49,11 @@ void InputHandler::Update()
 
   // 各アクションの入力状態を更新
   isMoving_ = !input->LStickInDeadZone() || moveDirection_.Length() > 0.0f;
-  isDashing_ = input->TriggerKey(DIK_SPACE) || input->TriggerButton(XButtons.A);
-  isAttacking_ = input->TriggerKey(DIK_Z) || input->TriggerButton(XButtons.X);
+  isDashing_ = input->TriggerKey(DIK_SPACE) || input->TriggerButton(GamepadButton::A);
+  isAttacking_ = input->TriggerKey(DIK_Z) || input->TriggerButton(GamepadButton::X);
   isShooting_ = hasRightStickInput;  // 右スティック入力で射撃判定
-  isParrying_ = input->TriggerKey(DIK_F) || input->TriggerButton(XButtons.B);
-  isPaused_ = input->TriggerKey(DIK_ESCAPE) || input->TriggerButton(XButtons.Start);
+  isParrying_ = input->TriggerKey(DIK_F) || input->TriggerButton(GamepadButton::B);
+  isPaused_ = input->TriggerKey(DIK_ESCAPE) || input->TriggerButton(GamepadButton::Start);
 }
 
 void InputHandler::ResetInputs()

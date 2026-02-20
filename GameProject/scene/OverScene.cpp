@@ -72,7 +72,7 @@ void OverScene::Update()
         SceneManager::GetInstance()->ChangeScene("title");
     }
 
-    if (Input::GetInstance()->TriggerButton(XButtons.A)) {
+    if (Input::GetInstance()->TriggerButton(GamepadButton::A)) {
         SceneManager::GetInstance()->ChangeScene("title");
     }
 }

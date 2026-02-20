@@ -116,22 +116,22 @@ PauseMenu::Action PauseMenu::Update()
     overlaySprite_->SetSize({ static_cast<float>(WinApp::clientWidth),  static_cast<float>(WinApp::clientHeight) });
 
     // 入力状態を取得（描画用）
-    isDPadUpPressed_ = input->PushButton(XButtons.DPad_Up);
-    isDPadDownPressed_ = input->PushButton(XButtons.DPad_Down);
-    isAPressed_ = input->PushButton(XButtons.A);
+    isDPadUpPressed_ = input->PushButton(GamepadButton::DPad_Up);
+    isDPadDownPressed_ = input->PushButton(GamepadButton::DPad_Down);
+    isAPressed_ = input->PushButton(GamepadButton::A);
 
     // DPAD 上下で選択移動
-    if (input->TriggerButton(XButtons.DPad_Up)) {
+    if (input->TriggerButton(GamepadButton::DPad_Up)) {
         selectedIndex_ = (selectedIndex_ - 1 + kButtonCount) % kButtonCount;
         UpdateButtonColors();
     }
-    if (input->TriggerButton(XButtons.DPad_Down)) {
+    if (input->TriggerButton(GamepadButton::DPad_Down)) {
         selectedIndex_ = (selectedIndex_ + 1) % kButtonCount;
         UpdateButtonColors();
     }
 
     // A ボタンで決定
-    if (input->TriggerButton(XButtons.A)) {
+    if (input->TriggerButton(GamepadButton::A)) {
         switch (selectedIndex_) {
         case 0: return Action::Resume;
         case 1: return Action::ToTitle;

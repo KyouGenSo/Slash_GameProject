@@ -81,7 +81,7 @@ void ThirdPersonController::ProcessInput(float deltaTime) {
     }
 
     // 右スティック押し込みでターゲットの後ろにリセット
-    if (input_->TriggerButton(XButtons.R_Thumbstick)) {
+    if (input_->TriggerButton(GamepadButton::R_Thumbstick)) {
         destinationAngleY_ = primaryTarget_->rotate.y;
     }
 

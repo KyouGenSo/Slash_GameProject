@@ -134,10 +134,10 @@ void ControllerUI::Update()
     Input* input = Input::GetInstance();
 
     // ボタン状態更新
-    isAPressed_ = input->PushButton(XButtons.A);
-    isBPressed_ = input->PushButton(XButtons.B);
-    isXPressed_ = input->PushButton(XButtons.X);
-    isYPressed_ = input->PushButton(XButtons.Y);
+    isAPressed_ = input->PushButton(GamepadButton::A);
+    isBPressed_ = input->PushButton(GamepadButton::B);
+    isXPressed_ = input->PushButton(GamepadButton::X);
+    isYPressed_ = input->PushButton(GamepadButton::Y);
 
     // スティック方向更新
     Vector2 leftStick = input->GetLeftStick();

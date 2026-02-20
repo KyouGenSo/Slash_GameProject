@@ -609,7 +609,7 @@ void TitleScene::UpdateInput()
 {
     // キーボードまたはゲームパッドの入力処理
     if (Input::GetInstance()->TriggerKey(DIK_SPACE) ||
-        Input::GetInstance()->TriggerButton(XButtons.A)) {
+        Input::GetInstance()->TriggerButton(GamepadButton::A)) {
         // スペースキー押下時にアニメーションを再生
         if (!isPlaying_ && !isSlashEmitterAnimating_) {
             PlayTitleAnimation();
