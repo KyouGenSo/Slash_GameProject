@@ -21,6 +21,9 @@ wchar
 coord
 coords
 
+// Third Party Library
+Assimp
+
 // WinAPI & Windows SDK
 hwnd
 hresult
