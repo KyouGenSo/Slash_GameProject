@@ -71,38 +71,38 @@ public:
     /// <summary>
     /// 実行中かどうか
     /// </summary>
-    /// <returns>実行中の場合true</returns>
+    /// <returns>実行中の場合 true</returns>
     bool IsRunning() const { return status_ == BTNodeStatus::Running; }
 
     /// <summary>
     /// コンポジットノード（子ノードを持てる）かどうか
     /// </summary>
-    /// <returns>コンポジットノードの場合true</returns>
+    /// <returns>コンポジットノードの場合 true</returns>
     virtual bool IsComposite() const { return false; }
 
     /// <summary>
-    /// JSONからパラメータを適用
+    /// JSON からパラメータを適用
     /// </summary>
-    /// <param name="params">パラメータJSON</param>
+    /// <param name="params">パラメータ JSON</param>
     virtual void ApplyParameters(const nlohmann::json& params) {
         // デフォルトは何もしない（パラメータを持たないノード用）
         (void)params;
     }
 
     /// <summary>
-    /// パラメータをJSONとして抽出（保存用）
+    /// パラメータを JSON として抽出（保存用）
     /// </summary>
-    /// <returns>パラメータJSON</returns>
+    /// <returns>パラメータ JSON</returns>
     virtual nlohmann::json ExtractParameters() const {
-        // デフォルトは空のJSONを返す（パラメータを持たないノード用）
+        // デフォルトは空の JSON を返す（パラメータを持たないノード用）
         return {};
     }
 
 #ifdef _DEBUG
     /// <summary>
-    /// ImGuiでパラメータ編集UIを描画
+    /// ImGui でパラメータ編集 UI を描画
     /// </summary>
-    /// <returns>パラメータ変更があればtrue</returns>
+    /// <returns>パラメータ変更があれば true</returns>
     virtual bool DrawImGui() { return false; }
 #endif
 

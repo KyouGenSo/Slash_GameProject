@@ -27,7 +27,7 @@ BTNodeStatus BTBossDistanceCondition::Execute(BTBlackboard* blackboard) {
     Vector3 bossPos = boss->GetTransform().translate;
     Vector3 playerPos = player->GetTransform().translate;
 
-    // 水平距離を計算（Y軸を無視）
+    // 水平距離を計算（Y 軸を無視）
     Vector3 diff = playerPos - bossPos;
     diff.y = 0.0f;
     float distance = diff.Length();
@@ -68,7 +68,7 @@ bool BTBossDistanceCondition::DrawImGui() {
 
     // 最小距離の編集
     if (ImGui::DragFloat("Min Distance##dist", &minDistance_, 0.5f, 0.0f, 100.0f, "%.1f")) {
-        // minがmaxを超えないように
+        // min が max を超えないように
         if (minDistance_ > maxDistance_) {
             minDistance_ = maxDistance_;
         }
@@ -77,7 +77,7 @@ bool BTBossDistanceCondition::DrawImGui() {
 
     // 最大距離の編集
     if (ImGui::DragFloat("Max Distance##dist", &maxDistance_, 0.5f, 0.0f, 100.0f, "%.1f")) {
-        // maxがminを下回らないように
+        // max が min を下回らないように
         if (maxDistance_ < minDistance_) {
             maxDistance_ = minDistance_;
         }

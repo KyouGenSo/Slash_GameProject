@@ -29,7 +29,7 @@ void TitleScene::Initialize()
     emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
 
     // 各種初期化処理を関数化して呼び出し
-    InitializeDebugUI();       // デバッグUI初期化
+    InitializeDebugUI();       // デバッグ UI 初期化
     InitializeCamera();         // カメラ設定
     InitializePostEffects();    // ポストエフェクト設定
     InitializeSprites();        // スプライト初期化
@@ -58,7 +58,7 @@ void TitleScene::Update()
     UpdateWindowResize();           // ウィンドウリサイズ処理
     UpdateStartButtonBlink();       // スタートボタン点滅更新
     UpdateTitleTextAnimation();     // タイトルテキストアニメーション更新
-    UpdateSlashParticleAnimation(); // slashパーティクルアニメーション更新
+    UpdateSlashParticleAnimation(); // slash パーティクルアニメーション更新
     UpdateTitleEffectAnimation();   // タイトルエフェクトアニメーション更新
     UpdateInput();                  // 入力処理
 
@@ -81,21 +81,21 @@ void TitleScene::Draw()
     ///              描画処理               ///
     /// ================================== ///
 
-    //------------------背景Spriteの描画------------------//
+    //------------------背景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
     titleBG_->Draw();
 
 
-    //-------------------Modelの描画-------------------//
-    // 3Dモデル共通描画設定
+    //-------------------Model の描画-------------------//
+    // 3D モデル共通描画設定
     Object3dBasic::GetInstance()->SetCommonRenderSetting();
 
 
 
 
-    //------------------前景Spriteの描画------------------//
+    //------------------前景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
@@ -117,22 +117,22 @@ void TitleScene::DrawWithoutEffect()
     ///              描画処理               ///
     /// ================================== ///
 
-    //------------------背景Spriteの描画------------------//
+    //------------------背景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
 
 
 
-    //-------------------Modelの描画-------------------//
-    // 3Dモデル共通描画設定
+    //-------------------Model の描画-------------------//
+    // 3D モデル共通描画設定
     Object3dBasic::GetInstance()->SetCommonRenderSetting();
 
 
 
 
 
-    //------------------前景Spriteの描画------------------//
+    //------------------前景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
@@ -146,7 +146,7 @@ void TitleScene::DrawImGui()
 #ifdef _DEBUG
 
     /// ================================== ///
-    ///             ImGuiの描画              ///
+    ///             ImGui の描画              ///
     /// ================================== ///
 
   // アニメーション制御ボタン
@@ -268,7 +268,7 @@ void TitleScene::DrawImGui()
         titleTextEffect_->SetAlpha(0.0f);
     }
 
-    // Slashパーティクルエミッターアニメーションコントロール
+    // Slash パーティクルエミッターアニメーションコントロール
     ImGui::Separator();
     ImGui::Text("Slash Particle Animation");
 
@@ -316,7 +316,7 @@ void TitleScene::PlayTitleAnimation()
     isPlaying_ = true;
     animationComplete_ = false;
 
-    // slashパーティクルエミッターのアニメーションも開始
+    // slash パーティクルエミッターのアニメーションも開始
     isSlashEmitterAnimating_ = true;
     slashEmitterAnimTimer_ = 0.0f;
 
@@ -334,11 +334,11 @@ void TitleScene::ResetTitleAnimation()
     isPlaying_ = false;
     animationComplete_ = false;
 
-    // slashパーティクルエミッターもリセット
+    // slash パーティクルエミッターもリセット
     isSlashEmitterAnimating_ = false;
     slashEmitterAnimTimer_ = 0.0f;
 
-    // slashエミッターを初期値に戻す
+    // slash エミッターを初期値に戻す
     auto slashEmitter = emitterManager_->GetEmitterByName("slash");
     if (slashEmitter) {
         slashEmitter->SetParticleCount(slashEmitterStartCount_);
@@ -354,15 +354,15 @@ void TitleScene::InitializeDebugUI()
     Draw2D::GetInstance()->SetDebug(false);
     GPUParticle::GetInstance()->SetIsDebug(false);
 
-    // TitleScene自体のデバッグUI登録
+    // TitleScene 自体のデバッグ UI 登録
     DebugUIManager::GetInstance()->RegisterGameObject("TitleScene",
         [this]() { this->DrawImGui(); });
 
-    // 背景のデバッグUI登録
+    // 背景のデバッグ UI 登録
     DebugUIManager::GetInstance()->RegisterGameObject("BackGround",
         [this]() { if (titleBG_) titleBG_->DrawImGui(); });
 
-    // タイトルテキストスプライトのデバッグUI登録（10枚）
+    // タイトルテキストスプライトのデバッグ UI 登録（10枚）
     for (int i = 0; i < 10; ++i) {
         DebugUIManager::GetInstance()->RegisterGameObject(std::format("TitleText{}", i + 1),
             [this, i]() {
@@ -370,7 +370,7 @@ void TitleScene::InitializeDebugUI()
             });
     }
 
-    // スタートボタンテキストのデバッグUI登録
+    // スタートボタンテキストのデバッグ UI 登録
     DebugUIManager::GetInstance()->RegisterGameObject("StartButtonText",
         [this]() { if (startButtonText_) startButtonText_->DrawImGui(); });
 
@@ -388,13 +388,13 @@ void TitleScene::InitializeCamera()
 
 void TitleScene::InitializePostEffects()
 {
-    // RGBSplitエフェクトのパラメータ設定
+    // RGBSplit エフェクトのパラメータ設定
     rgbSplitParam_.redOffset = Vector2(-0.01f, 0.f);
     rgbSplitParam_.greenOffset = Vector2(0.01f, 0.f);
     rgbSplitParam_.blueOffset = Vector2(0.0f, 0.f);
     rgbSplitParam_.intensity = 0.08f;
 
-    // Vignetteエフェクトのパラメータ設定
+    // Vignette エフェクトのパラメータ設定
     vignetteParam_.color = Vector3(1.f, 1.f, 1.f);
     vignetteParam_.power = 0.02f;
     vignetteParam_.range = 20.0f;
@@ -445,7 +445,7 @@ void TitleScene::InitializeParticles()
     // エミッタマネージャからプリセットを読み込み
     emitterManager_->LoadScenePreset("title_preset");
 
-    // slashエミッターの初期設定
+    // slash エミッターの初期設定
     auto slashEmitter = emitterManager_->GetEmitterByName("slash");
     if (slashEmitter) {
         // 初期値を設定
@@ -475,12 +475,12 @@ void TitleScene::UpdateStartButtonBlink()
     // スタートボタンの点滅アニメーション処理
     if (!isButtonBlinking_) return;
 
-    // タイマーを更新（60FPSを想定して1/60秒ずつ加算）
+    // タイマーを更新（60FPS を想定して1/60秒ずつ加算）
     blinkTimer_ += 1.0f / 60.0f;
     if (blinkTimer_ > 1000.f) blinkTimer_ = 0.f; // タイマーのオーバーフロー防止
 
     // サイン波を使用してアルファ値を計算
-    // sin関数の結果（-1〜1）を0〜1の範囲に正規化し、指定範囲にマッピング
+    // sin 関数の結果（-1〜1）を0〜1の範囲に正規化し、指定範囲にマッピング
     float sineValue = std::sin(blinkTimer_ * blinkSpeed_ * std::numbers::pi_v<float>);
     float normalizedSine = (sineValue + 1.0f) * 0.5f;  // -1〜1 を 0〜1 に変換
     float alpha = blinkMinAlpha_ + (blinkMaxAlpha_ - blinkMinAlpha_) * normalizedSine;
@@ -529,10 +529,10 @@ void TitleScene::UpdateTitleTextAnimation()
 
 void TitleScene::UpdateSlashParticleAnimation()
 {
-    // slashパーティクルエミッターのアニメーション更新
+    // slash パーティクルエミッターのアニメーション更新
     if (!isSlashEmitterAnimating_) return;
 
-    // タイマーを更新（60FPSを想定）
+    // タイマーを更新（60FPS を想定）
     slashEmitterAnimTimer_ += 1.0f / 60.0f;
 
     // 進行度を計算（0.0 〜 1.0）
@@ -551,13 +551,13 @@ void TitleScene::UpdateSlashParticleAnimation()
     // エミッターを取得してパラメータを更新
     auto slashEmitter = emitterManager_->GetEmitterByName("slash");
     if (slashEmitter) {
-        // count値を線形補間
+        // count 値を線形補間
         uint32_t currentCount = static_cast<uint32_t>(
             slashEmitterStartCount_ +
             (slashEmitterEndCount_ - slashEmitterStartCount_) * progress
             );
 
-        // frequency値を線形補間
+        // frequency 値を線形補間
         float currentFreq = slashEmitterStartFreq_ +
             (slashEmitterEndFreq_ - slashEmitterStartFreq_) * progress;
 
@@ -572,7 +572,7 @@ void TitleScene::UpdateTitleEffectAnimation()
     // 拡大フェードアウトエフェクトの更新
     if (!isEffectPlaying_) return;
 
-    // タイマーを更新（60FPSを想定）
+    // タイマーを更新（60FPS を想定）
     effectTimer_ += 1.0f / 60.0f;
 
     // 進行度を計算（0.0 〜 1.0）

@@ -9,42 +9,42 @@
 #ifdef _DEBUG
 
 /// <summary>
-/// カメラシステムのデバッグUI
-/// ImGuiを使用したデバッグ機能を提供
+/// カメラシステムのデバッグ UI
+/// ImGui を使用したデバッグ機能を提供
 /// </summary>
 class CameraDebugUI {
 public:
     /// <summary>
-    /// デバッグUIを描画
+    /// デバッグ UI を描画
     /// </summary>
     static void Draw();
 
     /// <summary>
-    /// CameraManagerのデバッグ情報を描画
+    /// CameraManager のデバッグ情報を描画
     /// </summary>
     static void DrawManagerInfo();
 
     /// <summary>
-    /// FirstPersonControllerのデバッグ情報を描画
+    /// FirstPersonController のデバッグ情報を描画
     /// </summary>
     /// <param name="controller">対象のコントローラー</param>
     static void DrawFirstPersonControllerInfo(ThirdPersonController* controller);
 
     /// <summary>
-    /// TopDownControllerのデバッグ情報を描画
+    /// TopDownController のデバッグ情報を描画
     /// </summary>
     /// <param name="controller">対象のコントローラー</param>
     static void DrawTopDownControllerInfo(TopDownController* controller);
 
     /// <summary>
-    /// CameraAnimationのデバッグ情報を描画
+    /// CameraAnimation のデバッグ情報を描画
     /// </summary>
     /// <param name="animation">対象のアニメーション</param>
     static void DrawAnimationInfo(CameraAnimation* animation);
 
     /// <summary>
     /// カメラアニメーションエディターのみを描画
-    /// （DebugUIManager用の独立した描画関数）
+    /// （DebugUIManager 用の独立した描画関数）
     /// </summary>
     static void DrawAnimationEditorOnly();
 
@@ -66,7 +66,7 @@ public:
 
 private:
     /// <summary>
-    /// コントローラー切り替えUIを描画
+    /// コントローラー切り替え UI を描画
     /// </summary>
     static void DrawControllerSwitcher();
 
@@ -75,7 +75,7 @@ private:
     /// </summary>
     static void DrawCameraState();
 
-    // UI表示フラグ
+    // UI 表示フラグ
     static bool showManagerInfo_;
     static bool showControllerInfo_;
     static bool showAnimationInfo_;

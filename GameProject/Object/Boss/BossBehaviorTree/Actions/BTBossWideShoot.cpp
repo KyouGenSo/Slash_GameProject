@@ -93,7 +93,7 @@ void BTBossWideShoot::Reset() {
     firedInSweep_ = 0;
     isFirstExecute_ = true;
     hasEndedEffect_ = false;
-    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
+    // 注意: Reset 時は boss 参照がないため、ExitRecovery()は呼べない
 }
 
 void BTBossWideShoot::InitializeWideShoot(Boss* boss) {
@@ -104,13 +104,13 @@ void BTBossWideShoot::InitializeWideShoot(Boss* boss) {
     firedInSweep_ = 0;
     hasEndedEffect_ = false;
 
-    // firingDurationからfireIntervalを計算
+    // firingDuration から fireInterval を計算
     int totalBullets = bulletsPerSweep_ * sweepCount_;
     if (totalBullets > 0) {
         fireInterval_ = firingDuration_ / static_cast<float>(totalBullets);
     }
 
-    // totalDurationを計算
+    // totalDuration を計算
     totalDuration_ = chargeTime_ + firingDuration_ + recoveryTime_;
 
     // 射撃予兆エフェクト開始
@@ -217,11 +217,11 @@ Vector3 BTBossWideShoot::CalculateBulletDirection(const Vector3& baseDirection, 
         return baseDirection;
     }
 
-    // Y軸回転行列を作成
+    // Y 軸回転行列を作成
     float cos_angle = cosf(angleOffset);
     float sin_angle = sinf(angleOffset);
 
-    // 回転を適用（Y軸回転）
+    // 回転を適用（Y 軸回転）
     Vector3 rotatedDirection;
     rotatedDirection.x = baseDirection.x * cos_angle - baseDirection.z * sin_angle;
     rotatedDirection.y = baseDirection.y;

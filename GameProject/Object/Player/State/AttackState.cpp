@@ -52,7 +52,7 @@ void AttackState::LoadComboData()
 
 void AttackState::Enter(Player* player)
 {
-    // GlobalVariablesからコンボデータを読み込み
+    // GlobalVariables からコンボデータを読み込み
     LoadComboData();
 
     // 状態を初期化
@@ -64,7 +64,7 @@ void AttackState::Enter(Player* player)
     // コンボ攻撃の初期化
     InitializeComboAttack(player);
 
-    // MoveToTarget状態をリセット
+    // MoveToTarget 状態をリセット
     player->ResetMoveToTarget();
 }
 
@@ -74,7 +74,7 @@ void AttackState::InitializeComboAttack(Player* player)
     // TODO: アニメーション作成後に実装
     // player->GetModel()->PlayAnimation("Attack" + std::to_string(comboIndex_));
 
-    // 攻撃範囲Colliderを有効化
+    // 攻撃範囲 Collider を有効化
     if (player->GetMeleeAttackCollider()) {
         player->GetMeleeAttackCollider()->SetActive(true);
         player->GetMeleeAttackCollider()->Reset();
@@ -101,7 +101,7 @@ void AttackState::TransitionToPhase(AttackPhase newPhase)
 
 void AttackState::Exit(Player* player)
 {
-    // 攻撃範囲Colliderを無効化
+    // 攻撃範囲 Collider を無効化
     if (player->GetMeleeAttackCollider()) {
         player->GetMeleeAttackCollider()->SetActive(false);
     }
@@ -122,7 +122,7 @@ void AttackState::Exit(Player* player)
 
 void AttackState::Update(Player* player, float deltaTime)
 {
-    // GlobalVariablesから値を同期（ホットリロード対応）
+    // GlobalVariables から値を同期（ホットリロード対応）
     LoadComboData();
 
     switch (phase_) {
@@ -163,7 +163,7 @@ void AttackState::HandleInput(Player* player)
     if (!input) return;
 
     // 攻撃実行中にプリインプットを受け付け
-    // 次のコンボへ進めるかどうかはOnExecuteAttackCompleteで判定
+    // 次のコンボへ進めるかどうかは OnExecuteAttackComplete で判定
     if (phase_ == ExecuteAttack && input->IsAttacking() && comboIndex_ < maxCombo_ - 1) {
         hasBufferedInput_ = true;
     }
@@ -250,7 +250,7 @@ void AttackState::OnExecuteAttackComplete(Player* player)
         return;
     }
 
-    // それ以外（途中離脱）は即座にIdleへ（硬直なし）
+    // それ以外（途中離脱）は即座に Idle へ（硬直なし）
     PlayerStateMachine* stateMachine = player->GetStateMachine();
     if (stateMachine) {
         stateMachine->ChangeState("Idle");
@@ -261,7 +261,7 @@ void AttackState::ProcessRecovery(Player* player, float deltaTime)
 {
     phaseTimer_ += deltaTime;
 
-    // 硬直時間が終了したらIdleへ
+    // 硬直時間が終了したら Idle へ
     if (phaseTimer_ >= recoveryTime_) {
         PlayerStateMachine* stateMachine = player->GetStateMachine();
         if (stateMachine) {
@@ -286,7 +286,7 @@ void AttackState::UpdateBlockPosition(Player* player)
     Vector3 blockPos;
 
     if (currentCombo.axis == SwingAxis::Horizontal) {
-        // 水平回転（XZ平面）：コンボ0, 1, 3
+        // 水平回転（XZ 平面）：コンボ0, 1, 3
         float worldAngle = playerRotY + blockAngle_;
         blockPos = {
             playerPos.x + sinf(worldAngle) * blockRadius_,
@@ -295,7 +295,7 @@ void AttackState::UpdateBlockPosition(Player* player)
         };
     }
     else {
-        // 垂直回転（プレイヤー向き基準のYZ平面）：コンボ2（縦切り）
+        // 垂直回転（プレイヤー向き基準の YZ 平面）：コンボ2（縦切り）
         // blockAngle_は垂直角度として使用（π/2が真上、-π/2が真下）
         float horizontalDist = cosf(blockAngle_) * blockRadius_;
         float verticalDist = sinf(blockAngle_) * blockRadius_;
@@ -316,7 +316,7 @@ void AttackState::UpdateBlockPosition(Player* player)
         blockTransform.rotate = { 0.0f, playerRotY + blockAngle_, 0.0f };
     }
     else {
-        // 垂直回転時はX軸回転も加える
+        // 垂直回転時は X 軸回転も加える
         blockTransform.rotate = { blockAngle_, playerRotY, 0.0f };
     }
 

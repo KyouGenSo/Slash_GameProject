@@ -16,14 +16,14 @@
 #include "../../UI/HPBarUI.h"
 #include "BossPhaseManager.h"
 
-// Tako namespace前方宣言
+// Tako namespace 前方宣言
 namespace Tako {
 class OBBCollider;
 class Object3d;
 class EmitterManager;
 }
 
-// GameProject前方宣言
+// GameProject 前方宣言
 class BossStateMachine;
 class BossStunnedState;
 class BossBehaviorTree;
@@ -33,22 +33,22 @@ class BossMeleeAttackCollider;
 
 /// <summary>
 /// ボスエネミークラス
-/// HPとフェーズ管理、ダメージ処理を制御
+/// HP とフェーズ管理、ダメージ処理を制御
 /// </summary>
 class Boss
 {
     // 定数
 private:
-    // 最大HP
+    // 最大 HP
     static constexpr float kMaxHp = 200.0f;
 
-    // フェーズ2開始HP閾値
+    // フェーズ2開始 HP 閾値
     static constexpr float kPhase2Threshold = 105.0f;
 
-    // フェーズ2開始時のHP
+    // フェーズ2開始時の HP
     static constexpr float kPhase2InitialHp = 100.0f;
 
-    // フェーズ移行スタン発動HP閾値
+    // フェーズ移行スタン発動 HP 閾値
     static constexpr float kPhaseTransitionStunThreshold = 105.0f;
 
 public:
@@ -66,7 +66,7 @@ public:
     void Finalize();
 
     /// <summary>
-    /// 更新（deltaTime版）
+    /// 更新（deltaTime 版）
     /// </summary>
     void Update(float deltaTime);
 
@@ -81,7 +81,7 @@ public:
     void DrawSprite();
 
     /// <summary>
-    /// ImGuiの描画
+    /// ImGui の描画
     /// </summary>
     void DrawImGui();
 
@@ -108,7 +108,7 @@ public:
     /// <summary>
     /// 保留中の弾生成リクエストを取得して消費
     /// </summary>
-    /// <returns>弾生成リクエストのリスト（moveで返される）</returns>
+    /// <returns>弾生成リクエストのリスト（move で返される）</returns>
     std::vector<BulletSpawnRequest> ConsumePendingBullets();
 
     /// <summary>
@@ -121,7 +121,7 @@ public:
     /// <summary>
     /// 保留中の貫通弾生成リクエストを取得して消費
     /// </summary>
-    /// <returns>貫通弾生成リクエストのリスト（moveで返される）</returns>
+    /// <returns>貫通弾生成リクエストのリスト（move で返される）</returns>
     std::vector<BulletSpawnRequest> ConsumePendingPenetratingBullets();
 
     //-----------------------------Getters/Setters------------------------------//
@@ -150,9 +150,9 @@ public:
     void SetScale(const Tako::Vector3& scale) { transform_.scale = scale; }
 
     /// <summary>
-    /// HPを設定
+    /// HP を設定
     /// </summary>
-    /// <param name="hp">新しいHP値</param>
+    /// <param name="hp">新しい HP 値</param>
     void SetHp(float hp) { hp_ = hp; }
 
     /// <summary>
@@ -196,20 +196,20 @@ public:
     void OnMeleeAttackHit(float damage, const Tako::Vector3& knockbackDir, bool isKnockbackCombo);
 
     /// <summary>
-    /// 行動状態をリセット（BT中断時のクリーンアップ）
+    /// 行動状態をリセット（BT 中断時のクリーンアップ）
     /// </summary>
     void ResetActionState();
 
     /// <summary>
     /// スタン状態かどうか（ステートマシン経由）
     /// </summary>
-    /// <returns>スタン中ならtrue</returns>
+    /// <returns>スタン中なら true</returns>
     bool IsStunned() const;
 
     /// <summary>
     /// フェーズ移行スタン中かどうか（ステートマシン経由）
     /// </summary>
-    /// <returns>フェーズ移行スタン中ならtrue</returns>
+    /// <returns>フェーズ移行スタン中なら true</returns>
     bool IsInPhaseTransitionStun() const;
 
     /// <summary>
@@ -222,7 +222,7 @@ public:
     /// <summary>
     /// 攻撃可能サインエミッターの有効/無効を設定
     /// </summary>
-    /// <param name="active">有効にする場合true</param>
+    /// <param name="active">有効にする場合 true</param>
     void SetCanAttackSignEmitterActive(bool active);
 
     /// <summary>
@@ -232,7 +232,7 @@ public:
     void SetCanAttackSignEmitterPosition(const Tako::Vector3& position);
 
     /// <summary>
-    /// 保留中のスタン方向を取得（BossStunnedState::Enter用）
+    /// 保留中のスタン方向を取得（BossStunnedState::Enter 用）
     /// </summary>
     const Tako::Vector3& GetPendingStunDirection() const { return pendingStunDirection_; }
 
@@ -255,26 +255,26 @@ public:
     /// <summary>
     /// 硬直中かどうか
     /// </summary>
-    /// <returns>硬直中ならtrue</returns>
+    /// <returns>硬直中なら true</returns>
     bool IsInRecovery() const { return isInRecovery_; }
 
     //-----------------------------ダッシュ状態システム------------------------------//
     /// <summary>
     /// ダッシュ状態を設定
     /// </summary>
-    /// <param name="dashing">ダッシュ中ならtrue</param>
+    /// <param name="dashing">ダッシュ中なら true</param>
     void SetDashing(bool dashing);
 
     /// <summary>
     /// ダッシュ中かどうか
     /// </summary>
-    /// <returns>ダッシュ中ならtrue</returns>
+    /// <returns>ダッシュ中なら true</returns>
     bool IsDashing() const { return isDashing_; }
 
     //-----------------------------離脱（互換性スタブ）------------------------------//
     /// <summary>
-    /// 離脱フラグをクリア（BTBossRetreat互換スタブ）
-    /// ステートマシン導入後は不要だが、AI駆動のBTBossRetreatが呼ぶため残す
+    /// 離脱フラグをクリア（BTBossRetreat 互換スタブ）
+    /// ステートマシン導入後は不要だが、AI 駆動の BTBossRetreat が呼ぶため残す
     /// </summary>
     void ClearRetreat() { /* ステートマシンが管理するため何もしない */ }
 
@@ -285,7 +285,7 @@ public:
     const Tako::Transform& GetTransform() const { return transform_; }
 
     /// <summary>
-    /// 座標変換情報を取得（非const版）
+    /// 座標変換情報を取得（非 const 版）
     /// </summary>
     /// <returns>現在の座標変換情報の参照</returns>
     Tako::Transform& GetWorldTransform() { return transform_; }
@@ -293,7 +293,7 @@ public:
     /// <summary>
     /// 座標変換情報のポインタを取得
     /// </summary>
-    /// <returns>座標変換情報への非constポインタ</returns>
+    /// <returns>座標変換情報への非 const ポインタ</returns>
     Tako::Transform* GetTransformPtr() { return &transform_; }
 
     /// <summary>
@@ -321,15 +321,15 @@ public:
     Player* GetPlayer() const { return player_; }
 
     /// <summary>
-    /// HPを取得
+    /// HP を取得
     /// </summary>
-    /// <returns>現在のHP値</returns>
+    /// <returns>現在の HP 値</returns>
     float GetHp() const { return hp_; }
 
     /// <summary>
-    /// 最大HPを取得
+    /// 最大 HP を取得
     /// </summary>
-    /// <returns>最大HP値</returns>
+    /// <returns>最大 HP 値</returns>
     static constexpr float GetMaxHp() { return kMaxHp; }
 
     /// <summary>
@@ -353,26 +353,26 @@ public:
     /// <summary>
     /// コライダーを取得
     /// </summary>
-    /// <returns>ボスのOBBコライダーのポインタ</returns>
+    /// <returns>ボスの OBB コライダーのポインタ</returns>
     Tako::OBBCollider* GetCollider() const { return bodyCollider_.get(); }
 
     //-----------------------------近接攻撃関連------------------------------//
     /// <summary>
     /// 攻撃ブロックを取得
     /// </summary>
-    /// <returns>攻撃ブロックのObject3dポインタ</returns>
+    /// <returns>攻撃ブロックの Object3d ポインタ</returns>
     Tako::Object3d* GetMeleeAttackBlock() const { return meleeAttackBlock_.get(); }
 
     /// <summary>
     /// 攻撃ブロックの表示/非表示を設定
     /// </summary>
-    /// <param name="visible">表示する場合true</param>
+    /// <param name="visible">表示する場合 true</param>
     void SetMeleeAttackBlockVisible(bool visible) { meleeAttackBlockVisible_ = visible; }
 
     /// <summary>
     /// 攻撃ブロックが表示中か取得
     /// </summary>
-    /// <returns>表示中の場合true</returns>
+    /// <returns>表示中の場合 true</returns>
     bool IsMeleeAttackBlockVisible() const { return meleeAttackBlockVisible_; }
 
     /// <summary>
@@ -384,7 +384,7 @@ public:
     /// <summary>
     /// 予兆エフェクトをアクティブ化/非アクティブ化
     /// </summary>
-    /// <param name="active">アクティブにする場合true</param>
+    /// <param name="active">アクティブにする場合 true</param>
     void SetAttackSignEmitterActive(bool active);
 
     /// <summary>
@@ -397,7 +397,7 @@ public:
     /// <summary>
     /// 射撃予兆エフェクトをアクティブ化/非アクティブ化
     /// </summary>
-    /// <param name="active">アクティブにする場合true</param>
+    /// <param name="active">アクティブにする場合 true</param>
     void SetBulletSignEmitterActive(bool active);
 
     /// <summary>
@@ -407,15 +407,15 @@ public:
     void SetBulletSignEmitterPosition(const Tako::Vector3& position);
 
     /// <summary>
-    /// 射撃予兆エフェクトのスケール範囲Xを設定
+    /// 射撃予兆エフェクトのスケール範囲 X を設定
     /// </summary>
     /// <param name="value">スケール値（min=max=value）</param>
     void SetBulletSignEmitterScaleRangeX(float value);
 
     /// <summary>
-    /// EmitterManagerを設定
+    /// EmitterManager を設定
     /// </summary>
-    /// <param name="emitterManager">EmitterManagerのポインタ</param>
+    /// <param name="emitterManager">EmitterManager のポインタ</param>
     void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
 
 private:
@@ -425,7 +425,7 @@ private:
     void InitializeModel();
 
     /// <summary>
-    /// HPバーとフェーズマネージャーの初期化
+    /// HP バーとフェーズマネージャーの初期化
     /// </summary>
     void InitializeHealth();
 
@@ -440,7 +440,7 @@ private:
     void InitializeEffects();
 
     /// <summary>
-    /// AIシステム（ビヘイビアツリー）の初期化
+    /// AI システム（ビヘイビアツリー）の初期化
     /// </summary>
     void InitializeAI();
 
@@ -450,17 +450,17 @@ private:
     void InitializeStateMachine();
 
     /// <summary>
-    /// フェーズ移行スタンを発動（HP閾値以下で呼ばれる）
+    /// フェーズ移行スタンを発動（HP 閾値以下で呼ばれる）
     /// </summary>
     void TriggerPhaseTransitionStun();
 
     /// <summary>
-    /// フェーズ移行を完了（PhaseTransitionStun中に近接攻撃を受けた時）
+    /// フェーズ移行を完了（PhaseTransitionStun 中に近接攻撃を受けた時）
     /// </summary>
     void CompletePhaseTransition();
 
 private:
-    // ボスの3Dモデルオブジェクト（描画とアニメーション管理）
+    // ボスの3D モデルオブジェクト（描画とアニメーション管理）
     std::unique_ptr<Tako::Object3d> model_;
 
     // ボスの座標変換情報（位置、回転、スケール）
@@ -469,7 +469,7 @@ private:
     // ステートマシン（外部イベント駆動の状態管理）
     std::unique_ptr<BossStateMachine> stateMachine_;
 
-    // ビヘイビアツリー（AI意思決定）
+    // ビヘイビアツリー（AI 意思決定）
     std::unique_ptr<BossBehaviorTree> behaviorTree_;
 
 #ifdef _DEBUG
@@ -483,7 +483,7 @@ private:
     // プレイヤーへの参照
     Player* player_ = nullptr;
 
-    // ボスの現在HP（0になると撃破、初期値200）
+    // ボスの現在 HP（0になると撃破、初期値200）
     float hp_ = kMaxHp;
 
     // フェーズ・ライフ管理
@@ -500,11 +500,11 @@ private:
     bool hasTriggeredPhaseTransitionStun_ = false;  ///< 一度きりのトリガーフラグ
     std::string canAttackSignEmitterName_ = "can_attack_sign";  ///< 攻撃可能サインエミッター名
 
-    // ===== BT内サブ状態フラグ（ステートマシンの責務外） =====
-    bool isInRecovery_ = false;                   ///< 硬直中フラグ（BTアクションが設定）
-    bool isDashing_ = false;                      ///< ダッシュ中フラグ（BTアクションが設定）
+    // ===== BT 内サブ状態フラグ（ステートマシンの責務外） =====
+    bool isInRecovery_ = false;                   ///< 硬直中フラグ（BT アクションが設定）
+    bool isDashing_ = false;                      ///< ダッシュ中フラグ（BT アクションが設定）
 
-    // ボス本体の衝突判定用AABBコライダー
+    // ボス本体の衝突判定用 AABB コライダー
     std::unique_ptr<Tako::OBBCollider> bodyCollider_;
 
     //-----------------------------近接攻撃関連------------------------------//
@@ -532,11 +532,11 @@ private:
     BulletSpawner bulletSpawner_;              ///< 通常弾生成リクエスト管理
     BulletSpawner penetratingBulletSpawner_;   ///< 貫通弾生成リクエスト管理
 
-    // HPバーUI
-    HPBarUI hpBar_;                      ///< HPバー表示
+    // HP バー UI
+    HPBarUI hpBar_;                      ///< HP バー表示
 
     // 初期座標
-    float initialY_ = 2.5f;   ///< 初期Y座標
-    float initialZ_ = 10.0f;  ///< 初期Z座標
+    float initialY_ = 2.5f;   ///< 初期 Y 座標
+    float initialZ_ = 10.0f;  ///< 初期 Z 座標
 };
 

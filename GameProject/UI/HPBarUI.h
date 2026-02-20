@@ -7,8 +7,8 @@
 #include "Sprite.h"
 
 /// <summary>
-/// HPバーUIクラス
-/// HPバーの初期化・更新・描画を一元管理
+/// HP バー UI クラス
+/// HP バーの初期化・更新・描画を一元管理
 /// </summary>
 class HPBarUI
 {
@@ -21,8 +21,8 @@ public:
     /// </summary>
     /// <param name="texture">テクスチャファイル名</param>
     /// <param name="size">バーのサイズ</param>
-    /// <param name="screenXRatio">画面X座標（画面幅に対する比率）</param>
-    /// <param name="screenYRatio">画面Y座標（画面高さに対する比率）</param>
+    /// <param name="screenXRatio">画面 X 座標（画面幅に対する比率）</param>
+    /// <param name="screenYRatio">画面 Y 座標（画面高さに対する比率）</param>
     /// <param name="barColor">バーの色</param>
     /// <param name="bgColor">背景の色</param>
     void Initialize(
@@ -34,12 +34,12 @@ public:
         const Tako::Vector4& bgColor = Tako::Vector4{ 1.f, 1.f, 1.f, 1.0f });
 
     /// <summary>
-    /// 初期化（2段バー、Bossフェーズ用）
+    /// 初期化（2段バー、Boss フェーズ用）
     /// </summary>
     /// <param name="texture">テクスチャファイル名</param>
     /// <param name="size">バーのサイズ</param>
-    /// <param name="screenXRatio">画面X座標（画面幅に対する比率）</param>
-    /// <param name="screenYRatio">画面Y座標（画面高さに対する比率）</param>
+    /// <param name="screenXRatio">画面 X 座標（画面幅に対する比率）</param>
+    /// <param name="screenYRatio">画面 Y 座標（画面高さに対する比率）</param>
     /// <param name="bar1Color">フェーズ1バーの色</param>
     /// <param name="bar2Color">フェーズ2バーの色</param>
     /// <param name="bgColor">背景の色</param>
@@ -60,10 +60,10 @@ public:
     void Update(float currentValue, float maxValue);
 
     /// <summary>
-    /// 更新（2段バー用、Bossフェーズ用）
+    /// 更新（2段バー用、Boss フェーズ用）
     /// </summary>
-    /// <param name="currentHp">現在HP</param>
-    /// <param name="maxHp">最大HP</param>
+    /// <param name="currentHp">現在 HP</param>
+    /// <param name="maxHp">最大 HP</param>
     /// <param name="phase2Threshold">フェーズ2開始閾値</param>
     /// <param name="phase">現在のフェーズ（1 or 2）</param>
     void UpdateDual(float currentHp, float maxHp, float phase2Threshold, uint32_t phase);
@@ -76,8 +76,8 @@ public:
     /// <summary>
     /// 画面位置を設定
     /// </summary>
-    /// <param name="screenXRatio">画面X座標（画面幅に対する比率）</param>
-    /// <param name="screenYRatio">画面Y座標（画面高さに対する比率）</param>
+    /// <param name="screenXRatio">画面 X 座標（画面幅に対する比率）</param>
+    /// <param name="screenYRatio">画面 Y 座標（画面高さに対する比率）</param>
     void SetPosition(float screenXRatio, float screenYRatio);
 
     /// <summary>
@@ -99,12 +99,12 @@ private:
     Tako::Vector2 CalculateScreenPosition() const;
 
     std::unique_ptr<Tako::Sprite> barSprite_;    ///< バースプライト
-    std::unique_ptr<Tako::Sprite> bar2Sprite_;   ///< 2段目バースプライト（Dual用）
+    std::unique_ptr<Tako::Sprite> bar2Sprite_;   ///< 2段目バースプライト（Dual 用）
     std::unique_ptr<Tako::Sprite> bgSprite_;     ///< 背景スプライト
 
     Tako::Vector2 baseSize_;     ///< 基本サイズ
-    float screenXRatio_ = 0.5f;  ///< 画面X比率
-    float screenYRatio_ = 0.05f; ///< 画面Y比率
+    float screenXRatio_ = 0.5f;  ///< 画面 X 比率
+    float screenYRatio_ = 0.05f; ///< 画面 Y 比率
 
     bool isDualBar_ = false;     ///< 2段バーモードか
 };

@@ -32,7 +32,7 @@ void ClearScene::Initialize()
     (*Object3dBasic::GetInstance()->GetCamera())->SetRotate(Vector3(0.2f, 0.0f, 0.0f));
     (*Object3dBasic::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, cameraHiddenY_, -34.0f));
 
-    // spriteの初期化
+    // sprite の初期化
     backGround_ = std::make_unique<Sprite>();
     backGround_->Initialize("black.dds");
     backGround_->SetPos(Vector2(0.f, 0.f));
@@ -81,7 +81,7 @@ void ClearScene::Draw()
     /// ================================== ///
     ///              描画処理               ///
     /// ================================== ///
-    //------------------背景Spriteの描画------------------//
+    //------------------背景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
@@ -89,14 +89,14 @@ void ClearScene::Draw()
     backGround_->Draw();
 
 
-    //-------------------Modelの描画-------------------//
-    // 3Dモデル共通描画設定
+    //-------------------Model の描画-------------------//
+    // 3D モデル共通描画設定
     Object3dBasic::GetInstance()->SetCommonRenderSetting();
 
 
 
 
-    //------------------前景Spriteの描画------------------//
+    //------------------前景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
@@ -114,22 +114,22 @@ void ClearScene::DrawWithoutEffect()
     ///              描画処理               ///
     /// ================================== ///
 
-    //------------------背景Spriteの描画------------------//
+    //------------------背景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
 
 
 
-    //-------------------Modelの描画-------------------//
-    // 3Dモデル共通描画設定
+    //-------------------Model の描画-------------------//
+    // 3D モデル共通描画設定
     Object3dBasic::GetInstance()->SetCommonRenderSetting();
 
 
 
 
 
-    //------------------前景Spriteの描画------------------//
+    //------------------前景 Sprite の描画------------------//
     // スプライト共通描画設定
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
@@ -143,7 +143,7 @@ void ClearScene::DrawImGui()
 #ifdef _DEBUG
 
     /// ================================== ///
-    ///             ImGuiの描画              ///
+    ///             ImGui の描画              ///
     /// ================================== ///
 
 

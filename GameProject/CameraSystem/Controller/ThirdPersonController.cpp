@@ -15,7 +15,7 @@ void ThirdPersonController::Update(float deltaTime) {
     return;
   }
 
-  // 標準FOVを設定
+  // 標準 FOV を設定
   if (camera_) {
     camera_->SetFovY(standardFov_);
   }
@@ -28,7 +28,7 @@ void ThirdPersonController::Update(float deltaTime) {
 void ThirdPersonController::Activate() {
   isActive_ = true;
 
-  // 標準FOVを設定
+  // 標準 FOV を設定
   if (camera_) {
     camera_->SetFovY(standardFov_);
   }
@@ -49,7 +49,7 @@ void ThirdPersonController::Reset() {
   // カメラをターゲットの向きに合わせる（回転はラジアン単位）
   camera_->SetRotate(Vector3(0.0f, primaryTarget_->rotate.y, 0.0f));
   destinationAngleY_ = primaryTarget_->rotate.y;
-  // CameraConfig::ThirdPerson::DEFAULT_ANGLE_Xはすでにラジアン単位
+  // CameraConfig::ThirdPerson::DEFAULT_ANGLE_X はすでにラジアン単位
   destinationAngleX_ = CameraConfig::ThirdPerson::DEFAULT_ANGLE_X;
   destinationAngleZ_ = 0.0f;
 
@@ -154,16 +154,16 @@ Vector3 ThirdPersonController::CalculateLookAtRotation() const {
   // プレイヤーからボスへの方向ベクトルを計算
   Vector3 direction = secondaryTarget_->translate - primaryTarget_->translate;
 
-  // 水平面での角度を計算（Y軸回転、ラジアン）
+  // 水平面での角度を計算（Y 軸回転、ラジアン）
   float angleY = std::atan2(direction.x, direction.z);
 
-  // 垂直方向の角度を計算（X軸回転、ラジアン）
+  // 垂直方向の角度を計算（X 軸回転、ラジアン）
   float horizontalDistance = std::sqrt(direction.x * direction.x + direction.z * direction.z);
   float angleX = -std::atan2(direction.y, horizontalDistance);
 
   // 三人称視点用の見下ろし角度を追加
   angleX += CameraConfig::ThirdPerson::LOOK_DOWN_ANGLE;
 
-  // ラジアン単位のまま返す（UpdateRotationもラジアンで処理）
+  // ラジアン単位のまま返す（UpdateRotation もラジアンで処理）
   return Vector3(angleX, angleY, 0.0f);
 }

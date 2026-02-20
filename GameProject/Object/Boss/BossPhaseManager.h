@@ -3,7 +3,7 @@
 
 /// <summary>
 /// ボスのフェーズ・ライフ管理クラス
-/// HP変化に応じたフェーズ遷移とライフ管理を行う
+/// HP 変化に応じたフェーズ遷移とライフ管理を行う
 /// </summary>
 class BossPhaseManager
 {
@@ -14,21 +14,21 @@ public:
     /// <summary>
     /// 初期化
     /// </summary>
-    /// <param name="maxHp">最大HP</param>
+    /// <param name="maxHp">最大 HP</param>
     /// <param name="phase2Threshold">フェーズ2開始閾値</param>
-    /// <param name="phase2InitialHp">フェーズ2開始時のHP</param>
+    /// <param name="phase2InitialHp">フェーズ2開始時の HP</param>
     void Initialize(float maxHp, float phase2Threshold, float phase2InitialHp);
 
     /// <summary>
-    /// HP変化に応じてフェーズとライフを更新
+    /// HP 変化に応じてフェーズとライフを更新
     /// </summary>
-    /// <param name="currentHp">現在のHP</param>
+    /// <param name="currentHp">現在の HP</param>
     void Update(float currentHp);
 
     /// <summary>
     /// フェーズ変更要求を消費（変更後にフラグをリセット）
     /// </summary>
-    /// <returns>フェーズ変更すべきならtrue</returns>
+    /// <returns>フェーズ変更すべきなら true</returns>
     bool ConsumePhaseChangeRequest();
 
     /// <summary>
@@ -78,12 +78,12 @@ public:
     float GetPhase2Threshold() const { return phase2Threshold_; }
 
     /// <summary>
-    /// フェーズ2開始時HPを取得
+    /// フェーズ2開始時 HP を取得
     /// </summary>
     float GetPhase2InitialHp() const { return phase2InitialHp_; }
 
     /// <summary>
-    /// 最大HPを取得
+    /// 最大 HP を取得
     /// </summary>
     float GetMaxHp() const { return maxHp_; }
 
@@ -93,7 +93,7 @@ private:
     bool isReadyToChangePhase_ = false;///< フェーズ変更準備完了フラグ
     bool isDead_ = false;              ///< 死亡フラグ
 
-    float maxHp_ = 200.0f;             ///< 最大HP
+    float maxHp_ = 200.0f;             ///< 最大 HP
     float phase2Threshold_ = 105.0f;   ///< フェーズ2開始閾値
-    float phase2InitialHp_ = 100.0f;   ///< フェーズ2開始時のHP
+    float phase2InitialHp_ = 100.0f;   ///< フェーズ2開始時の HP
 };

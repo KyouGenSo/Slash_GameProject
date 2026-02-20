@@ -79,12 +79,12 @@ public:
     void SetVelocity(const Tako::Vector3& velocity) { velocity_ = velocity; }
 
     /// <summary>
-    /// Transformを取得
+    /// Transform を取得
     /// </summary>
     const Tako::Transform& GetTransform() const { return transform_; }
 
     /// <summary>
-    /// Transform参照を取得（コライダー設定用）
+    /// Transform 参照を取得（コライダー設定用）
     /// </summary>
     Tako::Transform* GetTransformPtr() { return &transform_; }
 
@@ -106,7 +106,7 @@ protected:
 
     /// <summary>
     /// デフォルトモデルを設定
-    /// sphere.gltfを試し、なければwhite_cube.gltfを使用
+    /// sphere.gltf を試し、なければ white_cube.gltf を使用
     /// </summary>
     void SetDefaultModel();
 
@@ -124,7 +124,7 @@ protected:
 
 protected:
     /// <summary>
-    /// 3Dモデルオブジェクト（描画用）
+    /// 3D モデルオブジェクト（描画用）
     /// </summary>
     std::unique_ptr<Tako::Object3d> model_;
 

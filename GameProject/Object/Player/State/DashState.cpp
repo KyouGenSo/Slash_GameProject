@@ -20,7 +20,7 @@ void DashState::Enter(Player* player)
 
 void DashState::Update(Player* player, float deltaTime)
 {
-	// GlobalVariablesから値を同期
+	// GlobalVariables から値を同期
 	GlobalVariables* gv = GlobalVariables::GetInstance();
 	duration_ = gv->GetValueFloat("DashState", "Duration");
 	speed_ = gv->GetValueFloat("DashState", "Speed");
@@ -36,7 +36,7 @@ void DashState::Update(Player* player, float deltaTime)
 		PlayerStateMachine* stateMachine = player->GetStateMachine();
 		if (stateMachine)
 		{
-			// 移動入力があればWalk、なければIdleに遷移
+			// 移動入力があれば Walk、なければ Idle に遷移
 			InputHandler* input = player->GetInputHandler();
 			if (input && input->IsMoving())
 			{

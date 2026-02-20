@@ -28,7 +28,7 @@ struct CameraKeyframe {
 
     float time = 0.0f;                                             ///< キーフレームの時刻（秒）
 
-    Tako::Vector3 position = { 0.0f, 0.0f, 0.0f };                      ///< カメラ位置（WORLDモード）またはオフセット（TARGET_RELATIVEモード）
+    Tako::Vector3 position = { 0.0f, 0.0f, 0.0f };                      ///< カメラ位置（WORLD モード）またはオフセット（TARGET_RELATIVE モード）
 
     Tako::Vector3 rotation = { 0.0f, 0.0f, 0.0f };                      ///< カメラ回転（オイラー角、ラジアン）
 
@@ -53,7 +53,7 @@ struct CameraKeyframe {
 };
 
 /// <summary>
-/// JSON変換用のヘルパー関数
+/// JSON 変換用のヘルパー関数
 /// </summary>
 namespace nlohmann {
     template <>
@@ -150,7 +150,7 @@ namespace nlohmann {
             keyframe.fov = j.at("fov").get<float>();
             keyframe.interpolation = j.at("interpolation").get<CameraKeyframe::InterpolationType>();
 
-            // 後方互換性: coordinateTypeが存在しない場合はWORLDをデフォルトとする
+            // 後方互換性: coordinateType が存在しない場合は WORLD をデフォルトとする
             if (j.contains("coordinateType")) {
                 keyframe.coordinateType = j.at("coordinateType").get<CameraKeyframe::CoordinateType>();
             } else {

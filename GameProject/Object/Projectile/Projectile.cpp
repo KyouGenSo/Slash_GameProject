@@ -22,7 +22,7 @@ void Projectile::Initialize(const Vector3& position, const Vector3& velocity) {
         model_->Initialize();
     }
 
-    // モデルにTransformを設定
+    // モデルに Transform を設定
     model_->SetTransform(transform_);
 
     // タイマーリセット
@@ -77,7 +77,7 @@ void Projectile::SetDefaultModel() {
     if (model_) {
         model_->SetModel("sphere.gltf");
         if (!model_->GetModel()) {
-            // sphereモデルがない場合は代替モデルを使用
+            // sphere モデルがない場合は代替モデルを使用
             model_->SetModel("white_cube.gltf");
         }
     }

@@ -14,7 +14,7 @@ class PlayerBulletCollider;
 
 /// <summary>
 /// プレイヤーの弾クラス
-/// BossBulletと対称の設計パターン
+/// BossBullet と対称の設計パターン
 /// </summary>
 class PlayerBullet : public Projectile {
     //=========================================================================================
@@ -55,7 +55,7 @@ public:
     void Update(float deltaTime) override;
 
     /// <summary>
-    /// コリジョンタイプIDを取得
+    /// コリジョンタイプ ID を取得
     /// </summary>
     CollisionTypeId GetTypeId() const { return CollisionTypeId::PLAYER_ATTACK; }
 
@@ -72,6 +72,6 @@ private:
     static uint32_t id;
 
     // 調整可能パラメータ
-    float yBoundaryMin_ = -10.0f;  ///< Y座標の下限
-    float yBoundaryMax_ = 50.0f;   ///< Y座標の上限
+    float yBoundaryMin_ = -10.0f;  ///< Y 座標の下限
+    float yBoundaryMax_ = 50.0f;   ///< Y 座標の上限
 };

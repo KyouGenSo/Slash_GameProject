@@ -7,7 +7,7 @@
 #ifdef _DEBUG
 
 /// <summary>
-/// カメラアニメーションのタイムラインUI
+/// カメラアニメーションのタイムライン UI
 /// ビジュアルなタイムライン表示とインタラクション
 /// </summary>
 class CameraAnimationTimeline {
@@ -17,13 +17,13 @@ public:
     /// </summary>
     enum class TrackType {
         SUMMARY,        ///< サマリートラック（全キーフレーム表示）
-        POSITION_X,     ///< X位置トラック
-        POSITION_Y,     ///< Y位置トラック
-        POSITION_Z,     ///< Z位置トラック
-        ROTATION_X,     ///< X回転トラック
-        ROTATION_Y,     ///< Y回転トラック
-        ROTATION_Z,     ///< Z回転トラック
-        FOV,            ///< FOVトラック
+        POSITION_X,     ///< X 位置トラック
+        POSITION_Y,     ///< Y 位置トラック
+        POSITION_Z,     ///< Z 位置トラック
+        ROTATION_X,     ///< X 回転トラック
+        ROTATION_Y,     ///< Y 回転トラック
+        ROTATION_Z,     ///< Z 回転トラック
+        FOV,            ///< FOV トラック
         COUNT
     };
 
@@ -167,15 +167,15 @@ private:
     /// トラックの描画
     /// </summary>
     /// <param name="trackType">トラックタイプ</param>
-    /// <param name="yPos">Y座標</param>
+    /// <param name="yPos">Y 座標</param>
     void DrawTrack(TrackType trackType, float yPos);
 
     /// <summary>
     /// キーフレームの描画
     /// </summary>
     /// <param name="index">キーフレームインデックス</param>
-    /// <param name="xPos">X座標</param>
-    /// <param name="yPos">Y座標</param>
+    /// <param name="xPos">X 座標</param>
+    /// <param name="yPos">Y 座標</param>
     /// <param name="isSelected">選択状態</param>
     /// <param name="isHovered">ホバー状態</param>
     void DrawKeyframe(int index, float xPos, float yPos, bool isSelected, bool isHovered);
@@ -196,20 +196,20 @@ private:
     void HandleKeyboardInput();
 
     /// <summary>
-    /// 時間をX座標に変換
+    /// 時間を X 座標に変換
     /// </summary>
     float TimeToScreenX(float time) const;
 
     /// <summary>
-    /// X座標を時間に変換
+    /// X 座標を時間に変換
     /// </summary>
     float ScreenXToTime(float x) const;
 
     /// <summary>
     /// キーフレームのヒットテスト
     /// </summary>
-    /// <param name="x">X座標</param>
-    /// <param name="y">Y座標</param>
+    /// <param name="x">X 座標</param>
+    /// <param name="y">Y 座標</param>
     /// <param name="trackType">トラックタイプ</param>
     /// <returns>ヒットしたキーフレームインデックス（-1でヒットなし）</returns>
     int HitTestKeyframe(float x, float y, TrackType trackType) const;
@@ -248,7 +248,7 @@ private:
     // 参照
     CameraAnimation* animation_ = nullptr;       ///< 対象アニメーション
 
-    // UI設定
+    // UI 設定
     float timelineHeight_ = 300.0f;              ///< タイムライン高さ
     float trackHeight_ = 30.0f;                  ///< トラック高さ
     float rulerHeight_ = 25.0f;                  ///< ルーラー高さ

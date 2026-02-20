@@ -28,7 +28,7 @@ public:
   /// <summary>
   /// アクティブ状態を判定
   /// </summary>
-  /// <returns>アクティブな場合true</returns>
+  /// <returns>アクティブな場合 true</returns>
   bool IsActive() const override { return isActive_; }
 
   /// <summary>
@@ -67,7 +67,7 @@ public:
   /// <summary>
   /// カメラ角度を設定
   /// </summary>
-  /// <param name="angleX">X軸角度（ラジアン）</param>
+  /// <param name="angleX">X 軸角度（ラジアン）</param>
   void SetCameraAngle(float angleX) {
     cameraAngleX_ = angleX;
   }

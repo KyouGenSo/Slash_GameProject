@@ -8,7 +8,7 @@
 CameraAnimationTimeline::CameraAnimationTimeline() {
   // トラック可視性の初期化（サマリートラックのみ表示）
   for (int i = 0; i < static_cast<int>(TrackType::COUNT); ++i) {
-    trackVisible_[i] = (i == 0);  // SUMMARYのみtrue
+    trackVisible_[i] = (i == 0);  // SUMMARY のみ true
   }
 }
 
@@ -245,7 +245,7 @@ void CameraAnimationTimeline::DrawTrack(TrackType trackType, float yPos) {
       static_cast<int>(i)) != selectedKeyframes_.end();
     bool isHovered = (hoveredKeyframe_ == static_cast<int>(i) && hoveredTrack_ == trackType);
 
-    // SUMMARYトラックの場合は全キーフレーム表示
+    // SUMMARY トラックの場合は全キーフレーム表示
     if (trackType == TrackType::SUMMARY) {
       DrawKeyframe(static_cast<int>(i), x, yPos + trackHeight_ / 2, isSelected, isHovered);
     }
@@ -355,7 +355,7 @@ void CameraAnimationTimeline::HandleMouseInput() {
     if (relY < rulerHeight_) {
       isScrubbing_ = true;
       scrubTime_ = ScreenXToTime(relX);
-      // キーフレームプレビュー中でない場合のみSetCurrentTime()を呼ぶ
+      // キーフレームプレビュー中でない場合のみ SetCurrentTime()を呼ぶ
       if (isPreviewModeEnabled_ && !isKeyframePreviewActive_) {
         animation_->SetCurrentTime(scrubTime_);
       }
@@ -449,7 +449,7 @@ void CameraAnimationTimeline::HandleMouseInput() {
       float relX = mousePos.x - canvasPos.x;
       scrubTime_ = ScreenXToTime(relX);
       scrubTime_ = std::max<float>(0.0f, std::min<float>(scrubTime_, animation_->GetDuration()));
-      // キーフレームプレビュー中でない場合のみSetCurrentTime()を呼ぶ
+      // キーフレームプレビュー中でない場合のみ SetCurrentTime()を呼ぶ
       if (isPreviewModeEnabled_ && !isKeyframePreviewActive_) {
         animation_->SetCurrentTime(scrubTime_);
       }
@@ -561,7 +561,7 @@ float CameraAnimationTimeline::ScreenXToTime(float x) const {
 }
 
 int CameraAnimationTimeline::HitTestKeyframe(float x, float y, TrackType trackType) const {
-  // トラックのY範囲を計算
+  // トラックの Y 範囲を計算
   float trackY = rulerHeight_;
   for (int i = 0; i < static_cast<int>(trackType); ++i) {
     if (trackVisible_[i]) {
@@ -569,7 +569,7 @@ int CameraAnimationTimeline::HitTestKeyframe(float x, float y, TrackType trackTy
     }
   }
 
-  // Y座標チェック
+  // Y 座標チェック
   if (y < trackY || y > trackY + trackHeight_) {
     return -1;
   }
@@ -600,7 +600,7 @@ void CameraAnimationTimeline::ProcessRectSelection() {
     const CameraKeyframe& kf = animation_->GetKeyframe(i);
     float kfX = TimeToScreenX(kf.time);
 
-    // 各表示トラック上でのY座標を計算
+    // 各表示トラック上での Y 座標を計算
     float trackY = rulerHeight_;
     for (int t = 0; t < static_cast<int>(TrackType::COUNT); ++t) {
       if (trackVisible_[t]) {
@@ -699,7 +699,7 @@ void CameraAnimationTimeline::SetOffset(float offset) {
 void CameraAnimationTimeline::ClampOffset() {
   if (!animation_) return;
 
-  // キャンバスサイズを取得（簡易的に800として仮定、実際はImGuiから取得）
+  // キャンバスサイズを取得（簡易的に800として仮定、実際は ImGui から取得）
   float visibleWidth = 800.0f - trackLabelWidth_;
   float visibleTime = visibleWidth / (100.0f * zoom_);
   float duration = animation_->GetDuration();

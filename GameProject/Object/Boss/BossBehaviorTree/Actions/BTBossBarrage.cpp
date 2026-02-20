@@ -104,13 +104,13 @@ void BTBossBarrage::InitializeBarrage(Boss* boss) {
     hasEndedEffect_ = false;
     enteredRecovery_ = false;
 
-    // totalDurationを計算
+    // totalDuration を計算
     totalDuration_ = moveDuration_ + chargeTime_ + firingDuration_ + recoveryTime_;
 
     // 開始位置を記録
     startPosition_ = boss->GetTransform().translate;
 
-    // 目標位置をGameConstから計算（ステージ中央）
+    // 目標位置を GameConst から計算（ステージ中央）
     float targetX = (GameConst::kStageXMin + GameConst::kStageXMax) / 2.0f;
     float targetZ = (GameConst::kStageZMin + GameConst::kStageZMax) / 2.0f;
     targetPosition_ = Vector3(targetX, startPosition_.y, targetZ);
@@ -150,7 +150,7 @@ void BTBossBarrage::FireRandomBullet(Boss* boss) {
     // 発射位置
     Vector3 firePosition = boss->GetTransform().translate;
 
-    // ランダムな方向（XZ平面）
+    // ランダムな方向（XZ 平面）
     RandomEngine* rng = RandomEngine::GetInstance();
     Vector3 direction = rng->GetRandomDirectionXZ();
 

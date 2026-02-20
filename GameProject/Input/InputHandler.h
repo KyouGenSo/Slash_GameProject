@@ -32,37 +32,37 @@ public:
 	/// <summary>
 	/// 移動入力があるか判定
 	/// </summary>
-	/// <returns>移動入力中の場合true</returns>
+	/// <returns>移動入力中の場合 true</returns>
 	bool IsMoving() const;
 
 	/// <summary>
 	/// ダッシュ入力があるか判定
 	/// </summary>
-	/// <returns>ダッシュボタン押下中の場合true</returns>
+	/// <returns>ダッシュボタン押下中の場合 true</returns>
 	bool IsDashing() const;
 
 	/// <summary>
 	/// 攻撃入力があるか判定
 	/// </summary>
-	/// <returns>攻撃ボタン押下中の場合true</returns>
+	/// <returns>攻撃ボタン押下中の場合 true</returns>
 	bool IsAttacking() const;
 
 	/// <summary>
 	/// 射撃入力があるか判定
 	/// </summary>
-	/// <returns>射撃ボタン押下中の場合true</returns>
+	/// <returns>射撃ボタン押下中の場合 true</returns>
 	bool IsShooting() const;
 
 	/// <summary>
 	/// パリィ入力があるか判定
 	/// </summary>
-	/// <returns>パリィボタン押下中の場合true</returns>
+	/// <returns>パリィボタン押下中の場合 true</returns>
 	bool IsParrying() const;
 
 	/// <summary>
 	/// ポーズ入力があるか判定
 	/// </summary>
-	/// <returns>ポーズボタン押下中の場合true</returns>
+	/// <returns>ポーズボタン押下中の場合 true</returns>
 	bool IsPaused() const;
 
 	/// <summary>

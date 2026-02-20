@@ -59,15 +59,15 @@ void Player::Initialize()
 
     model_->SetTransform(transform_);
 
-    // HPバーUIの初期化
+    // HP バー UI の初期化
     hpBar_.Initialize(
         "white.dds",
         Vector2(500.0f, 30.0f),
-        0.35f,  // 画面X比率
-        0.05f,  // 画面Y比率
+        0.35f,  // 画面 X 比率
+        0.05f,  // 画面 Y 比率
         Vector4{ 0.3f, 1.0f, 0.3f, 1.0f });  // 緑色
 
-    // State Machineの初期化
+    // State Machine の初期化
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);
     stateMachine_->RegisterState("Idle", std::make_unique<IdleState>());
     stateMachine_->RegisterState("Move", std::make_unique<MoveState>());
@@ -78,7 +78,7 @@ void Player::Initialize()
     stateMachine_->ChangeState("Idle");
     stateMachine_->Initialize();
 
-    // Colliderの初期化
+    // Collider の初期化
     SetupColliders();
 
     // 攻撃ブロックの初期化
@@ -89,7 +89,7 @@ void Player::Initialize()
 
 void Player::Finalize()
 {
-    // Colliderを削除
+    // Collider を削除
     if (bodyCollider_) {
         CollisionManager::GetInstance()->RemoveCollider(bodyCollider_.get());
     }
@@ -132,7 +132,7 @@ void Player::UpdateCombat(float deltaTime)
     // 死亡判定
     if (hp_ <= 0.0f) isDead_ = true;
 
-    // HPバーの更新
+    // HP バーの更新
     hpBar_.Update(hp_, kMaxHp);
 }
 
@@ -209,7 +209,7 @@ void Player::Move(float speedMultiplier, bool isApplyDirCalulate)
     Vector2 moveDir = inputHandlerPtr_->GetMoveDirection();
     if (moveDir.Length() < deadzone) return;
 
-    // 3Dベクトルに変換
+    // 3D ベクトルに変換
     velocity_ = { moveDir.x, 0.0f, moveDir.y };
     velocity_ = velocity_.Normalize() * speed_ * speedMultiplier;
 
@@ -287,7 +287,7 @@ void Player::SetupColliders()
     float meleeZ = gv->GetValueFloat("Player", "MeleeColliderZ");
     float meleeOffsetZ = gv->GetValueFloat("Player", "MeleeColliderOffsetZ");
 
-    // 本体のCollider
+    // 本体の Collider
     bodyCollider_ = std::make_unique<OBBCollider>();
     bodyCollider_->SetTransform(&transform_);
     bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
@@ -295,14 +295,14 @@ void Player::SetupColliders()
     bodyCollider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER));
     bodyCollider_->SetOwner(this);
 
-    // 攻撃範囲のCollider
+    // 攻撃範囲の Collider
     meleeAttackCollider_ = std::make_unique<MeleeAttackCollider>(this);
     meleeAttackCollider_->SetTransform(&transform_);
     meleeAttackCollider_->SetSize(Vector3(meleeX, meleeY, meleeZ));
     meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, meleeOffsetZ));
     meleeAttackCollider_->SetActive(false);
 
-    // CollisionManagerに登録
+    // CollisionManager に登録
     CollisionManager* collisionManager = CollisionManager::GetInstance();
     collisionManager->AddCollider(bodyCollider_.get());
     collisionManager->AddCollider(meleeAttackCollider_.get());
@@ -321,7 +321,7 @@ void Player::UpdateCollider()
 
     // 攻撃状態の時のみ前方に配置
     if (meleeAttackCollider_->IsActive()) {
-        // プレイヤーの回転行列を作成（Y軸回転のみ）
+        // プレイヤーの回転行列を作成（Y 軸回転のみ）
         Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(transform_.rotate.y);
         meleeAttackCollider_->SetOrientation(rotationMatrix);
 
@@ -339,7 +339,7 @@ void Player::LookAtBoss()
 {
     // ボスへの方向ベクトルを計算
     Vector3 toTarget = targetEnemy_->GetTransform().translate - transform_.translate;
-    toTarget.y = 0.0f;  // Y軸は無視
+    toTarget.y = 0.0f;  // Y 軸は無視
 
     if (toTarget.Length() < 0.01f) return;  // 距離が近すぎる場合はスキップ
 
@@ -363,7 +363,7 @@ void Player::OnHit(float damage)
     // シェイクエフェクト開始（強度0.5）
     shakeEffect_.Start(0.5f);
 
-    // DamageFeedbackでカメラシェイク、振動、Vignetteを一括発生
+    // DamageFeedback でカメラシェイク、振動、Vignette を一括発生
     DamageFeedback::TriggerHitFeedback();
 }
 
@@ -457,7 +457,7 @@ void Player::DrawImGui()
 
                         if (ImGui::CollapsingHeader((selectedStateName + " State Details").c_str(),
                             ImGuiTreeNodeFlags_DefaultOpen)) {
-                            // 選択されたステートのDrawImGuiを呼び出し
+                            // 選択されたステートの DrawImGui を呼び出し
                             selectedState->DrawImGui(this);
                         }
                         ImGui::PopStyleColor();
@@ -653,7 +653,7 @@ void Player::DrawImGui()
             // Animation Control (TODO)
             if (ImGui::TreeNode("Animation Control")) {
                 ImGui::Text("TODO: Animation system integration");
-                // 将来的にアニメーション制御UIを追加
+                // 将来的にアニメーション制御 UI を追加
                 ImGui::TreePop();
             }
 
@@ -741,12 +741,12 @@ void Player::StartDashCooldown()
 
 void Player::OnParrySuccess()
 {
-    // HP回復
+    // HP 回復
     GlobalVariables* gv = GlobalVariables::GetInstance();
     float healAmount = gv->GetValueFloat("ParryState", "ParrySuccessHealAmount");
     hp_ = std::min<float>(hp_ + healAmount, kMaxHp);
 
-    // DamageFeedbackでパリィ成功エフェクトを一括発生
+    // DamageFeedback でパリィ成功エフェクトを一括発生
     Vector3 effectPos = GetFrontPosition(2.0f);
     DamageFeedback::TriggerParryFeedback(effectPos, emitterManager_);
 }

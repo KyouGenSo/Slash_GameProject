@@ -2,7 +2,7 @@
 
 #include "BossNodeFactory.h"
 
-// BehaviorTreeノードのインクルード
+// BehaviorTree ノードのインクルード
 #include "../../../BehaviorTree/Composites/BTSelector.h"
 #include "../../../BehaviorTree/Composites/BTSequence.h"
 #include "../../../BehaviorTree/Composites/BTRandomSelector.h"
@@ -24,7 +24,7 @@
 /// ノードの生成
 /// </summary>
 BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
-    // Compositeノード
+    // Composite ノード
     if (nodeType == "BTSelector") {
         return std::make_shared<BTSelector>();
     }
@@ -34,7 +34,7 @@ BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
     else if (nodeType == "BTRandomSelector") {
         return std::make_shared<BTRandomSelector>();
     }
-    // Actionノード（Blackboard経由でBoss/Playerにアクセス）
+    // Action ノード（Blackboard 経由で Boss/Player にアクセス）
     else if (nodeType == "BTBossIdle") {
         return std::make_shared<BTBossIdle>();
     }
@@ -62,7 +62,7 @@ BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
     else if (nodeType == "BTBossBarrage") {
         return std::make_shared<BTBossBarrage>();
     }
-    // Conditionノード
+    // Condition ノード
     else if (nodeType == "BTActionSelector") {
         return std::make_shared<BTActionSelector>(BTActionSelector::ActionType::Dash);
     }
@@ -80,14 +80,14 @@ BTNodePtr BossNodeFactory::CreateNode(const std::string& nodeType) {
 }
 
 /// <summary>
-/// Boss/Playerの依存関係を持つノードの生成
+/// Boss/Player の依存関係を持つノードの生成
 /// </summary>
 BTNodePtr BossNodeFactory::CreateNodeWithDependencies(
     const std::string& nodeType,
     [[maybe_unused]] Boss* boss,
     [[maybe_unused]] Player* player) {
 
-    // 現在は全ノードがBlackboard経由で参照するため、CreateNodeと同じ
+    // 現在は全ノードが Blackboard 経由で参照するため、CreateNode と同じ
     return CreateNode(nodeType);
 }
 
@@ -187,7 +187,7 @@ void BossNodeFactory::InitializeNodeTypes() {
             "BTBossRetreat",
             "Retreat",
             NodeCategory::Action,
-            ImVec4(0.3f, 0.7f, 0.9f, 1.0f),  // 水色（Approachと対になる色）
+            ImVec4(0.3f, 0.7f, 0.9f, 1.0f),  // 水色（Approach と対になる色）
             false
         },
         {
@@ -266,7 +266,7 @@ std::vector<std::string> BossNodeFactory::GetNodeTypesByCategory(NodeCategory ca
 std::string BossNodeFactory::GetNodeType(const BTNodePtr& node) {
     if (!node) return "";
 
-    // RTTIを使用してタイプを判定
+    // RTTI を使用してタイプを判定
     const std::type_info& typeInfo = typeid(*node);
 
     // 各タイプと比較

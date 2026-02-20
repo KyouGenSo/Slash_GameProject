@@ -69,15 +69,15 @@ void BTBossShoot::Reset() {
     elapsedTime_ = 0.0f;
     isFirstExecute_ = true;
     hasFired_ = false;
-    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
-    // スタン等によるリセット時は、BossBehaviorTree側で状態クリアが必要
+    // 注意: Reset 時は boss 参照がないため、ExitRecovery()は呼べない
+    // スタン等によるリセット時は、BossBehaviorTree 側で状態クリアが必要
 }
 
 void BTBossShoot::InitializeShoot(Boss* boss) {
     // タイマーリセット
     elapsedTime_ = 0.0f;
 
-    // totalDurationを計算
+    // totalDuration を計算
     totalDuration_ = chargeTime_ + recoveryTime_;
 
     // 射撃予兆エフェクト開始
@@ -93,7 +93,7 @@ void BTBossShoot::AimAtPlayer(Boss* boss, float deltaTime) {
     Vector3 playerPos = player->GetTransform().translate;
     Vector3 bossPos = boss->GetTransform().translate;
     Vector3 toPlayer = playerPos - bossPos;
-    toPlayer.y = 0.0f; // Y軸は無視
+    toPlayer.y = 0.0f; // Y 軸は無視
 
     if (toPlayer.Length() > kDirectionEpsilon) {
         toPlayer = toPlayer.Normalize();
@@ -115,7 +115,7 @@ void BTBossShoot::FireBullets(Boss* boss) {
     Vector3 playerPos = player->GetTransform().translate;
     Vector3 toPlayer = playerPos - firePosition;
 
-    // 水平方向のみで計算（Y成分は小さく保つ）
+    // 水平方向のみで計算（Y 成分は小さく保つ）
     float distance = sqrtf(toPlayer.x * toPlayer.x + toPlayer.z * toPlayer.z);
     if (distance > kDirectionEpsilon) {
         toPlayer = toPlayer.Normalize();
@@ -148,11 +148,11 @@ Vector3 BTBossShoot::CalculateBulletDirection(const Vector3& baseDirection, floa
         return baseDirection;
     }
 
-    // Y軸回転行列を作成
+    // Y 軸回転行列を作成
     float cos_angle = cosf(angleOffset);
     float sin_angle = sinf(angleOffset);
 
-    // 回転を適用（Y軸回転）
+    // 回転を適用（Y 軸回転）
     Vector3 rotatedDirection;
     rotatedDirection.x = baseDirection.x * cos_angle - baseDirection.z * sin_angle;
     rotatedDirection.y = baseDirection.y;

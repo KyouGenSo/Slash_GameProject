@@ -5,7 +5,7 @@
 
 /// <summary>
 /// 弾生成リクエスト管理クラス
-/// Player/Boss等のオブジェクトが弾の生成をGameSceneに要求する際に使用
+/// Player/Boss 等のオブジェクトが弾の生成を GameScene に要求する際に使用
 /// コンポジション方式で使用する（継承不要）
 /// </summary>
 class BulletSpawner
@@ -24,13 +24,13 @@ public:
     /// <summary>
     /// 保留中の弾生成リクエストを取得して消費
     /// </summary>
-    /// <returns>弾生成リクエストのリスト（moveで返される）</returns>
+    /// <returns>弾生成リクエストのリスト（move で返される）</returns>
     std::vector<BulletSpawnRequest> Consume();
 
     /// <summary>
     /// 保留中のリクエストがあるか
     /// </summary>
-    /// <returns>保留中のリクエストがある場合true</returns>
+    /// <returns>保留中のリクエストがある場合 true</returns>
     bool HasPending() const { return !pendingBullets_.empty(); }
 
     /// <summary>

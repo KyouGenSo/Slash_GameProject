@@ -3,7 +3,7 @@
 #include"Vector2.h"
 
 /// <summary>
-/// 3Dアクションゲームのメインクラス
+/// 3D アクションゲームのメインクラス
 /// ゲーム全体の初期化、更新、描画処理を管理する
 /// </summary>
 class MyGame : public Tako::TakoFramework
@@ -33,7 +33,7 @@ public: // メンバ関数
 private: // プライベートメンバ関数
 
     /// <summary>
-    /// GlobalVariablesにパラメータを登録
+    /// GlobalVariables にパラメータを登録
     /// </summary>
     void RegisterGlobalVariables();
 
@@ -68,22 +68,22 @@ private: // プライベートメンバ関数
     void RegisterStateVariables();
 
     /// <summary>
-    /// AttackState関連パラメータを登録
+    /// AttackState 関連パラメータを登録
     /// </summary>
     void RegisterAttackStateVariables();
 
     /// <summary>
-    /// DashState関連パラメータを登録
+    /// DashState 関連パラメータを登録
     /// </summary>
     void RegisterDashStateVariables();
 
     /// <summary>
-    /// ParryState関連パラメータを登録
+    /// ParryState 関連パラメータを登録
     /// </summary>
     void RegisterParryStateVariables();
 
     /// <summary>
-    /// ShootState関連パラメータを登録
+    /// ShootState 関連パラメータを登録
     /// </summary>
     void RegisterShootStateVariables();
 

@@ -17,7 +17,7 @@ BTNodeStatus BTBossHPCondition::Execute(BTBlackboard* blackboard) {
         return BTNodeStatus::Failure;
     }
 
-    // 現在のHPをパーセンテージに変換
+    // 現在の HP をパーセンテージに変換
     float currentHp = boss->GetHp();
     float currentPercent = (currentHp / Boss::GetMaxHp()) * 100.0f;
 
@@ -69,7 +69,7 @@ nlohmann::json BTBossHPCondition::ExtractParameters() const {
 bool BTBossHPCondition::DrawImGui() {
     bool changed = false;
 
-    // HP閾値の編集（パーセンテージ）
+    // HP 閾値の編集（パーセンテージ）
     if (ImGui::DragFloat("HP Threshold %##hp", &thresholdPercent_, 1.0f, 0.0f, 100.0f, "%.1f%%")) {
         changed = true;
     }

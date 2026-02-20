@@ -8,7 +8,7 @@ using namespace Tako;
 
 MeleeAttackCollider::MeleeAttackCollider(Player* player)
     : player_(player) {
-    // GlobalVariablesから値を取得
+    // GlobalVariables から値を取得
     GlobalVariables* gv = GlobalVariables::GetInstance();
     attackDamage_ = gv->GetValueFloat("MeleeAttack", "AttackDamage");
 

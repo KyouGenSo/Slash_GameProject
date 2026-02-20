@@ -15,9 +15,9 @@ CameraAnimationCurveEditor::CameraAnimationCurveEditor() {
     curveColors_[static_cast<int>(CurveType::ROTATION_Z)] = IM_COL32(100, 200, 255, 255);
     curveColors_[static_cast<int>(CurveType::FOV)] = IM_COL32(255, 255, 100, 255);
 
-    // 初期状態ではPOSITION_Xのみ表示（タブ選択で切り替わる）
+    // 初期状態では POSITION_X のみ表示（タブ選択で切り替わる）
     for (int i = 0; i < static_cast<int>(CurveType::COUNT); ++i) {
-        curveVisible_[i] = (i == 0);  // POSITION_Xのみ
+        curveVisible_[i] = (i == 0);  // POSITION_X のみ
     }
 }
 
@@ -134,14 +134,14 @@ void CameraAnimationCurveEditor::DrawGrid() {
 void CameraAnimationCurveEditor::DrawAxes() {
     ImDrawList* drawList = ImGui::GetWindowDrawList();
 
-    // X軸（時間）
+    // X 軸（時間）
     ImVec2 xAxisStart = ValueToGraph(0, 0);
     ImVec2 xAxisEnd = ValueToGraph(timeRange_, 0);
     if (xAxisStart.y >= graphPos_.y && xAxisStart.y <= graphPos_.y + graphSize_.y) {
         drawList->AddLine(xAxisStart, xAxisEnd, IM_COL32(100, 100, 100, 255), 2.0f);
     }
 
-    // Y軸（値）
+    // Y 軸（値）
     ImVec2 yAxisStart = ValueToGraph(0, valueRangeMin_);
     ImVec2 yAxisEnd = ValueToGraph(0, valueRangeMax_);
     if (yAxisStart.x >= graphPos_.x && yAxisStart.x <= graphPos_.x + graphSize_.x) {

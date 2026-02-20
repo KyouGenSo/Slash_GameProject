@@ -48,9 +48,9 @@ public:
     void SetRecoveryTime(float time) { recoveryTime_ = time; }
 
     /// <summary>
-    /// JSONからパラメータを適用
+    /// JSON からパラメータを適用
     /// </summary>
-    /// <param name="params">パラメータJSON</param>
+    /// <param name="params">パラメータ JSON</param>
     void ApplyParameters(const nlohmann::json& params) override {
         if (params.contains("chargeTime")) {
             chargeTime_ = params["chargeTime"];
@@ -70,13 +70,13 @@ public:
     }
 
     /// <summary>
-    /// パラメータをJSONとして抽出
+    /// パラメータを JSON として抽出
     /// </summary>
     nlohmann::json ExtractParameters() const override;
 
 #ifdef _DEBUG
     /// <summary>
-    /// ImGuiでパラメータ編集UIを描画
+    /// ImGui でパラメータ編集 UI を描画
     /// </summary>
     bool DrawImGui() override;
 #endif

@@ -20,14 +20,14 @@ void DashEffectManager::Update(float deltaTime, const Tako::Vector3& playerPosit
 
     // エミッターがアクティブな間は補間を継続（ダッシュ終了後も追いつくまで続ける）
     if (isActive_) {
-        // GlobalVariablesから補間速度を取得（設定されていればそちらを優先）
+        // GlobalVariables から補間速度を取得（設定されていればそちらを優先）
         float lerpSpeed = Tako::GlobalVariables::GetInstance()->GetValueFloat("DashEffect", "LerpSpeed");
         if (lerpSpeed <= 0.0f) {
             lerpSpeed = params_.lerpSpeed;
         }
 
         // フレームレート非依存の指数減衰補間
-        // t = 1 - e^(-speed * dt) で、どのFPSでも同じ視覚的結果
+        // t = 1 - e^(-speed * dt) で、どの FPS でも同じ視覚的結果
         float t = 1.0f - std::exp(-lerpSpeed * deltaTime);
 
         // エミッター位置をプレイヤー位置に向かって補間

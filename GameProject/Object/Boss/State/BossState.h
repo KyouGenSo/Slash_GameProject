@@ -5,8 +5,8 @@ class Boss;
 
 /// <summary>
 /// ボスステート基底クラス
-/// 各状態のEnter/Update/Exitインターフェースを定義
-/// PlayerStateパターンに準拠
+/// 各状態の Enter/Update/Exit インターフェースを定義
+/// PlayerState パターンに準拠
 /// </summary>
 class BossState {
 public:

@@ -87,7 +87,7 @@ void BTBossRapidFire::Reset() {
     firedCount_ = 0;
     timeSinceLastFire_ = 0.0f;
     isFirstExecute_ = true;
-    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
+    // 注意: Reset 時は boss 参照がないため、ExitRecovery()は呼べない
 }
 
 void BTBossRapidFire::InitializeRapidFire(Boss* boss) {
@@ -97,7 +97,7 @@ void BTBossRapidFire::InitializeRapidFire(Boss* boss) {
     // 即座に1発目を撃てるように
     timeSinceLastFire_ = fireInterval_;
 
-    // totalDurationを計算
+    // totalDuration を計算
     // チャージ時間 + (発射間隔 × 弾数) + 硬直時間
     totalDuration_ = chargeTime_ + (fireInterval_ * static_cast<float>(bulletCount_)) + recoveryTime_;
 
@@ -114,7 +114,7 @@ void BTBossRapidFire::AimAtPlayer(Boss* boss, float deltaTime) {
     Vector3 playerPos = player->GetTransform().translate;
     Vector3 bossPos = boss->GetTransform().translate;
     Vector3 toPlayer = playerPos - bossPos;
-    toPlayer.y = 0.0f; // Y軸は無視
+    toPlayer.y = 0.0f; // Y 軸は無視
 
     if (toPlayer.Length() > GameConst::kDirectionEpsilon) {
         toPlayer = toPlayer.Normalize();

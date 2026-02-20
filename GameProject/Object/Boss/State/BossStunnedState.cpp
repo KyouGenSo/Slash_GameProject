@@ -94,7 +94,7 @@ void BossStunnedState::Update(Boss* boss, float deltaTime)
 	}
 
 	// スタン終了判定
-	// フェーズ移行スタン中はタイムアウトしない（被弾でPhaseTransitionStunStateに遷移済み）
+	// フェーズ移行スタン中はタイムアウトしない（被弾で PhaseTransitionStunState に遷移済み）
 	if (elapsedTime_ >= stunDuration_ && knockbackComplete_) {
 		boss->GetStateMachine()->ChangeState("Normal");
 	}

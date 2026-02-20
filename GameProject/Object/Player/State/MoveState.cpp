@@ -67,7 +67,7 @@ void MoveState::HandleInput(Player* player)
 		return;
 	}
 	
-	// 移動入力がなければIdleへ
+	// 移動入力がなければ Idle へ
 	if (!input->IsMoving())
 	{
 		stateMachine->ChangeState("Idle");

@@ -9,7 +9,7 @@ BTNodeStatus BTSequence::Execute(BTBlackboard* blackboard) {
         return BTNodeStatus::Success;
     }
 
-    // 前回Runningだった場合、その子ノードから続行
+    // 前回 Running だった場合、その子ノードから続行
     for (size_t i = currentChildIndex_; i < children_.size(); ++i) {
         BTNodeStatus childStatus = children_[i]->Execute(blackboard);
 
@@ -25,7 +25,7 @@ BTNodeStatus BTSequence::Execute(BTBlackboard* blackboard) {
             status_ = BTNodeStatus::Running;
             return status_;
         }
-        // Successの場合は次の子ノードへ
+        // Success の場合は次の子ノードへ
     }
 
     // 全ての子ノードが成功

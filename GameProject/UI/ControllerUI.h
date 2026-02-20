@@ -10,9 +10,9 @@ class Boss;
 namespace Tako { class WinApp; }
 
 /// <summary>
-/// コントローラーUI表示クラス
+/// コントローラー UI 表示クラス
 /// ゲームパッドの入力状態を視覚的に表示
-/// ボタン押下でUp/Down切り替え、スティック方向に応じたスプライト切り替えを行う
+/// ボタン押下で Up/Down 切り替え、スティック方向に応じたスプライト切り替えを行う
 /// </summary>
 class ControllerUI
 {
@@ -39,7 +39,7 @@ public:
     void Draw();
 
     /// <summary>
-    /// ImGuiでパラメータ調整
+    /// ImGui でパラメータ調整
     /// 各スプライトの位置・サイズ等を調整可能
     /// </summary>
     void DrawImGui();
@@ -73,15 +73,15 @@ private:
 
 private:
 
-    // 基準解像度定数（UI設計時の想定解像度）
+    // 基準解像度定数（UI 設計時の想定解像度）
     static constexpr float kBaseWidth = 1920.0f;
     static constexpr float kBaseHeight = 1080.0f;
 
     // リサイズコールバック管理
-    Tako::WinApp* winApp_ = nullptr;   ///< WinAppへの参照
-    uint32_t onResizeId_ = 0;          ///< 登録されたコールバックのID
+    Tako::WinApp* winApp_ = nullptr;   ///< WinApp への参照
+    uint32_t onResizeId_ = 0;          ///< 登録されたコールバックの ID
 
-    // ボタンスプライト（Up/Down各4ボタン）
+    // ボタンスプライト（Up/Down 各4ボタン）
     std::unique_ptr<Tako::Sprite> aButtonUpSprite_;
     std::unique_ptr<Tako::Sprite> aButtonDownSprite_;
     std::unique_ptr<Tako::Sprite> bButtonUpSprite_;
@@ -103,8 +103,8 @@ private:
     std::unique_ptr<Tako::Sprite> idouSprite_;
 
     // ポーズ操作ヒントスプライト
-    std::unique_ptr<Tako::Sprite> pauseHintIconSprite_;   ///< Menuボタンアイコン
-    std::unique_ptr<Tako::Sprite> pauseHintTextSprite_;   ///< PAUSEテキスト
+    std::unique_ptr<Tako::Sprite> pauseHintIconSprite_;   ///< Menu ボタンアイコン
+    std::unique_ptr<Tako::Sprite> pauseHintTextSprite_;   ///< PAUSE テキスト
 
     // 現在の表示状態
     bool isAPressed_ = false;

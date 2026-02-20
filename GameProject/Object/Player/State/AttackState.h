@@ -8,8 +8,8 @@
 /// 攻撃ブロックの回転軸
 /// </summary>
 enum class SwingAxis {
-    Horizontal, ///< 水平回転（XZ平面）
-    Vertical    ///< 垂直回転（プレイヤー向き基準のYZ平面）
+    Horizontal, ///< 水平回転（XZ 平面）
+    Vertical    ///< 垂直回転（プレイヤー向き基準の YZ 平面）
 };
 
 /// <summary>
@@ -95,7 +95,7 @@ private:
     float blockScale_ = 0.5f;                           ///< ブロックのスケール
 
     /// <summary>
-    /// GlobalVariablesからコンボデータを読み込み
+    /// GlobalVariables からコンボデータを読み込み
     /// </summary>
     void LoadComboData();
 
@@ -167,7 +167,7 @@ public:
     /// <summary>
     /// 現在のターゲット敵を取得（デバッグ用）
     /// </summary>
-    /// <returns>ターゲット敵のポインタ（nullptrの場合もある）</returns>
+    /// <returns>ターゲット敵のポインタ（nullptr の場合もある）</returns>
     Boss* GetTargetEnemy() const { return targetEnemy_; }
 
     /// <summary>
@@ -177,12 +177,12 @@ public:
     float GetPhaseTimer() const { return phaseTimer_; }
 
     /// <summary>
-    /// ImGuiデバッグ情報の描画
+    /// ImGui デバッグ情報の描画
     /// </summary>
     /// <param name="player">プレイヤーインスタンス</param>
     void DrawImGui(Player* player) override;
 
-    // DrawImGui用のゲッター追加
+    // DrawImGui 用のゲッター追加
     int GetComboIndex() const { return comboIndex_; }
     int GetMaxCombo() const { return maxCombo_; }
     float GetMaxMoveTime() const { return maxMoveTime_; }

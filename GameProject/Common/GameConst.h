@@ -3,7 +3,7 @@
 /// <summary>
 /// ゲーム全体で使用する定数定義
 /// 変更頻度が極めて低い固定値のみを定義
-/// 調整が必要なパラメータはGlobalVariablesを使用すること
+/// 調整が必要なパラメータは GlobalVariables を使用すること
 /// </summary>
 namespace GameConst {
 

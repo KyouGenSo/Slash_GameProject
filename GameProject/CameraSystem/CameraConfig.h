@@ -25,18 +25,18 @@ namespace CameraConfig {
     inline constexpr float ROTATION_LERP_SPEED = 0.15f;
 
     /// <summary>
-    /// 標準FOV（ラジアン）
+    /// 標準 FOV（ラジアン）
     /// </summary>
     inline constexpr float STANDARD_FOV = 0.44999998807907104;
 
     /// <summary>
     /// ゲームシーンまだ消えないパーティクルが別のシーンでも表示されるのを防ぐため、
-    /// カメラを画面外に移動させる際のY座標
+    /// カメラを画面外に移動させる際の Y 座標
     /// シーン遷移時などで使用
     /// </summary>
     inline constexpr float HIDDEN_Y = -1000.0f;
 
-    //==================== ThirdPerson設定 ====================
+    //==================== ThirdPerson 設定 ====================
 
     namespace ThirdPerson {
         /// <summary>
@@ -52,7 +52,7 @@ namespace CameraConfig {
         inline constexpr float LOOK_DOWN_ANGLE = DirectX::XMConvertToRadians(15.0f);
 
         /// <summary>
-        /// デフォルトX軸角度（ラジアン）
+        /// デフォルト X 軸角度（ラジアン）
         /// </summary>
         inline constexpr float DEFAULT_ANGLE_X = DirectX::XMConvertToRadians(8.0f);
 
@@ -67,7 +67,7 @@ namespace CameraConfig {
         inline constexpr float GAMEPAD_ROTATE_MULTIPLIER = 1.0f;
     }
 
-    //==================== TopDown設定 ====================
+    //==================== TopDown 設定 ====================
 
     namespace TopDown {
         /// <summary>
@@ -124,7 +124,7 @@ namespace CameraConfig {
         inline constexpr size_t KEYFRAME_RESERVE_COUNT = 32;
 
         /// <summary>
-        /// デフォルトFOV（ラジアン）
+        /// デフォルト FOV（ラジアン）
         /// </summary>
         inline constexpr float DEFAULT_FOV = 0.45f;
 
@@ -149,17 +149,17 @@ namespace CameraConfig {
         inline constexpr float KEYFRAME_DRAG_STEP = 0.1f;
 
         /// <summary>
-        /// FOV最小値（度）
+        /// FOV 最小値（度）
         /// </summary>
         inline constexpr float FOV_MIN_DEGREES = 10.0f;
 
         /// <summary>
-        /// FOV最大値（度）
+        /// FOV 最大値（度）
         /// </summary>
         inline constexpr float FOV_MAX_DEGREES = 120.0f;
 
         /// <summary>
-        /// デフォルトFOV（度）
+        /// デフォルト FOV（度）
         /// </summary>
         inline constexpr float DEFAULT_FOV_DEGREES = 45.0f;
     }

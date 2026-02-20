@@ -9,7 +9,7 @@ class Player;
 
 /// <summary>
 /// ボスの弾専用コライダー
-/// MeleeAttackColliderと同じ設計パターンで実装
+/// MeleeAttackCollider と同じ設計パターンで実装
 /// </summary>
 class BossBulletCollider : public Tako::SphereCollider {
 public:

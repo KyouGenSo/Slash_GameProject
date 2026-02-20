@@ -7,7 +7,7 @@ class Player;
 /// <summary>
 /// ボスの離脱状態（外部イベント駆動）
 /// 非硬直中の被弾で強制遷移し、プレイヤーから離れるよう後退移動
-/// 移動完了後にNormalへ復帰
+/// 移動完了後に Normal へ復帰
 /// </summary>
 class BossRetreatingState : public BossState {
 public:

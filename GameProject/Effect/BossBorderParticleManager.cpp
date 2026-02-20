@@ -42,7 +42,7 @@ void BossBorderParticleManager::SetActive(bool active)
 
 void BossBorderParticleManager::UpdatePositions(const Tako::Vector3& bossPosition)
 {
-    // Y座標を0に固定してボス周囲に配置
+    // Y 座標を0に固定してボス周囲に配置
     Tako::Vector3 basePos = Tako::Vector3(bossPosition.x, 0.0f, bossPosition.z);
     float areaSize = areaSize_;
 

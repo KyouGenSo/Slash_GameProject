@@ -24,7 +24,7 @@ using namespace Tako;
 CameraAnimation::CameraAnimation() {
     keyframes_.reserve(CameraConfig::Animation::KEYFRAME_RESERVE_COUNT); // 予め領域を確保
 
-    // FOV復元用変数の初期化
+    // FOV 復元用変数の初期化
     originalFov_ = CameraConfig::Animation::DEFAULT_FOV_DEGREES;
     hasOriginalFov_ = false;
 }
@@ -72,13 +72,13 @@ void CameraAnimation::Update(float deltaTime) {
             }
             Vector3 position = Vec3::Lerp(blendStartPosition_, targetPosition, t);
 
-            // 回転の補間（クォータニオンでSlerp）
+            // 回転の補間（クォータニオンで Slerp）
             Quaternion q1 = EulerToQuaternion(blendStartRotation_);
             Quaternion q2 = EulerToQuaternion(firstKf.rotation);
             Quaternion qResult = Quat::Slerp(q1, q2, t);
             Vector3 rotation = QuaternionToEuler(qResult);
 
-            // FOVの補間
+            // FOV の補間
             float fov = Vec3::Lerp(blendStartFov_, firstKf.fov, t);
 
             // カメラに適用
@@ -109,7 +109,7 @@ void CameraAnimation::Update(float deltaTime) {
             currentTime_ = duration_;
             playState_ = PlayState::STOPPED;
 
-            // FOVを復元
+            // FOV を復元
             if (hasOriginalFov_ && camera_) {
                 camera_->SetFovY(CameraConfig::STANDARD_FOV);
                 hasOriginalFov_ = false;
@@ -125,7 +125,7 @@ void CameraAnimation::Update(float deltaTime) {
             currentTime_ = 0.0f;
             playState_ = PlayState::STOPPED;
 
-            // FOVを復元
+            // FOV を復元
             if (hasOriginalFov_ && camera_) {
                 camera_->SetFovY(CameraConfig::STANDARD_FOV);
                 hasOriginalFov_ = false;
@@ -246,7 +246,7 @@ void CameraAnimation::Play() {
 
     playState_ = PlayState::PLAYING;
 
-    // 元のFOVを保存
+    // 元の FOV を保存
     originalFov_ = camera_->GetFovY();
     hasOriginalFov_ = true;
 
@@ -290,7 +290,7 @@ void CameraAnimation::Stop() {
     playState_ = PlayState::STOPPED;
     currentTime_ = 0.0f;
 
-    // FOVを復元
+    // FOV を復元
     if (hasOriginalFov_ && camera_) {
         camera_->SetFovY(originalFov_);
         hasOriginalFov_ = false;
@@ -301,13 +301,13 @@ void CameraAnimation::Stop() {
 }
 
 /// <summary>
-/// FOV復元なしで停止（アニメーション切り替え時用）
+/// FOV 復元なしで停止（アニメーション切り替え時用）
 /// </summary>
 void CameraAnimation::StopWithoutRestore() {
     playState_ = PlayState::STOPPED;
     currentTime_ = 0.0f;
 
-    // FOV復元をスキップ（フラグのみリセット）
+    // FOV 復元をスキップ（フラグのみリセット）
     hasOriginalFov_ = false;
 
     // 停止時に選択状態を解除（カメラを元に戻す）
@@ -426,20 +426,20 @@ void CameraAnimation::InterpolateKeyframes(const CameraKeyframe& prev, const Cam
     // 異なる場合は前のキーフレームの座標系を優先
     CameraKeyframe::CoordinateType coordinateType = prev.coordinateType;
 
-    // TARGET_RELATIVEモードの場合、ターゲット位置を加算
+    // TARGET_RELATIVE モードの場合、ターゲット位置を加算
     if (coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE && targetTransform_) {
-        // positionはオフセットとして扱う
+        // position はオフセットとして扱う
         position = Vec3::Add(targetTransform_->translate, position);
     }
     // ターゲットが設定されていない場合は、ワールド座標として扱う
 
-    // 回転の補間（クォータニオンでSlerp）
+    // 回転の補間（クォータニオンで Slerp）
     Quaternion q1 = EulerToQuaternion(prev.rotation);
     Quaternion q2 = EulerToQuaternion(next.rotation);
     Quaternion qResult = Quat::Slerp(q1, q2, t);
     Vector3 rotation = QuaternionToEuler(qResult);
 
-    // FOVの補間（線形補間）
+    // FOV の補間（線形補間）
     float fov = Vec3::Lerp(prev.fov, next.fov, t);
 
     // カメラに適用
@@ -509,7 +509,7 @@ Vector3 CameraAnimation::QuaternionToEuler(const Quaternion& q) const {
     float cosr_cosp = 1.0f - 2.0f * (q.x * q.x + q.y * q.y);
     euler.x = std::atan2f(sinr_cosp, cosr_cosp);
 
-    // Pitch (Y軸回転)
+    // Pitch (Y 軸回転)
     float sinp = 2.0f * (q.w * q.y - q.z * q.x);
     if (std::abs(sinp) >= 1.0f) {
         euler.y = std::copysignf(std::numbers::pi_v<float> / 2.0f, sinp); // ジンバルロック時
@@ -517,7 +517,7 @@ Vector3 CameraAnimation::QuaternionToEuler(const Quaternion& q) const {
         euler.y = std::asinf(sinp);
     }
 
-    // Yaw (Z軸回転)
+    // Yaw (Z 軸回転)
     float siny_cosp = 2.0f * (q.w * q.z + q.x * q.y);
     float cosy_cosp = 1.0f - 2.0f * (q.y * q.y + q.z * q.z);
     euler.z = std::atan2f(siny_cosp, cosy_cosp);
@@ -619,11 +619,11 @@ void CameraAnimation::ApplyKeyframeDirectly(const CameraKeyframe& kf) {
 }
 
 /// <summary>
-/// JSONファイルから読み込み
+/// JSON ファイルから読み込み
 /// </summary>
 bool CameraAnimation::LoadFromJson(const std::string& filepath) {
     try {
-        // JSONファイルパスを構築
+        // JSON ファイルパスを構築
         std::filesystem::path jsonPath = "resources/Json/CameraAnimations/" + filepath;
         if (!jsonPath.has_extension()) {
             jsonPath += ".json";
@@ -636,7 +636,7 @@ bool CameraAnimation::LoadFromJson(const std::string& filepath) {
             return false;
         }
 
-        // JSONパース
+        // JSON パース
         nlohmann::json json;
         file >> json;
         file.close();
@@ -683,11 +683,11 @@ bool CameraAnimation::LoadFromJson(const std::string& filepath) {
 }
 
 /// <summary>
-/// JSONファイルに保存
+/// JSON ファイルに保存
 /// </summary>
 bool CameraAnimation::SaveToJson(const std::string& filepath) const {
     try {
-        // 保存用JSON作成
+        // 保存用 JSON 作成
         nlohmann::json json;
         json["animation_name"] = animationName_;
         json["duration"] = duration_;
@@ -710,7 +710,7 @@ bool CameraAnimation::SaveToJson(const std::string& filepath) const {
             std::filesystem::create_directories(dirPath);
         }
 
-        // JSONファイルパスを構築
+        // JSON ファイルパスを構築
         std::filesystem::path jsonPath = dirPath / filepath;
         if (!jsonPath.has_extension()) {
             jsonPath += ".json";
@@ -727,7 +727,7 @@ bool CameraAnimation::SaveToJson(const std::string& filepath) const {
         file.close();
 
 #ifdef _DEBUG
-        // Debugログ出力
+        // Debug ログ出力
         DebugUIManager::GetInstance()->AddLog(
             " CameraAnimation: Saved animation " + animationName_ + " to " + jsonPath.string(),
             DebugUIManager::LogType::Info);
@@ -745,7 +745,7 @@ bool CameraAnimation::SaveToJson(const std::string& filepath) const {
 
 #ifdef _DEBUG
 /// <summary>
-/// ImGuiでのデバッグ表示
+/// ImGui でのデバッグ表示
 /// </summary>
 void CameraAnimation::DrawImGui() {
   ImGui::Separator();
@@ -794,7 +794,7 @@ void CameraAnimation::DrawImGui() {
 
     // キーフレーム管理
     if (ImGui::CollapsingHeader("Keyframe Management")) {
-        // Escキーで選択解除
+        // Esc キーで選択解除
         if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
             ClearDeselectState();
         }
@@ -834,7 +834,7 @@ void CameraAnimation::DrawImGui() {
             if (ImGui::Button("Add Custom Keyframe")) {
                 CameraKeyframe kf;
                 kf.time = newKeyTime;
-                // TARGET_RELATIVEモードかつターゲットが設定されている場合、現在位置からオフセットを計算
+                // TARGET_RELATIVE モードかつターゲットが設定されている場合、現在位置からオフセットを計算
                 if (coordType == 1 && targetTransform_) {
                     kf.position = Vec3::Subtract(camera_->GetTranslate(), targetTransform_->translate);
                 } else {
@@ -882,7 +882,7 @@ void CameraAnimation::DrawImGui() {
                     ? "[REL]" : "[WLD]";
                 std::string label = std::format("{} KF {}: {:.2f}s", coordTypeStr, i, keyframes_[i].time);
 
-                // Selectableのサイズを制限して削除ボタンのスペースを確保
+                // Selectable のサイズを制限して削除ボタンのスペースを確保
                 float availWidth = ImGui::GetContentRegionAvail().x;
                 if (ImGui::Selectable(label.c_str(), isSelected, 0, ImVec2(availWidth - 30, 0))) {
                     selectedKeyframeIndex_ = static_cast<int>(i);
@@ -894,7 +894,7 @@ void CameraAnimation::DrawImGui() {
                 // 削除ボタン
                 ImGui::SameLine();
                 if (ImGui::SmallButton("X")) {
-                    ImGui::PopID();  // breakする前にPopIDを呼ぶ
+                    ImGui::PopID();  // break する前に PopID を呼ぶ
                     RemoveKeyframe(i);
                     if (selectedKeyframeIndex_ == static_cast<int>(i)) {
                         selectedKeyframeIndex_ = -1;

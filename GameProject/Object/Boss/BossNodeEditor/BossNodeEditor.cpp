@@ -26,9 +26,9 @@ using namespace Tako;
 BossNodeEditor::BossNodeEditor()
     : editorContext_(nullptr)
     , editorConfig_()
-    , nextNodeId_(10000)    // BossNodeEditor専用: 10000番台
-    , nextPinId_(20000)     // BossNodeEditor専用: 20000番台
-    , nextLinkId_(30000)    // BossNodeEditor専用: 30000番台
+    , nextNodeId_(10000)    // BossNodeEditor 専用: 10000番台
+    , nextPinId_(20000)     // BossNodeEditor 専用: 20000番台
+    , nextLinkId_(30000)    // BossNodeEditor 専用: 30000番台
     , isVisible_(false)
     , firstFrame_(true)
     , highlightedNodeId_(-1)
@@ -67,18 +67,18 @@ void BossNodeEditor::Finalize() {
         ed::DestroyEditor(editorContext_);
         editorContext_ = nullptr;
     }
-    // editorConfig_はunique_ptrで自動解放
+    // editorConfig_は unique_ptr で自動解放
     editorConfig_.reset();
     Clear();
 }
 
 /// <summary>
-/// エディタの更新・描画（ImGuiウィンドウ内で呼ぶ）
+/// エディタの更新・描画（ImGui ウィンドウ内で呼ぶ）
 /// </summary>
 void BossNodeEditor::Update() {
     if (!isVisible_) return;
 
-    // ImGuiウィンドウの開始
+    // ImGui ウィンドウの開始
     if (ImGui::Begin("Boss Behavior Tree Editor", &isVisible_)) {
         // ツールバーの描画
         DrawToolbar();
@@ -138,10 +138,10 @@ void BossNodeEditor::Clear() {
     links_.clear();
     runtimeNodeToEditorId_.clear();
 
-    // ID範囲を初期値に戻す（ID競合を防ぐため範囲を分離）
-    nextNodeId_ = 10000;    // BossNodeEditor専用: 10000番台
-    nextPinId_ = 20000;     // BossNodeEditor専用: 20000番台
-    nextLinkId_ = 30000;    // BossNodeEditor専用: 30000番台
+    // ID 範囲を初期値に戻す（ID 競合を防ぐため範囲を分離）
+    nextNodeId_ = 10000;    // BossNodeEditor 専用: 10000番台
+    nextPinId_ = 20000;     // BossNodeEditor 専用: 20000番台
+    nextLinkId_ = 30000;    // BossNodeEditor 専用: 30000番台
 
     highlightedNodeId_ = -1;
     highlightStartTime_ = 0.0f;
@@ -177,7 +177,7 @@ void BossNodeEditor::DrawToolbar() {
         nodeOffsetY = 100.0f;
     }
 
-    // ノード作成用のUIセクション
+    // ノード作成用の UI セクション
     ImGui::SameLine();
     ImGui::Separator();
     ImGui::SameLine();
@@ -190,21 +190,21 @@ void BossNodeEditor::DrawToolbar() {
     allNodeTypes.clear();
     allDisplayNames.clear();
 
-    // Compositeノード
+    // Composite ノード
     auto compositeTypes = BossNodeFactory::GetNodeTypesByCategory(BossNodeFactory::NodeCategory::Composite);
     for (const auto& type : compositeTypes) {
         allNodeTypes.push_back(type);
         allDisplayNames.push_back("[Composite] " + BossNodeFactory::GetNodeDisplayName(type));
     }
 
-    // Actionノード
+    // Action ノード
     auto actionTypes = BossNodeFactory::GetNodeTypesByCategory(BossNodeFactory::NodeCategory::Action);
     for (const auto& type : actionTypes) {
         allNodeTypes.push_back(type);
         allDisplayNames.push_back("[Action] " + BossNodeFactory::GetNodeDisplayName(type));
     }
 
-    // Conditionノード
+    // Condition ノード
     auto conditionTypes = BossNodeFactory::GetNodeTypesByCategory(BossNodeFactory::NodeCategory::Condition);
     for (const auto& type : conditionTypes) {
         allNodeTypes.push_back(type);
@@ -240,7 +240,7 @@ void BossNodeEditor::DrawToolbar() {
 
         ImGui::SameLine();
 
-        // Add Nodeボタン
+        // Add Node ボタン
         if (ImGui::Button("Add Node##bne_toolbar")) {
             ImVec2 centerPos = ImVec2(nodeOffsetX, nodeOffsetY);
             nodeOffsetX += 30.0f;
@@ -340,7 +340,7 @@ void BossNodeEditor::DrawNode(const EditorNode& node) {
         for (int pinId : node.inputPinIds) {
             const EditorPin* pin = FindPinById(pinId);
             if (pin) {
-                // 中央に配置（Dummy + SameLine方式）
+                // 中央に配置（Dummy + SameLine 方式）
                 float textWidth = ImGui::CalcTextSize("Input").x;
                 ImGui::Dummy(ImVec2((nodeWidth - textWidth) * 0.5f, 0));
                 ImGui::SameLine(0, 0);
@@ -425,12 +425,12 @@ void BossNodeEditor::DrawNode(const EditorNode& node) {
 
     ed::EndNode();
 
-    // Push/Popの対応を正しく保つ（常に2色、2変数）
+    // Push/Pop の対応を正しく保つ（常に2色、2変数）
     ed::PopStyleVar(2);
     ed::PopStyleColor(2);
 
-    // 初回フレームのみノード位置を設定（CreateNode時のデフォルト位置用）
-    // LoadFromJSON時はLoadFromJSON内で設定するため、ここでは設定しない
+    // 初回フレームのみノード位置を設定（CreateNode 時のデフォルト位置用）
+    // LoadFromJSON 時は LoadFromJSON 内で設定するため、ここでは設定しない
     if (firstFrame_ && nodes_.size() <= 1 && (node.position.x != 0 || node.position.y != 0)) {
         ed::SetNodePosition(node.id, node.position);
     }
@@ -614,7 +614,7 @@ void BossNodeEditor::HandleDeletion() {
 /// コンテキストメニューの描画
 /// </summary>
 void BossNodeEditor::DrawContextMenu() {
-    // エディタコンテキストを一時停止（ImGuiポップアップのため）
+    // エディタコンテキストを一時停止（ImGui ポップアップのため）
     ed::Suspend();
 
     // 背景右クリックメニュー
@@ -638,7 +638,7 @@ void BossNodeEditor::DrawContextMenu() {
         ImGui::Separator();
 
         // カテゴリごとにノードを表示
-        // Compositeノード
+        // Composite ノード
         if (ImGui::BeginMenu("Composite Nodes")) {
             auto compositeTypes = BossNodeFactory::GetNodeTypesByCategory(BossNodeFactory::NodeCategory::Composite);
             for (const auto& nodeType : compositeTypes) {
@@ -650,7 +650,7 @@ void BossNodeEditor::DrawContextMenu() {
             ImGui::EndMenu();
         }
 
-        // Actionノード
+        // Action ノード
         if (ImGui::BeginMenu("Action Nodes")) {
             auto actionTypes = BossNodeFactory::GetNodeTypesByCategory(BossNodeFactory::NodeCategory::Action);
             for (const auto& nodeType : actionTypes) {
@@ -662,7 +662,7 @@ void BossNodeEditor::DrawContextMenu() {
             ImGui::EndMenu();
         }
 
-        // Conditionノード
+        // Condition ノード
         if (ImGui::BeginMenu("Condition Nodes")) {
             auto conditionTypes = BossNodeFactory::GetNodeTypesByCategory(BossNodeFactory::NodeCategory::Condition);
             for (const auto& nodeType : conditionTypes) {
@@ -721,7 +721,7 @@ void BossNodeEditor::DrawNodeInspector() {
     ImGui::Separator();
     ImGui::Text("Parameters");
 
-    // ノード自身のDrawImGuiでパラメータ編集
+    // ノード自身の DrawImGui でパラメータ編集
     if (node->runtimeNode) {
         if (!node->runtimeNode->DrawImGui()) {
             ImGui::TextDisabled("No editable parameters");
@@ -734,7 +734,7 @@ void BossNodeEditor::DrawNodeInspector() {
 }
 
 /// <summary>
-/// JSONから読み込み
+/// JSON から読み込み
 /// </summary>
 bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
     try {
@@ -761,7 +761,7 @@ bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
         // 既存のエディタをクリア
         Clear();
 
-        // IDマッピング（古いID → 新しいID）
+        // ID マッピング（古い ID → 新しい ID）
         std::unordered_map<int, int> oldToNewNodeIdMap;
         std::unordered_map<int, int> oldToNewPinIdMap;
 
@@ -776,7 +776,7 @@ bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
                     nodeJson["position"]["y"]
                 );
 
-                // ノードを作成（IDは自動生成される）
+                // ノードを作成（ID は自動生成される）
                 int newId = CreateNodeWithId(nextNodeId_++, nodeType, position);
                 if (newId != -1) {
                     oldToNewNodeIdMap[oldId] = newId;
@@ -791,11 +791,11 @@ bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
                             ApplyNodeParameters(*node, nodeJson["parameters"]);
                         }
 
-                        // ピンIDのマッピングも作成
+                        // ピン ID のマッピングも作成
                         // 入力ピン
                         for (size_t i = 0; i < node->inputPinIds.size(); ++i) {
-                            // 元のピンIDは保存されていないので、順序で対応付け
-                            // TODO: より正確なピンID管理が必要な場合は、JSONにピン情報も保存
+                            // 元のピン ID は保存されていないので、順序で対応付け
+                            // TODO: より正確なピン ID 管理が必要な場合は、JSON にピン情報も保存
                         }
                     }
                 }
@@ -808,7 +808,7 @@ bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
                 int oldSourceNodeId = linkJson["sourceNodeId"];
                 int oldTargetNodeId = linkJson["targetNodeId"];
 
-                // 新しいノードIDに変換
+                // 新しいノード ID に変換
                 auto sourceIt = oldToNewNodeIdMap.find(oldSourceNodeId);
                 auto targetIt = oldToNewNodeIdMap.find(oldTargetNodeId);
 
@@ -856,7 +856,7 @@ bool BossNodeEditor::LoadFromJSON(const std::string& filepath) {
 }
 
 /// <summary>
-/// JSONに保存
+/// JSON に保存
 /// </summary>
 bool BossNodeEditor::SaveToJSON(const std::string& filepath) {
     try {
@@ -980,7 +980,7 @@ void BossNodeEditor::HighlightRunningNode(const BTNodePtr& nodePtr) {
 // ==========================================
 
 /// <summary>
-/// IDでノードを検索
+/// ID でノードを検索
 /// </summary>
 BossNodeEditor::EditorNode* BossNodeEditor::FindNodeById(int nodeId) {
     for (auto& node : nodes_) {
@@ -992,7 +992,7 @@ BossNodeEditor::EditorNode* BossNodeEditor::FindNodeById(int nodeId) {
 }
 
 /// <summary>
-/// IDでノードを検索（const版）
+/// ID でノードを検索（const 版）
 /// </summary>
 const BossNodeEditor::EditorNode* BossNodeEditor::FindNodeById(int nodeId) const {
     for (const auto& node : nodes_) {
@@ -1017,7 +1017,7 @@ BossNodeEditor::EditorNode* BossNodeEditor::FindNodeByRuntimeNode(const BTNodePt
 }
 
 /// <summary>
-/// IDでピンを検索
+/// ID でピンを検索
 /// </summary>
 BossNodeEditor::EditorPin* BossNodeEditor::FindPinById(int pinId) {
     for (auto& pin : pins_) {
@@ -1029,7 +1029,7 @@ BossNodeEditor::EditorPin* BossNodeEditor::FindPinById(int pinId) {
 }
 
 /// <summary>
-/// IDでピンを検索（const版）
+/// ID でピンを検索（const 版）
 /// </summary>
 const BossNodeEditor::EditorPin* BossNodeEditor::FindPinById(int pinId) const {
     for (const auto& pin : pins_) {
@@ -1041,7 +1041,7 @@ const BossNodeEditor::EditorPin* BossNodeEditor::FindPinById(int pinId) const {
 }
 
 /// <summary>
-/// IDでリンクを検索
+/// ID でリンクを検索
 /// </summary>
 BossNodeEditor::EditorLink* BossNodeEditor::FindLinkById(int linkId) {
     for (auto& link : links_) {
@@ -1053,7 +1053,7 @@ BossNodeEditor::EditorLink* BossNodeEditor::FindLinkById(int linkId) {
 }
 
 /// <summary>
-/// ルートノードIDを検索
+/// ルートノード ID を検索
 /// </summary>
 int BossNodeEditor::FindRootNodeId() const {
     // 入力リンクを持たないノードを探す
@@ -1079,7 +1079,7 @@ int BossNodeEditor::FindRootNodeId() const {
 }
 
 /// <summary>
-/// 子ノードIDリストを取得
+/// 子ノード ID リストを取得
 /// </summary>
 std::vector<int> BossNodeEditor::GetChildNodeIds(int parentNodeId) const {
     std::vector<int> childIds;
@@ -1098,8 +1098,8 @@ std::vector<int> BossNodeEditor::GetChildNodeIds(int parentNodeId) const {
 /// 循環参照チェック
 /// </summary>
 bool BossNodeEditor::HasCyclicDependency(int startNodeId, int endNodeId) const {
-    // startNodeIdからendNodeIdへのリンクを作成した場合に、
-    // endNodeIdからstartNodeIdへのパスが存在するかチェック
+    // startNodeId から endNodeId へのリンクを作成した場合に、
+    // endNodeId から startNodeId へのパスが存在するかチェック
 
     // BFS（幅優先探索）で循環参照をチェック
     std::set<int> visited;
@@ -1110,7 +1110,7 @@ bool BossNodeEditor::HasCyclicDependency(int startNodeId, int endNodeId) const {
         int currentId = queue.front();
         queue.pop();
 
-        // startNodeIdに到達した場合、循環参照が発生
+        // startNodeId に到達した場合、循環参照が発生
         if (currentId == startNodeId) {
             return true;
         }
@@ -1140,7 +1140,7 @@ void BossNodeEditor::CreateNode(const std::string& nodeType, const ImVec2& posit
 }
 
 /// <summary>
-/// 指定IDでノード作成
+/// 指定 ID でノード作成
 /// </summary>
 int BossNodeEditor::CreateNodeWithId(int nodeId, const std::string& nodeType, const ImVec2& position) {
     // エディタノードを作成
@@ -1154,8 +1154,8 @@ int BossNodeEditor::CreateNodeWithId(int nodeId, const std::string& nodeType, co
     // ランタイムノードを作成（依存関係なしで試みる）
     newNode.runtimeNode = BossNodeFactory::CreateNode(nodeType);
     if (!newNode.runtimeNode) {
-        // 依存関係が必要な場合は、とりあえずnullptrでも作成
-        // 後でSetDependenciesのようなメソッドで設定可能にする
+        // 依存関係が必要な場合は、とりあえず nullptr でも作成
+        // 後で SetDependencies のようなメソッドで設定可能にする
         newNode.runtimeNode = BossNodeFactory::CreateNodeWithDependencies(nodeType, nullptr, nullptr);
     }
 
@@ -1182,7 +1182,7 @@ int BossNodeEditor::CreateNodeWithId(int nodeId, const std::string& nodeType, co
     // ノードを追加
     nodes_.push_back(newNode);
 
-    // ランタイムノードとエディタIDのマッピング
+    // ランタイムノードとエディタ ID のマッピング
     if (newNode.runtimeNode) {
         runtimeNodeToEditorId_[newNode.runtimeNode.get()] = nodeId;
     }
@@ -1210,7 +1210,7 @@ void BossNodeEditor::BuildRuntimeTreeRecursive(int nodeId, BTNodePtr& outNode) {
             // 既存の子をクリア
             compositeNode->ClearChildren();
 
-            // このノードの子ノードIDを取得
+            // このノードの子ノード ID を取得
             std::vector<int> childIds = GetChildNodeIds(nodeId);
 
             // 各子ノードを再帰的に構築

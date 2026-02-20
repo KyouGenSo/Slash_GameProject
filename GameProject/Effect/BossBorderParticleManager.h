@@ -33,13 +33,13 @@ public:
     /// <summary>
     /// 境界線エミッターの有効/無効を設定
     /// </summary>
-    /// <param name="active">有効にするならtrue</param>
+    /// <param name="active">有効にするなら true</param>
     void SetActive(bool active);
 
     /// <summary>
     /// 境界線エミッターがアクティブか
     /// </summary>
-    /// <returns>アクティブならtrue</returns>
+    /// <returns>アクティブなら true</returns>
     bool IsActive() const { return isActive_; }
 
     /// <summary>

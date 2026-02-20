@@ -30,7 +30,7 @@ void ParryState::Enter(Player* player)
 
 void ParryState::Update(Player* player, float deltaTime)
 {
-    // GlobalVariablesから値を同期
+    // GlobalVariables から値を同期
     GlobalVariables* gv = GlobalVariables::GetInstance();
     parryDuration_ = gv->GetValueFloat("ParryState", "ParryDuration");
 

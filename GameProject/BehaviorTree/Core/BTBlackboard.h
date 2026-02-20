@@ -76,7 +76,7 @@ public:
     /// </summary>
     /// <template name="T">データ型</template>
     /// <param name="key">キー</param>
-    /// <returns>値（存在しない場合はnullopt）</returns>
+    /// <returns>値（存在しない場合は nullopt）</returns>
     template<typename T>
     std::optional<T> GetValue(const std::string& key) const {
         auto it = data_.find(key);
@@ -155,7 +155,7 @@ public:
     /// キーが存在するかチェック
     /// </summary>
     /// <param name="key">キー</param>
-    /// <returns>存在する場合true</returns>
+    /// <returns>存在する場合 true</returns>
     bool HasKey(const std::string& key) const {
         return data_.find(key) != data_.end();
     }

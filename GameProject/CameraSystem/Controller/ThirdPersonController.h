@@ -31,7 +31,7 @@ public:
     /// <summary>
     /// アクティブ状態を判定
     /// </summary>
-    /// <returns>アクティブな場合true</returns>
+    /// <returns>アクティブな場合 true</returns>
     bool IsActive() const override { return isActive_; }
 
     /// <summary>
@@ -87,7 +87,7 @@ public:
     /// <summary>
     /// セカンダリターゲット（ボスなど）を設定
     /// </summary>
-    /// <param name="target">注視対象のTransform</param>
+    /// <param name="target">注視対象の Transform</param>
     void SetSecondaryTarget(const Tako::Transform* target) {
         secondaryTarget_ = target;
     }
@@ -95,7 +95,7 @@ public:
     /// <summary>
     /// ターゲット注視機能の有効/無効を設定
     /// </summary>
-    /// <param name="enable">有効にする場合true</param>
+    /// <param name="enable">有効にする場合 true</param>
     void EnableLookAtTarget(bool enable) {
         enableLookAtTarget_ = enable;
     }
@@ -151,7 +151,7 @@ private:
 
     // 位置関連
     Tako::Vector3 interpolatedTargetPos_ = {};
-    // CameraConfig::FirstPersonは実際にはThirdPerson用の設定
+    // CameraConfig::FirstPerson は実際には ThirdPerson 用の設定
     Tako::Vector3 offset_ = {
         CameraConfig::ThirdPerson::DEFAULT_OFFSET_X,
         CameraConfig::ThirdPerson::DEFAULT_OFFSET_Y,
@@ -160,13 +160,13 @@ private:
     Tako::Vector3 offsetOrigin_ = offset_;
 
     // 回転関連（すべてラジアン単位）
-    // CameraConfig::ThirdPerson::DEFAULT_ANGLE_Xはラジアン単位（約8度）
+    // CameraConfig::ThirdPerson::DEFAULT_ANGLE_X はラジアン単位（約8度）
     float destinationAngleX_ = CameraConfig::ThirdPerson::DEFAULT_ANGLE_X;  // ラジアン単位
     float destinationAngleY_ = 0.0f;  // ラジアン
     float destinationAngleZ_ = 0.0f;  // ラジアン
 
     // パラメータ
-    // CameraConfig::FirstPersonは実際にはThirdPerson用の設定
+    // CameraConfig::FirstPerson は実際には ThirdPerson 用の設定
     // 回転速度をラジアン単位に変換（0.05度 ≈ 0.00087ラジアン）
     float rotateSpeed_ = CameraConfig::ThirdPerson::DEFAULT_ROTATE_SPEED * (std::numbers::pi_v<float> / 180.0f);
     float followSmoothness_ = CameraConfig::FOLLOW_SMOOTHNESS;

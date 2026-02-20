@@ -3,7 +3,7 @@
 
 /// <summary>
 /// 弾生成リクエスト構造体
-/// Player/Bossが弾の生成をGameSceneに要求する際に使用
+/// Player/Boss が弾の生成を GameScene に要求する際に使用
 /// </summary>
 struct BulletSpawnRequest {
     Tako::Vector3 position;  ///< 発射位置

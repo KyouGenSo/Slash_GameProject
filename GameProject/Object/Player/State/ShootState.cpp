@@ -28,7 +28,7 @@ void ShootState::Enter(Player* player)
 
 void ShootState::Update(Player* player, float deltaTime)
 {
-	// GlobalVariablesから値を同期
+	// GlobalVariables から値を同期
 	GlobalVariables* gv = GlobalVariables::GetInstance();
 	fireRate_ = gv->GetValueFloat("ShootState", "FireRate");
 	moveSpeedMultiplier_ = gv->GetValueFloat("ShootState", "MoveSpeedMultiplier");
@@ -36,7 +36,7 @@ void ShootState::Update(Player* player, float deltaTime)
 	// フェーズ2では射撃を無効化
 	Boss* boss = player->GetBoss();
 	if (boss && boss->GetPhase() == 2) {
-		// 射撃せずにIdle/Moveに戻る
+		// 射撃せずに Idle/Move に戻る
 		PlayerStateMachine* stateMachine = player->GetStateMachine();
 		InputHandler* input = player->GetInputHandler();
 		if (stateMachine && input) {
@@ -110,10 +110,10 @@ void ShootState::CalculateAimDirection(Player* player)
 	// 右スティック方向を取得
 	Vector2 stick = input->GetAimDirection();
 
-	// スティック入力を3Dベクトルに変換（X=左右, Y=前後 → X=X, Z=Y）
+	// スティック入力を3D ベクトルに変換（X=左右, Y=前後 → X=X, Z=Y）
 	Vector3 localDirection = Vector3(stick.x, 0.0f, stick.y);
 
-	// カメラのY回転を基準にする（カメラ相対座標系）
+	// カメラの Y 回転を基準にする（カメラ相対座標系）
 	Camera* camera = player->GetCamera();
 	float cameraYaw = camera ? camera->GetRotateY() : player->GetRotate().y;
 	Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(cameraYaw);

@@ -14,7 +14,7 @@ class Player;
 
 /// <summary>
 /// ボスノードの生成ファクトリ
-/// ノードタイプ文字列から実際のBTNodeインスタンスを生成
+/// ノードタイプ文字列から実際の BTNode インスタンスを生成
 /// </summary>
 class BossNodeFactory {
 public:
@@ -24,16 +24,16 @@ public:
     /// ノードの生成
     /// </summary>
     /// <param name="nodeType">ノードタイプ名（"BTSelector", "BTSequence"等）</param>
-    /// <returns>生成されたノード（失敗時はnullptr）</returns>
+    /// <returns>生成されたノード（失敗時は nullptr）</returns>
     static BTNodePtr CreateNode(const std::string& nodeType);
 
     /// <summary>
-    /// Boss/Playerの依存関係を持つノードの生成
+    /// Boss/Player の依存関係を持つノードの生成
     /// </summary>
     /// <param name="nodeType">ノードタイプ名</param>
     /// <param name="boss">ボスのポインタ（必要な場合）</param>
     /// <param name="player">プレイヤーのポインタ（必要な場合）</param>
-    /// <returns>生成されたノード（失敗時はnullptr）</returns>
+    /// <returns>生成されたノード（失敗時は nullptr）</returns>
     static BTNodePtr CreateNodeWithDependencies(
         const std::string& nodeType,
         Boss* boss = nullptr,
@@ -80,7 +80,7 @@ public:
     /// <summary>
     /// ノードタイプの取得（逆引き）
     /// </summary>
-    /// <param name="node">BTNodeインスタンス</param>
+    /// <param name="node">BTNode インスタンス</param>
     /// <returns>ノードタイプ名</returns>
     static std::string GetNodeType(const BTNodePtr& node);
 
@@ -109,7 +109,7 @@ public:
     /// コンポジットノードかどうか判定
     /// </summary>
     /// <param name="nodeType">ノードタイプ名</param>
-    /// <returns>コンポジット（子を持てる）ならtrue</returns>
+    /// <returns>コンポジット（子を持てる）なら true</returns>
     static bool IsCompositeNode(const std::string& nodeType);
 
     /// <summary>

@@ -18,7 +18,7 @@ void EasingMover::InitializeWithSpeed(const Vector3& start, const Vector3& targe
     targetPosition_ = target;
 
     Vector3 diff = target - start;
-    diff.y = 0.0f;  // Y軸は無視して水平距離で計算
+    diff.y = 0.0f;  // Y 軸は無視して水平距離で計算
     float distance = diff.Length();
 
     duration_ = (speed > 0.0f) ? distance / speed : 0.0f;

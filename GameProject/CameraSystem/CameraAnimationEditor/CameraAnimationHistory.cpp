@@ -3,7 +3,7 @@
 #include "CameraAnimationHistory.h"
 #include <format>
 
-// AddKeyframeAction実装
+// AddKeyframeAction 実装
 void CameraAnimationHistory::AddKeyframeAction::Execute(CameraAnimation* animation) {
     animation->AddKeyframe(keyframe_);
 }
@@ -12,7 +12,7 @@ void CameraAnimationHistory::AddKeyframeAction::Undo(CameraAnimation* animation)
     animation->RemoveKeyframe(index_);
 }
 
-// DeleteKeyframeAction実装
+// DeleteKeyframeAction 実装
 void CameraAnimationHistory::DeleteKeyframeAction::Execute(CameraAnimation* animation) {
     animation->RemoveKeyframe(index_);
 }
@@ -21,7 +21,7 @@ void CameraAnimationHistory::DeleteKeyframeAction::Undo(CameraAnimation* animati
     animation->AddKeyframe(keyframe_);
 }
 
-// EditKeyframeAction実装
+// EditKeyframeAction 実装
 void CameraAnimationHistory::EditKeyframeAction::Execute(CameraAnimation* animation) {
     animation->EditKeyframe(index_, newKeyframe_);
 }
@@ -30,7 +30,7 @@ void CameraAnimationHistory::EditKeyframeAction::Undo(CameraAnimation* animation
     animation->EditKeyframe(index_, oldKeyframe_);
 }
 
-// CameraAnimationHistory実装
+// CameraAnimationHistory 実装
 CameraAnimationHistory::CameraAnimationHistory() {
     history_.reserve(maxHistorySize_);
 }
@@ -78,7 +78,7 @@ void CameraAnimationHistory::RecordAdd(size_t index) {
     auto action = std::make_unique<AddKeyframeAction>(
         animation_->GetKeyframe(index), index);
 
-    // ExecuteActionは使わない（既に追加済みのため）
+    // ExecuteAction は使わない（既に追加済みのため）
     if (currentIndex_ < history_.size()) {
         history_.erase(history_.begin() + currentIndex_, history_.end());
     }
@@ -94,7 +94,7 @@ void CameraAnimationHistory::RecordDelete(size_t index, const CameraKeyframe& ke
 
     auto action = std::make_unique<DeleteKeyframeAction>(keyframe, index);
 
-    // ExecuteActionは使わない（既に削除済みのため）
+    // ExecuteAction は使わない（既に削除済みのため）
     if (currentIndex_ < history_.size()) {
         history_.erase(history_.begin() + currentIndex_, history_.end());
     }
@@ -110,7 +110,7 @@ void CameraAnimationHistory::RecordEdit(size_t index, const CameraKeyframe& oldK
 
     auto action = std::make_unique<EditKeyframeAction>(index, oldKf, newKf);
 
-    // ExecuteActionは使わない（既に編集済みのため）
+    // ExecuteAction は使わない（既に編集済みのため）
     if (currentIndex_ < history_.size()) {
         history_.erase(history_.begin() + currentIndex_, history_.end());
     }

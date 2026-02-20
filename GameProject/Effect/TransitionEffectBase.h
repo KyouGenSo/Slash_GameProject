@@ -41,13 +41,13 @@ public:
     /// <summary>
     /// 演出完了判定
     /// </summary>
-    /// <returns>演出が完了していればtrue</returns>
+    /// <returns>演出が完了していれば true</returns>
     bool IsComplete() const { return isComplete_; }
 
     /// <summary>
     /// 演出中判定
     /// </summary>
-    /// <returns>演出中であればtrue</returns>
+    /// <returns>演出中であれば true</returns>
     bool IsPlaying() const { return isPlaying_; }
 
     /// <summary>

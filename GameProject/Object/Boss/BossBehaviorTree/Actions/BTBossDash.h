@@ -14,8 +14,8 @@ class BTBossDash : public BTNode {
     //=========================================================================================
 private:
     static constexpr float kDirectionEpsilon = 0.01f;  ///< 方向判定の閾値
-    static constexpr float kEasingCoeffA = 3.0f;       ///< イージング係数A
-    static constexpr float kEasingCoeffB = 2.0f;       ///< イージング係数B
+    static constexpr float kEasingCoeffA = 3.0f;       ///< イージング係数 A
+    static constexpr float kEasingCoeffB = 2.0f;       ///< イージング係数 B
 
 public:
     /// <summary>
@@ -47,9 +47,9 @@ public:
     void SetDashDuration(float duration) { dashDuration_ = duration; }
 
     /// <summary>
-    /// JSONからパラメータを適用
+    /// JSON からパラメータを適用
     /// </summary>
-    /// <param name="params">パラメータJSON</param>
+    /// <param name="params">パラメータ JSON</param>
     void ApplyParameters(const nlohmann::json& params) override {
         if (params.contains("dashSpeed")) {
             dashSpeed_ = params["dashSpeed"];
@@ -60,13 +60,13 @@ public:
     }
 
     /// <summary>
-    /// パラメータをJSONとして抽出
+    /// パラメータを JSON として抽出
     /// </summary>
     nlohmann::json ExtractParameters() const override;
 
 #ifdef _DEBUG
     /// <summary>
-    /// ImGuiでパラメータ編集UIを描画
+    /// ImGui でパラメータ編集 UI を描画
     /// </summary>
     bool DrawImGui() override;
 #endif
@@ -113,11 +113,11 @@ private:
     // 初回実行フラグ
     bool isFirstExecute_ = true;
 
-    // ダッシュ距離範囲（ImGui調整用）
+    // ダッシュ距離範囲（ImGui 調整用）
     float minDistance_ = 10.0f;  ///< 最小ダッシュ距離
     float maxDistance_ = 50.0f;  ///< 最大ダッシュ距離
 
-    // 調整可能パラメータ（ImGui編集用）
+    // 調整可能パラメータ（ImGui 編集用）
     float vibrationFreq_ = 50.0f;  ///< 振動周波数
     float vibrationAmp_ = 0.05f;   ///< 振動振幅
 };

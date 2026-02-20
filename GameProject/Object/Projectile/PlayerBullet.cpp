@@ -13,14 +13,14 @@ using namespace Tako;
 uint32_t PlayerBullet::id = 0;
 
 PlayerBullet::PlayerBullet(EmitterManager* emitterManager) {
-    // GlobalVariablesから値を取得
+    // GlobalVariables から値を取得
     GlobalVariables* gv = GlobalVariables::GetInstance();
 
-    // 弾のパラメータ設定（デフォルト値を使用、GlobalVariablesに未登録の場合に備える）
+    // 弾のパラメータ設定（デフォルト値を使用、GlobalVariables に未登録の場合に備える）
     damage_ = gv->GetValueFloat("PlayerBullet", "Damage");
     lifeTime_ = gv->GetValueFloat("PlayerBullet", "Lifetime");
 
-    // デフォルト値の設定（GlobalVariablesに登録されていない場合）
+    // デフォルト値の設定（GlobalVariables に登録されていない場合）
     if (damage_ <= 0.0f) {
         damage_ = 10.0f;
     }
@@ -44,7 +44,7 @@ PlayerBullet::PlayerBullet(EmitterManager* emitterManager) {
     id++;
 
     if (id > kIdResetThreshold) {
-        id = 0; // IDのリセット
+        id = 0; // ID のリセット
     }
 }
 
@@ -83,12 +83,12 @@ void PlayerBullet::Initialize(const Vector3& position, const Vector3& velocity) 
     collider_->SetActive(true);
     collider_->Reset();
 
-    // CollisionManagerに登録
+    // CollisionManager に登録
     CollisionManager::GetInstance()->AddCollider(collider_.get());
 }
 
 void PlayerBullet::Finalize() {
-    // CollisionManagerから削除
+    // CollisionManager から削除
     if (collider_) {
         CollisionManager::GetInstance()->RemoveCollider(collider_.get());
     }

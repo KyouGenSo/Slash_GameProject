@@ -4,7 +4,7 @@
 
 /// <summary>
 /// アクション選択条件ノード
-/// ActionCounterの値に基づいて成功/失敗を返す
+/// ActionCounter の値に基づいて成功/失敗を返す
 /// </summary>
 class BTActionSelector : public BTNode {
 public:
@@ -52,9 +52,9 @@ public:
     void SetActionType(ActionType type) { expectedType_ = type; }
 
     /// <summary>
-    /// JSONからパラメータを適用
+    /// JSON からパラメータを適用
     /// </summary>
-    /// <param name="params">パラメータJSON</param>
+    /// <param name="params">パラメータ JSON</param>
     void ApplyParameters(const nlohmann::json& params) override {
         if (params.contains("actionType")) {
             expectedType_ = static_cast<ActionType>(params["actionType"].get<int>());
@@ -62,13 +62,13 @@ public:
     }
 
     /// <summary>
-    /// パラメータをJSONとして抽出
+    /// パラメータを JSON として抽出
     /// </summary>
     nlohmann::json ExtractParameters() const override;
 
 #ifdef _DEBUG
     /// <summary>
-    /// ImGuiでパラメータ編集UIを描画
+    /// ImGui でパラメータ編集 UI を描画
     /// </summary>
     bool DrawImGui() override;
 #endif

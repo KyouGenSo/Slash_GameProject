@@ -110,7 +110,7 @@ void BTBossRetreat::InitializeRetreat(Boss* boss, Player* player) {
             // 壁回避: 最適な離脱方向を探索
             Vector3 bestDirection = FindBestRetreatDirection(primaryDirection, retreatDistance);
 
-            // プレイヤーを向いたまま（bestDirectionの逆方向を向く）
+            // プレイヤーを向いたまま（bestDirection の逆方向を向く）
             float angle = atan2f(-bestDirection.x, -bestDirection.z);
             boss->SetRotate(Vector3(0.0f, angle, 0.0f));
 
@@ -157,14 +157,14 @@ void BTBossRetreat::UpdateRetreatMovement(Boss* boss, float deltaTime) {
 Vector3 BTBossRetreat::ClampToArea(const Vector3& position) {
     Vector3 clampedPos = position;
 
-    // GameConstantsのステージ境界を使用
-    // X座標の制限
+    // GameConstants のステージ境界を使用
+    // X 座標の制限
     clampedPos.x = std::clamp(clampedPos.x, GameConst::kStageXMin + GameConst::kAreaMargin, GameConst::kStageXMax - GameConst::kAreaMargin);
 
-    // Z座標の制限
+    // Z 座標の制限
     clampedPos.z = std::clamp(clampedPos.z, GameConst::kStageZMin + GameConst::kAreaMargin, GameConst::kStageZMax - GameConst::kAreaMargin);
 
-    // Y座標は元の値を保持
+    // Y 座標は元の値を保持
     clampedPos.y = position.y;
 
     return clampedPos;
@@ -179,7 +179,7 @@ Vector3 BTBossRetreat::FindBestRetreatDirection(const Vector3& primaryDirection,
         return primaryDirection;
     }
 
-    // 代替方向を評価（Mat4x4::MakeRotateY + TransformNormalで回転）
+    // 代替方向を評価（Mat4x4::MakeRotateY + TransformNormal で回転）
     constexpr float kHalfPi = std::numbers::pi_v<float> / 2.0f;  // 90度
     constexpr float kPi = std::numbers::pi_v<float>;              // 180度
 

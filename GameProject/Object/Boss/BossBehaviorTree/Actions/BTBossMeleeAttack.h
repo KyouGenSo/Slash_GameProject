@@ -76,9 +76,9 @@ public:
     void SetStopDistance(float distance) { stopDistance_ = distance; }
 
     /// <summary>
-    /// JSONからパラメータを適用
+    /// JSON からパラメータを適用
     /// </summary>
-    /// <param name="params">パラメータJSON</param>
+    /// <param name="params">パラメータ JSON</param>
     void ApplyParameters(const nlohmann::json& params) override {
         if (params.contains("prepareTime")) {
             prepareTime_ = params["prepareTime"];
@@ -113,13 +113,13 @@ public:
     }
 
     /// <summary>
-    /// パラメータをJSONとして抽出
+    /// パラメータを JSON として抽出
     /// </summary>
     nlohmann::json ExtractParameters() const override;
 
 #ifdef _DEBUG
     /// <summary>
-    /// ImGuiでパラメータ編集UIを描画
+    /// ImGui でパラメータ編集 UI を描画
     /// </summary>
     bool DrawImGui() override;
 #endif
@@ -184,7 +184,7 @@ private:
     Tako::Vector3 ClampToArea(const Tako::Vector3& position);
 
     /// <summary>
-    /// 突進の初期化（Execute開始時に呼ぶ）
+    /// 突進の初期化（Execute 開始時に呼ぶ）
     /// </summary>
     /// <param name="boss">ボス</param>
     void InitializeRush(Boss* boss);
@@ -221,7 +221,7 @@ private:
 
     // 突進状態管理
     Tako::Vector3 startPosition_;         ///< 突進開始位置
-    Tako::Vector3 targetPosition_;        ///< 突進目標位置（Execute開始時に固定）
+    Tako::Vector3 targetPosition_;        ///< 突進目標位置（Execute 開始時に固定）
     Tako::Vector3 rushDirection_;         ///< 突進方向
     bool rushInitialized_ = false;  ///< 突進初期化済みフラグ
 
@@ -231,7 +231,7 @@ private:
     int comboIndex_ = 0;                 ///< 現在の攻撃回数（0-indexed）
     float currentSwingDirection_ = 1.0f; ///< 振り方向（+1:右→左, -1:左→右）
 
-    // コンボパラメータ（GlobalVariables連携）
+    // コンボパラメータ（GlobalVariables 連携）
     float comboInterval_ = 0.5f;         ///< コンボ間隔（デフォルト0.5秒）
     float comboProbability_ = 0.5f;      ///< コンボ発動確率（デフォルト50%）
 };

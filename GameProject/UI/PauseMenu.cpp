@@ -27,7 +27,7 @@ void PauseMenu::Initialize()
     overlaySprite_->SetSize({ static_cast<float>(WinApp::clientWidth),  static_cast<float>(WinApp::clientHeight) });
     overlaySprite_->SetColor({ 0.0f, 0.0f, 0.0f, 0.5f });
 
-    // タイトルスプライト（PAUSE表示）
+    // タイトルスプライト（PAUSE 表示）
     titleSprite_ = std::make_unique<Sprite>();
     titleSprite_->Initialize("PauseMenu_Text.dds");
     titleSprite_->SetPos({ 960.0f, 200.0f });
@@ -51,7 +51,7 @@ void PauseMenu::Initialize()
         buttonSprites_[i]->SetAnchorPoint({ 0.5f, 0.5f });
     }
 
-    // DPAD操作ガイドスプライト（ControllerUIと同じ座標・サイズ）
+    // DPAD 操作ガイドスプライト（ControllerUI と同じ座標・サイズ）
     dpadGuideSprite_ = std::make_unique<Sprite>();
     dpadGuideSprite_->Initialize("button/DPAD_Neutral.dds");
     dpadGuideSprite_->SetPos({ 323.0f, 869.0f });
@@ -67,7 +67,7 @@ void PauseMenu::Initialize()
     dpadDownSprite_->SetPos({ 323.0f, 869.0f });
     dpadDownSprite_->SetSize({ 150.0f, 150.0f });
 
-    // Aボタンスプライト（ControllerUIと同じ座標・サイズ）
+    // A ボタンスプライト（ControllerUI と同じ座標・サイズ）
     aButtonUpSprite_ = std::make_unique<Sprite>();
     aButtonUpSprite_->Initialize("button/A_Button_Up.dds");
     aButtonUpSprite_->SetPos({ 1565.0f, 948.0f });
@@ -78,13 +78,13 @@ void PauseMenu::Initialize()
     aButtonDownSprite_->SetPos({ 1565.0f, 948.0f });
     aButtonDownSprite_->SetSize({ 60.0f, 60.0f });
 
-    // 選択テキスト（ControllerUIと同じ座標・サイズ）
+    // 選択テキスト（ControllerUI と同じ座標・サイズ）
     sentakuSprite_ = std::make_unique<Sprite>();
     sentakuSprite_->Initialize("sentaku.dds");
     sentakuSprite_->SetPos({ 460.0f, 910.0f });
     sentakuSprite_->SetSize({ 150.0f, 50.0f });
 
-    // 決定テキスト（ControllerUIと同じ座標・サイズ）
+    // 決定テキスト（ControllerUI と同じ座標・サイズ）
     ketteiSprite_ = std::make_unique<Sprite>();
     ketteiSprite_->Initialize("kettei.dds");
     ketteiSprite_->SetPos({ 1518.0f, 1000.0f });
@@ -120,7 +120,7 @@ PauseMenu::Action PauseMenu::Update()
     isDPadDownPressed_ = input->PushButton(XButtons.DPad_Down);
     isAPressed_ = input->PushButton(XButtons.A);
 
-    // DPAD上下で選択移動
+    // DPAD 上下で選択移動
     if (input->TriggerButton(XButtons.DPad_Up)) {
         selectedIndex_ = (selectedIndex_ - 1 + kButtonCount) % kButtonCount;
         UpdateButtonColors();
@@ -130,7 +130,7 @@ PauseMenu::Action PauseMenu::Update()
         UpdateButtonColors();
     }
 
-    // Aボタンで決定
+    // A ボタンで決定
     if (input->TriggerButton(XButtons.A)) {
         switch (selectedIndex_) {
         case 0: return Action::Resume;
@@ -169,7 +169,7 @@ void PauseMenu::Draw()
         button->Draw();
     }
 
-    // === 操作説明UI ===
+    // === 操作説明 UI ===
 
     // 選択テキスト
     sentakuSprite_->Draw();
@@ -186,7 +186,7 @@ void PauseMenu::Draw()
     // 決定テキスト
     ketteiSprite_->Draw();
 
-    // Aボタン（入力に応じて切り替え）
+    // A ボタン（入力に応じて切り替え）
     if (isAPressed_) {
         aButtonDownSprite_->Draw();
     } else {
@@ -231,14 +231,14 @@ void PauseMenu::OnResize(const Vector2& newSize)
         buttonSprites_[i]->SetPos({ 960.0f * scaleX, buttonY[i] * scaleY });
     }
 
-    // DPAD操作ガイドスプライト
+    // DPAD 操作ガイドスプライト
     dpadGuideSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
 
     dpadUpSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
 
     dpadDownSprite_->SetPos({ 323.0f * scaleX, 869.0f * scaleY });
 
-    // Aボタンスプライト
+    // A ボタンスプライト
     aButtonUpSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
 
     aButtonDownSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
@@ -287,7 +287,7 @@ void PauseMenu::DrawImGui()
             ImGui::TreePop();
         }
 
-        // DPAD操作ガイド
+        // DPAD 操作ガイド
         if (ImGui::TreeNode("DPAD Guide Sprites")) {
             if (ImGui::TreeNode("DPAD Neutral")) {
                 dpadGuideSprite_->DrawImGui();
@@ -304,7 +304,7 @@ void PauseMenu::DrawImGui()
             ImGui::TreePop();
         }
 
-        // Aボタンスプライト
+        // A ボタンスプライト
         if (ImGui::TreeNode("A Button Sprites")) {
             if (ImGui::TreeNode("A Button Up")) {
                 aButtonUpSprite_->DrawImGui();

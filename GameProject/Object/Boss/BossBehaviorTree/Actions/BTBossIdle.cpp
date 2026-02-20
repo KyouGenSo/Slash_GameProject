@@ -67,7 +67,7 @@ void BTBossIdle::LookAtPlayer(Boss* boss, float deltaTime) {
     Vector3 playerPos = player->GetTransform().translate;
     Vector3 bossPos = boss->GetTransform().translate;
     Vector3 toPlayer = playerPos - bossPos;
-    toPlayer.y = 0.0f;  // Y軸は無視
+    toPlayer.y = 0.0f;  // Y 軸は無視
 
     if (toPlayer.Length() > kDirectionEpsilon) {
         toPlayer.Normalize();

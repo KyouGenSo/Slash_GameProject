@@ -38,7 +38,7 @@ public:
     /// <summary>
     /// シェイクがアクティブか
     /// </summary>
-    /// <returns>アクティブならtrue</returns>
+    /// <returns>アクティブなら true</returns>
     bool IsActive() const { return isActive_; }
 
     /// <summary>

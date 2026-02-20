@@ -16,7 +16,7 @@ void TopDownController::Update(float deltaTime) {
         return;
     }
 
-    // 標準FOVを設定
+    // 標準 FOV を設定
     if (camera_) {
       camera_->SetFovY(standardFov_);
     }
@@ -27,7 +27,7 @@ void TopDownController::Update(float deltaTime) {
 void TopDownController::Activate() {
     isActive_ = true;
 
-    // 標準FOVを設定
+    // 標準 FOV を設定
     if (camera_) {
       camera_->SetFovY(standardFov_);
     }

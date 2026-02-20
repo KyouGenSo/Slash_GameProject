@@ -2,7 +2,7 @@
 #include "MyGame/MyGame.h"
 #include <memory>
 
-//Windowsプログラムのエントリーポイント
+//Windows プログラムのエントリーポイント
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
   auto game = std::make_unique<MyGame>();

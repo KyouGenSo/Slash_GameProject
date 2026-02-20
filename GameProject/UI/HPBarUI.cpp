@@ -103,7 +103,7 @@ void HPBarUI::UpdateDual(float currentHp, float maxHp, float phase2Threshold, ui
     Vector2 screenPos = CalculateScreenPosition();
 
     if (phase == 1) {
-        // フェーズ1: 青バー(barSprite_)がHP減少で縮小、赤バー(bar2Sprite_)はフルサイズ
+        // フェーズ1: 青バー(barSprite_)が HP 減少で縮小、赤バー(bar2Sprite_)はフルサイズ
         float phase1Hp = currentHp - phase2Threshold;
         float phase1MaxHp = maxHp - phase2Threshold;
         float phase1Ratio = (phase1MaxHp > 0.0f) ? (phase1Hp / phase1MaxHp) : 0.0f;
@@ -113,7 +113,7 @@ void HPBarUI::UpdateDual(float currentHp, float maxHp, float phase2Threshold, ui
         bar2Sprite_->SetSize(baseSize_);  // フルサイズ
     }
     else {
-        // フェーズ2: 青バーは0幅、赤バーがHP減少で縮小
+        // フェーズ2: 青バーは0幅、赤バーが HP 減少で縮小
         float phase2Ratio = (phase2Threshold > 0.0f) ? (currentHp / phase2Threshold) : 0.0f;
         phase2Ratio = std::clamp(phase2Ratio, 0.0f, 1.0f);
 

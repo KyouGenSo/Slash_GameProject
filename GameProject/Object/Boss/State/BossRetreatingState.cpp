@@ -25,7 +25,7 @@ void BossRetreatingState::Enter(Boss* boss)
 
 	Player* player = boss->GetPlayer();
 	if (!player) {
-		// プレイヤーがいない場合はすぐNormalに戻る
+		// プレイヤーがいない場合はすぐ Normal に戻る
 		retreatDuration_ = 0.0f;
 		targetPosition_ = startPosition_;
 		return;

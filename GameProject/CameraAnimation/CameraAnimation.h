@@ -50,7 +50,7 @@ public:
     /// <summary>
     /// ターゲットトランスフォームのセット
     /// </summary>
-    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    /// <param name="target">相対座標の基準となるターゲット（nullptr で解除）</param>
     void SetTarget(const Tako::Transform* target) { targetTransform_ = target; }
 
     /// <summary>
@@ -107,7 +107,7 @@ public:
     void Stop();
 
     /// <summary>
-    /// FOV復元なしで停止（アニメーション切り替え時用）
+    /// FOV 復元なしで停止（アニメーション切り替え時用）
     /// </summary>
     void StopWithoutRestore();
 
@@ -117,20 +117,20 @@ public:
     void Reset();
 
     /// <summary>
-    /// JSONファイルから読み込み
+    /// JSON ファイルから読み込み
     /// </summary>
-    /// <param name="filepath">JSONファイルパス</param>
+    /// <param name="filepath">JSON ファイルパス</param>
     bool LoadFromJson(const std::string& filepath);
 
     /// <summary>
-    /// JSONファイルに保存
+    /// JSON ファイルに保存
     /// </summary>
     /// <param name="filepath">保存先ファイルパス</param>
     bool SaveToJson(const std::string& filepath) const;
 
 #ifdef _DEBUG
     /// <summary>
-    /// ImGuiでのデバッグ表示
+    /// ImGui でのデバッグ表示
     /// </summary>
     void DrawImGui();
 #endif
@@ -334,16 +334,16 @@ private:
     // ブレンド開始時のカメラ状態
     Tako::Vector3 blendStartPosition_;  ///< ブレンド開始時の位置
     Tako::Vector3 blendStartRotation_;  ///< ブレンド開始時の回転
-    float blendStartFov_;         ///< ブレンド開始時のFOV
+    float blendStartFov_;         ///< ブレンド開始時の FOV
 
-    // FOV復元用
-    float originalFov_;           ///< アニメーション開始前の元のFOV値
-    bool hasOriginalFov_;         ///< 元のFOVが保存されているかのフラグ
+    // FOV 復元用
+    float originalFov_;           ///< アニメーション開始前の元の FOV 値
+    bool hasOriginalFov_;         ///< 元の FOV が保存されているかのフラグ
 
 #ifdef _DEBUG
-    int selectedKeyframeIndex_ = -1;  ///< ImGui用：選択中のキーフレームインデックス
-    bool showTimeline_ = true;  ///< ImGui用：タイムライン表示フラグ
-    bool autoSortKeyframes_ = true;  ///< ImGui用：キーフレーム自動ソートフラグ
+    int selectedKeyframeIndex_ = -1;  ///< ImGui 用：選択中のキーフレームインデックス
+    bool showTimeline_ = true;  ///< ImGui 用：タイムライン表示フラグ
+    bool autoSortKeyframes_ = true;  ///< ImGui 用：キーフレーム自動ソートフラグ
     CameraKeyframe tempKeyframe_;  ///< 編集用の一時キーフレーム
 #endif
 };

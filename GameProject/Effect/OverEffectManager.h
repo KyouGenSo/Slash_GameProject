@@ -7,7 +7,7 @@ class Player;
 /// <summary>
 /// ゲームオーバー演出管理クラス
 /// プレイヤー死亡時のエミッター発火とスケール減少を制御
-/// TransitionEffectBaseを継承
+/// TransitionEffectBase を継承
 /// </summary>
 class OverEffectManager : public TransitionEffectBase
 {

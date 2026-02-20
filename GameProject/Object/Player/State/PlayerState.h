@@ -51,7 +51,7 @@ public:
 	/// 指定状態への遷移可否を判定
 	/// </summary>
 	/// <param name="stateName">遷移先の状態名</param>
-	/// <returns>遷移可能な場合true</returns>
+	/// <returns>遷移可能な場合 true</returns>
 	virtual bool CanTransitionTo(const std::string& stateName) const { return true; }
 
 	/// <summary>
@@ -61,7 +61,7 @@ public:
 	const std::string& GetName() const { return stateName_; }
 
 	/// <summary>
-	/// ImGuiを使用したデバッグ情報の描画
+	/// ImGui を使用したデバッグ情報の描画
 	/// 各ステート固有のデバッグ情報を表示するために使用
 	/// </summary>
 	/// <param name="player">プレイヤーインスタンス</param>
@@ -70,10 +70,10 @@ public:
 protected:
 	/// <summary>
 	/// 状態を変更
-	/// 現在の状態からExit()を呼び出し、新しい状態のEnter()を呼び出す
+	/// 現在の状態から Exit()を呼び出し、新しい状態の Enter()を呼び出す
 	/// </summary>
 	/// <param name="stateMachine">状態管理を行うステートマシンインスタンス</param>
-	/// <param name="newState">遷移先の新しい状態インスタンス（PlayerStateの派生クラス）</param>
+	/// <param name="newState">遷移先の新しい状態インスタンス（PlayerState の派生クラス）</param>
 	void ChangeState(PlayerStateMachine* stateMachine, PlayerState* newState);
 
 private:

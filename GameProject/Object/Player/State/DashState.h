@@ -36,16 +36,16 @@ public:
 	void HandleInput(Player* player) override;
 
 	/// <summary>
-	/// ImGuiデバッグ情報の描画
+	/// ImGui デバッグ情報の描画
 	/// </summary>
 	void DrawImGui(Player* player) override;
 
-	// DrawImGui用のゲッター
+	// DrawImGui 用のゲッター
 	float GetTimer() const { return timer_; }
 	float GetDuration() const { return duration_; }
 	float GetSpeed() const { return speed_; }
 
-	// DrawImGui用のセッター（デバッグ調整用）
+	// DrawImGui 用のセッター（デバッグ調整用）
 	void SetDuration(float duration) { duration_ = duration; }
 	void SetSpeed(float speed) { speed_ = speed; }
 

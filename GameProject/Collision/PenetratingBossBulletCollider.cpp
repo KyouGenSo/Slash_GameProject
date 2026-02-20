@@ -43,7 +43,7 @@ void PenetratingBossBulletCollider::OnCollisionEnter(Tako::Collider* other) {
         }
     }
     // プレイヤーの弾との衝突時は何もしない（貫通）
-    // PLAYER_ATTACKとの衝突判定は行わない
+    // PLAYER_ATTACK との衝突判定は行わない
 }
 
 void PenetratingBossBulletCollider::OnCollisionStay(Tako::Collider* other) {

@@ -8,7 +8,7 @@ using namespace Tako;
 
 BossMeleeAttackCollider::BossMeleeAttackCollider(Boss* boss)
     : boss_(boss) {
-    // GlobalVariablesから値を取得
+    // GlobalVariables から値を取得
     GlobalVariables* gv = GlobalVariables::GetInstance();
     damage_ = gv->GetValueFloat("BossMeleeAttackCollider", "Damage");
 

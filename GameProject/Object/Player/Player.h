@@ -17,7 +17,7 @@
 #include "../../Effect/HitFlashEffect.h"
 #include "../../Effect/ShakeEffect.h"
 
-// Tako namespace前方宣言
+// Tako namespace 前方宣言
 namespace Tako {
 class OBBCollider;
 class Object3d;
@@ -25,7 +25,7 @@ class Camera;
 class EmitterManager;
 }
 
-// GameProject前方宣言
+// GameProject 前方宣言
 class PlayerStateMachine;
 class InputHandler;
 class MeleeAttackCollider;
@@ -82,7 +82,7 @@ public: // メンバ関数
     /// 移動
     /// </summary>
     /// <param name="speedMultiplier">速度倍率（デフォルト1.0）</param>
-    /// <param name="isApplyDirCalulate"> 方向計算を適用するか（デフォルトtrue）</param>
+    /// <param name="isApplyDirCalulate"> 方向計算を適用するか（デフォルト true）</param>
     void Move(float speedMultiplier = 1.0f, bool isApplyDirCalulate = true);
 
     /// <summary>
@@ -93,7 +93,7 @@ public: // メンバ関数
     void MoveToTarget(Boss* target, float deltaTime);
 
     /// <summary>
-    /// MoveToTargetの状態をリセット
+    /// MoveToTarget の状態をリセット
     /// </summary>
     void ResetMoveToTarget();
 
@@ -104,7 +104,7 @@ public: // メンバ関数
     bool HasReachedTarget() const;
 
     /// <summary>
-    /// ImGuiの描画
+    /// ImGui の描画
     /// </summary>
     void DrawImGui();
 
@@ -135,7 +135,7 @@ public: // メンバ関数
     void ClearDynamicBounds();
 
     /// <summary>
-    /// パリィ成功時の処理（HP回復、エフェクト発生）
+    /// パリィ成功時の処理（HP 回復、エフェクト発生）
     /// </summary>
     void OnParrySuccess();
 
@@ -161,7 +161,7 @@ public: // メンバ関数
     void SetSpeed(float speed) { speed_ = speed; }
 
     /// <summary>
-    /// Bossをターゲットに設定
+    /// Boss をターゲットに設定
     /// </summary>
     void SetBoss(Boss* target) { targetEnemy_ = target; }
 
@@ -202,9 +202,9 @@ public: // メンバ関数
     void SetScale(const Tako::Vector3& scale) { transform_.scale = scale; }
 
     /// <summary>
-    /// HPを設定
+    /// HP を設定
     /// </summary>
-    /// <param name="hp">新しいHP値（0未満は0に補正）</param>
+    /// <param name="hp">新しい HP 値（0未満は0に補正）</param>
     void SetHp(float hp) { hp_ = hp; if (hp_ < 0.f) hp_ = 0.f; }
 
     /// <summary>
@@ -227,22 +227,22 @@ public: // メンバ関数
     /// <summary>
     /// 動的移動範囲を設定
     /// </summary>
-    /// <param name="xMin">X座標の最小値</param>
-    /// <param name="xMax">X座標の最大値</param>
-    /// <param name="zMin">Z座標の最小値</param>
-    /// <param name="zMax">Z座標の最大値</param>
+    /// <param name="xMin">X 座標の最小値</param>
+    /// <param name="xMax">X 座標の最大値</param>
+    /// <param name="zMin">Z 座標の最小値</param>
+    /// <param name="zMax">Z 座標の最大値</param>
     void SetDynamicBounds(float xMin, float xMax, float zMin, float zMax);
 
     /// <summary>
     /// 中心点と範囲から動的移動範囲を設定
     /// </summary>
     /// <param name="center">中心座標</param>
-    /// <param name="xRange">X方向の範囲（片側）</param>
-    /// <param name="zRange">Z方向の範囲（片側）</param>
+    /// <param name="xRange">X 方向の範囲（片側）</param>
+    /// <param name="zRange">Z 方向の範囲（片側）</param>
     void SetDynamicBoundsFromCenter(const Tako::Vector3& center, float xRange, float zRange);
 
     /// <summary>
-    /// EmitterManagerを設定
+    /// EmitterManager を設定
     /// </summary>
     /// <param name="emitterManager">エミッターマネージャーのポインタ</param>
     void SetEmitterManager(Tako::EmitterManager* emitterManager) { emitterManager_ = emitterManager; }
@@ -250,7 +250,7 @@ public: // メンバ関数
     /// <summary>
     /// ポーズ状態を設定
     /// </summary>
-    /// <param name="isPause">ポーズ中ならtrue</param>
+    /// <param name="isPause">ポーズ中なら true</param>
     void SetIsPause(bool isPause) { isPause_ = isPause; }
 
     //----------------------------------Getters-----------------------------------//
@@ -273,9 +273,9 @@ public: // メンバ関数
     bool GetMode() const { return mode_; }
 
     /// <summary>
-    /// HPを取得
+    /// HP を取得
     /// </summary>
-    /// <returns>現在のHP値</returns>
+    /// <returns>現在の HP 値</returns>
     float GetHp() const { return hp_; }
 
     /// <summary>
@@ -291,7 +291,7 @@ public: // メンバ関数
     bool IsInvincible() const{ return isInvincible_; }
 
     /// <summary>
-    /// Shootできるか
+    /// Shoot できるか
     /// </summary>
     /// <returns>true: 可能, false: 不可能</returns>
     bool CanShoot() const;
@@ -305,7 +305,7 @@ public: // メンバ関数
     /// <summary>
     /// 座標変換情報のポインタを取得
     /// </summary>
-    /// <returns>座標変換情報への非constポインタ</returns>
+    /// <returns>座標変換情報への非 const ポインタ</returns>
     Tako::Transform* GetTransformPtr() { return &transform_; }
 
     /// <summary>
@@ -327,7 +327,7 @@ public: // メンバ関数
     Tako::Vector3 GetScale() const { return transform_.scale; }
 
     /// <summary>
-    /// 3Dモデルを取得
+    /// 3D モデルを取得
     /// </summary>
     /// <returns>プレイヤーモデルのポインタ</returns>
     Tako::Object3d* GetModel() const { return model_.get(); }
@@ -347,7 +347,7 @@ public: // メンバ関数
     /// <summary>
     /// 攻撃ブロックを取得
     /// </summary>
-    /// <returns>攻撃ブロックのObject3dポインタ</returns>
+    /// <returns>攻撃ブロックの Object3d ポインタ</returns>
     Tako::Object3d* GetAttackBlock() const { return attackBlock_.get(); }
 
     /// <summary>
@@ -357,21 +357,21 @@ public: // メンバ関数
     bool IsAttackBlockVisible() const { return attackBlockVisible_; }
 
     /// <summary>
-    /// Velocityを取得
+    /// Velocity を取得
     /// </summary>
-    /// <returns>現在のVelocity値の参照</returns>
+    /// <returns>現在の Velocity 値の参照</returns>
     Tako::Vector3& GetVelocity() { return velocity_; }
 
     /// <summary>
-    /// InputHandlerを取得
+    /// InputHandler を取得
     /// </summary>
-    /// <returns>InputHandlerのポインタ</returns>
+    /// <returns>InputHandler のポインタ</returns>
     InputHandler* GetInputHandler() { return inputHandlerPtr_; };
 
     /// <summary>
-    /// ターゲットのBossを取得
+    /// ターゲットの Boss を取得
     /// </summary>
-    /// <returns>Bossのポインタ（未設定ならnullptr）</returns>
+    /// <returns>Boss のポインタ（未設定なら nullptr）</returns>
     Boss* GetBoss() const { return targetEnemy_; }
 
     /// <summary>
@@ -381,7 +381,7 @@ public: // メンバ関数
     float GetAttackMinDistance() const { return attackMinDist_; }
 
     /// <summary>
-    /// EmitterManagerを取得
+    /// EmitterManager を取得
     /// </summary>
     /// <returns>エミッターマネージャーのポインタ</returns>
     Tako::EmitterManager* GetEmitterManager() const { return emitterManager_; }
@@ -393,9 +393,9 @@ public: // メンバ関数
     bool IsParrying() const;
 
     /// <summary>
-    /// パリィ可能か判定（クールダウン中はfalse）
+    /// パリィ可能か判定（クールダウン中は false）
     /// </summary>
-    /// <returns>パリィ可能ならtrue</returns>
+    /// <returns>パリィ可能なら true</returns>
     bool CanParry() const;
 
     /// <summary>
@@ -404,9 +404,9 @@ public: // メンバ関数
     void StartParryCooldown();
 
     /// <summary>
-    /// ダッシュ可能か判定（クールダウン中はfalse）
+    /// ダッシュ可能か判定（クールダウン中は false）
     /// </summary>
-    /// <returns>ダッシュ可能ならtrue</returns>
+    /// <returns>ダッシュ可能なら true</returns>
     bool CanDash() const;
 
     /// <summary>
@@ -423,7 +423,7 @@ public: // メンバ関数
 
 private:
     /// <summary>
-    /// GlobalVariablesから値を同期
+    /// GlobalVariables から値を同期
     /// </summary>
     void SyncGlobalVariables();
 
@@ -488,7 +488,7 @@ private: // メンバ変数
     bool isAttackHit_ = false;
     float attackMoveSpeed_ = 2.0f;
 
-    // MoveToTarget用イージング移動システム
+    // MoveToTarget 用イージング移動システム
     EasingMover attackMover_;             ///< 攻撃時のイージング移動
 
     // クールダウン管理
@@ -498,18 +498,18 @@ private: // メンバ変数
     // 弾生成管理
     BulletSpawner bulletSpawner_;
 
-    // 調整可能パラメータ（ImGui編集用）
-    float initialY_ = 2.5f;                   ///< 初期Y座標
-    float initialZ_ = -120.0f;                ///< 初期Z座標
+    // 調整可能パラメータ（ImGui 編集用）
+    float initialY_ = 2.5f;                   ///< 初期 Y 座標
+    float initialZ_ = -120.0f;                ///< 初期 Z 座標
     float attackMinDist_ = 5.0f;             ///< 攻撃開始距離
     float attackMoveRotationLerp_ = 0.3f;     ///< 攻撃移動中の回転補間速度
     float bossLookatLerp_ = 1.15f;            ///< ボス視線追従補間速度
 
-    // HPバーUI
-    HPBarUI hpBar_;                      ///< HPバー表示
+    // HP バー UI
+    HPBarUI hpBar_;                      ///< HP バー表示
 
-    // HP最大値
-    static constexpr float kMaxHp = 100.0f;  ///< HP最大値
+    // HP 最大値
+    static constexpr float kMaxHp = 100.0f;  ///< HP 最大値
 
     // ===== エフェクト関連 =====
     HitFlashEffect hitFlashEffect_;     ///< ヒット時の色変化エフェクト

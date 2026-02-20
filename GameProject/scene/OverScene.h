@@ -39,7 +39,7 @@ public: // メンバ関数
     void DrawWithoutEffect() override;
 
     /// <summary>
-    /// ImGuiの描画
+    /// ImGui の描画
     /// </summary>
     void DrawImGui() override;
 
@@ -50,12 +50,12 @@ private: // メンバ変数
     std::unique_ptr<Tako::Sprite> titleText_ = nullptr;
     std::unique_ptr<Tako::Sprite> pressButtonText_ = nullptr;
 
-    // カメラ非表示Y座標
+    // カメラ非表示 Y 座標
     float cameraHiddenY_ = CameraConfig::HIDDEN_Y;
 
-    // UI位置・サイズ用変数
+    // UI 位置・サイズ用変数
     float titleTextHalfWidth_ = 250.0f;  ///< タイトルテキスト半幅（センタリング用）
-    float titleTextY_ = 300.0f;  ///< タイトルテキストY座標
+    float titleTextY_ = 300.0f;  ///< タイトルテキスト Y 座標
     float buttonBottomOffset_ = 300.0f;  ///< ボタン下端からのオフセット
 };
 

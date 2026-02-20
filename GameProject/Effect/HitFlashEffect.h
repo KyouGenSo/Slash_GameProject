@@ -27,14 +27,14 @@ public:
     /// フラッシュエフェクトを更新
     /// </summary>
     /// <param name="deltaTime">フレーム間隔（秒）</param>
-    /// <param name="target">適用対象のObject3d</param>
+    /// <param name="target">適用対象の Object3d</param>
     /// <param name="originalColor">元の色（フラッシュ終了後に戻す色）</param>
     void Update(float deltaTime, Tako::Object3d* target, const Tako::Vector4& originalColor);
 
     /// <summary>
     /// フラッシュがアクティブか
     /// </summary>
-    /// <returns>アクティブならtrue</returns>
+    /// <returns>アクティブなら true</returns>
     bool IsActive() const { return isActive_; }
 
     /// <summary>

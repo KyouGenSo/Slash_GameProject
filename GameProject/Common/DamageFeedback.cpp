@@ -20,7 +20,7 @@ void DamageFeedback::TriggerHitFeedback(const HitParams& params)
         params.vibrationHigh,
         params.vibrationDuration);
 
-    // Vignetteエフェクト
+    // Vignette エフェクト
     VignetteParam vignetteParam{};
     vignetteParam.power = params.vignettePower;
     vignetteParam.range = params.vignetteRange;
@@ -60,7 +60,7 @@ void DamageFeedback::TriggerParryFeedback(
         params.vibrationHigh,
         params.vibrationDuration);
 
-    // Vignetteエフェクト（青）
+    // Vignette エフェクト（青）
     VignetteParam vignetteParam{};
     vignetteParam.power = params.vignettePower;
     vignetteParam.range = params.vignetteRange;

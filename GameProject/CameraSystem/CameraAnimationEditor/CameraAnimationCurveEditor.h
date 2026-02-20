@@ -17,13 +17,13 @@ public:
     /// カーブタイプ
     /// </summary>
     enum class CurveType {
-        POSITION_X,     ///< X位置カーブ
-        POSITION_Y,     ///< Y位置カーブ
-        POSITION_Z,     ///< Z位置カーブ
-        ROTATION_X,     ///< X回転カーブ
-        ROTATION_Y,     ///< Y回転カーブ
-        ROTATION_Z,     ///< Z回転カーブ
-        FOV,            ///< FOVカーブ
+        POSITION_X,     ///< X 位置カーブ
+        POSITION_Y,     ///< Y 位置カーブ
+        POSITION_Z,     ///< Z 位置カーブ
+        ROTATION_X,     ///< X 回転カーブ
+        ROTATION_Y,     ///< Y 回転カーブ
+        ROTATION_Z,     ///< Z 回転カーブ
+        FOV,            ///< FOV カーブ
         COUNT
     };
 
@@ -101,18 +101,18 @@ private:
     /// キーポイントの描画
     /// </summary>
     /// <param name="index">キーフレームインデックス</param>
-    /// <param name="x">X座標</param>
-    /// <param name="y">Y座標</param>
+    /// <param name="x">X 座標</param>
+    /// <param name="y">Y 座標</param>
     /// <param name="isSelected">選択状態</param>
     void DrawKeyPoint(int index, float x, float y, bool isSelected);
 
     /// <summary>
     /// タンジェントハンドルの描画
     /// </summary>
-    /// <param name="centerX">中心X座標</param>
-    /// <param name="centerY">中心Y座標</param>
-    /// <param name="handleX">ハンドルX座標</param>
-    /// <param name="handleY">ハンドルY座標</param>
+    /// <param name="centerX">中心 X 座標</param>
+    /// <param name="centerY">中心 Y 座標</param>
+    /// <param name="handleX">ハンドル X 座標</param>
+    /// <param name="handleY">ハンドル Y 座標</param>
     /// <param name="isLeft">左ハンドルか</param>
     void DrawTangentHandle(float centerX, float centerY, float handleX, float handleY, bool isLeft);
 
@@ -176,10 +176,10 @@ private:
     float timeRange_ = 10.0f;                   ///< 時間範囲
     float valueRangeMin_ = -10.0f;              ///< 値の最小範囲
     float valueRangeMax_ = 10.0f;               ///< 値の最大範囲
-    float zoomX_ = 1.0f;                         ///< X軸ズーム
-    float zoomY_ = 1.0f;                         ///< Y軸ズーム
-    float panX_ = 0.0f;                          ///< X軸パン
-    float panY_ = 0.0f;                          ///< Y軸パン
+    float zoomX_ = 1.0f;                         ///< X 軸ズーム
+    float zoomY_ = 1.0f;                         ///< Y 軸ズーム
+    float panX_ = 0.0f;                          ///< X 軸パン
+    float panY_ = 0.0f;                          ///< Y 軸パン
 
     // カーブ設定
     CurveType activeCurve_ = CurveType::POSITION_X;  ///< アクティブカーブ
@@ -197,8 +197,8 @@ private:
 
     // グリッドスナップ
     bool enableGridSnap_ = false;                ///< グリッドスナップ有効
-    float gridSnapIntervalX_ = 0.1f;             ///< X軸スナップ間隔
-    float gridSnapIntervalY_ = 1.0f;             ///< Y軸スナップ間隔
+    float gridSnapIntervalX_ = 0.1f;             ///< X 軸スナップ間隔
+    float gridSnapIntervalY_ = 1.0f;             ///< Y 軸スナップ間隔
 
     // 表示設定
     bool showGrid_ = true;                       ///< グリッド表示

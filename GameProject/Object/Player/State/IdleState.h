@@ -36,7 +36,7 @@ public:
 	void HandleInput(Player* player) override;
 
 	/// <summary>
-	/// ImGuiデバッグ情報の描画
+	/// ImGui デバッグ情報の描画
 	/// </summary>
 	void DrawImGui(Player* player) override;
 

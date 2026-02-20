@@ -23,7 +23,7 @@ ControllerUI::~ControllerUI()
 
 void ControllerUI::Initialize()
 {
-    // ボタンスプライト初期化（Up状態）
+    // ボタンスプライト初期化（Up 状態）
     aButtonUpSprite_ = std::make_unique<Sprite>();
     aButtonUpSprite_->Initialize("button/A_Button_Up.dds");
     aButtonUpSprite_->SetPos({ 1565.0f, 948.0f });
@@ -103,7 +103,7 @@ void ControllerUI::Initialize()
     idouSprite_->SetPos({ 450.0f, 892.0f });
     idouSprite_->SetSize({ 150.0f, 50.0f });
 
-    // ポーズ操作ヒント初期化（HPバーの下、画面左上付近）
+    // ポーズ操作ヒント初期化（HP バーの下、画面左上付近）
     pauseHintIconSprite_ = std::make_unique<Sprite>();
     pauseHintIconSprite_->Initialize("button/Menu_Button_Up.dds");
     pauseHintIconSprite_->SetPos({ 30.0f, 157.0f });
@@ -201,7 +201,7 @@ int ControllerUI::GetStickDirectionIndex(const Vector2& stick) const
 
 void ControllerUI::Draw()
 {
-    // ポーズ中はポーズ操作ヒントのみ描画（操作説明UIはPauseMenuが描画）
+    // ポーズ中はポーズ操作ヒントのみ描画（操作説明 UI は PauseMenu が描画）
     if (isPaused_) {
         pauseHintIconSprite_->Draw();
         pauseHintTextSprite_->Draw();
@@ -383,19 +383,19 @@ void ControllerUI::OnResize(const Vector2& newSize)
     float scaleX = newSize.x / kBaseWidth;
     float scaleY = newSize.y / kBaseHeight;
 
-    // Aボタン
+    // A ボタン
     aButtonUpSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
     aButtonDownSprite_->SetPos({ 1565.0f * scaleX, 948.0f * scaleY });
 
-    // Bボタン
+    // B ボタン
     bButtonUpSprite_->SetPos({ 1640.0f * scaleX, 869.0f * scaleY });
     bButtonDownSprite_->SetPos({ 1640.0f * scaleX, 869.0f * scaleY });
 
-    // Xボタン
+    // X ボタン
     xButtonUpSprite_->SetPos({ 1488.0f * scaleX, 869.0f * scaleY });
     xButtonDownSprite_->SetPos({ 1488.0f * scaleX, 869.0f * scaleY });
 
-    // Yボタン
+    // Y ボタン
     yButtonUpSprite_->SetPos({ 1565.0f * scaleX, 803.0f * scaleY });
     yButtonDownSprite_->SetPos({ 1565.0f * scaleX, 803.0f * scaleY });
 

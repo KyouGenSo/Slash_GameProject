@@ -17,7 +17,7 @@ public:
     /// <summary>
     /// シングルトンインスタンスを取得
     /// </summary>
-    /// <returns>CameraManagerのインスタンス</returns>
+    /// <returns>CameraManager のインスタンス</returns>
     static CameraManager* GetInstance();
 
     /// <summary>
@@ -52,28 +52,28 @@ public:
     /// コントローラーを取得
     /// </summary>
     /// <param name="name">コントローラー識別名</param>
-    /// <returns>コントローラーのポインタ（存在しない場合nullptr）</returns>
+    /// <returns>コントローラーのポインタ（存在しない場合 nullptr）</returns>
     ICameraController* GetController(const std::string& name);
 
     /// <summary>
     /// コントローラーを削除
     /// </summary>
     /// <param name="name">コントローラー識別名</param>
-    /// <returns>削除成功した場合true</returns>
+    /// <returns>削除成功した場合 true</returns>
     bool RemoveController(const std::string& name);
 
     /// <summary>
     /// コントローラーをアクティブ化
     /// </summary>
     /// <param name="name">コントローラー識別名</param>
-    /// <returns>アクティブ化成功した場合true</returns>
+    /// <returns>アクティブ化成功した場合 true</returns>
     bool ActivateController(const std::string& name);
 
     /// <summary>
     /// コントローラーを非アクティブ化
     /// </summary>
     /// <param name="name">コントローラー識別名</param>
-    /// <returns>非アクティブ化成功した場合true</returns>
+    /// <returns>非アクティブ化成功した場合 true</returns>
     bool DeactivateController(const std::string& name);
 
     /// <summary>
@@ -86,7 +86,7 @@ public:
     /// <summary>
     /// 現在アクティブな最高優先度コントローラーを取得
     /// </summary>
-    /// <returns>アクティブなコントローラー（存在しない場合nullptr）</returns>
+    /// <returns>アクティブなコントローラー（存在しない場合 nullptr）</returns>
     ICameraController* GetActiveController() const;
 
     /// <summary>
@@ -165,7 +165,7 @@ private:
     void ApplyShakeOffset();
 
     /// <summary>
-    /// GlobalVariablesからシェイクパラメータを読み込み
+    /// GlobalVariables からシェイクパラメータを読み込み
     /// </summary>
     void LoadShakeParameters();
 

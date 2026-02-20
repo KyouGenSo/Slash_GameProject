@@ -8,7 +8,7 @@ class Boss;
 
 /// <summary>
 /// プレイヤーの弾専用コライダー
-/// BossBulletColliderと対称の設計パターン
+/// BossBulletCollider と対称の設計パターン
 /// </summary>
 class PlayerBulletCollider : public Tako::SphereCollider {
 public:

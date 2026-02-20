@@ -41,16 +41,16 @@ void MyGame::Initialize()
     // テクスチャの読み込み
     LoadTextures();
 
-    // GlobalVariablesにパラメータを登録
+    // GlobalVariables にパラメータを登録
     RegisterGlobalVariables();
 
-    // GlobalVariablesのJsonファイル読み込み
+    // GlobalVariables の Json ファイル読み込み
     GlobalVariables::GetInstance()->LoadFiles();
 
-    // SpriteBasicのリサイズコールバック関数登録
+    // SpriteBasic のリサイズコールバック関数登録
     spriteBasicOnresizeId_ = winApp_->RegisterOnResizeFunc(std::bind(&SpriteBasic::OnResize, SpriteBasic::GetInstance(), std::placeholders::_1));
 
-    // GPUパーティクルの初期化
+    // GPU パーティクルの初期化
     GPUParticle::GetInstance()->Initialize(dx12_.get(), defaultCamera_.get());
 }
 
@@ -58,10 +58,10 @@ void MyGame::Finalize()
 {
     winApp_->UnregisterOnResizeFunc(spriteBasicOnresizeId_);
 
-    // GPUパーティクルの解放
+    // GPU パーティクルの解放
     GPUParticle::GetInstance()->Finalize();
 
-    // Audioの解放
+    // Audio の解放
     Audio::GetInstance()->Finalize();
 
     // 入力クラスの解放
@@ -84,7 +84,7 @@ void MyGame::Update()
         ToggleFullScreen();
     }
 
-    // GPUパーティクルの更新
+    // GPU パーティクルの更新
     GPUParticle::GetInstance()->Update();
 
     TakoFramework::Update();
@@ -105,7 +105,7 @@ void MyGame::Draw()
     //ポストエフェクト適用対象のレンダーテクスチャを描画先に設定
     dx12_->SetEffectRenderTexture();
 
-    // テクスチャ用のsrvヒープの設定
+    // テクスチャ用の srv ヒープの設定
     SrvManager::GetInstance()->BeginDraw();
 
     SceneManager::GetInstance()->Draw();
@@ -159,7 +159,7 @@ void MyGame::Draw()
 
     imguiManager_->End();
 
-    //imguiの描画
+    //imgui の描画
     imguiManager_->Draw();
 #endif
 

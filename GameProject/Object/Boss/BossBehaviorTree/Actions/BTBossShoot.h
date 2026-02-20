@@ -51,9 +51,9 @@ public:
     void SetRecoveryTime(float time) { recoveryTime_ = time; }
 
     /// <summary>
-    /// JSONからパラメータを適用
+    /// JSON からパラメータを適用
     /// </summary>
-    /// <param name="params">パラメータJSON</param>
+    /// <param name="params">パラメータ JSON</param>
     void ApplyParameters(const nlohmann::json& params) override {
         if (params.contains("chargeTime")) {
             chargeTime_ = params["chargeTime"];
@@ -70,13 +70,13 @@ public:
     }
 
     /// <summary>
-    /// パラメータをJSONとして抽出
+    /// パラメータを JSON として抽出
     /// </summary>
     nlohmann::json ExtractParameters() const override;
 
 #ifdef _DEBUG
     /// <summary>
-    /// ImGuiでパラメータ編集UIを描画
+    /// ImGui でパラメータ編集 UI を描画
     /// </summary>
     bool DrawImGui() override;
 #endif
@@ -133,7 +133,7 @@ private:
     // 初回実行フラグ
     bool isFirstExecute_ = true;
 
-    // 弾数（ImGui調整用）
+    // 弾数（ImGui 調整用）
     int bulletCount_ = 3;  ///< 発射する弾数
 
     // 射撃予兆エフェクト

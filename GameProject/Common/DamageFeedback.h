@@ -22,10 +22,10 @@ public:
         float vibrationLow = 0.2f;           ///< ゲームパッド振動（低周波）
         float vibrationHigh = 0.3f;          ///< ゲームパッド振動（高周波）
         float vibrationDuration = 0.25f;     ///< 振動持続時間
-        float vignettePower = 0.4f;          ///< Vignette強度
-        float vignetteRange = 45.0f;         ///< Vignetteの範囲
-        Tako::Vector3 vignetteColor = { 1.0f, 0.0f, 0.0f };  ///< Vignette色（デフォルト赤）
-        float vignetteDuration = 0.25f;      ///< Vignette持続時間
+        float vignettePower = 0.4f;          ///< Vignette 強度
+        float vignetteRange = 45.0f;         ///< Vignette の範囲
+        Tako::Vector3 vignetteColor = { 1.0f, 0.0f, 0.0f };  ///< Vignette 色（デフォルト赤）
+        float vignetteDuration = 0.25f;      ///< Vignette 持続時間
     };
 
     /// <summary>
@@ -36,17 +36,17 @@ public:
         float vibrationLow = 0.15f;           ///< ゲームパッド振動（低周波）
         float vibrationHigh = 0.3f;         ///< ゲームパッド振動（高周波）
         float vibrationDuration = 0.15f;      ///< 振動持続時間
-        float vignettePower = 0.4f;          ///< Vignette強度
-        float vignetteRange = 45.0f;         ///< Vignetteの範囲
-        Tako::Vector3 vignetteColor = { 0.058f, 0.447f, 1.0f };  ///< Vignette色（青）
-        float vignetteDuration = 0.3f;       ///< Vignette持続時間
+        float vignettePower = 0.4f;          ///< Vignette 強度
+        float vignetteRange = 45.0f;         ///< Vignette の範囲
+        Tako::Vector3 vignetteColor = { 0.058f, 0.447f, 1.0f };  ///< Vignette 色（青）
+        float vignetteDuration = 0.3f;       ///< Vignette 持続時間
         std::string emitterBaseName = "parry_success";  ///< エミッター名
         float emitterDuration = 0.5f;        ///< エミッター持続時間
     };
 
     /// <summary>
     /// 被弾フィードバックをトリガー
-    /// カメラシェイク、ゲームパッド振動、Vignetteエフェクトを同時発生
+    /// カメラシェイク、ゲームパッド振動、Vignette エフェクトを同時発生
     /// </summary>
     /// <param name="params">フィードバックパラメータ（デフォルト値で呼び出し可能）</param>
     static void TriggerHitFeedback(const HitParams& params = HitParams{});
@@ -56,7 +56,7 @@ public:
     /// カメラシェイク、振動、Vignette、パーティクルを発生
     /// </summary>
     /// <param name="position">エフェクト発生位置</param>
-    /// <param name="emitterManager">エミッターマネージャー（nullptrの場合パーティクル省略）</param>
+    /// <param name="emitterManager">エミッターマネージャー（nullptr の場合パーティクル省略）</param>
     /// <param name="params">フィードバックパラメータ（デフォルト値で呼び出し可能）</param>
     static void TriggerParryFeedback(
         const Tako::Vector3& position,

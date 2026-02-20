@@ -37,14 +37,14 @@ public:
     void Initialize(CameraAnimation* animation, Tako::Camera* camera);
 
     /// <summary>
-    /// 初期化（CameraAnimationController使用）
+    /// 初期化（CameraAnimationController 使用）
     /// </summary>
     /// <param name="controller">アニメーションコントローラー</param>
     /// <param name="camera">カメラ</param>
     void Initialize(class CameraAnimationController* controller, Tako::Camera* camera);
 
     /// <summary>
-    /// エディターUIの描画
+    /// エディター UI の描画
     /// </summary>
     void Draw();
 
@@ -93,7 +93,7 @@ private:
     void DrawMenuBar();
 
     /// <summary>
-    /// アニメーション選択UIの描画
+    /// アニメーション選択 UI の描画
     /// </summary>
     void DrawAnimationSelector();
 
@@ -163,7 +163,7 @@ private:
     Tako::Camera* camera_ = nullptr;                   ///< カメラ
     class CameraAnimationController* controller_ = nullptr; ///< アニメーションコントローラー（複数管理用）
 
-    // UIコンポーネント
+    // UI コンポーネント
     std::unique_ptr<CameraAnimationTimeline> timeline_;     ///< タイムラインコンポーネント
     std::unique_ptr<CameraAnimationCurveEditor> curveEditor_; ///< カーブエディター
     std::unique_ptr<CameraAnimationHistory> history_;        ///< 編集履歴

@@ -41,8 +41,8 @@ public:
     /// <summary>
     /// アニメーションを読み込み
     /// </summary>
-    /// <param name="name">JSONファイルパス</param>
-    /// <returns>読み込み成功した場合true</returns>
+    /// <param name="name">JSON ファイルパス</param>
+    /// <returns>読み込み成功した場合 true</returns>
     bool LoadAnimation(const std::string& name);
 
     /// <summary>
@@ -115,21 +115,21 @@ public:
     /// 新規アニメーションを作成
     /// </summary>
     /// <param name="name">アニメーション名</param>
-    /// <returns>作成成功した場合true</returns>
+    /// <returns>作成成功した場合 true</returns>
     bool CreateAnimation(const std::string& name);
 
     /// <summary>
     /// アニメーションを切り替え
     /// </summary>
     /// <param name="name">切り替え先のアニメーション名</param>
-    /// <returns>切り替え成功した場合true</returns>
+    /// <returns>切り替え成功した場合 true</returns>
     bool SwitchAnimation(const std::string& name);
 
     /// <summary>
     /// アニメーションを削除
     /// </summary>
     /// <param name="name">削除するアニメーション名</param>
-    /// <returns>削除成功した場合true</returns>
+    /// <returns>削除成功した場合 true</returns>
     bool DeleteAnimation(const std::string& name);
 
     /// <summary>
@@ -137,7 +137,7 @@ public:
     /// </summary>
     /// <param name="oldName">現在の名前</param>
     /// <param name="newName">新しい名前</param>
-    /// <returns>リネーム成功した場合true</returns>
+    /// <returns>リネーム成功した場合 true</returns>
     bool RenameAnimation(const std::string& oldName, const std::string& newName);
 
     /// <summary>
@@ -145,15 +145,15 @@ public:
     /// </summary>
     /// <param name="sourceName">複製元のアニメーション名</param>
     /// <param name="newName">複製先の名前</param>
-    /// <returns>複製成功した場合true</returns>
+    /// <returns>複製成功した場合 true</returns>
     bool DuplicateAnimation(const std::string& sourceName, const std::string& newName);
 
     /// <summary>
     /// アニメーションをファイルから読み込み
     /// </summary>
-    /// <param name="filepath">JSONファイルパス</param>
+    /// <param name="filepath">JSON ファイルパス</param>
     /// <param name="name">アニメーション名</param>
-    /// <returns>読み込み成功した場合true</returns>
+    /// <returns>読み込み成功した場合 true</returns>
     bool LoadAnimationFromFile(const std::string& name);
 
     /// <summary>
@@ -161,7 +161,7 @@ public:
     /// </summary>
     /// <param name="name">保存するアニメーション名</param>
     /// <param name="filepath">保存先ファイルパス</param>
-    /// <returns>保存成功した場合true</returns>
+    /// <returns>保存成功した場合 true</returns>
     bool SaveAnimationToFile(const std::string& name);
 
     //==================== Setter ====================
@@ -175,27 +175,27 @@ public:
     /// <summary>
     /// アニメーションターゲットを設定
     /// </summary>
-    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
-    /// <param name="applyToAll">全アニメーションに適用する場合true（デフォルトはfalse）</param>
+    /// <param name="target">相対座標の基準となるターゲット（nullptr で解除）</param>
+    /// <param name="applyToAll">全アニメーションに適用する場合 true（デフォルトは false）</param>
     void SetAnimationTarget(const Tako::Transform* target, bool applyToAll = false);
 
     /// <summary>
     /// 特定のアニメーションにターゲットを設定
     /// </summary>
     /// <param name="animationName">アニメーション名</param>
-    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    /// <param name="target">相対座標の基準となるターゲット（nullptr で解除）</param>
     void SetAnimationTargetByName(const std::string& animationName, const Tako::Transform* target);
 
     /// <summary>
     /// 現在のアニメーションのみにターゲットを設定
     /// </summary>
-    /// <param name="target">相対座標の基準となるターゲット（nullptrで解除）</param>
+    /// <param name="target">相対座標の基準となるターゲット（nullptr で解除）</param>
     void SetCurrentAnimationTarget(const Tako::Transform* target);
 
     /// <summary>
     /// ループ設定
     /// </summary>
-    /// <param name="loop">ループする場合true</param>
+    /// <param name="loop">ループする場合 true</param>
     void SetLooping(bool loop);
 
     /// <summary>
@@ -216,7 +216,7 @@ public:
     /// アクティブ状態を判定
     /// アニメーション再生中のみアクティブ
     /// </summary>
-    /// <returns>アクティブな場合true</returns>
+    /// <returns>アクティブな場合 true</returns>
     bool IsActive() const override;
 
     /// <summary>
@@ -238,7 +238,7 @@ public:
     /// 指定した名前のアニメーションを取得
     /// </summary>
     /// <param name="name">アニメーション名</param>
-    /// <returns>アニメーションオブジェクト（存在しない場合nullptr）</returns>
+    /// <returns>アニメーションオブジェクト（存在しない場合 nullptr）</returns>
     CameraAnimation* GetAnimation(const std::string& name);
 
     /// <summary>
@@ -280,13 +280,13 @@ public:
     /// <summary>
     /// キーフレーム編集中かを判定
     /// </summary>
-    /// <returns>編集中の場合true</returns>
+    /// <returns>編集中の場合 true</returns>
     bool IsEditingKeyframe() const;
 
     /// <summary>
     /// アニメーションターゲットを取得
     /// </summary>
-    /// <returns>現在のターゲット（設定されていない場合nullptr）</returns>
+    /// <returns>現在のターゲット（設定されていない場合 nullptr）</returns>
     const Tako::Transform* GetAnimationTarget() const;
 
 private:

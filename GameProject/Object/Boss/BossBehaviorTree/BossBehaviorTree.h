@@ -67,23 +67,23 @@ public:
     BTBlackboard* GetBlackboard() const { return blackboard_.get(); }
 
     /// <summary>
-    /// JSONファイルからツリーを読み込み
+    /// JSON ファイルからツリーを読み込み
     /// </summary>
-    /// <param name="filepath">JSONファイルのパス</param>
-    /// <returns>成功したらtrue</returns>
+    /// <param name="filepath">JSON ファイルのパス</param>
+    /// <returns>成功したら true</returns>
     bool LoadFromJSON(const std::string& filepath);
 
     /// <summary>
     /// 現在実行中のノードを取得
     /// </summary>
-    /// <returns>実行中のノード（なければnullptr）</returns>
+    /// <returns>実行中のノード（なければ nullptr）</returns>
     BTNodePtr GetCurrentRunningNode() const { return currentRunningNode_; }
 
 private:
     /// <summary>
-    /// JSONからノードツリーを再帰的に構築
+    /// JSON からノードツリーを再帰的に構築
     /// </summary>
-    /// <param name="nodeJson">ノードのJSON</param>
+    /// <param name="nodeJson">ノードの JSON</param>
     /// <param name="nodeMap">全ノードのマップ</param>
     /// <param name="links">リンク情報</param>
     /// <param name="visitedNodes">訪問済みノードセット</param>

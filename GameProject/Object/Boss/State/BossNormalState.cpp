@@ -9,7 +9,7 @@ BossNormalState::BossNormalState()
 
 void BossNormalState::Enter(Boss* boss)
 {
-    // BTを初期化
+    // BT を初期化
     BossBehaviorTree* bt = boss->GetBehaviorTree();
     if (bt) {
         bt->Reset();
@@ -29,7 +29,7 @@ void BossNormalState::Exit(Boss* boss)
     // 行動状態をクリーン（攻撃中断時のエフェクト等を確実に消す）
     boss->ResetActionState();
 
-    // BTをリセット（Running中のアクションを中断）
+    // BT をリセット（Running 中のアクションを中断）
     BossBehaviorTree* bt = boss->GetBehaviorTree();
     if (bt) {
         bt->Reset();

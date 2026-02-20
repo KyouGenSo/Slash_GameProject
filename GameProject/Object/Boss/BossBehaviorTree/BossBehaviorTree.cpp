@@ -53,7 +53,7 @@ void BossBehaviorTree::Reset() {
         rootNode_->Reset();
     }
     blackboard_->SetInt("ActionCounter", 0);
-    // 状態フラグのクリーンアップはBoss::ResetActionState()に集約
+    // 状態フラグのクリーンアップは Boss::ResetActionState()に集約
     // NormalState::Exit()から呼ばれる
 }
 
@@ -78,11 +78,11 @@ void BossBehaviorTree::SetRootNode(BTNodePtr rootNode) {
 }
 
 /// <summary>
-/// JSONファイルからツリーを読み込み
+/// JSON ファイルからツリーを読み込み
 /// </summary>
 bool BossBehaviorTree::LoadFromJSON(const std::string& filepath) {
     try {
-        // JSONファイルを読み込み
+        // JSON ファイルを読み込み
         std::ifstream file(filepath);
         if (!file.is_open()) {
             return false;
@@ -156,7 +156,7 @@ bool BossBehaviorTree::LoadFromJSON(const std::string& filepath) {
 }
 
 /// <summary>
-/// JSONからノードツリーを再帰的に構築
+/// JSON からノードツリーを再帰的に構築
 /// </summary>
 BTNodePtr BossBehaviorTree::BuildNodeFromJSON(
     const nlohmann::json& nodeJson,
@@ -174,7 +174,7 @@ BTNodePtr BossBehaviorTree::BuildNodeFromJSON(
     }
     visitedNodes.insert(nodeId);
 
-    // ノードを作成（BossNodeFactoryを使用）
+    // ノードを作成（BossNodeFactory を使用）
     std::string nodeType = nodeJson["type"];
     BTNodePtr node = BossNodeFactory::CreateNode(nodeType);
 
@@ -196,7 +196,7 @@ BTNodePtr BossBehaviorTree::BuildNodeFromJSON(
     if (node->IsComposite()) {
         auto compositeNode = std::dynamic_pointer_cast<BTComposite>(node);
         if (compositeNode) {
-            // このノードの子ノードIDを収集
+            // このノードの子ノード ID を収集
             std::vector<int> childIds;
             for (const auto& link : links) {
                 if (link["sourceNodeId"] == nodeId) {

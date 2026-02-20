@@ -8,7 +8,7 @@ class Boss;
 /// <summary>
 /// ゲームクリア演出管理クラス
 /// ボス撃破時の斬撃エフェクト増加と消滅演出を制御
-/// TransitionEffectBaseを継承
+/// TransitionEffectBase を継承
 /// </summary>
 class ClearEffectManager : public TransitionEffectBase
 {

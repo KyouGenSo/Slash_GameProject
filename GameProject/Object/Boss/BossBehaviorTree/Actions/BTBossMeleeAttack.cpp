@@ -42,11 +42,11 @@ BTNodeStatus BTBossMeleeAttack::Execute(BTBlackboard* blackboard) {
     switch (currentPhase_) {
     case MeleePhase::Prepare:
         ProcessPreparePhase(boss, deltaTime);
-        // 準備時間終了でExecuteフェーズへ
+        // 準備時間終了で Execute フェーズへ
         if (phaseTimer_ >= prepareTime_) {
             currentPhase_ = MeleePhase::Execute;
             phaseTimer_ = 0.0f;
-            // 予兆エフェクトをOFF
+            // 予兆エフェクトを OFF
             boss->SetAttackSignEmitterActive(false);
             // コライダーを有効化
             if (boss->GetMeleeAttackCollider()) {
@@ -54,7 +54,7 @@ BTNodeStatus BTBossMeleeAttack::Execute(BTBlackboard* blackboard) {
                 boss->GetMeleeAttackCollider()->Reset();
                 colliderActivated_ = true;
             }
-            // 突進の初期化（Execute開始時にプレイヤー位置を確定）
+            // 突進の初期化（Execute 開始時にプレイヤー位置を確定）
             InitializeRush(boss);
         }
         break;
@@ -72,11 +72,11 @@ BTNodeStatus BTBossMeleeAttack::Execute(BTBlackboard* blackboard) {
 
             // 次のフェーズを決定
             if (comboIndex_ < comboMaxCount_ - 1) {
-                // まだコンボが残っている → Intervalへ
+                // まだコンボが残っている → Interval へ
                 currentPhase_ = MeleePhase::Interval;
                 phaseTimer_ = 0.0f;
             } else {
-                // コンボ完了 → Recoveryへ
+                // コンボ完了 → Recovery へ
                 currentPhase_ = MeleePhase::Recovery;
                 phaseTimer_ = 0.0f;
                 boss->EnterRecovery();  // 硬直フェーズ開始
@@ -96,13 +96,13 @@ BTNodeStatus BTBossMeleeAttack::Execute(BTBlackboard* blackboard) {
             // ブロックを再表示
             boss->SetMeleeAttackBlockVisible(true);
 
-            // 予兆エフェクトをON
+            // 予兆エフェクトを ON
             boss->SetAttackSignEmitterActive(true);
 
             // ブロック位置を更新
             UpdateBlockPosition(boss);
 
-            // Prepareフェーズへ（1撃目と同じ挙動）
+            // Prepare フェーズへ（1撃目と同じ挙動）
             currentPhase_ = MeleePhase::Prepare;
             phaseTimer_ = 0.0f;
         }
@@ -147,7 +147,7 @@ void BTBossMeleeAttack::Reset() {
     comboMaxCount_ = 1;
     comboIndex_ = 0;
     currentSwingDirection_ = 1.0f;
-    // 注意: Reset時はboss参照がないため、ExitRecovery()は呼べない
+    // 注意: Reset 時は boss 参照がないため、ExitRecovery()は呼べない
 }
 
 void BTBossMeleeAttack::InitializeMeleeAttack(Boss* boss) {
@@ -165,7 +165,7 @@ void BTBossMeleeAttack::InitializeMeleeAttack(Boss* boss) {
     // 最初の攻撃の振り方向を初期化
     InitializeSwingForCurrentCombo();
 
-    // totalDurationを計算（コンボ時は長くなる）
+    // totalDuration を計算（コンボ時は長くなる）
     if (isComboMode_) {
         totalDuration_ = prepareTime_ + (attackDuration_ * 3) + (comboInterval_ * 2) + recoveryTime_;
     } else {
@@ -175,13 +175,13 @@ void BTBossMeleeAttack::InitializeMeleeAttack(Boss* boss) {
     // ブロックを表示
     boss->SetMeleeAttackBlockVisible(true);
 
-    // 予兆エフェクトをON
+    // 予兆エフェクトを ON
     boss->SetAttackSignEmitterActive(true);
 
     // 初期位置を設定
     UpdateBlockPosition(boss);
 
-    // 突進フラグをリセット（Execute開始時に初期化する）
+    // 突進フラグをリセット（Execute 開始時に初期化する）
     rushInitialized_ = false;
 }
 
@@ -194,7 +194,7 @@ void BTBossMeleeAttack::AimAtPlayer(Boss* boss, float deltaTime) {
     Vector3 playerPos = player->GetTransform().translate;
     Vector3 bossPos = boss->GetTransform().translate;
     Vector3 toPlayer = playerPos - bossPos;
-    toPlayer.y = 0.0f; // Y軸は無視
+    toPlayer.y = 0.0f; // Y 軸は無視
 
     if (toPlayer.Length() > kDirectionEpsilon) {
         toPlayer = toPlayer.Normalize();
@@ -247,7 +247,7 @@ void BTBossMeleeAttack::ProcessExecutePhase(Boss* boss, float deltaTime) {
             toPlayer.y = 0.0f;
             float currentDistance = toPlayer.Length();
 
-            // 現在の距離がstopDistance_より近い場合は、stopDistance_まで後退
+            // 現在の距離が stopDistance_より近い場合は、stopDistance_まで後退
             if (currentDistance < stopDistance_ && currentDistance > kDirectionEpsilon) {
                 Vector3 direction = toPlayer.Normalize();
                 Vector3 stopPos = playerPos - direction * stopDistance_;
@@ -349,7 +349,7 @@ void BTBossMeleeAttack::UpdateBlockPosition(Boss* boss) {
     // ワールド空間での角度を計算
     float worldAngle = bossRotY + blockAngle_;
 
-    // Mat4x4::MakeRotateYで回転行列を作成
+    // Mat4x4::MakeRotateY で回転行列を作成
     Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(worldAngle);
 
     // 回転行列を使ってローカルオフセットをワールド座標に変換
@@ -359,7 +359,7 @@ void BTBossMeleeAttack::UpdateBlockPosition(Boss* boss) {
     // ブロック位置を計算
     Vector3 blockPos = bossPos + worldOffset;
 
-    // ブロックのTransform設定
+    // ブロックの Transform 設定
     Transform blockTransform;
     blockTransform.translate = blockPos;
     blockTransform.rotate = { 0.0f, worldAngle, 0.0f };

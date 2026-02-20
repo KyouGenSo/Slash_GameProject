@@ -69,7 +69,7 @@ public:
 	/// 名前で状態を取得
 	/// </summary>
 	/// <param name="name">取得する状態名</param>
-	/// <returns>状態ポインタ（見つからない場合はnullptr）</returns>
+	/// <returns>状態ポインタ（見つからない場合は nullptr）</returns>
 	PlayerState* GetState(const std::string& name) const;
 
 	/// <summary>

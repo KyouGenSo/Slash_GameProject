@@ -9,7 +9,7 @@ class BossState;
 /// <summary>
 /// ボス状態管理マシン
 /// 外部イベント駆動の状態（スタン・離脱等）を管理
-/// AI意思決定はBehaviorTreeに委譲
+/// AI 意思決定は BehaviorTree に委譲
 /// </summary>
 class BossStateMachine {
 public:
@@ -59,7 +59,7 @@ public:
 	/// 名前で状態を取得
 	/// </summary>
 	/// <param name="name">取得する状態名</param>
-	/// <returns>状態ポインタ（見つからない場合はnullptr）</returns>
+	/// <returns>状態ポインタ（見つからない場合は nullptr）</returns>
 	BossState* GetState(const std::string& name) const;
 
 private:

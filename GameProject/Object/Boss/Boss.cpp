@@ -71,12 +71,12 @@ void Boss::InitializeModel()
 
 void Boss::InitializeHealth()
 {
-    // HPバーUIの初期化（2段バー：フェーズ1=青、フェーズ2=赤）
+    // HP バー UI の初期化（2段バー：フェーズ1=青、フェーズ2=赤）
     hpBar_.InitializeDual(
         "white.dds",
         Vector2(500.0f, 30.0f),
-        0.65f,  // 画面X比率
-        0.05f,  // 画面Y比率
+        0.65f,  // 画面 X 比率
+        0.05f,  // 画面 Y 比率
         Vector4{ 0.5f, 0.5f, 1.0f, 1.0f },  // フェーズ1: 青
         Vector4{ 1.0f, 0.3f, 0.3f, 1.0f }   // フェーズ2: 赤
     );
@@ -141,7 +141,7 @@ void Boss::InitializeAI()
 
 void Boss::Finalize()
 {
-    // Colliderを削除
+    // Collider を削除
     if (bodyCollider_) {
         CollisionManager::GetInstance()->RemoveCollider(bodyCollider_.get());
     }
@@ -151,8 +151,8 @@ void Boss::Finalize()
 
 #ifdef _DEBUG
     // ノードエディタを明示的にクリーンアップ
-    // ImGuiコンテキストが有効なうちに破棄する必要がある
-    // （Bossデストラクタ時点ではImGuiが既に終了している可能性があるため）
+    // ImGui コンテキストが有効なうちに破棄する必要がある
+    // （Boss デストラクタ時点では ImGui が既に終了している可能性があるため）
     if (nodeEditor_) {
         nodeEditor_->Finalize();
         nodeEditor_.reset();
@@ -162,18 +162,18 @@ void Boss::Finalize()
 
 void Boss::Update(float deltaTime)
 {
-    // HPバーの更新（2段バー）
+    // HP バーの更新（2段バー）
     hpBar_.UpdateDual(hp_, kMaxHp, kPhase2Threshold, phaseManager_.GetPhase());
 
     // フェーズとライフの更新
     phaseManager_.Update(hp_);
 
-    // 死亡判定 → Dead状態へ遷移
+    // 死亡判定 → Dead 状態へ遷移
     if (phaseManager_.IsDead() && stateMachine_->GetCurrentStateName() != "Dead") {
         stateMachine_->ChangeState("Dead");
     }
 
-    // ステートマシンが全てを駆動（Normal内でBTが動く）
+    // ステートマシンが全てを駆動（Normal 内で BT が動く）
     if (!isPause_) {
         stateMachine_->Update(deltaTime);
 
@@ -207,7 +207,7 @@ void Boss::Draw()
 {
     model_->Draw();
 
-    // 攻撃ブロックの描画（表示フラグがtrueの時のみ）
+    // 攻撃ブロックの描画（表示フラグが true の時のみ）
     if (meleeAttackBlockVisible_ && meleeAttackBlock_) {
         meleeAttackBlock_->Draw();
     }
@@ -231,7 +231,7 @@ void Boss::OnHit(float damage, float shakeIntensityOverride)
     if (phaseManager_.GetPhase() == 1 &&
         hp_ <= kPhaseTransitionStunThreshold &&
         !hasTriggeredPhaseTransitionStun_) {
-        // HPを固定
+        // HP を固定
         hp_ = kPhaseTransitionStunThreshold;
         // フェーズ移行スタンを発動
         TriggerPhaseTransitionStun();
@@ -257,7 +257,7 @@ void Boss::DrawImGui()
     // ===== 基本ステータス =====
     ImGui::SeparatorText("Basic Status");
 
-    // HP表示（数値 + プログレスバー）
+    // HP 表示（数値 + プログレスバー）
     ImGui::Text("HP: %.1f / %.1f (%.1f%%)", hp_, kMaxHp, (hp_ / kMaxHp) * 100.0f);
     ImGui::ProgressBar(hp_ / kMaxHp, ImVec2(-1.0f, 0.0f), "");
 
@@ -349,7 +349,7 @@ void Boss::DrawImGui()
 
     // ビヘイビアツリーの制御
     if (behaviorTree_) {
-        // JSONから直接ビヘイビアツリーに読み込み（デバッグ・リリース共通）
+        // JSON から直接ビヘイビアツリーに読み込み（デバッグ・リリース共通）
         ImGui::SameLine();
         if (ImGui::Button("Load Tree from JSON")) {
             if (behaviorTree_->LoadFromJSON("resources/Json/BossTree.json")) {
@@ -365,7 +365,7 @@ void Boss::DrawImGui()
                 nodeEditor_->SetVisible(showNodeEditor_);
             }
 
-            // エディタのツリーをBehaviorTreeに適用
+            // エディタのツリーを BehaviorTree に適用
             ImGui::SameLine();
             if (ImGui::Button("Apply Editor Tree")) {
                 BTNodePtr runtimeTree = nodeEditor_->BuildRuntimeTree();
@@ -376,7 +376,7 @@ void Boss::DrawImGui()
         }
     }
 
-    // HP操作
+    // HP 操作
     float tempHp = hp_;
     if (ImGui::SliderFloat("Set HP", &tempHp, 0.0f, kMaxHp)) {
         hp_ = std::clamp(tempHp, 0.0f, kMaxHp);
@@ -403,7 +403,7 @@ void Boss::DrawImGui()
     ImGui::Spacing();
     ImVec2 fullButtonSize(ImGui::GetContentRegionAvail().x * 0.48f, 0);
 
-    // Killボタン（赤色）
+    // Kill ボタン（赤色）
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.2f, 0.2f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1.0f, 0.3f, 0.3f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.6f, 0.1f, 0.1f, 1.0f));
@@ -414,7 +414,7 @@ void Boss::DrawImGui()
 
     ImGui::SameLine();
 
-    // Reviveボタン（緑色）
+    // Revive ボタン（緑色）
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.8f, 0.2f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 1.0f, 0.3f, 1.0f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
@@ -575,18 +575,18 @@ void Boss::TriggerPhaseTransitionStun() {
     }
     hasTriggeredPhaseTransitionStun_ = true;
 
-    // ステートマシンでPhaseTransitionStun状態へ遷移
+    // ステートマシンで PhaseTransitionStun 状態へ遷移
     stateMachine_->ChangeState("PhaseTransitionStun");
 }
 
 void Boss::CompletePhaseTransition() {
-    // HPを100に設定
+    // HP を100に設定
     hp_ = kPhase2InitialHp;
 
     // フェーズ2に移行
     phaseManager_.SetPhase(2);
 
-    // Normalへ復帰（PhaseTransitionStunState::Exit()でパーティクル無効化）
+    // Normal へ復帰（PhaseTransitionStunState::Exit()でパーティクル無効化）
     stateMachine_->ChangeState("Normal");
 }
 

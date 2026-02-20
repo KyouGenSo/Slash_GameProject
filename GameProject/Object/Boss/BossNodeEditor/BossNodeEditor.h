@@ -22,7 +22,7 @@ class Player;
 
 /// <summary>
 /// ボス用ビヘイビアツリーノードエディタ
-/// imgui-node-editorを直接使用してビヘイビアツリーを視覚的に編集
+/// imgui-node-editor を直接使用してビヘイビアツリーを視覚的に編集
 /// </summary>
 class BossNodeEditor {
 public:
@@ -30,13 +30,13 @@ public:
     /// エディタノードデータ（エディタ専用メタデータ）
     /// </summary>
     struct EditorNode {
-        int id;                              // エディタ固有ID（10000番台）
+        int id;                              // エディタ固有 ID（10000番台）
         ImVec2 position;                     // エディタ上の位置
         std::string nodeType;                // ノードタイプ名（"BTSelector", "BTSequence"等）
         std::string displayName;             // 表示名
         BTNodePtr runtimeNode;               // 実際の実行ノード
-        std::vector<int> inputPinIds;        // 入力ピンID（親接続用）
-        std::vector<int> outputPinIds;       // 出力ピンID（子接続用）
+        std::vector<int> inputPinIds;        // 入力ピン ID（親接続用）
+        std::vector<int> outputPinIds;       // 出力ピン ID（子接続用）
         ImVec4 color;                        // ノードカラー
     };
 
@@ -44,19 +44,19 @@ public:
     /// エディタリンクデータ
     /// </summary>
     struct EditorLink {
-        int id;                              // リンク固有ID（30000番台）
-        int startPinId;                      // 開始ピンID
-        int endPinId;                        // 終了ピンID
-        int startNodeId;                     // 開始ノードID
-        int endNodeId;                       // 終了ノードID
+        int id;                              // リンク固有 ID（30000番台）
+        int startPinId;                      // 開始ピン ID
+        int endPinId;                        // 終了ピン ID
+        int startNodeId;                     // 開始ノード ID
+        int endNodeId;                       // 終了ノード ID
     };
 
     /// <summary>
     /// エディタピンデータ
     /// </summary>
     struct EditorPin {
-        int id;                              // ピン固有ID（20000番台）
-        int nodeId;                          // 所属ノードID
+        int id;                              // ピン固有 ID（20000番台）
+        int nodeId;                          // 所属ノード ID
         bool isInput;                        // 入力ピンかどうか
         std::string name;                    // ピン名
     };
@@ -77,7 +77,7 @@ public:
     void Initialize();
 
     /// <summary>
-    /// エディタの更新・描画（ImGuiウィンドウ内で呼ぶ）
+    /// エディタの更新・描画（ImGui ウィンドウ内で呼ぶ）
     /// </summary>
     void Update();
 
@@ -95,25 +95,25 @@ public:
     /// <summary>
     /// エディタの表示状態取得
     /// </summary>
-    /// <returns>表示中ならtrue</returns>
+    /// <returns>表示中なら true</returns>
     bool IsVisible() const { return isVisible_; }
 
     /// <summary>
-    /// ツリーをJSONから読み込み
+    /// ツリーを JSON から読み込み
     /// </summary>
-    /// <param name="filepath">JSONファイルパス</param>
-    /// <returns>成功したらtrue</returns>
+    /// <param name="filepath">JSON ファイルパス</param>
+    /// <returns>成功したら true</returns>
     bool LoadFromJSON(const std::string& filepath);
 
     /// <summary>
-    /// ツリーをJSONに保存
+    /// ツリーを JSON に保存
     /// </summary>
-    /// <param name="filepath">JSONファイルパス</param>
-    /// <returns>成功したらtrue</returns>
+    /// <param name="filepath">JSON ファイルパス</param>
+    /// <returns>成功したら true</returns>
     bool SaveToJSON(const std::string& filepath);
 
     /// <summary>
-    /// 実行時ツリーを構築（BossBehaviorTreeに渡す用）
+    /// 実行時ツリーを構築（BossBehaviorTree に渡す用）
     /// </summary>
     /// <returns>ルートノード</returns>
     BTNodePtr BuildRuntimeTree();
@@ -173,7 +173,7 @@ private:
     std::vector<EditorLink> links_;
     std::vector<EditorPin> pins_;
 
-    // ID管理（ID範囲を分離して競合を防ぐ）
+    // ID 管理（ID 範囲を分離して競合を防ぐ）
     int nextNodeId_;    // 10000番台
     int nextLinkId_;    // 30000番台
     int nextPinId_;     // 20000番台
@@ -181,11 +181,11 @@ private:
     // エディタ状態
     bool isVisible_;
     bool firstFrame_;
-    int highlightedNodeId_;  // 現在ハイライト中のノードID（実行デバッグ用）
+    int highlightedNodeId_;  // 現在ハイライト中のノード ID（実行デバッグ用）
     float highlightStartTime_;  // ハイライト開始時刻（パルスエフェクト用）
-    int selectedNodeId_ = -1;  // 選択中のノードID（インスペクター用）
+    int selectedNodeId_ = -1;  // 選択中のノード ID（インスペクター用）
 
-    // ノード・ピンIDマッピング管理
+    // ノード・ピン ID マッピング管理
     std::unordered_map<BTNode*, int> runtimeNodeToEditorId_;
 };
 

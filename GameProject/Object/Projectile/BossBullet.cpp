@@ -15,10 +15,10 @@ using namespace Tako;
 uint32_t BossBullet::id = 0;
 
 BossBullet::BossBullet(EmitterManager* emittermanager) {
-    // GlobalVariablesから値を取得
+    // GlobalVariables から値を取得
     GlobalVariables* gv = GlobalVariables::GetInstance();
 
-    // 弾のパラメータ設定（GlobalVariablesから取得）
+    // 弾のパラメータ設定（GlobalVariables から取得）
     damage_ = gv->GetValueFloat("BossBullet", "Damage");
     lifeTime_ = gv->GetValueFloat("BossBullet", "Lifetime");
 
@@ -47,7 +47,7 @@ BossBullet::BossBullet(EmitterManager* emittermanager) {
     id++;
 
     if (id > kIdResetThreshold) {
-        id = 0; // IDのリセット
+        id = 0; // ID のリセット
     }
 }
 
@@ -80,12 +80,12 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     collider_->SetActive(true);
     collider_->Reset();
 
-    // CollisionManagerに登録
+    // CollisionManager に登録
     CollisionManager::GetInstance()->AddCollider(collider_.get());
 }
 
 void BossBullet::Finalize() {
-    // CollisionManagerから削除
+    // CollisionManager から削除
     if (collider_) {
         CollisionManager::GetInstance()->RemoveCollider(collider_.get());
     }

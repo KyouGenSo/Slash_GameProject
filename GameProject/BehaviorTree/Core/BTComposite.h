@@ -50,7 +50,7 @@ public:
     /// <summary>
     /// コンポジットノードかどうか
     /// </summary>
-    /// <returns>常にtrue</returns>
+    /// <returns>常に true</returns>
     bool IsComposite() const override { return true; }
 
     /// <summary>

@@ -8,7 +8,7 @@ namespace Tako {
 
 /// <summary>
 /// ダッシュエフェクト管理クラス
-/// プレイヤーダッシュ時のエミッター位置をLerp補間で追従させる
+/// プレイヤーダッシュ時のエミッター位置を Lerp 補間で追従させる
 /// </summary>
 class DashEffectManager
 {
@@ -50,7 +50,7 @@ public:
     /// <summary>
     /// エフェクトがアクティブか
     /// </summary>
-    /// <returns>アクティブならtrue</returns>
+    /// <returns>アクティブなら true</returns>
     bool IsActive() const { return isActive_; }
 
     /// <summary>

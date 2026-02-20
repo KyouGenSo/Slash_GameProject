@@ -55,7 +55,7 @@ public:
 	/// <summary>
 	/// プレイヤーにヒットしたかどうかを取得
 	/// </summary>
-	/// <returns>ヒット済みならtrue</returns>
+	/// <returns>ヒット済みなら true</returns>
 	bool HasHitPlayer() const { return hasHitPlayer_; }
 
 private:

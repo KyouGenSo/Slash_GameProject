@@ -3,7 +3,7 @@
 
 /// <summary>
 /// ボスの通常状態
-/// BehaviorTreeがAI意思決定を行い、各行動を実行する
+/// BehaviorTree が AI 意思決定を行い、各行動を実行する
 /// </summary>
 class BossNormalState : public BossState {
 public:

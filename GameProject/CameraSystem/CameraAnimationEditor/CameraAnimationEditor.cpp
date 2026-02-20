@@ -82,12 +82,12 @@ void CameraAnimationEditor::Draw() {
     // メニューバー
     DrawMenuBar();
 
-    // アニメーション選択UI（コントローラー経由の場合のみ）
+    // アニメーション選択 UI（コントローラー経由の場合のみ）
     if (controller_) {
         DrawAnimationSelector();
     }
 
-    // レイアウト描画（ADVANCEDモードのみ）
+    // レイアウト描画（ADVANCED モードのみ）
     // 上部：再生コントロールとツール
     DrawPlaybackControls();
 
@@ -453,7 +453,7 @@ void CameraAnimationEditor::DrawPlaybackControls() {
             if (enablePreview_) {
                 if (ImGui::IsItemActive()) {
                     // ユーザーがドラッグしている時
-                    // AnimationControllerがアクティブでない場合はアクティブ化
+                    // AnimationController がアクティブでない場合はアクティブ化
                     CameraManager* manager = CameraManager::GetInstance();
                     if (manager && manager->GetActiveControllerName() != "Animation") {
                         if (previousControllerName_.empty()) {
@@ -483,7 +483,7 @@ void CameraAnimationEditor::DrawTimelinePanel() {
         // プレビューモード切り替え
         if (ImGui::Checkbox("Enable Preview", &enablePreview_)) {
             if (enablePreview_) {
-                // プレビュー開始：現在のコントローラーを記憶してAnimationControllerをアクティブ化
+                // プレビュー開始：現在のコントローラーを記憶して AnimationController をアクティブ化
                 CameraManager* manager = CameraManager::GetInstance();
                 if (manager) {
                     previousControllerName_ = manager->GetActiveControllerName();
@@ -542,7 +542,7 @@ void CameraAnimationEditor::DrawInspectorPanel() {
             ImGui::TextWrapped("Smooth Blend: Smoothly transitions from current camera position to the first keyframe.");
         }
 
-        // SMOOTH_BLENDの場合、ブレンド時間設定
+        // SMOOTH_BLEND の場合、ブレンド時間設定
         if (animation_->GetStartMode() == CameraAnimation::StartMode::SMOOTH_BLEND) {
             float blendDuration = animation_->GetBlendDuration();
             if (ImGui::DragFloat("Blend Duration (sec)", &blendDuration, 0.01f, 0.1f, 2.0f)) {
@@ -558,7 +558,7 @@ void CameraAnimationEditor::DrawInspectorPanel() {
         ImGui::Separator();
     }
 
-    // Target Settingsセクション
+    // Target Settings セクション
     if (ImGui::CollapsingHeader("Target Settings", ImGuiTreeNodeFlags_DefaultOpen)) {
         // 現在のターゲット表示
         ImGui::Text("Current Target: ");
@@ -573,7 +573,7 @@ void CameraAnimationEditor::DrawInspectorPanel() {
         // ターゲット設定ボタン
         if (ImGui::Button("Set Target")) {
             // 実際のターゲット設定はゲーム側から呼び出される
-            // ここではUIの説明のみ
+            // ここでは UI の説明のみ
             ImGui::OpenPopup("TargetSetHelp");
         }
         ImGui::SameLine();
@@ -614,7 +614,7 @@ void CameraAnimationEditor::DrawInspectorPanel() {
         const char* coordTypes[] = { "World", "Target Relative" };
         ImGui::Combo("Coordinate Type##AddFrame", &coordTypeIndex, coordTypes, 2);
 
-        // TARGET_RELATIVEモード選択時の警告
+        // TARGET_RELATIVE モード選択時の警告
         if (coordTypeIndex == 1 && !targetTransform_) {
             ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f),
                 "Warning: No target set. Will use world coordinates.");
@@ -627,11 +627,11 @@ void CameraAnimationEditor::DrawInspectorPanel() {
 
                 // 座標系タイプに応じて位置を設定
                 if (coordTypeIndex == 1 && targetTransform_) {
-                    // TARGET_RELATIVEモード: 現在のカメラ位置からターゲット位置を引いてオフセットを計算
+                    // TARGET_RELATIVE モード: 現在のカメラ位置からターゲット位置を引いてオフセットを計算
                     newKf.position = Vec3::Subtract(camera_->GetTranslate(), targetTransform_->translate);
                 }
                 else {
-                    // WORLDモード: そのまま現在のカメラ位置を使用
+                    // WORLD モード: そのまま現在のカメラ位置を使用
                     newKf.position = camera_->GetTranslate();
                 }
 
@@ -708,7 +708,7 @@ void CameraAnimationEditor::DrawInspectorPanel() {
                     changed = true;
                 }
 
-                // TARGET_RELATIVEモードの説明
+                // TARGET_RELATIVE モードの説明
                 if (kf.coordinateType == CameraKeyframe::CoordinateType::TARGET_RELATIVE) {
                     if (targetTransform_) {
                         ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.8f, 1.0f), "Position is offset from target");

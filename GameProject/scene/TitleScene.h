@@ -11,7 +11,7 @@
 
 /// <summary>
 /// タイトルシーンクラス
-/// タイトル画面の演出、UI表示、ゲーム開始処理を管理
+/// タイトル画面の演出、UI 表示、ゲーム開始処理を管理
 /// </summary>
 class TitleScene : public Tako::BaseScene
 {
@@ -39,7 +39,7 @@ public: // メンバ関数
 	void DrawWithoutEffect() override;
 
 	/// <summary>
-	/// ImGuiの描画
+	/// ImGui の描画
 	/// </summary>
 	void DrawImGui() override;
 
@@ -63,8 +63,8 @@ private: // メンバ関数
 	// === 初期化系関数 === //
 
 	/// <summary>
-	/// デバッグUIの初期化
-	/// GlobalVariablesにタイトルシーンのパラメータグループを登録
+	/// デバッグ UI の初期化
+	/// GlobalVariables にタイトルシーンのパラメータグループを登録
 	/// </summary>
 	void InitializeDebugUI();
 
@@ -76,13 +76,13 @@ private: // メンバ関数
 
 	/// <summary>
 	/// ポストエフェクトの初期化
-	/// RGBSplitとVignetteエフェクトのパラメータを設定
+	/// RGBSplit と Vignette エフェクトのパラメータを設定
 	/// </summary>
 	void InitializePostEffects();
 
 	/// <summary>
 	/// スプライトの初期化
-	/// 背景、タイトルテキスト、スタートボタンなどのUI要素を作成
+	/// 背景、タイトルテキスト、スタートボタンなどの UI 要素を作成
 	/// </summary>
 	void InitializeSprites();
 
@@ -102,7 +102,7 @@ private: // メンバ関数
 
 	/// <summary>
 	/// スタートボタンの点滅アニメーション更新
-	/// sinカーブを使用してアルファ値を滑らかに変化させる
+	/// sin カーブを使用してアルファ値を滑らかに変化させる
 	/// </summary>
 	void UpdateStartButtonBlink();
 
@@ -113,7 +113,7 @@ private: // メンバ関数
 	void UpdateTitleTextAnimation();
 
 	/// <summary>
-	/// slashパーティクルアニメーション更新
+	/// slash パーティクルアニメーション更新
 	/// タイトルテキストアニメーションと同期してパーティクル発生量を増加
 	/// </summary>
 	void UpdateSlashParticleAnimation();
@@ -126,7 +126,7 @@ private: // メンバ関数
 
 	/// <summary>
 	/// 入力処理
-	/// スペースキーまたはAボタンでゲームシーンへ遷移
+	/// スペースキーまたは A ボタンでゲームシーンへ遷移
 	/// </summary>
 	void UpdateInput();
 
@@ -142,19 +142,19 @@ private: // メンバ変数
 
 	std::unique_ptr<Tako::Sprite> titleTextEffect_;  ///< タイトルテキストエフェクト用スプライト（拡大フェードアウト用）
 
-	Tako::RGBSplitParam rgbSplitParam_{};  ///< RGBSplitポストエフェクトのパラメータ
-	Tako::VignetteParam vignetteParam_{};  ///< Vignetteポストエフェクトのパラメータ
+	Tako::RGBSplitParam rgbSplitParam_{};  ///< RGBSplit ポストエフェクトのパラメータ
+	Tako::VignetteParam vignetteParam_{};  ///< Vignette ポストエフェクトのパラメータ
 
-	float offsetY = CameraConfig::HIDDEN_Y;  ///< カメラ非表示用Y方向オフセット
+	float offsetY = CameraConfig::HIDDEN_Y;  ///< カメラ非表示用 Y 方向オフセット
 
 	// === カメラ位置用変数 === //
-	float cameraY_ = 9.0f;  ///< カメラY座標
-	float cameraZ_ = -34.0f;  ///< カメラZ座標
+	float cameraY_ = 9.0f;  ///< カメラ Y 座標
+	float cameraZ_ = -34.0f;  ///< カメラ Z 座標
 
-	// === UI位置・サイズ用変数 === //
+	// === UI 位置・サイズ用変数 === //
 	float titleTextWidth_ = 500.0f;  ///< タイトルテキスト幅
 	float titleTextHeight_ = 200.0f;  ///< タイトルテキスト高さ
-	float titleTextY_ = 100.0f;  ///< タイトルテキストY座標
+	float titleTextY_ = 100.0f;  ///< タイトルテキスト Y 座標
 	float startButtonBottomOffset_ = 250.0f;  ///< スタートボタン下端からのオフセット
 	float sceneTransitionProgress_ = 0.9f;  ///< シーン遷移トリガー進行度
 
@@ -199,16 +199,16 @@ private: // メンバ変数
 
 	bool effectTriggered_ = false;  ///< エフェクト開始トリガー（一度だけ実行）
 
-	// === slashパーティクルエミッターアニメーション用変数 === //
+	// === slash パーティクルエミッターアニメーション用変数 === //
 	bool isSlashEmitterAnimating_ = false;  ///< アニメーション中フラグ
 
 	float slashEmitterAnimTimer_ = 0.0f;  ///< アニメーション経過時間タイマー
 
 	float slashEmitterAnimDuration_ = 2.5f;  ///< アニメーション持続時間（タイトルテキストと同期：10フレーム * animationSpeed / 60fps）
 
-	uint32_t slashEmitterStartCount_ = 1;  ///< Count値のアニメーション開始値（初期発生数）
-	uint32_t slashEmitterEndCount_ = 300;  ///< Count値のアニメーション終了値（最大発生数）
+	uint32_t slashEmitterStartCount_ = 1;  ///< Count 値のアニメーション開始値（初期発生数）
+	uint32_t slashEmitterEndCount_ = 300;  ///< Count 値のアニメーション終了値（最大発生数）
 
-	float slashEmitterStartFreq_ = 1.0f;  ///< Frequency値のアニメーション開始値（初期発生頻度）
-	float slashEmitterEndFreq_ = 0.001f;  ///< Frequency値のアニメーション終了値（最終発生頻度）
+	float slashEmitterStartFreq_ = 1.0f;  ///< Frequency 値のアニメーション開始値（初期発生頻度）
+	float slashEmitterEndFreq_ = 0.001f;  ///< Frequency 値のアニメーション終了値（最終発生頻度）
 };

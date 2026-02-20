@@ -79,7 +79,7 @@ void CameraDebugUI::DrawManagerInfo() {
         ImGui::TableHeadersRow();
 
         // デバッグ情報をパースして表示（簡易版）
-        // 実際は CameraManager にコントローラーリストを取得するAPIがあればそれを使う
+        // 実際は CameraManager にコントローラーリストを取得する API があればそれを使う
         std::string debugInfo = manager->GetDebugInfo();
 
         // 各行を解析して表示（簡易的な実装）
@@ -127,7 +127,7 @@ void CameraDebugUI::DrawFirstPersonControllerInfo(ThirdPersonController* control
         return;
     }
 
-    ImGui::PushID("ThirdPerson");  // 一意のIDスコープ開始
+    ImGui::PushID("ThirdPerson");  // 一意の ID スコープ開始
 
     ImGui::Text("=== ThirdPerson Controller ===");
     ImGui::Text("Active: %s", controller->IsActive() ? "Yes" : "No");
@@ -168,7 +168,7 @@ void CameraDebugUI::DrawFirstPersonControllerInfo(ThirdPersonController* control
         controller->Reset();
     }
 
-    ImGui::PopID();  // IDスコープ終了
+    ImGui::PopID();  // ID スコープ終了
 }
 
 void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
@@ -176,7 +176,7 @@ void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
         return;
     }
 
-    ImGui::PushID("TopDown");  // 一意のIDスコープ開始
+    ImGui::PushID("TopDown");  // 一意の ID スコープ開始
 
     ImGui::Text("=== TopDown Controller ===");
     ImGui::Text("Active: %s", controller->IsActive() ? "Yes" : "No");
@@ -225,7 +225,7 @@ void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
         controller->Reset();
     }
 
-    ImGui::PopID();  // IDスコープ終了
+    ImGui::PopID();  // ID スコープ終了
 }
 
 void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
@@ -233,7 +233,7 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
         return;
     }
 
-    ImGui::PushID("AnimationInfo");  // 一意のIDスコープ開始
+    ImGui::PushID("AnimationInfo");  // 一意の ID スコープ開始
 
     ImGui::Text("=== Camera Animation ===");
 
@@ -264,7 +264,7 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
         return;
     }
 
-    // 従来のシンプルなUI
+    // 従来のシンプルな UI
 
     // アニメーション情報
     ImGui::Text("Animation: %s", animation->GetAnimationName().c_str());
@@ -282,7 +282,7 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
     ImGui::Separator();
 
     // 再生コントロール
-    // CameraManagerからAnimationControllerを取得
+    // CameraManager から AnimationController を取得
     auto* animController = dynamic_cast<CameraAnimationController*>(
         CameraManager::GetInstance()->GetController("Animation"));
 
@@ -338,7 +338,7 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
         animation->SetCurrentTime(currentTime);
     }
 
-    ImGui::PopID();  // IDスコープ終了
+    ImGui::PopID();  // ID スコープ終了
 }
 
 void CameraDebugUI::DrawControllerSwitcher() {
@@ -356,7 +356,7 @@ void CameraDebugUI::DrawControllerSwitcher() {
 
     ImGui::Separator();
 
-    // ThirdPerson/TopDownの簡単切り替え
+    // ThirdPerson/TopDown の簡単切り替え
     if (ImGui::Button("Activate ThirdPerson")) {
         manager->DeactivateAllControllers();
         manager->ActivateController("ThirdPerson");
@@ -451,12 +451,12 @@ void CameraDebugUI::InitializeAnimationEditor() {
     CameraManager* manager = CameraManager::GetInstance();
     if (!manager) return;
 
-    // AnimationControllerを取得
+    // AnimationController を取得
     auto* animController = dynamic_cast<CameraAnimationController*>(
         manager->GetController("Animation"));
     if (!animController) return;
 
-    // エディターの初期化（CameraAnimationControllerを渡す）
+    // エディターの初期化（CameraAnimationController を渡す）
     animationEditor_ = std::make_unique<CameraAnimationEditor>();
     animationEditor_->Initialize(animController, manager->GetCamera());
 }

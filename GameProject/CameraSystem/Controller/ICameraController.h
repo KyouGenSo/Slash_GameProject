@@ -36,7 +36,7 @@ public:
     /// <summary>
     /// このコントローラーがアクティブかを判定
     /// </summary>
-    /// <returns>アクティブな場合true</returns>
+    /// <returns>アクティブな場合 true</returns>
     virtual bool IsActive() const = 0;
 
     /// <summary>
@@ -80,7 +80,7 @@ public:
     /// <summary>
     /// ターゲットを設定
     /// </summary>
-    /// <param name="target">追従対象のTransform</param>
+    /// <param name="target">追従対象の Transform</param>
     virtual void SetTarget(const Tako::Transform* target) {
         primaryTarget_ = target;
     }
@@ -88,7 +88,7 @@ public:
     /// <summary>
     /// 追加ターゲットを設定（マルチターゲット対応）
     /// </summary>
-    /// <param name="targets">追従対象のTransform配列</param>
+    /// <param name="targets">追従対象の Transform 配列</param>
     virtual void SetAdditionalTargets(const std::vector<const Tako::Transform*>& targets) {
         additionalTargets_ = targets;
     }

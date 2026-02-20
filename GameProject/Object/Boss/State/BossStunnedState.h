@@ -5,8 +5,8 @@
 
 /// <summary>
 /// ボスのスタン状態
-/// ノックバック移動と色点滅を実行し、一定時間後にNormalへ復帰
-/// BTBossStunのロジックをステートマシン用に移植
+/// ノックバック移動と色点滅を実行し、一定時間後に Normal へ復帰
+/// BTBossStun のロジックをステートマシン用に移植
 /// </summary>
 class BossStunnedState : public BossState {
 public:

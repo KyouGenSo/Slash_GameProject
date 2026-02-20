@@ -3,7 +3,7 @@
 #include "../Core/BTBlackboard.h"
 
 /// <summary>
-/// セレクターノード（ORロジック）
+/// セレクターノード（OR ロジック）
 /// 子ノードを順に実行し、最初に成功したところで停止
 /// </summary>
 class BTSelector : public BTComposite {

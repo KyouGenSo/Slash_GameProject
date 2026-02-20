@@ -18,7 +18,7 @@
 #include <memory>
 #include <vector>
 
-// Tako namespaceの前方宣言
+// Tako namespace の前方宣言
 namespace Tako {
 class Object3d;
 class EmitterManager;
@@ -26,7 +26,7 @@ class Sprite;
 class BoneTracker;
 }
 
-// GameProject前方宣言
+// GameProject 前方宣言
 class CameraManager;
 class ThirdPersonController;
 class TopDownController;
@@ -63,7 +63,7 @@ public: // メンバ関数
     void DrawWithoutEffect() override;
 
     /// <summary>
-    /// ImGuiの描画
+    /// ImGui の描画
     /// </summary>
     void DrawImGui() override;
 
@@ -108,7 +108,7 @@ public: // メンバ関数
     void InitializePostEffect();
 
     /// <summary>
-    /// Object3d初期化
+    /// Object3d 初期化
     /// </summary>
     void InitializeObject3d();
 
@@ -162,7 +162,7 @@ private: // メンバ変数
     CameraAnimationController* animationController_ = nullptr;  // カメラアニメーションコントローラー
     bool cameraMode_ = false;                                   // カメラモード (true: ThirdPerson, false: TopDown)
 
-    Tako::Transform groundUvTransform_{};                       // 地面のUVトランスフォーム（テクスチャスクロール等に使用）
+    Tako::Transform groundUvTransform_{};                       // 地面の UV トランスフォーム（テクスチャスクロール等に使用）
 
     std::unique_ptr<Tako::EmitterManager> emitterManager_;      // パーティクルエミッター管理
 
@@ -176,8 +176,8 @@ private: // メンバ変数
     std::unique_ptr<BossBorderParticleManager> bossBorderManager_;   // ボーダーパーティクル管理
     std::unique_ptr<DashEffectManager> dashEffectManager_;           // ダッシュエフェクト管理
 
-    // UIマネージャー
-    std::unique_ptr<ControllerUI> controllerUI_;                     // コントローラーUI表示
+    // UI マネージャー
+    std::unique_ptr<ControllerUI> controllerUI_;                     // コントローラー UI 表示
     std::unique_ptr<PauseMenu> pauseMenu_;                           // ポーズメニュー
     bool isPaused_ = false;                                          // ポーズ中フラグ
 

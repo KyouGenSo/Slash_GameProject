@@ -37,16 +37,16 @@ public:
 	void HandleInput(Player* player) override;
 
 	/// <summary>
-	/// ImGuiデバッグ情報の描画
+	/// ImGui デバッグ情報の描画
 	/// </summary>
 	void DrawImGui(Player* player) override;
 
-	// DrawImGui用のゲッター
+	// DrawImGui 用のゲッター
 	float GetFireRate() const { return fireRate_; }
 	float GetFireRateTimer() const { return fireRateTimer_; }
 	const Tako::Vector3& GetAimDirection() const { return aimDirection_; }
 
-	// DrawImGui用のセッター（デバッグ調整用）
+	// DrawImGui 用のセッター（デバッグ調整用）
 	void SetFireRate(float rate) { fireRate_ = rate; }
 
 private:

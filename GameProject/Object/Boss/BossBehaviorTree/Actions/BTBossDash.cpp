@@ -63,9 +63,9 @@ void BTBossDash::Reset() {
     BTNode::Reset();
     elapsedTime_ = 0.0f;
     isFirstExecute_ = true;
-    // 注意: Reset時はboss参照がないため、SetDashing(false)は呼べない
+    // 注意: Reset 時は boss 参照がないため、SetDashing(false)は呼べない
     // BossBehaviorTree::Update()でのリセット時にも安全に動作するよう
-    // BTBossDash自体は状態を保持しない設計とする
+    // BTBossDash 自体は状態を保持しない設計とする
 }
 
 void BTBossDash::InitializeDash(Boss* boss) {
@@ -78,7 +78,7 @@ void BTBossDash::InitializeDash(Boss* boss) {
     // ランダムな方向を生成
     RandomEngine* rng = RandomEngine::GetInstance();
 
-    // XZ平面上のランダムな方向を取得（Y=0で正規化済み）
+    // XZ 平面上のランダムな方向を取得（Y=0で正規化済み）
     dashDirection_ = rng->GetRandomDirectionXZ();
 
     // ランダムなダッシュ距離を取得
@@ -129,14 +129,14 @@ void BTBossDash::UpdateDashMovement(Boss* boss, float deltaTime) {
 Vector3 BTBossDash::ClampToArea(const Vector3& position) {
     Vector3 clampedPos = position;
 
-    // GameConstantsのステージ境界を使用
-    // X座標の制限
+    // GameConstants のステージ境界を使用
+    // X 座標の制限
     clampedPos.x = std::clamp(clampedPos.x, GameConst::kStageXMin + GameConst::kAreaMargin, GameConst::kStageXMax - GameConst::kAreaMargin);
 
-    // Z座標の制限
+    // Z 座標の制限
     clampedPos.z = std::clamp(clampedPos.z, GameConst::kStageZMin + GameConst::kAreaMargin, GameConst::kStageZMax - GameConst::kAreaMargin);
 
-    // Y座標は元の値を保持
+    // Y 座標は元の値を保持
     clampedPos.y = position.y;
 
     return clampedPos;

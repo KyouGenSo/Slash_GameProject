@@ -29,7 +29,7 @@ void BossPhaseTransitionStunState::Update(Boss* boss, float deltaTime)
 		boss->StartStunFlash(stunFlashColor_, flashDuration_);
 	}
 
-	// 被弾によるフェーズ2移行はBoss::OnMeleeAttackHit()から
+	// 被弾によるフェーズ2移行は Boss::OnMeleeAttackHit()から
 	// CompletePhaseTransition()を呼び出して処理する
 }
 

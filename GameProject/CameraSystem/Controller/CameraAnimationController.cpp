@@ -30,7 +30,7 @@ void CameraAnimationController::Update(float deltaTime) {
 }
 
 bool CameraAnimationController::IsActive() const {
-    // isActive_がtrueなら、アニメーションの有無に関わらずアクティブとする
+    // isActive_が true なら、アニメーションの有無に関わらずアクティブとする
     // これによりプレビューモード時に確実にアクティブになる
     if (isActive_) {
         return true;
@@ -285,7 +285,7 @@ bool CameraAnimationController::SwitchAnimation(const std::string& name) {
         return false;
     }
 
-    // 現在のアニメーションを停止（FOV復元なし）
+    // 現在のアニメーションを停止（FOV 復元なし）
     auto* current = GetCurrentAnimation();
     if (current) {
         current->StopWithoutRestore();
@@ -317,7 +317,7 @@ bool CameraAnimationController::DeleteAnimation(const std::string& name) {
 
     // 現在アクティブなアニメーションを削除しようとしている場合
     if (name == currentAnimationName_) {
-        // Defaultに切り替え
+        // Default に切り替え
         currentAnimationName_ = "Default";
     }
 
@@ -327,7 +327,7 @@ bool CameraAnimationController::DeleteAnimation(const std::string& name) {
 }
 
 bool CameraAnimationController::RenameAnimation(const std::string& oldName, const std::string& newName) {
-    // Defaultはリネーム不可
+    // Default はリネーム不可
     if (oldName == "Default") {
         return false;
     }
@@ -396,7 +396,7 @@ bool CameraAnimationController::LoadAnimationFromFile(const std::string& name) {
         return false;
     }
 
-    // JSONから読み込み（filepathを正しく渡す）
+    // JSON から読み込み（filepath を正しく渡す）
     auto* anim = GetAnimation(name);
     if (!anim || !anim->LoadFromJson(name)) {
         // 失敗した場合は削除

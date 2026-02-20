@@ -3,7 +3,7 @@
 #include "../Core/BTBlackboard.h"
 
 /// <summary>
-/// シーケンスノード（ANDロジック）
+/// シーケンスノード（AND ロジック）
 /// 全ての子ノードが成功するまで順に実行
 /// </summary>
 class BTSequence : public BTComposite {
