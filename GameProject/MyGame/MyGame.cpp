@@ -5,7 +5,6 @@
 #include "SceneManager.h"
 #include "TextureManager.h"
 #include "Draw2D.h"
-#include "Object3dBasic.h"
 #include "PostEffectManager.h"
 #include "FrameTimer.h"
 #include "GlobalVariables.h"
@@ -13,6 +12,10 @@
 #include "GPUParticle.h"
 #include "SpriteBasic.h"
 #include "TransitionManager.h"
+
+#ifdef _DEBUG
+#include "DebugUIManager.h"
+#endif
 
 using namespace Tako;
 

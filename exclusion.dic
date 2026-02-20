@@ -1,3 +1,6 @@
+// TakoEngine
+Tako
+
 // C++ & Standard Library
 nullptr
 constexpr
@@ -20,9 +23,11 @@ namespace
 wchar
 coord
 coords
+typeparam
 
 // Third Party Library
 Assimp
+imgui
 
 // WinAPI & Windows SDK
 hwnd
@@ -69,6 +74,9 @@ allocator
 fence
 barrier
 descs
+subresources
+Subresource
+unmap
 
 // HLSL & Shaders (often used in C++ setup)
 hlsl
@@ -95,6 +103,7 @@ xmmatrix
 xmm
 lerp
 slerp
+Slerp
 clamped
 normalized
 quaternion
@@ -106,6 +115,7 @@ fov
 aspect
 ratio
 aabb
+Marsaglia
 
 // Graphics Concepts
 texel
@@ -123,3 +133,4 @@ skybox
 wireframe
 fullscreen
 vsync
+rendertexture
