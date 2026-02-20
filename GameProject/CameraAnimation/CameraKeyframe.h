@@ -47,9 +47,10 @@ struct CameraKeyframe {
     /// パラメータ指定コンストラクタ
     /// </summary>
     CameraKeyframe(float t, const Tako::Vector3& pos, const Tako::Vector3& rot, float f,
-                   InterpolationType interp = InterpolationType::LINEAR,
-                   CoordinateType coordType = CoordinateType::WORLD)
-        : time(t), position(pos), rotation(rot), fov(f), interpolation(interp), coordinateType(coordType) {}
+        InterpolationType interp = InterpolationType::LINEAR,
+        CoordinateType coordType = CoordinateType::WORLD)
+        : time(t), position(pos), rotation(rot), fov(f), interpolation(interp), coordinateType(coordType) {
+    }
 };
 
 /// <summary>
@@ -60,12 +61,12 @@ namespace nlohmann {
     struct adl_serializer<CameraKeyframe::CoordinateType> {
         static void to_json(json& j, const CameraKeyframe::CoordinateType& type) {
             switch (type) {
-                case CameraKeyframe::CoordinateType::WORLD:
-                    j = "WORLD";
-                    break;
-                case CameraKeyframe::CoordinateType::TARGET_RELATIVE:
-                    j = "TARGET_RELATIVE";
-                    break;
+            case CameraKeyframe::CoordinateType::WORLD:
+                j = "WORLD";
+                break;
+            case CameraKeyframe::CoordinateType::TARGET_RELATIVE:
+                j = "TARGET_RELATIVE";
+                break;
             }
         }
 
@@ -73,9 +74,11 @@ namespace nlohmann {
             std::string str = j.get<std::string>();
             if (str == "WORLD") {
                 type = CameraKeyframe::CoordinateType::WORLD;
-            } else if (str == "TARGET_RELATIVE") {
+            }
+            else if (str == "TARGET_RELATIVE") {
                 type = CameraKeyframe::CoordinateType::TARGET_RELATIVE;
-            } else {
+            }
+            else {
                 type = CameraKeyframe::CoordinateType::WORLD; // デフォルト
             }
         }
@@ -85,21 +88,21 @@ namespace nlohmann {
     struct adl_serializer<CameraKeyframe::InterpolationType> {
         static void to_json(json& j, const CameraKeyframe::InterpolationType& type) {
             switch (type) {
-                case CameraKeyframe::InterpolationType::LINEAR:
-                    j = "LINEAR";
-                    break;
-                case CameraKeyframe::InterpolationType::EASE_IN:
-                    j = "EASE_IN";
-                    break;
-                case CameraKeyframe::InterpolationType::EASE_OUT:
-                    j = "EASE_OUT";
-                    break;
-                case CameraKeyframe::InterpolationType::EASE_IN_OUT:
-                    j = "EASE_IN_OUT";
-                    break;
-                case CameraKeyframe::InterpolationType::CUBIC_BEZIER:
-                    j = "CUBIC_BEZIER";
-                    break;
+            case CameraKeyframe::InterpolationType::LINEAR:
+                j = "LINEAR";
+                break;
+            case CameraKeyframe::InterpolationType::EASE_IN:
+                j = "EASE_IN";
+                break;
+            case CameraKeyframe::InterpolationType::EASE_OUT:
+                j = "EASE_OUT";
+                break;
+            case CameraKeyframe::InterpolationType::EASE_IN_OUT:
+                j = "EASE_IN_OUT";
+                break;
+            case CameraKeyframe::InterpolationType::CUBIC_BEZIER:
+                j = "CUBIC_BEZIER";
+                break;
             }
         }
 
@@ -107,15 +110,20 @@ namespace nlohmann {
             std::string str = j.get<std::string>();
             if (str == "LINEAR") {
                 type = CameraKeyframe::InterpolationType::LINEAR;
-            } else if (str == "EASE_IN") {
+            }
+            else if (str == "EASE_IN") {
                 type = CameraKeyframe::InterpolationType::EASE_IN;
-            } else if (str == "EASE_OUT") {
+            }
+            else if (str == "EASE_OUT") {
                 type = CameraKeyframe::InterpolationType::EASE_OUT;
-            } else if (str == "EASE_IN_OUT") {
+            }
+            else if (str == "EASE_IN_OUT") {
                 type = CameraKeyframe::InterpolationType::EASE_IN_OUT;
-            } else if (str == "CUBIC_BEZIER") {
+            }
+            else if (str == "CUBIC_BEZIER") {
                 type = CameraKeyframe::InterpolationType::CUBIC_BEZIER;
-            } else {
+            }
+            else {
                 type = CameraKeyframe::InterpolationType::LINEAR; // デフォルト
             }
         }
@@ -153,7 +161,8 @@ namespace nlohmann {
             // 後方互換性: coordinateType が存在しない場合は WORLD をデフォルトとする
             if (j.contains("coordinateType")) {
                 keyframe.coordinateType = j.at("coordinateType").get<CameraKeyframe::CoordinateType>();
-            } else {
+            }
+            else {
                 keyframe.coordinateType = CameraKeyframe::CoordinateType::WORLD;
             }
         }

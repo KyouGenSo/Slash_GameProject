@@ -3,7 +3,7 @@
 
 // 前方宣言
 namespace Tako {
-class Object3d;
+    class Object3d;
 }
 
 /// <summary>

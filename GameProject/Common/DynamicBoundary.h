@@ -67,7 +67,7 @@ struct DynamicBoundary
     {
         // いずれかの値がマーカー値でなければ有効
         return xMin > -kDisabledMarker || xMax < kDisabledMarker ||
-               zMin > -kDisabledMarker || zMax < kDisabledMarker;
+            zMin > -kDisabledMarker || zMax < kDisabledMarker;
     }
 
     /// <summary>
@@ -91,6 +91,6 @@ struct DynamicBoundary
     bool Contains(const Tako::Vector3& position) const
     {
         return position.x >= xMin && position.x <= xMax &&
-               position.z >= zMin && position.z <= zMax;
+            position.z >= zMin && position.z <= zMax;
     }
 };

@@ -1,4 +1,4 @@
-#include "ShakeEffect.h"
+ｋ#include "ShakeEffect.h"
 #include "RandomEngine.h"
 
 using namespace Tako;

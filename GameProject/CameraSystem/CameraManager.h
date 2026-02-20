@@ -46,7 +46,7 @@ public:
     /// <param name="name">コントローラー識別名</param>
     /// <param name="controller">コントローラーインスタンス</param>
     void RegisterController(const std::string& name,
-                           std::unique_ptr<ICameraController> controller);
+        std::unique_ptr<ICameraController> controller);
 
     /// <summary>
     /// コントローラーを取得
@@ -182,7 +182,7 @@ private:
         /// </summary>
         bool operator<(const ControllerEntry& other) const {
             return static_cast<int>(controller->GetPriority()) >
-                   static_cast<int>(other.controller->GetPriority());
+                static_cast<int>(other.controller->GetPriority());
         }
     };
 

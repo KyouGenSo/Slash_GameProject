@@ -104,7 +104,8 @@ void CameraAnimation::Update(float deltaTime) {
         if (isLooping_) {
             // ループ再生
             currentTime_ = fmodf(currentTime_, duration_);
-        } else {
+        }
+        else {
             // ワンショット再生の終了
             currentTime_ = duration_;
             playState_ = PlayState::STOPPED;
@@ -121,7 +122,8 @@ void CameraAnimation::Update(float deltaTime) {
     if (currentTime_ < 0.0f) {
         if (isLooping_) {
             currentTime_ = duration_ + fmodf(currentTime_, duration_);
-        } else {
+        }
+        else {
             currentTime_ = 0.0f;
             playState_ = PlayState::STOPPED;
 
@@ -263,7 +265,8 @@ void CameraAnimation::Play() {
         if (!keyframes_.empty()) {
             ApplyKeyframeDirectly(keyframes_[0]);
         }
-    } else {
+    }
+    else {
         // SMOOTH_BLEND: 現在のカメラ状態を保存してブレンド開始
         blendStartPosition_ = camera_->GetTranslate();
         blendStartRotation_ = camera_->GetRotate();
@@ -390,7 +393,8 @@ bool CameraAnimation::FindKeyframeIndices(float time, size_t& prevIndex, size_t&
     for (size_t i = 0; i < keyframes_.size(); ++i) {
         if (keyframes_[i].time <= time) {
             prevIndex = i;
-        } else {
+        }
+        else {
             break;
         }
     }
@@ -402,7 +406,8 @@ bool CameraAnimation::FindKeyframeIndices(float time, size_t& prevIndex, size_t&
         if (isLooping_ && keyframes_.size() > 1) {
             // ループ時は最初のキーフレームに戻る
             nextIndex = 0;
-        } else {
+        }
+        else {
             // ループしない場合は最後のキーフレームを維持
             nextIndex = prevIndex;
         }
@@ -453,32 +458,33 @@ void CameraAnimation::InterpolateKeyframes(const CameraKeyframe& prev, const Cam
 /// </summary>
 float CameraAnimation::ApplyEasing(float t, CameraKeyframe::InterpolationType type) const {
     switch (type) {
-        case CameraKeyframe::InterpolationType::LINEAR:
-            return t;
+    case CameraKeyframe::InterpolationType::LINEAR:
+        return t;
 
-        case CameraKeyframe::InterpolationType::EASE_IN:
-            // 二次関数でゆっくり開始
-            return t * t;
+    case CameraKeyframe::InterpolationType::EASE_IN:
+        // 二次関数でゆっくり開始
+        return t * t;
 
-        case CameraKeyframe::InterpolationType::EASE_OUT:
-            // 二次関数でゆっくり終了
-            return 1.0f - (1.0f - t) * (1.0f - t);
+    case CameraKeyframe::InterpolationType::EASE_OUT:
+        // 二次関数でゆっくり終了
+        return 1.0f - (1.0f - t) * (1.0f - t);
 
-        case CameraKeyframe::InterpolationType::EASE_IN_OUT:
-            // 両端でゆっくり（三次関数）
-            if (t < 0.5f) {
-                return 2.0f * t * t;
-            } else {
-                return 1.0f - 2.0f * (1.0f - t) * (1.0f - t);
-            }
+    case CameraKeyframe::InterpolationType::EASE_IN_OUT:
+        // 両端でゆっくり（三次関数）
+        if (t < 0.5f) {
+            return 2.0f * t * t;
+        }
+        else {
+            return 1.0f - 2.0f * (1.0f - t) * (1.0f - t);
+        }
 
-        case CameraKeyframe::InterpolationType::CUBIC_BEZIER:
-            // TODO: カスタムベジェカーブの実装
-            // 現在は線形補間にフォールバック
-            return t;
+    case CameraKeyframe::InterpolationType::CUBIC_BEZIER:
+        // TODO: カスタムベジェカーブの実装
+        // 現在は線形補間にフォールバック
+        return t;
 
-        default:
-            return t;
+    default:
+        return t;
     }
 }
 
@@ -513,7 +519,8 @@ Vector3 CameraAnimation::QuaternionToEuler(const Quaternion& q) const {
     float sinp = 2.0f * (q.w * q.y - q.z * q.x);
     if (std::abs(sinp) >= 1.0f) {
         euler.y = std::copysignf(std::numbers::pi_v<float> / 2.0f, sinp); // ジンバルロック時
-    } else {
+    }
+    else {
         euler.y = std::asinf(sinp);
     }
 
@@ -675,7 +682,8 @@ bool CameraAnimation::LoadFromJson(const std::string& filepath) {
         // 読み込み成功
         return true;
 
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception& e) {
         // エラー処理
         (void)e; // 警告回避
         return false;
@@ -736,7 +744,8 @@ bool CameraAnimation::SaveToJson(const std::string& filepath) const {
         // 保存成功
         return true;
 
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception& e) {
         // エラー処理
         (void)e; // 警告回避
         return false;
@@ -748,7 +757,7 @@ bool CameraAnimation::SaveToJson(const std::string& filepath) const {
 /// ImGui でのデバッグ表示
 /// </summary>
 void CameraAnimation::DrawImGui() {
-  ImGui::Separator();
+    ImGui::Separator();
 
     // アニメーション情報
     ImGui::Text("Animation: %s", animationName_.c_str());
@@ -823,7 +832,8 @@ void CameraAnimation::DrawImGui() {
                     ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.2f, 1.0f),
                         "Position will be offset from target");
                 }
-            } else {
+            }
+            else {
                 ImGui::TextColored(ImVec4(0.8f, 0.2f, 0.2f, 1.0f), "Target: Not Set");
                 if (coordType == 1) { // TARGET_RELATIVE
                     ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.2f, 1.0f),
@@ -837,7 +847,8 @@ void CameraAnimation::DrawImGui() {
                 // TARGET_RELATIVE モードかつターゲットが設定されている場合、現在位置からオフセットを計算
                 if (coordType == 1 && targetTransform_) {
                     kf.position = Vec3::Subtract(camera_->GetTranslate(), targetTransform_->translate);
-                } else {
+                }
+                else {
                     kf.position = camera_->GetTranslate();
                 }
                 kf.rotation = camera_->GetRotate();
@@ -868,7 +879,8 @@ void CameraAnimation::DrawImGui() {
                 ClearDeselectState();
             }
             ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Press ESC to deselect");
-        } else {
+        }
+        else {
             ImGui::Text("No keyframe selected");
         }
 
@@ -898,7 +910,8 @@ void CameraAnimation::DrawImGui() {
                     RemoveKeyframe(i);
                     if (selectedKeyframeIndex_ == static_cast<int>(i)) {
                         selectedKeyframeIndex_ = -1;
-                    } else if (selectedKeyframeIndex_ > static_cast<int>(i)) {
+                    }
+                    else if (selectedKeyframeIndex_ > static_cast<int>(i)) {
                         selectedKeyframeIndex_--;
                     }
                     break; // ループを抜ける（削除後のインデックスずれを防ぐ）
@@ -994,7 +1007,8 @@ void CameraAnimation::DrawImGui() {
             if (strlen(filename) > 0) {
                 if (SaveToJson(filename)) {
                     ImGui::Text("Saved successfully!");
-                } else {
+                }
+                else {
                     ImGui::Text("Save failed!");
                 }
             }
@@ -1004,7 +1018,8 @@ void CameraAnimation::DrawImGui() {
             if (strlen(filename) > 0) {
                 if (LoadFromJson(filename)) {
                     ImGui::Text("Loaded successfully!");
-                } else {
+                }
+                else {
                     ImGui::Text("Load failed!");
                 }
             }

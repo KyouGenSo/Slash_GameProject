@@ -199,7 +199,7 @@ void CameraAnimationCurveEditor::DrawCurve(CurveType curveType) {
             p.y >= graphPos_.y - 5 && p.y <= graphPos_.y + graphSize_.y + 5) {
 
             bool isSelected = (selectedKeyPoint_ == static_cast<int>(i) &&
-                             activeCurve_ == curveType);
+                activeCurve_ == curveType);
             DrawKeyPoint(static_cast<int>(i), p.x, p.y, isSelected);
         }
     }
@@ -338,62 +338,63 @@ void CameraAnimationCurveEditor::HandleMouseInput() {
 ImVec2 CameraAnimationCurveEditor::ValueToGraph(float time, float value) const {
     float x = graphPos_.x + (time / timeRange_) * graphSize_.x * zoomX_ + panX_;
     float y = graphPos_.y + graphSize_.y -
-              ((value - valueRangeMin_) / (valueRangeMax_ - valueRangeMin_)) * graphSize_.y * zoomY_ - panY_;
+        ((value - valueRangeMin_) / (valueRangeMax_ - valueRangeMin_)) * graphSize_.y * zoomY_ - panY_;
     return ImVec2(x, y);
 }
 
 void CameraAnimationCurveEditor::GraphToValue(const ImVec2& pos, float& time, float& value) const {
     time = ((pos.x - graphPos_.x - panX_) / (graphSize_.x * zoomX_)) * timeRange_;
     value = valueRangeMin_ +
-            (1.0f - (pos.y - graphPos_.y + panY_) / (graphSize_.y * zoomY_)) *
-            (valueRangeMax_ - valueRangeMin_);
+        (1.0f - (pos.y - graphPos_.y + panY_) / (graphSize_.y * zoomY_)) *
+        (valueRangeMax_ - valueRangeMin_);
 }
 
 float CameraAnimationCurveEditor::GetCurveValue(const CameraKeyframe& kf, CurveType type) const {
     switch (type) {
-        case CurveType::POSITION_X: return kf.position.x;
-        case CurveType::POSITION_Y: return kf.position.y;
-        case CurveType::POSITION_Z: return kf.position.z;
-        case CurveType::ROTATION_X: return kf.rotation.x;
-        case CurveType::ROTATION_Y: return kf.rotation.y;
-        case CurveType::ROTATION_Z: return kf.rotation.z;
-        case CurveType::FOV: return kf.fov;
-        default: return 0.0f;
+    case CurveType::POSITION_X: return kf.position.x;
+    case CurveType::POSITION_Y: return kf.position.y;
+    case CurveType::POSITION_Z: return kf.position.z;
+    case CurveType::ROTATION_X: return kf.rotation.x;
+    case CurveType::ROTATION_Y: return kf.rotation.y;
+    case CurveType::ROTATION_Z: return kf.rotation.z;
+    case CurveType::FOV: return kf.fov;
+    default: return 0.0f;
     }
 }
 
 void CameraAnimationCurveEditor::SetCurveValue(CameraKeyframe& kf, CurveType type, float value) {
     switch (type) {
-        case CurveType::POSITION_X: kf.position.x = value; break;
-        case CurveType::POSITION_Y: kf.position.y = value; break;
-        case CurveType::POSITION_Z: kf.position.z = value; break;
-        case CurveType::ROTATION_X: kf.rotation.x = value; break;
-        case CurveType::ROTATION_Y: kf.rotation.y = value; break;
-        case CurveType::ROTATION_Z: kf.rotation.z = value; break;
-        case CurveType::FOV: kf.fov = value; break;
+    case CurveType::POSITION_X: kf.position.x = value; break;
+    case CurveType::POSITION_Y: kf.position.y = value; break;
+    case CurveType::POSITION_Z: kf.position.z = value; break;
+    case CurveType::ROTATION_X: kf.rotation.x = value; break;
+    case CurveType::ROTATION_Y: kf.rotation.y = value; break;
+    case CurveType::ROTATION_Z: kf.rotation.z = value; break;
+    case CurveType::FOV: kf.fov = value; break;
     }
 }
 
 float CameraAnimationCurveEditor::ApplyEasing(float t, CameraKeyframe::InterpolationType type) const {
     switch (type) {
-        case CameraKeyframe::InterpolationType::LINEAR:
-            return t;
+    case CameraKeyframe::InterpolationType::LINEAR:
+        return t;
 
-        case CameraKeyframe::InterpolationType::EASE_IN:
-            return t * t;
+    case CameraKeyframe::InterpolationType::EASE_IN:
+        return t * t;
 
-        case CameraKeyframe::InterpolationType::EASE_OUT:
-            return 1.0f - (1.0f - t) * (1.0f - t);
+    case CameraKeyframe::InterpolationType::EASE_OUT:
+        return 1.0f - (1.0f - t) * (1.0f - t);
 
-        case CameraKeyframe::InterpolationType::EASE_IN_OUT:
-            if (t < 0.5f) {
-                return 2.0f * t * t;
-            } else {
-                return 1.0f - 2.0f * (1.0f - t) * (1.0f - t);
-            }
+    case CameraKeyframe::InterpolationType::EASE_IN_OUT:
+        if (t < 0.5f) {
+            return 2.0f * t * t;
+        }
+        else {
+            return 1.0f - 2.0f * (1.0f - t) * (1.0f - t);
+        }
 
-        default:
-            return t;
+    default:
+        return t;
     }
 }
 

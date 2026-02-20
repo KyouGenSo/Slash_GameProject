@@ -56,7 +56,7 @@ void CameraDebugUI::DrawManagerInfo() {
         ImGui::Text("🎯 Active Controller:");
         ImGui::SameLine();
         ImGui::TextColored(ImVec4(0.2f, 1.0f, 0.2f, 1.0f), "%s",
-                          manager->GetActiveControllerName().c_str());
+            manager->GetActiveControllerName().c_str());
 
         ImGui::Text("📊 Total Controllers:");
         ImGui::SameLine();
@@ -70,7 +70,7 @@ void CameraDebugUI::DrawManagerInfo() {
 
     // コントローラーリストをテーブルで表示
     if (ImGui::BeginTable("ControllerTable", 3,
-                         ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable)) {
+        ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable)) {
 
         // テーブルヘッダー
         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthFixed, 150.0f);
@@ -93,7 +93,7 @@ void CameraDebugUI::DrawManagerInfo() {
             ImGui::TableNextColumn();
             bool isFPActive = (manager->GetActiveControllerName() == "ThirdPerson");
             ImGui::TextColored(isFPActive ? ImVec4(0.2f, 1.0f, 0.2f, 1.0f) : ImVec4(0.5f, 0.5f, 0.5f, 1.0f),
-                             isFPActive ? "Active" : "Inactive");
+                isFPActive ? "Active" : "Inactive");
 
             // TopDown
             ImGui::TableNextRow();
@@ -104,7 +104,7 @@ void CameraDebugUI::DrawManagerInfo() {
             ImGui::TableNextColumn();
             bool isTDActive = (manager->GetActiveControllerName() == "TopDown");
             ImGui::TextColored(isTDActive ? ImVec4(0.2f, 1.0f, 0.2f, 1.0f) : ImVec4(0.5f, 0.5f, 0.5f, 1.0f),
-                             isTDActive ? "Active" : "Inactive");
+                isTDActive ? "Active" : "Inactive");
 
             // Animation
             ImGui::TableNextRow();
@@ -115,7 +115,7 @@ void CameraDebugUI::DrawManagerInfo() {
             ImGui::TableNextColumn();
             bool isAnimActive = (manager->GetActiveControllerName() == "Animation");
             ImGui::TextColored(isAnimActive ? ImVec4(0.2f, 1.0f, 0.2f, 1.0f) : ImVec4(0.5f, 0.5f, 0.5f, 1.0f),
-                             isAnimActive ? "Active" : "Inactive");
+                isAnimActive ? "Active" : "Inactive");
         }
 
         ImGui::EndTable();
@@ -136,7 +136,8 @@ void CameraDebugUI::DrawFirstPersonControllerInfo(ThirdPersonController* control
         if (ImGui::Button("Activate")) {
             controller->Activate();
         }
-    } else {
+    }
+    else {
         if (ImGui::Button("Deactivate")) {
             controller->Deactivate();
         }
@@ -185,7 +186,8 @@ void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
         if (ImGui::Button("Activate")) {
             controller->Activate();
         }
-    } else {
+    }
+    else {
         if (ImGui::Button("Deactivate")) {
             controller->Deactivate();
         }
@@ -290,7 +292,8 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
         // コントローラー経由で呼び出し（isActive_フラグを更新するため）
         if (animController) {
             animController->Play();
-        } else {
+        }
+        else {
             animation->Play();
         }
     }
@@ -298,7 +301,8 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
     if (ImGui::Button("Pause")) {
         if (animController) {
             animController->Pause();
-        } else {
+        }
+        else {
             animation->Pause();
         }
     }
@@ -306,7 +310,8 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
     if (ImGui::Button("Stop")) {
         if (animController) {
             animController->Stop();
-        } else {
+        }
+        else {
             animation->Stop();
         }
     }
@@ -314,7 +319,8 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
     if (ImGui::Button("Reset")) {
         if (animController) {
             animController->Reset();
-        } else {
+        }
+        else {
             animation->Reset();
         }
     }
@@ -334,7 +340,7 @@ void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
     // タイムラインスライダー
     float currentTime = animation->GetPlaybackTime();
     if (ImGui::SliderFloat("Timeline", &currentTime, 0.0f,
-                          animation->GetDuration(), "%.2f")) {
+        animation->GetDuration(), "%.2f")) {
         animation->SetCurrentTime(currentTime);
     }
 
@@ -352,7 +358,7 @@ void CameraDebugUI::DrawControllerSwitcher() {
     // アクティブなコントローラーを表示
     std::string activeName = manager->GetActiveControllerName();
     ImGui::Text("Current Active: %s",
-               activeName.empty() ? "None" : activeName.c_str());
+        activeName.empty() ? "None" : activeName.c_str());
 
     ImGui::Separator();
 
@@ -400,7 +406,7 @@ void CameraDebugUI::DrawCameraState() {
     // 回転（度単位）
     Vector3 rot = camera->GetRotate();
     ImGui::Text("Rotation: (%.1f°, %.1f°, %.1f°)",
-               DirectX::XMConvertToDegrees(rot.x), DirectX::XMConvertToDegrees(rot.y), DirectX::XMConvertToDegrees(rot.z));
+        DirectX::XMConvertToDegrees(rot.x), DirectX::XMConvertToDegrees(rot.y), DirectX::XMConvertToDegrees(rot.z));
 
     // FOV（度単位）
     float fov = DirectX::XMConvertToDegrees(camera->GetFovY());
@@ -411,7 +417,7 @@ void CameraDebugUI::DrawCameraState() {
 
     // ニア・ファー
     ImGui::Text("Near/Far: %.2f / %.1f",
-               camera->GetNearClip(), camera->GetFarClip());
+        camera->GetNearClip(), camera->GetFarClip());
 }
 
 void CameraDebugUI::DrawAnimationEditorOnly() {
@@ -429,7 +435,8 @@ void CameraDebugUI::DrawAnimationEditorOnly() {
 
         // エディターの描画
         animationEditor_->Draw();
-    } else {
+    }
+    else {
         // エディターが初期化できない場合のメッセージ
         if (ImGui::Begin("Camera Animation Editor")) {
             ImGui::Text("⚠️ Animation Editor not available");
@@ -446,7 +453,7 @@ void CameraDebugUI::DrawAnimationEditorOnly() {
 
 void CameraDebugUI::InitializeAnimationEditor() {
 
-  animationEditor_.reset();
+    animationEditor_.reset();
 
     CameraManager* manager = CameraManager::GetInstance();
     if (!manager) return;
@@ -463,7 +470,7 @@ void CameraDebugUI::InitializeAnimationEditor() {
 
 void CameraDebugUI::CleanupAnimationEditor()
 {
-  animationEditor_.reset();
+    animationEditor_.reset();
 }
 
 void CameraDebugUI::UpdateAnimationEditor(float deltaTime) {

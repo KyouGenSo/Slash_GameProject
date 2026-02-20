@@ -157,7 +157,8 @@ void CameraAnimationHistory::LimitHistorySize() {
 
         if (currentIndex_ > removeCount) {
             currentIndex_ -= removeCount;
-        } else {
+        }
+        else {
             currentIndex_ = 0;
         }
     }

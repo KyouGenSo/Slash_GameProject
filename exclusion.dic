@@ -116,6 +116,8 @@ aspect
 ratio
 aabb
 Marsaglia
+euler
+coord
 
 // Graphics Concepts
 texel

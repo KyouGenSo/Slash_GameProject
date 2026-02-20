@@ -2,7 +2,7 @@
 #include "Vector3.h"
 
 namespace Tako {
-class EmitterManager;
+    class EmitterManager;
 }
 
 /// <summary>

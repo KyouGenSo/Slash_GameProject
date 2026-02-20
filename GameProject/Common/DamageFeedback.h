@@ -4,7 +4,7 @@
 
 // 前方宣言
 namespace Tako {
-class EmitterManager;
+    class EmitterManager;
 }
 
 /// <summary>

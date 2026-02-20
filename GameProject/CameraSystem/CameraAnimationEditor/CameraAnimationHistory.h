@@ -59,7 +59,8 @@ public:
     class AddKeyframeAction : public Action {
     public:
         AddKeyframeAction(const CameraKeyframe& keyframe, size_t index)
-            : keyframe_(keyframe), index_(index) {}
+            : keyframe_(keyframe), index_(index) {
+        }
 
         void Execute(CameraAnimation* animation) override;
         void Undo(CameraAnimation* animation) override;
@@ -77,7 +78,8 @@ public:
     class DeleteKeyframeAction : public Action {
     public:
         DeleteKeyframeAction(const CameraKeyframe& keyframe, size_t index)
-            : keyframe_(keyframe), index_(index) {}
+            : keyframe_(keyframe), index_(index) {
+        }
 
         void Execute(CameraAnimation* animation) override;
         void Undo(CameraAnimation* animation) override;
@@ -95,7 +97,8 @@ public:
     class EditKeyframeAction : public Action {
     public:
         EditKeyframeAction(size_t index, const CameraKeyframe& oldKf, const CameraKeyframe& newKf)
-            : index_(index), oldKeyframe_(oldKf), newKeyframe_(newKf) {}
+            : index_(index), oldKeyframe_(oldKf), newKeyframe_(newKf) {
+        }
 
         void Execute(CameraAnimation* animation) override;
         void Undo(CameraAnimation* animation) override;

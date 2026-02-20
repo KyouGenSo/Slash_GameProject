@@ -79,7 +79,7 @@ public:
     /// <param name="mode">開始モード</param>
     /// <param name="blendDuration">ブレンド時間（秒）</param>
     void SetAnimationStartModeByName(const std::string& animationName,
-                                      CameraAnimation::StartMode mode, float blendDuration = 0.5f);
+        CameraAnimation::StartMode mode, float blendDuration = 0.5f);
 
     //==================== キーフレーム管理 ====================
 
@@ -96,7 +96,7 @@ public:
     /// <param name="interpolation">補間タイプ</param>
     void AddKeyframeFromCurrentCamera(float time,
         CameraKeyframe::InterpolationType interpolation =
-            CameraKeyframe::InterpolationType::LINEAR);
+        CameraKeyframe::InterpolationType::LINEAR);
 
     /// <summary>
     /// キーフレームを削除

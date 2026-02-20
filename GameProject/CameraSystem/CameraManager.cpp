@@ -60,7 +60,7 @@ void CameraManager::Update(float deltaTime) {
 }
 
 void CameraManager::RegisterController(const std::string& name,
-                                      std::unique_ptr<ICameraController> controller) {
+    std::unique_ptr<ICameraController> controller) {
     if (!controller) {
         return;
     }
@@ -73,7 +73,7 @@ void CameraManager::RegisterController(const std::string& name,
 
     // 新しいエントリを追加
     size_t newIndex = controllers_.size();
-    controllers_.push_back({name, std::move(controller)});
+    controllers_.push_back({ name, std::move(controller) });
     nameToIndex_[name] = newIndex;
 
     // ソートが必要
@@ -119,7 +119,7 @@ bool CameraManager::ActivateController(const std::string& name) {
     ICameraController* controller = GetController(name);
     if (controller) {
         controller->Activate();
-            return true;
+        return true;
     }
     return false;
 }
@@ -128,7 +128,7 @@ bool CameraManager::DeactivateController(const std::string& name) {
     ICameraController* controller = GetController(name);
     if (controller) {
         controller->Deactivate();
-            return true;
+        return true;
     }
     return false;
 }

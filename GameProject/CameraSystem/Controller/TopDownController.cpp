@@ -18,7 +18,7 @@ void TopDownController::Update(float deltaTime) {
 
     // 標準 FOV を設定
     if (camera_) {
-      camera_->SetFovY(standardFov_);
+        camera_->SetFovY(standardFov_);
     }
 
     UpdateCameraPosition();
@@ -29,7 +29,7 @@ void TopDownController::Activate() {
 
     // 標準 FOV を設定
     if (camera_) {
-      camera_->SetFovY(standardFov_);
+        camera_->SetFovY(standardFov_);
     }
 
     if (primaryTarget_) {
@@ -67,10 +67,10 @@ Vector3 TopDownController::CalculateFocusPoint() const {
     // 平均位置を計算
     if (!allPositions.empty()) {
         Vector3 sum = std::accumulate(allPositions.begin(), allPositions.end(),
-                                    Vector3{0.0f, 0.0f, 0.0f},
-                                    [](const Vector3& a, const Vector3& b) {
-                                        return Vec3::Add(a, b);
-                                    });
+            Vector3{ 0.0f, 0.0f, 0.0f },
+            [](const Vector3& a, const Vector3& b) {
+                return Vec3::Add(a, b);
+            });
         return Vec3::Multiply(sum, 1.0f / static_cast<float>(allPositions.size()));
     }
 
@@ -98,7 +98,7 @@ float TopDownController::CalculateMaxTargetDistance() const {
         for (size_t j = i + 1; j < additionalTargets_.size(); ++j) {
             if (additionalTargets_[i] && additionalTargets_[j]) {
                 Vector3 diff = Vec3::Subtract(additionalTargets_[i]->translate,
-                                            additionalTargets_[j]->translate);
+                    additionalTargets_[j]->translate);
                 float distance = static_cast<float>(Vec3::Length(diff));
                 maxDistance = std::max(maxDistance, distance);
             }
@@ -109,8 +109,8 @@ float TopDownController::CalculateMaxTargetDistance() const {
 }
 
 void TopDownController::CalculateCameraParameters(float targetDistance,
-                                                 float& outHeight,
-                                                 float& outBackOffset) const {
+    float& outHeight,
+    float& outBackOffset) const {
     // 距離に応じて高度を調整
     outHeight = baseHeight_ + targetDistance * heightMultiplier_;
     outHeight = std::clamp(outHeight, minHeight_, maxHeight_);

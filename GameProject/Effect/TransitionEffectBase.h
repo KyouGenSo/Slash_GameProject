@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Tako {
-class EmitterManager;
+    class EmitterManager;
 }
 
 /// <summary>
