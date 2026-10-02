@@ -36,7 +36,6 @@
 // Debug includes
 #ifdef _DEBUG
 #include "ImGui.h"
-#include "DebugCamera.h"
 #include "DebugUIManager.h"
 #include "CameraSystem/CameraDebugUI.h"
 #endif
@@ -354,12 +353,8 @@ void GameScene::UpdateCameraMode()
 
 void GameScene::UpdateInput()
 {
-    // カメラアニメーション再生中やデバッグカメラ操作中は入力をリセット
-    if (animationController_->GetPlayState() == CameraAnimation::PlayState::PLAYING
-#ifdef  _DEBUG
-        || Object3dBasic::GetInstance()->GetDebug()
-#endif
-        ) {
+    // カメラアニメーション再生中は入力をリセット（デバッグビュー操作中の入力は Input 側で遮断される）
+    if (animationController_->GetPlayState() == CameraAnimation::PlayState::PLAYING) {
         inputHandler_->ResetInputs();
     }
 }
@@ -367,11 +362,6 @@ void GameScene::UpdateInput()
 void GameScene::InitializeDebugOption()
 {
 #ifdef _DEBUG
-    DebugCamera::GetInstance()->Initialize();
-    Object3dBasic::GetInstance()->SetDebug(false);
-    LineRenderer::GetInstance()->SetDebug(false);
-    GPUParticle::GetInstance()->SetIsDebug(false);
-
     DebugUIManager::GetInstance()->SetSceneName("GameScene");
 
     DebugUIManager::GetInstance()->RegisterGameObject("Player",

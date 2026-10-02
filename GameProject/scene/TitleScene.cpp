@@ -16,7 +16,6 @@
 
 #ifdef _DEBUG
 #include"ImGui.h"
-#include "DebugCamera.h"
 #include "DebugUIManager.h"
 #endif
 
@@ -326,11 +325,6 @@ void TitleScene::ResetTitleAnimation()
 void TitleScene::InitializeDebugUI()
 {
 #ifdef _DEBUG
-    DebugCamera::GetInstance()->Initialize();
-    Object3dBasic::GetInstance()->SetDebug(false);
-    LineRenderer::GetInstance()->SetDebug(false);
-    GPUParticle::GetInstance()->SetIsDebug(false);
-
     DebugUIManager::GetInstance()->RegisterGameObject("TitleScene",
         [this]() { this->DrawImGui(); });
 

@@ -10,7 +10,6 @@
 
 #ifdef _DEBUG
 #include"ImGui.h"
-#include "DebugCamera.h"
 #endif
 
 using namespace Tako;
@@ -22,13 +21,6 @@ ResultScene::ResultScene(const std::string& titleTexture)
 
 void ResultScene::Initialize()
 {
-#ifdef _DEBUG
-    DebugCamera::GetInstance()->Initialize();
-    Object3dBasic::GetInstance()->SetDebug(false);
-    LineRenderer::GetInstance()->SetDebug(false);
-    GPUParticle::GetInstance()->SetIsDebug(false);
-#endif
-
     /// ================================== ///
     ///              初期化処理              ///
     /// ================================== ///
