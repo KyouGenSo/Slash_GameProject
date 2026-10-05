@@ -10,6 +10,7 @@
 #include "../../Collision/BossMeleeAttackCollider.h"
 #include "WinApp.h"
 #include "EnginePaths.h"
+#include "ColorFunc.h"
 #include "BossBehaviorTree/BossNodeFactory.h"
 #include "GlobalVariables.h"
 #include "EmitterManager.h"
@@ -93,7 +94,7 @@ void Boss::InitializeModel()
         .startAngleDeg = 0.0f,
         .sweepAngleDeg = 180.0f }));
     ringShockwaveModel_->SetTexture("red_perlin_noise.png");
-    ringShockwaveModel_->SetMaterialColor(Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+    ringShockwaveModel_->SetMaterialColor(Color::kWhite);
     ringShockwaveModel_->SetEnableLighting(false);
     ringShockwaveModel_->SetScale({ 0.0f, 0.0f, 0.0f });
     ringShockwaveModel_->SetTransparent(true);
@@ -366,7 +367,7 @@ void Boss::OnHit(float damage, float shakeIntensityOverride)
     }
 
     float hitEffectDuration = GlobalVariables::GetInstance()->GetValueFloat("Boss", "HitEffectDuration");
-    hitFlashEffect_.Start(Vector4(1.0f, 1.0f, 1.0f, 1.0f), hitEffectDuration);
+    hitFlashEffect_.Start(Color::kWhite, hitEffectDuration);
 
     StartShake(shakeIntensityOverride);
 }

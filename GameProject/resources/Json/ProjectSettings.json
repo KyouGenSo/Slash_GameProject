@@ -1,0 +1,13 @@
+{
+    "Display": {
+        "TargetFPS": 60,
+        "VSync": true
+    },
+    "Rendering": {
+        "MaxShadowDistance": 50.0,
+        "PCFKernelSize": 3,
+        "ShadowBias": 9.999999747378752e-05,
+        "ShadowEnabled": true,
+        "ShadowMapSize": 2048
+    }
+}

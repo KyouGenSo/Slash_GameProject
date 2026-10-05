@@ -4,6 +4,7 @@
 #include <string>
 #include "Vector2.h"
 #include "Vector4.h"
+#include "ColorFunc.h"
 #include "Sprite.h"
 
 /// <summary>
@@ -30,7 +31,7 @@ public: //メンバー関数
         float screenXRatio,
         float screenYRatio,
         const Tako::Vector4& barColor,
-        const Tako::Vector4& bgColor = Tako::Vector4{ 1.f, 1.f, 1.f, 1.0f });
+        const Tako::Vector4& bgColor = Tako::Color::kWhite);
 
     /// <summary>
     /// 2段重ねバー（Boss フェーズ用）を生成し初期化する
@@ -49,7 +50,7 @@ public: //メンバー関数
         float screenYRatio,
         const Tako::Vector4& bar1Color,
         const Tako::Vector4& bar2Color,
-        const Tako::Vector4& bgColor = Tako::Vector4{ 1.f, 1.f, 1.f, 1.0f });
+        const Tako::Vector4& bgColor = Tako::Color::kWhite);
 
     /// <summary>
     /// 現在値/最大値の比率でバー幅を更新する

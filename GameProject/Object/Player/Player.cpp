@@ -25,6 +25,7 @@
 #include "ForceFieldManager.h"
 #include "../../Common/ForceFieldAffectMask.h"
 #include "EnginePaths.h"
+#include "ColorFunc.h"
 
 #include <cmath>
 #include <algorithm>
@@ -171,7 +172,7 @@ void Player::UpdatePhysics(float deltaTime)
 
 void Player::UpdateVisuals(float deltaTime)
 {
-    static const Vector4 kOriginalColor = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    static const Vector4 kOriginalColor = Color::kWhite;
     hitFlashEffect_.Update(deltaTime, model_.get(), kOriginalColor);
 
     shakeEffect_.Update(deltaTime);
