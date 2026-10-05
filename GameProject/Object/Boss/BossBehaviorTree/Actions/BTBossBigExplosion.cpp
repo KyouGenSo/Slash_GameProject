@@ -178,7 +178,7 @@ void BTBossBigExplosion::TriggerImpact() {
 
     if (bwEnabled_) {
         PostEffectManager::GetInstance()->ApplyTemporaryEffect(
-            "BWFilter", bwDuration_, BWFilterParam{ bwThreshold_ });
+            PostEffectType::BWFilter, bwDuration_, BWFilterParam{ bwThreshold_ });
     }
 }
 

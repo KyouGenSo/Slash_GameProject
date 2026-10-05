@@ -363,10 +363,10 @@ void TitleScene::InitializePostEffects()
     vignetteParam_.power = 0.02f;
     vignetteParam_.range = 20.0f;
 
-    PostEffectManager::GetInstance()->AddEffectToChain("RGBSplit");
-    PostEffectManager::GetInstance()->AddEffectToChain("Vignette");
-    PostEffectManager::GetInstance()->SetEffectParam("RGBSplit", rgbSplitParam_);
-    PostEffectManager::GetInstance()->SetEffectParam("Vignette", vignetteParam_);
+    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::RGBSplit);
+    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::Vignette);
+    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::RGBSplit, rgbSplitParam_);
+    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::Vignette, vignetteParam_);
 }
 
 void TitleScene::InitializeSprites()
@@ -482,7 +482,7 @@ void TitleScene::UpdateSlashParticleAnimation()
     float progress = slashEmitterAnimTimer_ / slashEmitterAnimDuration_;
 
     if (progress >= sceneTransitionProgress_) {
-        SceneManager::GetInstance()->ChangeScene("game", "Fade", kFadeDuration);
+        SceneManager::GetInstance()->ChangeScene("game", TransitionManager::EffectType::Fade, kFadeDuration);
     }
 
     if (progress >= 1.0f) {

@@ -235,12 +235,12 @@ void GameScene::UpdateEffects()
 
     overEffectManager_->Update(deltaTime);
     if (overEffectManager_->IsComplete()) {
-        SceneManager::GetInstance()->ChangeScene("over", "Fade", kFadeDuration);
+        SceneManager::GetInstance()->ChangeScene("over", TransitionManager::EffectType::Fade, kFadeDuration);
     }
 
     clearEffectManager_->Update(deltaTime);
     if (clearEffectManager_->IsComplete()) {
-        SceneManager::GetInstance()->ChangeScene("clear", "Fade", kFadeDuration);
+        SceneManager::GetInstance()->ChangeScene("clear", TransitionManager::EffectType::Fade, kFadeDuration);
     }
 }
 
@@ -398,10 +398,10 @@ void GameScene::InitializePostEffect()
         .blueOffset = Vector2(0.0f, 0.0f),
         .intensity = 0.1f };
     DepthOutlineParam outlineParam{ .outlineThickness = 0.4f };
-    PostEffectManager::GetInstance()->AddEffectToChain("DepthBasedOutline");
-    PostEffectManager::GetInstance()->AddEffectToChain("RGBSplit");
-    PostEffectManager::GetInstance()->SetEffectParam("DepthBasedOutline", outlineParam);
-    PostEffectManager::GetInstance()->SetEffectParam("RGBSplit", rgbParam);
+    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::DepthBasedOutline);
+    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::RGBSplit);
+    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::DepthBasedOutline, outlineParam);
+    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::RGBSplit, rgbParam);
 }
 
 void GameScene::InitializeObject3d()
@@ -607,14 +607,14 @@ void GameScene::CheckPause()
             isPaused_ = !isPaused_;
             controllerUI_->SetIsPaused(isPaused_);
             if (isPaused_) {
-                PostEffectManager::GetInstance()->SetEffectParam("GaussianBlur", GaussianBlurParam{ .sigma = 20.0f, .kernelSize = 30 });
-                PostEffectManager::GetInstance()->AddEffectToChain("GaussianBlur");
+                PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::GaussianBlur, GaussianBlurParam{ .sigma = 20.0f, .kernelSize = 30 });
+                PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::GaussianBlur);
                 player_->SetIsPause(true);
                 boss_->SetIsPause(true);
                 pauseMenu_->Reset();
             }
             else {
-                PostEffectManager::GetInstance()->RemoveEffectFromChain("GaussianBlur");
+                PostEffectManager::GetInstance()->RemoveEffectFromChain(PostEffectType::GaussianBlur);
                 player_->SetIsPause(false);
                 boss_->SetIsPause(false);
             }
@@ -628,13 +628,13 @@ void GameScene::UpdatePause()
     switch (action) {
     case PauseMenu::Action::Resume:
         isPaused_ = false;
-        PostEffectManager::GetInstance()->RemoveEffectFromChain("GaussianBlur");
+        PostEffectManager::GetInstance()->RemoveEffectFromChain(PostEffectType::GaussianBlur);
         controllerUI_->SetIsPaused(false);
         player_->SetIsPause(false);
         boss_->SetIsPause(false);
         break;
     case PauseMenu::Action::ToTitle:
-        SceneManager::GetInstance()->ChangeScene("title", "Fade", kFadeDuration);
+        SceneManager::GetInstance()->ChangeScene("title", TransitionManager::EffectType::Fade, kFadeDuration);
         break;
     case PauseMenu::Action::ExitGame:
         PostQuitMessage(0);
