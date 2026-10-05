@@ -10,16 +10,26 @@
 
 using namespace Tako;
 
+namespace {
+  struct SceneEntry {
+    const char* name;
+    std::unique_ptr<BaseScene> (*create)();
+  };
+
+  const SceneEntry kScenes[] = {
+    { "title", []() -> std::unique_ptr<BaseScene> { return std::make_unique<TitleScene>(); } },
+    { "game",  []() -> std::unique_ptr<BaseScene> { return std::make_unique<GameScene>(); } },
+    { "clear", []() -> std::unique_ptr<BaseScene> { return std::make_unique<ResultScene>("gameClear_Text.dds"); } },
+    { "over",  []() -> std::unique_ptr<BaseScene> { return std::make_unique<ResultScene>("gameOver_Text.dds"); } },
+  };
+}
+
 std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneName)
 {
-  if (sceneName == "title") {
-    return std::make_unique<TitleScene>();
-  } else if (sceneName == "game") {
-    return std::make_unique<GameScene>();
-  } else if (sceneName == "clear") {
-    return std::make_unique<ResultScene>("gameClear_Text.dds");
-  } else if (sceneName == "over") {
-    return std::make_unique<ResultScene>("gameOver_Text.dds");
+  for (const SceneEntry& entry : kScenes) {
+    if (sceneName == entry.name) {
+      return entry.create();
+    }
   }
 
 #ifdef _DEBUG
@@ -27,4 +37,13 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneNam
 #endif
 
   return nullptr;
+}
+
+std::vector<std::string> SceneFactory::GetSceneNames() const
+{
+  std::vector<std::string> names;
+  for (const SceneEntry& entry : kScenes) {
+    names.emplace_back(entry.name);
+  }
+  return names;
 }

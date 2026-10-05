@@ -14,4 +14,6 @@ public: //メンバー関数
 	/// <param name="sceneName">"title"/"game"/"clear"/"over" のいずれか。clear/over は結果テクスチャ付きの ResultScene を生成</param>
 	/// <returns>生成したシーン。未知の名前は nullptr</returns>
 	std::unique_ptr<Tako::BaseScene> CreateScene(const std::string& sceneName) override;
+
+	std::vector<std::string> GetSceneNames() const override;
 };
