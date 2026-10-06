@@ -183,6 +183,8 @@
     <ClInclude Include="Effect\DashEffectManager.h" />
     <ClInclude Include="Effect\OverEffectManager.h" />
     <ClInclude Include="Effect\TransitionEffectBase.h" />
+    <ClInclude Include="Input\InputAction.h" />
+    <ClInclude Include="Input\InputAxis.h" />
     <ClInclude Include="Input\InputHandler.h" />
     <ClInclude Include="MyGame\MyGame.h" />
     <ClInclude Include="Object\Boss\Boss.h" />

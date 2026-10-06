@@ -377,6 +377,12 @@
     <ClInclude Include="Object\Player\State\ShootState.h">
       <Filter>Object\Player\State</Filter>
     </ClInclude>
+    <ClInclude Include="Input\InputAction.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputAxis.h">
+      <Filter>Input</Filter>
+    </ClInclude>
     <ClInclude Include="Input\InputHandler.h">
       <Filter>Input</Filter>
     </ClInclude>

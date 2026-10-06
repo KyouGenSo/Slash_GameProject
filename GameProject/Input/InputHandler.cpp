@@ -1,4 +1,6 @@
 #include "InputHandler.h"
+#include "InputAction.h"
+#include "InputAxis.h"
 #include "Object/Player/Player.h"
 #include "Input.h"
 #include "Vector2.h"
@@ -29,30 +31,19 @@ void InputHandler::Update()
 {
   Input* input = Input::GetInstance();
 
-  moveDirection_ = Vector2(0.0f, 0.0f);
-  aimDirection_ = Vector2(0.0f, 0.0f);
+  // 割当は ProjectSettings.json の Input.Actions / Input.Axes（スティックはデッドゾーン適用済み）
+  moveDirection_ = input->GetAxis(InputAxis::Move);
 
-  // 移動入力（左スティック + キーボード）
-  if (input->IsConnect()) moveDirection_ += input->GetLeftStick();
+  const Vector2 aim = input->GetAxis(InputAxis::Aim);
+  const bool hasAimInput = aim.Length() > 0.0f;
+  aimDirection_ = hasAimInput ? aim.Normalize() : Vector2(0.0f, 0.0f);
 
-  moveDirection_ += {static_cast<float>(input->PushKey(DIK_D) - input->PushKey(DIK_A)), static_cast<float>(input->PushKey(DIK_W) - input->PushKey(DIK_S)) };
-
-  // 照準入力（右スティック）
-  bool hasRightStickInput = false;
-  if (input->IsConnect()) {
-    hasRightStickInput = !input->RStickInDeadZone();
-    if (hasRightStickInput) {
-      Vector2 rightStick = input->GetRightStick();
-      aimDirection_ = rightStick.Normalize();
-    }
-  }
-
-  isMoving_ = !input->LStickInDeadZone() || moveDirection_.Length() > 0.0f;
-  isDashing_ = input->TriggerKey(DIK_SPACE) || input->TriggerButton(GamepadButton::A);
-  isAttacking_ = input->TriggerKey(DIK_Z) || input->TriggerButton(GamepadButton::X);
-  isShooting_ = hasRightStickInput;
-  isParrying_ = input->TriggerKey(DIK_F) || input->TriggerButton(GamepadButton::B);
-  isPaused_ = input->TriggerKey(DIK_ESCAPE) || input->TriggerButton(GamepadButton::Start);
+  isMoving_ = moveDirection_.Length() > 0.0f;
+  isDashing_ = input->TriggerAction(InputAction::Dash);
+  isAttacking_ = input->TriggerAction(InputAction::Attack);
+  isShooting_ = hasAimInput;
+  isParrying_ = input->TriggerAction(InputAction::Parry);
+  isPaused_ = input->TriggerAction(InputAction::Pause);
 }
 
 void InputHandler::ResetInputs()
