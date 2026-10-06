@@ -2,7 +2,7 @@
 #include <cstdint>
 
 #include "Collider.h"
-#include "CollisionTypeIdDef.h"
+#include "CollisionTypeId.h"
 #include "../Object/Player/Player.h"
 
 /// <summary>
@@ -12,7 +12,7 @@
 /// <param name="damage">パリィしていないプレイヤーに与えるダメージ量</param>
 inline void ResolvePlayerHit(Tako::Collider* other, float damage) {
     if (!other) return;
-    if (other->GetTypeID() != static_cast<uint32_t>(CollisionTypeId::PLAYER)) return;
+    if (!other->IsType(CollisionTypeId::PLAYER)) return;
 
     Player* player = static_cast<Player*>(other->GetOwner());
     if (player->IsParrying()) {

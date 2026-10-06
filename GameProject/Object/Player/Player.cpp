@@ -15,7 +15,7 @@
 #include "OBBCollider.h"
 #include "../../Collision/MeleeAttackCollider.h"
 #include "CollisionManager.h"
-#include "../../Collision/CollisionTypeIdDef.h"
+#include "../../Collision/CollisionTypeId.h"
 #include "../Boss/Boss.h"
 #include "GlobalVariables.h"
 #include "../../Common/GameConst.h"
@@ -286,7 +286,7 @@ void Player::SetupColliders()
     bodyCollider_->SetTransform(&transform_);
     bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
     bodyCollider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
-    bodyCollider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER));
+    bodyCollider_->SetTypeID(CollisionTypeId::PLAYER);
     bodyCollider_->SetOwner(this);
 
     // 攻撃範囲

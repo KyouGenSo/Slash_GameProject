@@ -1,7 +1,7 @@
 #include "BossMeleeAttackCollider.h"
 #include "../Object/Boss/Boss.h"
 #include "../Object/Player/Player.h"
-#include "CollisionTypeIdDef.h"
+#include "CollisionTypeId.h"
 #include "GlobalVariables.h"
 
 using namespace Tako;
@@ -11,16 +11,14 @@ BossMeleeAttackCollider::BossMeleeAttackCollider(Boss* boss)
     GlobalVariables* gv = GlobalVariables::GetInstance();
     damage_ = gv->GetValueFloat("BossMeleeAttackCollider", "Damage");
 
-    SetTypeID(static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK));
+    SetTypeID(CollisionTypeId::BOSS_ATTACK);
     SetActive(false);
 }
 
 void BossMeleeAttackCollider::OnCollisionEnter(Collider* other) {
     if (!other || hasHitPlayer_) return;
 
-    uint32_t typeID = other->GetTypeID();
-
-    if (typeID == static_cast<uint32_t>(CollisionTypeId::PLAYER)) {
+    if (other->IsType(CollisionTypeId::PLAYER)) {
         Player* player = static_cast<Player*>(other->GetOwner());
 
         if (player->IsParrying()) {

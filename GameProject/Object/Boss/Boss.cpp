@@ -6,7 +6,7 @@
 #include "PrimitiveBuilder.h"
 #include "OBBCollider.h"
 #include "CollisionManager.h"
-#include "../../Collision/CollisionTypeIdDef.h"
+#include "../../Collision/CollisionTypeId.h"
 #include "../../Collision/BossMeleeAttackCollider.h"
 #include "WinApp.h"
 #include "EnginePaths.h"
@@ -124,7 +124,7 @@ void Boss::InitializeColliders()
     bodyCollider_->SetTransform(&transform_);
     bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
     bodyCollider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
-    bodyCollider_->SetTypeID(static_cast<uint32_t>(CollisionTypeId::BOSS));
+    bodyCollider_->SetTypeID(CollisionTypeId::BOSS);
     bodyCollider_->SetOwner(this);
     CollisionManager::GetInstance()->AddCollider(bodyCollider_.get());
 

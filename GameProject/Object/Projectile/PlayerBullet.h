@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Projectile.h"
-#include "../../../GameProject/Collision/CollisionTypeIdDef.h"
+#include "../../../GameProject/Collision/CollisionTypeId.h"
 #include <memory>
 #include <string>
 

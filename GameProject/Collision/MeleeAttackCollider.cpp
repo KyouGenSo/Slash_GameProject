@@ -1,14 +1,14 @@
 #include "MeleeAttackCollider.h"
 #include "../Object/Player/Player.h"
 #include "../Object/Boss/Boss.h"
-#include "CollisionTypeIdDef.h"
+#include "CollisionTypeId.h"
 
 using namespace Tako;
 
 MeleeAttackCollider::MeleeAttackCollider(Player* player)
     : player_(player) {
 
-    SetTypeID(static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK));
+    SetTypeID(CollisionTypeId::PLAYER_ATTACK);
     SetActive(false);
 }
 
@@ -19,9 +19,7 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
     collisionCount_++;
 #endif
 
-    uint32_t typeID = other->GetTypeID();
-
-    if (typeID == static_cast<uint32_t>(CollisionTypeId::BOSS)) {
+    if (other->IsType(CollisionTypeId::BOSS)) {
         Boss* enemy = static_cast<Boss*>(other->GetOwner());
         if (enemy && !detectedEnemy_) {
             detectedEnemy_ = enemy;

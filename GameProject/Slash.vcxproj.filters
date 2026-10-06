@@ -335,7 +335,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Collision\CollisionTypeIdDef.h">
+    <ClInclude Include="Collision\CollisionTypeId.h">
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="MyGame\MyGame.h">

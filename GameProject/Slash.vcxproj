@@ -165,7 +165,7 @@
     <ClInclude Include="Collision\RingColliderGroup.h" />
     <ClInclude Include="Collision\PlayerHitResolver.h" />
     <ClInclude Include="Collision\BossMeleeAttackCollider.h" />
-    <ClInclude Include="Collision\CollisionTypeIdDef.h" />
+    <ClInclude Include="Collision\CollisionTypeId.h" />
     <ClInclude Include="Collision\BulletCollider.h" />
     <ClInclude Include="Common\BulletSpawnRequest.h" />
     <ClInclude Include="Common\CooldownTimer.h" />
