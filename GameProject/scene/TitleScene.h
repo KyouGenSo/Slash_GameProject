@@ -43,7 +43,7 @@ private: //非公開関数
 	void InitializeCamera();
 
 	/// <summary>
-	/// RGBSplit と Vignette のパラメータを設定
+	/// ポストエフェクトプロファイル "title" を適用
 	/// </summary>
 	void InitializePostEffects();
 
@@ -96,10 +96,6 @@ private: //メンバー変数
     std::vector<std::unique_ptr<Tako::Sprite>> titleTextSprites_;  ///< 10フレーム分
     std::unique_ptr<Tako::Sprite>              startButtonText_;
     std::unique_ptr<Tako::Sprite>              titleTextEffect_;   ///< 拡大フェードアウト用
-
-    //ポストエフェクトパラメータ
-    Tako::RGBSplitParam rgbSplitParam_{};
-    Tako::VignetteParam vignetteParam_{};
 
     float offsetY_ = CameraConfig::HIDDEN_Y;
 

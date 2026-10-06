@@ -1,13 +1,123 @@
 {
+    "Application": {
+        "ProductName": "Slash",
+        "StartupScene": "title"
+    },
     "Display": {
+        "Height": 1080,
+        "Resizable": true,
+        "StartFullscreen": false,
         "TargetFPS": 60,
-        "VSync": true
+        "VSync": true,
+        "Width": 1920
+    },
+    "Input": {
+        "ActionNameHeader": "Input/InputAction.h",
+        "Actions": {
+            "Attack": {
+                "Buttons": [
+                    "X"
+                ],
+                "Keys": [
+                    "Z"
+                ],
+                "Mouse": []
+            },
+            "Dash": {
+                "Buttons": [
+                    "A"
+                ],
+                "Keys": [
+                    "SPACE"
+                ],
+                "Mouse": []
+            },
+            "Parry": {
+                "Buttons": [
+                    "B"
+                ],
+                "Keys": [
+                    "F"
+                ],
+                "Mouse": []
+            },
+            "Pause": {
+                "Buttons": [
+                    "Start"
+                ],
+                "Keys": [
+                    "ESCAPE"
+                ],
+                "Mouse": []
+            }
+        },
+        "Axes": {
+            "Aim": {
+                "Stick": "Right"
+            },
+            "Move": {
+                "Down": "S",
+                "Left": "A",
+                "Right": "D",
+                "Stick": "Left",
+                "Up": "W"
+            }
+        },
+        "AxisNameHeader": "Input/InputAxis.h",
+        "LeftStickDeadZone": 0.23953978717327118,
+        "RightStickDeadZone": 0.26517534255981445
+    },
+    "Physics": {
+        "CollisionPairs": [
+            [
+                "PLAYER",
+                "BOSS_ATTACK"
+            ],
+            [
+                "PLAYER",
+                "BOSS_PROJECTILE"
+            ],
+            [
+                "PLAYER_ATTACK",
+                "BOSS"
+            ],
+            [
+                "PLAYER_PROJECTILE",
+                "BOSS"
+            ],
+            [
+                "PLAYER_PROJECTILE",
+                "BOSS_PROJECTILE"
+            ]
+        ],
+        "LayerEnumHeader": "Collision/CollisionTypeId.h",
+        "Layers": [
+            "DEFAULT",
+            "PLAYER",
+            "PLAYER_ATTACK",
+            "PLAYER_PROJECTILE",
+            "BOSS",
+            "BOSS_ATTACK",
+            "BOSS_PROJECTILE",
+            "ENVIRONMENT"
+        ]
     },
     "Rendering": {
+        "AntiAliasing": "None",
+        "ClearColor": [
+            0.17000000178813934,
+            0.17000000178813934,
+            0.17000000178813934,
+            1.0
+        ],
         "MaxShadowDistance": 150.0,
         "PCFKernelSize": 3,
+        "RenderScale": 1.0,
         "ShadowBias": 9.999999747378752e-05,
         "ShadowEnabled": true,
         "ShadowMapSize": 2048
+    },
+    "Time": {
+        "MaxDeltaTime": 0.10000000149011612
     }
 }

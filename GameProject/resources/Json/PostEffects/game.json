@@ -1,0 +1,30 @@
+{
+    "Chain": [
+        "DepthBasedOutline",
+        "RGBSplit"
+    ],
+    "Params": {
+        "DepthBasedOutline": [
+            {
+                "outlineThickness": 0.4
+            }
+        ],
+        "RGBSplit": [
+            {
+                "blueOffset": [
+                    0.0,
+                    0.0
+                ],
+                "greenOffset": [
+                    0.01,
+                    0.0
+                ],
+                "intensity": 0.1,
+                "redOffset": [
+                    -0.01,
+                    0.0
+                ]
+            }
+        ]
+    }
+}

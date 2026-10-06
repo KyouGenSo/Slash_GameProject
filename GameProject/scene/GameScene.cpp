@@ -20,7 +20,6 @@
 #include "EnginePaths.h"
 
 // Game includes
-#include "../Collision/CollisionTypeIdDef.h"
 #include "CameraSystem/CameraManager.h"
 #include "CameraSystem/Controller/ThirdPersonController.h"
 #include "CameraSystem/Controller/TopDownController.h"
@@ -92,8 +91,6 @@ void GameScene::Initialize()
     InitializeEmitterManager();
 
     InitializeEffectManager();
-
-    SetCollisionMask();
 
     SetCameraAnimation();
 }
@@ -392,16 +389,7 @@ void GameScene::InitializeDebugOption()
 
 void GameScene::InitializePostEffect()
 {
-    RGBSplitParam rgbParam{
-        .redOffset = Vector2(-0.01f, 0.0f),
-        .greenOffset = Vector2(0.01f, 0.0f),
-        .blueOffset = Vector2(0.0f, 0.0f),
-        .intensity = 0.1f };
-    DepthOutlineParam outlineParam{ .outlineThickness = 0.4f };
-    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::DepthBasedOutline);
-    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::RGBSplit);
-    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::DepthBasedOutline, outlineParam);
-    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::RGBSplit, rgbParam);
+    PostEffectManager::GetInstance()->LoadProfile("game");
 }
 
 void GameScene::InitializeObject3d()
@@ -459,41 +447,6 @@ void GameScene::InitializeCameraSystem()
     auto animController = std::make_unique<CameraAnimationController>();
     animationController_ = animController.get();
     cameraManager_->RegisterController("Animation", std::move(animController));
-}
-
-void GameScene::SetCollisionMask()
-{
-    CollisionManager* collisionManager = CollisionManager::GetInstance();
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER_ATTACK),
-        static_cast<uint32_t>(CollisionTypeId::BOSS),
-        true
-    );
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER),
-        static_cast<uint32_t>(CollisionTypeId::BOSS_ATTACK),
-        true
-    );
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER_PROJECTILE),
-        static_cast<uint32_t>(CollisionTypeId::BOSS),
-        true
-    );
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER),
-        static_cast<uint32_t>(CollisionTypeId::BOSS_PROJECTILE),
-        true
-    );
-
-    collisionManager->SetCollisionMask(
-        static_cast<uint32_t>(CollisionTypeId::PLAYER_PROJECTILE),
-        static_cast<uint32_t>(CollisionTypeId::BOSS_PROJECTILE),
-        true
-    );
 }
 
 void GameScene::InitializeEmitterManager()

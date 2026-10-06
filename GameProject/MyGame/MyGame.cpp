@@ -24,15 +24,11 @@ using namespace Tako;
 
 void MyGame::Initialize()
 {
-    winApp_->SetWindowSize(1920, 1080);
-
-    winApp_->SetWindowTitle(L"Slash");
-
     TakoFramework::Initialize();
 
     sceneFactory_ = std::make_unique<SceneFactory>();
     SceneManager::GetInstance()->SetSceneFactory(sceneFactory_.get());
-    SceneManager::GetInstance()->ChangeScene("title", 0.0f);
+    SceneManager::GetInstance()->ChangeToStartupScene();
 
     LoadTextures();
 

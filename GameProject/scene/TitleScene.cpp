@@ -354,19 +354,7 @@ void TitleScene::InitializeCamera()
 
 void TitleScene::InitializePostEffects()
 {
-    rgbSplitParam_.redOffset = Vector2(-0.01f, 0.f);
-    rgbSplitParam_.greenOffset = Vector2(0.01f, 0.f);
-    rgbSplitParam_.blueOffset = Vector2(0.0f, 0.f);
-    rgbSplitParam_.intensity = 0.08f;
-
-    vignetteParam_.color = Vector3(1.f, 1.f, 1.f);
-    vignetteParam_.power = 0.02f;
-    vignetteParam_.range = 20.0f;
-
-    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::RGBSplit);
-    PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::Vignette);
-    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::RGBSplit, rgbSplitParam_);
-    PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::Vignette, vignetteParam_);
+    PostEffectManager::GetInstance()->LoadProfile("title");
 }
 
 void TitleScene::InitializeSprites()

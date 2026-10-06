@@ -83,8 +83,6 @@ private: //非公開関数
 
     void InitializeCameraSystem();
 
-    void SetCollisionMask();
-
     void InitializeEmitterManager();
 
     void InitializeEffectManager();

@@ -1,0 +1,36 @@
+{
+    "Chain": [
+        "RGBSplit",
+        "Vignette"
+    ],
+    "Params": {
+        "RGBSplit": [
+            {
+                "blueOffset": [
+                    0.0,
+                    0.0
+                ],
+                "greenOffset": [
+                    0.01,
+                    0.0
+                ],
+                "intensity": 0.08,
+                "redOffset": [
+                    -0.01,
+                    0.0
+                ]
+            }
+        ],
+        "Vignette": [
+            {
+                "color": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "power": 0.02,
+                "range": 20.0
+            }
+        ]
+    }
+}
