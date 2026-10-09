@@ -1,5 +1,6 @@
 #include "ThirdPersonController.h"
 #include "Vec3Func.h"
+#include "FrameTimer.h"
 #include "Mat4x4Func.h"
 #include <cmath>
 #include <DirectXMath.h>
@@ -20,8 +21,8 @@ void ThirdPersonController::Update(float deltaTime) {
     }
 
     ProcessInput(deltaTime);
-    UpdateRotation();
-    UpdatePosition();
+    UpdateRotation(deltaTime);
+    UpdatePosition(deltaTime);
 }
 
 void ThirdPersonController::Activate() {
@@ -62,11 +63,13 @@ void ThirdPersonController::ProcessInput(float deltaTime) {
         return;
     }
 
+    // rotateSpeed_ は 60fps の 1 フレームあたりのラジアン（約0.00087rad ≈ 0.05度）
+    const float rotateStep = rotateSpeed_ * FrameRate::Frames(deltaTime);
+
     if (!input_->RStickInDeadZone()) {
         isRotating_ = true;
         float rotateX = input_->GetRightStick().x;
-        // rotateSpeed_ はラジアン/フレーム（約0.00087rad ≈ 0.05度/フレーム）
-        destinationAngleY_ += rotateX * rotateSpeed_ *
+        destinationAngleY_ += rotateX * rotateStep *
             CameraConfig::ThirdPerson::GAMEPAD_ROTATE_MULTIPLIER;
     }
     else {
@@ -79,14 +82,14 @@ void ThirdPersonController::ProcessInput(float deltaTime) {
     }
 
     if (input_->PushKey(DIK_LEFT)) {
-        destinationAngleY_ -= rotateSpeed_;
+        destinationAngleY_ -= rotateStep;
     }
     if (input_->PushKey(DIK_RIGHT)) {
-        destinationAngleY_ += rotateSpeed_;
+        destinationAngleY_ += rotateStep;
     }
 }
 
-void ThirdPersonController::UpdateRotation() {
+void ThirdPersonController::UpdateRotation(float deltaTime) {
     Vector3 currentRotation = camera_->GetRotate();
 
     if (enableLookAtTarget_ && secondaryTarget_) {
@@ -98,21 +101,23 @@ void ThirdPersonController::UpdateRotation() {
     }
 
     // 目標角度へ最短経路で補間
-    float angleY = Vec3::LerpShortAngle(currentRotation.y, destinationAngleY_, rotationLerpSpeed_);
-    float angleX = Vec3::LerpShortAngle(currentRotation.x, destinationAngleX_, rotationLerpSpeed_);
-    float angleZ = Vec3::LerpShortAngle(currentRotation.z, destinationAngleZ_, rotationLerpSpeed_);
+    const float rotationT = FrameRate::LerpFactor(rotationLerpSpeed_, deltaTime);
+    float angleY = Vec3::LerpShortAngle(currentRotation.y, destinationAngleY_, rotationT);
+    float angleX = Vec3::LerpShortAngle(currentRotation.x, destinationAngleX_, rotationT);
+    float angleZ = Vec3::LerpShortAngle(currentRotation.z, destinationAngleZ_, rotationT);
 
     camera_->SetRotate(Vector3(angleX, angleY, angleZ));
 }
 
-void ThirdPersonController::UpdatePosition() {
-    offset_.x = Vec3::Lerp(offset_.x, offsetOrigin_.x, offsetLerpSpeed_);
-    offset_.y = Vec3::Lerp(offset_.y, offsetOrigin_.y, offsetLerpSpeed_);
-    offset_.z = Vec3::Lerp(offset_.z, offsetOrigin_.z, offsetLerpSpeed_);
+void ThirdPersonController::UpdatePosition(float deltaTime) {
+    const float offsetT = FrameRate::LerpFactor(offsetLerpSpeed_, deltaTime);
+    offset_.x = Vec3::Lerp(offset_.x, offsetOrigin_.x, offsetT);
+    offset_.y = Vec3::Lerp(offset_.y, offsetOrigin_.y, offsetT);
+    offset_.z = Vec3::Lerp(offset_.z, offsetOrigin_.z, offsetT);
 
     interpolatedTargetPos_ = Vec3::Lerp(interpolatedTargetPos_,
         primaryTarget_->translate,
-        followSmoothness_);
+        FrameRate::LerpFactor(followSmoothness_, deltaTime));
 
     Vector3 offset = CalculateOffset();
     camera_->SetTranslate(interpolatedTargetPos_ + offset);

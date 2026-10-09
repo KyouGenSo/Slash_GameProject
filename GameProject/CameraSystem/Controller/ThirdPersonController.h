@@ -63,8 +63,8 @@ public: //メンバー関数
 
 private: //非公開関数
     void ProcessInput(float deltaTime);
-    void UpdateRotation();
-    void UpdatePosition();
+    void UpdateRotation(float deltaTime);
+    void UpdatePosition(float deltaTime);
 
     /// <summary>
     /// カメラ回転を考慮したオフセットを計算

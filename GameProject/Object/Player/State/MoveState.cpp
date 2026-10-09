@@ -17,7 +17,7 @@ void MoveState::Enter(Player* player)
 
 void MoveState::Update(Player* player, float deltaTime)
 {
-	player->Move(1.0f);
+	player->Move(deltaTime);
 	moveTime_ += deltaTime;
 }
 

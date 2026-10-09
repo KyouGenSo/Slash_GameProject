@@ -1,5 +1,6 @@
 #include "TopDownController.h"
 #include "Vec3Func.h"
+#include "FrameTimer.h"
 #include <algorithm>
 #include <numeric>
 
@@ -19,7 +20,7 @@ void TopDownController::Update(float deltaTime) {
         camera_->SetFovY(standardFov_);
     }
 
-    UpdateCameraPosition();
+    UpdateCameraPosition(FrameRate::LerpFactor(followSmoothness_, deltaTime));
 }
 
 void TopDownController::Activate() {
@@ -41,7 +42,7 @@ void TopDownController::Reset() {
 
     interpolatedTargetPos_ = CalculateFocusPoint();
 
-    UpdateCameraPosition();
+    UpdateCameraPosition(followSmoothness_);
 }
 
 Vector3 TopDownController::CalculateFocusPoint() const {
@@ -113,10 +114,10 @@ void TopDownController::CalculateCameraParameters(float targetDistance,
     outBackOffset = std::clamp(outBackOffset, minBackOffset_, maxBackOffset_);
 }
 
-void TopDownController::UpdateCameraPosition() {
+void TopDownController::UpdateCameraPosition(float smoothing) {
     Vector3 focusPoint = CalculateFocusPoint();
 
-    interpolatedTargetPos_ = Vec3::Lerp(interpolatedTargetPos_, focusPoint, followSmoothness_);
+    interpolatedTargetPos_ = Vec3::Lerp(interpolatedTargetPos_, focusPoint, smoothing);
 
     float targetDistance = CalculateMaxTargetDistance();
 
@@ -127,8 +128,8 @@ void TopDownController::UpdateCameraPosition() {
         CalculateCameraParameters(targetDistance, targetHeight, targetBackOffset);
     }
 
-    currentHeight_ = Vec3::Lerp(currentHeight_, targetHeight, followSmoothness_);
-    currentBackOffset_ = Vec3::Lerp(currentBackOffset_, targetBackOffset, followSmoothness_);
+    currentHeight_ = Vec3::Lerp(currentHeight_, targetHeight, smoothing);
+    currentBackOffset_ = Vec3::Lerp(currentBackOffset_, targetBackOffset, smoothing);
 
     Vector3 cameraPos = interpolatedTargetPos_;
     cameraPos.y = currentHeight_;

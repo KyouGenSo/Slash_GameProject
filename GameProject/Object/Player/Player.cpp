@@ -141,7 +141,7 @@ void Player::UpdateStateMachine(float deltaTime)
 
     // フェーズ2時とパリィ中はボスの方向を向く
     if ((targetEnemy_ && targetEnemy_->GetPhase() == 2) || IsParrying()) {
-        LookAtBoss();
+        LookAtBoss(deltaTime);
     }
 }
 
@@ -167,7 +167,7 @@ void Player::UpdatePhysics(float deltaTime)
     }
     transform_.translate.x += externalVelocity_.x * deltaTime;
     transform_.translate.z += externalVelocity_.z * deltaTime;
-    externalVelocity_ *= kExternalVelocityDamping;
+    externalVelocity_ *= FrameRate::Damping(kExternalVelocityDamping, deltaTime);
 }
 
 void Player::UpdateVisuals(float deltaTime)
@@ -202,7 +202,7 @@ void Player::DrawSprite()
     hpBar_.Draw();
 }
 
-void Player::Move(float speedMultiplier, bool isApplyDirCalulate)
+void Player::Move(float deltaTime, float speedMultiplier, bool isApplyDirCalulate)
 {
     if (!inputHandlerPtr_) return;
 
@@ -222,12 +222,13 @@ void Player::Move(float speedMultiplier, bool isApplyDirCalulate)
         velocity_ = Mat4x4::TransformNormal(rotationMatrix, velocity_);
     }
 
-    transform_.translate += velocity_;
+    // velocity_ は 60fps の 1 フレームあたりの移動量
+    transform_.translate += velocity_ * FrameRate::Frames(deltaTime);
 
     // 移動方向を向く
     if (velocity_.Length() > kVelocityEpsilon && isApplyDirCalulate) {
         targetAngle_ = std::atan2(velocity_.x, velocity_.z);
-        transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, rotationLerpSpeed);
+        transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, FrameRate::LerpFactor(rotationLerpSpeed, deltaTime));
     }
 }
 
@@ -259,7 +260,7 @@ void Player::MoveToTarget(const Vector3& targetPos, float deltaTime, float stopD
 
     transform_.translate = attackMover_.Update(deltaTime);
 
-    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, attackMoveRotationLerp_);
+    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, FrameRate::LerpFactor(attackMoveRotationLerp_, deltaTime));
 }
 
 void Player::ResetMoveToTarget()
@@ -327,7 +328,7 @@ void Player::UpdateCollider()
     }
 }
 
-void Player::LookAtBoss()
+void Player::LookAtBoss(float deltaTime)
 {
     Vector3 toTarget = targetEnemy_->GetTransform().translate - transform_.translate;
     toTarget.y = 0.0f;  // Y 軸は無視
@@ -336,7 +337,7 @@ void Player::LookAtBoss()
 
     float targetAngle = std::atan2(toTarget.x, toTarget.z);
 
-    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle, bossLookatLerp_);
+    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle, FrameRate::LerpFactor(bossLookatLerp_, deltaTime));
 }
 
 void Player::OnHit(float damage)

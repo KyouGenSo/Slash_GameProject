@@ -75,7 +75,10 @@ private: //非公開関数
         float& outHeight,
         float& outBackOffset) const;
 
-    void UpdateCameraPosition();
+    /// <summary>
+    /// 注視点・高さ・後退量を smoothing の割合で目標へ寄せてカメラへ反映
+    /// </summary>
+    void UpdateCameraPosition(float smoothing);
 
 private: //メンバー変数
     Tako::Vector3 interpolatedTargetPos_ = {};

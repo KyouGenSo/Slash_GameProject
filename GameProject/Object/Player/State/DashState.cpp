@@ -26,7 +26,7 @@ void DashState::Update(Player* player, float deltaTime)
 
 	timer_ += deltaTime;
 
-	player->Move(speed_);
+	player->Move(deltaTime, speed_);
 
 	if (timer_ >= duration_)
 	{

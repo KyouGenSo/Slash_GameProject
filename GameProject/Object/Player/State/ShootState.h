@@ -33,7 +33,8 @@ private: //非公開関数
     /// スティック入力とカメラ向きから照準方向を算出し、プレイヤーをその方向へ向ける
     /// </summary>
     /// <param name="player">対象プレイヤー（向きを更新する）</param>
-    void CalculateAimDirection(Player* player);
+    /// <param name="deltaTime">経過時間（秒）</param>
+    void CalculateAimDirection(Player* player, float deltaTime);
 
     /// <summary>
     /// 現在の照準方向へ弾の生成リクエストを発行する

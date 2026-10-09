@@ -35,7 +35,7 @@ class Player
 private: //定数
     static constexpr float kVelocityEpsilon = 0.01f;
     static constexpr float kBoundaryDisabled = 9999.0f;
-    static constexpr float kExternalVelocityDamping = 0.9f; ///< 毎フレーム乗算
+    static constexpr float kExternalVelocityDamping = 0.9f; ///< 60fps の 1 フレームあたりの残存率
     static constexpr float kMoveArrivalThreshold = 0.5f;
     static constexpr float kMoveEasingCoeffA = 3.0f;
     static constexpr float kMoveEasingCoeffB = 2.0f;
@@ -55,9 +55,10 @@ public: //メンバー関数
     /// <summary>
     /// 入力方向へ移動し、向きを補間更新する
     /// </summary>
+    /// <param name="deltaTime">経過時間（秒）</param>
     /// <param name="speedMultiplier">基準速度への倍率</param>
     /// <param name="isApplyDirCalulate">true で移動方向へ回転を補間。false なら向きを変えない（射撃中など）</param>
-    void Move(float speedMultiplier = 1.0f, bool isApplyDirCalulate = true);
+    void Move(float deltaTime, float speedMultiplier = 1.0f, bool isApplyDirCalulate = true);
 
     /// <summary>
     /// targetPos の stopDistance 手前までイージング移動
@@ -71,7 +72,7 @@ public: //メンバー関数
     void DrawImGui();
     void SetupColliders();
     void UpdateCollider();
-    void LookAtBoss();
+    void LookAtBoss(float deltaTime);
 
     /// <summary>
     /// 被弾処理。HP を減算し、ヒットフラッシュ・シェイク・カメラ演出を発生させる

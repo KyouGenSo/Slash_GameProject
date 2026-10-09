@@ -307,7 +307,7 @@ void TitleScene::StopTitleAnimation()
 void TitleScene::ResetTitleAnimation()
 {
     currentFrame_ = 0;
-    frameCounter_ = 0;
+    frameCounter_ = 0.0f;
     isPlaying_ = false;
     animationComplete_ = false;
 
@@ -432,10 +432,11 @@ void TitleScene::UpdateTitleTextAnimation()
 {
     if (!isPlaying_) return;
 
-    frameCounter_++;
+    frameCounter_ += FrameRate::Frames(FrameTimer::GetInstance()->GetDeltaTime());
 
-    if (frameCounter_ >= animationSpeed_) {
-        frameCounter_ = 0;
+    if (frameCounter_ >= static_cast<float>(animationSpeed_)) {
+        // 端数を持ち越して切り替え間隔を FPS に依らず保つ
+        frameCounter_ = std::fmod(frameCounter_, static_cast<float>(animationSpeed_));
         currentFrame_++;
 
         if (currentFrame_ >= titleTextSprites_.size()) {

@@ -111,12 +111,12 @@ private: //メンバー変数
     float sceneTransitionProgress_ = 0.9f;    ///< シーン遷移トリガーの進行度 0.0-1.0
 
     //タイトルテキストアニメーション制御用変数
-    int  currentFrame_      = 0;      ///< 0〜9
-    int  frameCounter_      = 0;
-    int  animationSpeed_    = 1;      ///< 何フレームごとに切り替えるか
-    bool isPlaying_         = false;
-    bool isLoop_            = false;
-    bool animationComplete_ = false;
+    int   currentFrame_      = 0;      ///< 0〜9
+    float frameCounter_      = 0.0f;   ///< 60fps 換算の経過フレーム数
+    int   animationSpeed_    = 1;      ///< 何フレームごとに切り替えるか
+    bool  isPlaying_         = false;
+    bool  isLoop_            = false;
+    bool  animationComplete_ = false;
 
     //スタートボタン点滅アニメーション用変数
     float blinkTimer_       = 0.0f;

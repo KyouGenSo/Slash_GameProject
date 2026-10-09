@@ -7,6 +7,7 @@
 #include "Matrix4x4.h"
 #include "Mat4x4Func.h"
 #include "Vec3Func.h"
+#include "FrameTimer.h"
 #include "GlobalVariables.h"
 #include <algorithm>
 #include <cmath>
@@ -54,7 +55,7 @@ void ShootState::Update(Player* player, float deltaTime)
 		fireRateTimer_ -= deltaTime;
 	}
 
-	CalculateAimDirection(player);
+	CalculateAimDirection(player, deltaTime);
 
 	if (fireRateTimer_ <= 0.0f)
 	{
@@ -62,7 +63,7 @@ void ShootState::Update(Player* player, float deltaTime)
 		fireRateTimer_ = fireRate_;
 	}
 
-    player->Move(moveSpeedMultiplier_, false);
+    player->Move(deltaTime, moveSpeedMultiplier_, false);
 }
 
 void ShootState::Exit(Player* player)
@@ -93,7 +94,7 @@ void ShootState::HandleInput(Player* player)
 	}
 }
 
-void ShootState::CalculateAimDirection(Player* player)
+void ShootState::CalculateAimDirection(Player* player, float deltaTime)
 {
 	InputHandler* input = player->GetInputHandler();
 	if (!input || !input->IsShooting()) {
@@ -128,7 +129,7 @@ void ShootState::CalculateAimDirection(Player* player)
             aimRotationLerp = 0.3f;  // デフォルト値
         }
         Transform* transform = player->GetTransformPtr();
-        transform->rotate.y = Vec3::LerpShortAngle(transform->rotate.y, targetAngle, aimRotationLerp);
+        transform->rotate.y = Vec3::LerpShortAngle(transform->rotate.y, targetAngle, FrameRate::LerpFactor(aimRotationLerp, deltaTime));
     }
 }
 
