@@ -1,13 +1,6 @@
 #pragma once
+#include "UILayout.h"
 #include <array>
-#include <memory>
-#include <cstdint>
-
-namespace Tako {
-class Sprite;
-class WinApp;
-struct Vector2;
-}
 
 /// <summary>
 /// ポーズメニュー。Resume/Title/Exit を DPAD で選択、A ボタンで決定
@@ -27,9 +20,8 @@ private: //定数
     static constexpr float kUnselectedColorG = 0.5f;
     static constexpr float kUnselectedColorB = 0.5f;
 
-    // UI 設計時の想定解像度
-    static constexpr float kBaseWidth = 1920.0f;
-    static constexpr float kBaseHeight = 1080.0f;
+    // selectedIndex_ の順。resources/Json/UI/PauseMenu.json の要素名と一致させる
+    static constexpr std::array<const char*, kButtonCount> kButtonNames = { "Resume", "ToTitle", "Exit" };
 
 public: //構造体
     enum class Action {
@@ -41,7 +33,6 @@ public: //構造体
 
 public: //メンバー関数
     PauseMenu() = default;
-    ~PauseMenu();
 
     void Initialize();
 
@@ -64,27 +55,12 @@ private: //非公開関数
     void UpdateButtonColors();
 
     /// <summary>
-    /// リサイズに合わせて全スプライトの位置・サイズを再計算
+    /// 要素の表示を切り替える。エディタで削除・改名されていたら何もしない
     /// </summary>
-    void OnResize(const Tako::Vector2& newSize);
+    void SetVisible(const char* name, bool visible);
 
 private: //メンバー変数
-    // ボタンスプライト（Resume, Title, Exit）
-    std::array<std::unique_ptr<Tako::Sprite>, kButtonCount> buttonSprites_;
-
-    std::unique_ptr<Tako::Sprite> titleSprite_;
-    std::unique_ptr<Tako::Sprite> overlaySprite_;
-
-    // DPAD 操作ガイドスプライト
-    std::unique_ptr<Tako::Sprite> dpadGuideSprite_;  ///< 中立
-    std::unique_ptr<Tako::Sprite> dpadUpSprite_;
-    std::unique_ptr<Tako::Sprite> dpadDownSprite_;
-
-    std::unique_ptr<Tako::Sprite> aButtonUpSprite_;
-    std::unique_ptr<Tako::Sprite> aButtonDownSprite_;
-
-    std::unique_ptr<Tako::Sprite> ketteiSprite_;   ///< 決定
-    std::unique_ptr<Tako::Sprite> sentakuSprite_;  ///< 選択
+    Tako::UILayout layout_;
 
     // 入力状態（描画用）
     bool isDPadUpPressed_   = false;
@@ -93,7 +69,4 @@ private: //メンバー変数
 
     // 0:Resume, 1:Title, 2:Exit
     int selectedIndex_ = 0;
-
-    Tako::WinApp* winApp_     = nullptr;
-    uint32_t      onResizeId_ = 0;        ///< 登録したコールバックの ID
 };

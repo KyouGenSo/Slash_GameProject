@@ -590,7 +590,8 @@ void GameScene::UpdatePause()
         SceneManager::GetInstance()->ChangeScene("title", TransitionManager::EffectType::Fade, kFadeDuration);
         break;
     case PauseMenu::Action::ExitGame:
-        PostQuitMessage(0);
+        // ×ボタンと同じ経路にして、Debug では未保存の変更の確認を通す
+        WinApp::GetInstance()->RequestClose();
         break;
     default:
         break;

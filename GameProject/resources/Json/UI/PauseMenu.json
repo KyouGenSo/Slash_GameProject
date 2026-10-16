@@ -1,0 +1,50 @@
+{
+  "referenceResolution": [1920.0, 1080.0],
+  "elements": [
+    {
+      "name": "Overlay",
+      "texture": "EngineResources/Texture/white.dds",
+      "anchorMin": [0.0, 0.0],
+      "anchorMax": [1.0, 1.0],
+      "pivot": [0.0, 0.0],
+      "position": [0.0, 0.0],
+      "size": [0.0, 0.0],
+      "color": [0.0, 0.0, 0.0, 0.5],
+      "locked": true
+    },
+    {
+      "name": "PauseTitle",
+      "texture": "PauseMenu_Text.dds",
+      "position": [0.0, -340.0],
+      "size": [400.0, 100.0]
+    },
+    {
+      "name": "Buttons",
+      "texture": "",
+      "anchorMin": [0.0, 0.0],
+      "anchorMax": [1.0, 1.0],
+      "size": [0.0, 0.0],
+      "children": [
+        { "name": "Resume",  "texture": "PauseButton_Resume.dds", "position": [0.0, -140.0], "size": [300.0, 100.0] },
+        { "name": "ToTitle", "texture": "PauseButton_Title.dds",  "position": [0.0, 10.0],   "size": [300.0, 100.0] },
+        { "name": "Exit",    "texture": "PauseButton_Exit.dds",   "position": [0.0, 160.0],  "size": [300.0, 100.0] }
+      ]
+    },
+    {
+      "name": "Guide",
+      "texture": "",
+      "anchorMin": [0.0, 0.0],
+      "anchorMax": [1.0, 1.0],
+      "size": [0.0, 0.0],
+      "children": [
+        { "name": "Sentaku",     "texture": "sentaku.dds",              "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [460.0, -170.0],  "size": [150.0, 50.0] },
+        { "name": "DpadNeutral", "texture": "button/DPAD_Neutral.dds",  "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0],  "size": [150.0, 150.0] },
+        { "name": "DpadUp",      "texture": "button/DPAD_Up.dds",       "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0],  "size": [150.0, 150.0] },
+        { "name": "DpadDown",    "texture": "button/DPAD_Down.dds",     "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0],  "size": [150.0, 150.0] },
+        { "name": "Kettei",      "texture": "kettei.dds",               "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-402.0, -80.0],  "size": [150.0, 50.0] },
+        { "name": "AButtonUp",   "texture": "button/A_Button_Up.dds",   "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-355.0, -132.0], "size": [60.0, 60.0] },
+        { "name": "AButtonDown", "texture": "button/A_Button_Down.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-355.0, -132.0], "size": [60.0, 60.0] }
+      ]
+    }
+  ]
+}
