@@ -1,56 +1,21 @@
 #pragma once
 #include <cstdint>
-#include <memory>
 #include <string>
+#include "UILayout.h"
 #include "Vector2.h"
 #include "Vector4.h"
-#include "ColorFunc.h"
-#include "Sprite.h"
 
 /// <summary>
-/// HP バーの初期化・更新・描画を管理
+/// HP バーの更新・描画を管理（配置・大きさ・色は resources/Json/UI/ のレイアウトで決める）
 /// </summary>
 class HPBarUI
 {
 public: //メンバー関数
-    HPBarUI() = default;
-    ~HPBarUI() = default;
-
     /// <summary>
-    /// 単一バー（前景バー＋背景）を生成し初期化する
+    /// Background と Bar（2段バーなら Bar2 も）を持つレイアウトを読み込む
     /// </summary>
-    /// <param name="texture">バー・背景に共通で使うテクスチャ名</param>
-    /// <param name="size">バーの基準サイズ（ピクセル）。HP満タン時の幅</param>
-    /// <param name="screenXRatio">表示位置X。画面幅に対する比率(0.0-1.0)</param>
-    /// <param name="screenYRatio">表示位置Y。画面高さに対する比率(0.0-1.0)</param>
-    /// <param name="barColor">前景バーの色(RGBA)</param>
-    /// <param name="bgColor">背景バーの色(RGBA)。既定は不透明白</param>
-    void Initialize(
-        const std::string& texture,
-        const Tako::Vector2& size,
-        float screenXRatio,
-        float screenYRatio,
-        const Tako::Vector4& barColor,
-        const Tako::Vector4& bgColor = Tako::Color::kWhite);
-
-    /// <summary>
-    /// 2段重ねバー（Boss フェーズ用）を生成し初期化する
-    /// </summary>
-    /// <param name="texture">バー・背景に共通で使うテクスチャ名</param>
-    /// <param name="size">バーの基準サイズ（ピクセル）</param>
-    /// <param name="screenXRatio">表示位置X。画面幅に対する比率(0.0-1.0)</param>
-    /// <param name="screenYRatio">表示位置Y。画面高さに対する比率(0.0-1.0)</param>
-    /// <param name="bar1Color">フェーズ1で減少する手前バーの色(RGBA)</param>
-    /// <param name="bar2Color">フェーズ2で減少する奥バーの色(RGBA)</param>
-    /// <param name="bgColor">背景バーの色(RGBA)。既定は不透明白</param>
-    void InitializeDual(
-        const std::string& texture,
-        const Tako::Vector2& size,
-        float screenXRatio,
-        float screenYRatio,
-        const Tako::Vector4& bar1Color,
-        const Tako::Vector4& bar2Color,
-        const Tako::Vector4& bgColor = Tako::Color::kWhite);
+    /// <param name="layoutName">レイアウト名（拡張子なし）</param>
+    void Initialize(const std::string& layoutName);
 
     /// <summary>
     /// 現在値/最大値の比率でバー幅を更新する
@@ -73,29 +38,27 @@ public: //メンバー関数
     //=======================================================
     //Setter
     //=======================================================
+    /// <summary>
+    /// 全要素のアンカーを動かす
+    /// </summary>
     /// <param name="screenXRatio">画面幅に対する比率</param>
     /// <param name="screenYRatio">画面高さに対する比率</param>
     void SetPosition(float screenXRatio, float screenYRatio);
 
     void SetBarColor(const Tako::Vector4& color);
 
+    /// <summary>
+    /// 全要素の pivot を設定する。バーはこの点を固定して縮む
+    /// </summary>
     /// <param name="anchor">0,0:左上 1,1:右下</param>
     void SetAnchorPoint(const Tako::Vector2& anchor);
 
 private: //非公開関数
-    Tako::Vector2 CalculateScreenPosition() const;
+    /// <summary>
+    /// バーの幅を Background の幅 × ratio にする。縮む向きはバーの pivot で決まる
+    /// </summary>
+    void SetFillRatio(const char* barName, float ratio);
 
 private: //メンバー変数
-    //スプライト
-    std::unique_ptr<Tako::Sprite> barSprite_;
-    std::unique_ptr<Tako::Sprite> bar2Sprite_;  ///< 2段目（Dual 用）
-    std::unique_ptr<Tako::Sprite> bgSprite_;
-
-    //表示位置・サイズ
-    Tako::Vector2 baseSize_;
-    float         screenXRatio_ = 0.5f;
-    float         screenYRatio_ = 0.05f;
-
-    //状態
-    bool isDualBar_ = false;
+    Tako::UILayout layout_;
 };

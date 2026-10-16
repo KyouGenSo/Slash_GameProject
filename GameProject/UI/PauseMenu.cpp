@@ -30,11 +30,11 @@ PauseMenu::Action PauseMenu::Update()
     }
 
     // 押下中のボタン画像に差し替える（上下同時押しは上を優先）
-    SetVisible("DpadNeutral", !isDPadUpPressed_ && !isDPadDownPressed_);
-    SetVisible("DpadUp", isDPadUpPressed_);
-    SetVisible("DpadDown", !isDPadUpPressed_ && isDPadDownPressed_);
-    SetVisible("AButtonUp", !isAPressed_);
-    SetVisible("AButtonDown", isAPressed_);
+    layout_.SetVisible("DpadNeutral", !isDPadUpPressed_ && !isDPadDownPressed_);
+    layout_.SetVisible("DpadUp", isDPadUpPressed_);
+    layout_.SetVisible("DpadDown", !isDPadUpPressed_ && isDPadDownPressed_);
+    layout_.SetVisible("AButtonUp", !isAPressed_);
+    layout_.SetVisible("AButtonDown", isAPressed_);
 
     // エディタで Reload されても選択色が戻るよう毎フレーム設定する
     UpdateButtonColors();
@@ -65,22 +65,11 @@ void PauseMenu::Reset()
 void PauseMenu::UpdateButtonColors()
 {
     for (int i = 0; i < kButtonCount; ++i) {
-        UIElement* button = layout_.Find(kButtonNames[i]);
-        if (!button) {
-            continue;
-        }
         if (i == selectedIndex_) {
-            button->color = { kSelectedColorR, kSelectedColorG, kSelectedColorB, 1.0f };
+            layout_.SetColor(kButtonNames[i], { kSelectedColorR, kSelectedColorG, kSelectedColorB, 1.0f });
         } else {
-            button->color = { kUnselectedColorR, kUnselectedColorG, kUnselectedColorB, 1.0f };
+            layout_.SetColor(kButtonNames[i], { kUnselectedColorR, kUnselectedColorG, kUnselectedColorB, 1.0f });
         }
-    }
-}
-
-void PauseMenu::SetVisible(const char* name, bool visible)
-{
-    if (UIElement* element = layout_.Find(name)) {
-        element->visible = visible;
     }
 }
 

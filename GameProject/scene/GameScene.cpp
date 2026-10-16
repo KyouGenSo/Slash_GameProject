@@ -577,6 +577,9 @@ void GameScene::CheckPause()
 
 void GameScene::UpdatePause()
 {
+    // ポーズ中も操作ヒントの配置をウィンドウサイズに合わせる
+    controllerUI_->Update();
+
     PauseMenu::Action action = pauseMenu_->Update();
     switch (action) {
     case PauseMenu::Action::Resume:

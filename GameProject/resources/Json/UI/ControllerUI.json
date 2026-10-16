@@ -1,0 +1,66 @@
+{
+  "referenceResolution": [1920.0, 1080.0],
+  "elements": [
+    {
+      "name": "Controls",
+      "texture": "",
+      "pivot": [0.0, 0.0],
+      "anchorMin": [0.0, 0.0],
+      "anchorMax": [1.0, 1.0],
+      "size": [0.0, 0.0],
+      "children": [
+        { "name": "AButtonUp", "texture": "button/A_Button_Up.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-355.0, -132.0], "size": [60, 60] },
+        { "name": "AButtonDown", "texture": "button/A_Button_Down.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-355.0, -132.0], "size": [60, 60] },
+        { "name": "BButtonUp", "texture": "button/B_Button_Up.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-280.0, -211.0], "size": [60, 60] },
+        { "name": "BButtonDown", "texture": "button/B_Button_Down.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-280.0, -211.0], "size": [60, 60] },
+        { "name": "XButtonUp", "texture": "button/X_Button_Up.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-432.0, -211.0], "size": [60, 60] },
+        { "name": "XButtonDown", "texture": "button/X_Button_Down.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-432.0, -211.0], "size": [60, 60] },
+        { "name": "YButtonUp", "texture": "button/Y_Button_Up.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-355.0, -277.0], "size": [60, 60] },
+        { "name": "YButtonDown", "texture": "button/Y_Button_Down.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-355.0, -277.0], "size": [60, 60] },
+        { "name": "LJoystick1", "texture": "joystick/L_Joystick_01.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        { "name": "LJoystick2", "texture": "joystick/L_Joystick_02.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        { "name": "LJoystick3", "texture": "joystick/L_Joystick_03.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        { "name": "LJoystick4", "texture": "joystick/L_Joystick_04.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        { "name": "LJoystick5", "texture": "joystick/L_Joystick_05.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        { "name": "LJoystick6", "texture": "joystick/L_Joystick_06.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        { "name": "LJoystick7", "texture": "joystick/L_Joystick_07.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        { "name": "LJoystick8", "texture": "joystick/L_Joystick_08.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [323.0, -211.0], "size": [150, 150] },
+        {
+          "name": "RightStick",
+          "texture": "",
+          "pivot": [0.0, 0.0],
+          "anchorMin": [0.0, 0.0],
+          "anchorMax": [1.0, 1.0],
+          "size": [0.0, 0.0],
+          "children": [
+            { "name": "RJoystick1", "texture": "joystick/R_Joystick_01.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] },
+            { "name": "RJoystick2", "texture": "joystick/R_Joystick_02.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] },
+            { "name": "RJoystick3", "texture": "joystick/R_Joystick_03.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] },
+            { "name": "RJoystick4", "texture": "joystick/R_Joystick_04.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] },
+            { "name": "RJoystick5", "texture": "joystick/R_Joystick_05.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] },
+            { "name": "RJoystick6", "texture": "joystick/R_Joystick_06.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] },
+            { "name": "RJoystick7", "texture": "joystick/R_Joystick_07.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] },
+            { "name": "RJoystick8", "texture": "joystick/R_Joystick_08.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-169.0, -211.0], "size": [150, 150] }
+          ]
+        },
+        { "name": "Kougeki", "texture": "kougeki.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-571.0, -209.0], "size": [150, 50] },
+        { "name": "Dash", "texture": "dash.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-402.0, -83.0], "size": [150, 50] },
+        { "name": "Parry", "texture": "parry.dds", "anchorMin": [1.0, 1.0], "anchorMax": [1.0, 1.0], "pivot": [0.0, 0.0], "position": [-219.0, -209.0], "size": [150, 50] },
+        { "name": "Shageki", "texture": "shageki.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.0, 0.0], "position": [-47.0, -188.0], "size": [150, 50] },
+        { "name": "Idou", "texture": "idou.dds", "anchorMin": [0.0, 1.0], "anchorMax": [0.0, 1.0], "pivot": [0.0, 0.0], "position": [450.0, -188.0], "size": [150, 50] }
+      ]
+    },
+    {
+      "name": "PauseHint",
+      "texture": "",
+      "pivot": [0.0, 0.0],
+      "anchorMin": [0.0, 0.0],
+      "anchorMax": [1.0, 1.0],
+      "size": [0.0, 0.0],
+      "children": [
+        { "name": "PauseHintIcon", "texture": "button/Menu_Button_Up.dds", "anchorMin": [0.0, 0.0], "anchorMax": [0.0, 0.0], "pivot": [0.0, 0.0], "position": [30.0, 157.0], "size": [80, 80] },
+        { "name": "PauseHintText", "texture": "PauseMenu_Text.dds", "anchorMin": [0.0, 0.0], "anchorMax": [0.0, 0.0], "pivot": [0.0, 0.0], "position": [124.0, 120.0], "size": [240, 120] }
+      ]
+    }
+  ]
+}

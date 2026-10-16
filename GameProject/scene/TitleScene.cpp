@@ -8,7 +8,6 @@
 #include "FrameTimer.h"
 #include "LineRenderer.h"
 #include "GPUParticle.h"
-#include "EnginePaths.h"
 #include "Vec3Func.h"
 #include <cmath>
 #include <numbers>
@@ -27,6 +26,17 @@ namespace {
     constexpr float kBlinkTimerLimit = 1000.0f;
     constexpr BYTE  kStartKey        = DIK_SPACE;
     constexpr WORD  kStartButton     = GamepadButton::A;
+
+    // resources/Json/UI/Title.json の要素名
+    constexpr const char* kBackgroundName  = "Background";
+    constexpr const char* kTitleTextsName  = "TitleTexts";
+    constexpr const char* kStartButtonName = "StartButton";
+    constexpr const char* kTitleEffectName = "TitleTextEffect";
+
+    /// <summary>
+    /// フレームアニメーションの index 番目（0 始まり）の要素名
+    /// </summary>
+    std::string TitleTextName(int index) { return std::format("TitleText{}", index + 1); }
 }
 
 void TitleScene::Initialize()
@@ -44,7 +54,7 @@ void TitleScene::Initialize()
     InitializeDebugUI();
     InitializeCamera();
     InitializePostEffects();
-    InitializeSprites();
+    InitializeUI();
     InitializeParticles();
 }
 
@@ -63,19 +73,18 @@ void TitleScene::Update()
     ///              更新処理               ///
     /// ================================== ///
 
-    UpdateWindowResize();
     UpdateStartButtonBlink();
     UpdateTitleTextAnimation();
     UpdateSlashParticleAnimation();
     UpdateTitleEffectAnimation();
     UpdateInput();
 
-    titleBG_->Update();
-    startButtonText_->Update();
-
-    if (currentFrame_ >= 0 && currentFrame_ < titleTextSprites_.size()) {
-        titleTextSprites_[currentFrame_]->Update();
+    // タイトルテキストは今のフレームの 1 枚だけ、拡大エフェクトは再生中だけ表示する
+    for (int i = 0; i < kTitleTextCount; ++i) {
+        layout_.SetVisible(TitleTextName(i), i == currentFrame_);
     }
+    layout_.SetVisible(kTitleEffectName, isEffectPlaying_);
+    layout_.Update();
 
     emitterManager_->Update();
 }
@@ -89,7 +98,7 @@ void TitleScene::Draw()
     //------------------背景 Sprite の描画------------------//
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
-    titleBG_->Draw();
+    layout_.Draw(kBackgroundName);
 
 
     //-------------------Model の描画-------------------//
@@ -101,14 +110,8 @@ void TitleScene::Draw()
     //------------------前景 Sprite の描画------------------//
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
-    if (currentFrame_ >= 0 && currentFrame_ < titleTextSprites_.size()) {
-        titleTextSprites_[currentFrame_]->Draw();
-    }
-
-    // タイトルテキストの上に描画
-    if (isEffectPlaying_ && titleTextEffect_) {
-        titleTextEffect_->Draw();
-    }
+    // 拡大エフェクトは TitleTexts の最後の要素なので、タイトルテキストの上に描画される
+    layout_.Draw(kTitleTextsName);
 
 }
 
@@ -134,7 +137,7 @@ void TitleScene::DrawWithoutEffect()
     //------------------前景 Sprite の描画------------------//
     SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
-    startButtonText_->Draw();
+    layout_.Draw(kStartButtonName);
 
 }
 
@@ -165,13 +168,13 @@ void TitleScene::DrawImGui()
 
     ImGui::Separator();
     ImGui::Text("Status");
-    ImGui::Text("Current Frame: %d / %d", currentFrame_ + 1, static_cast<int>(titleTextSprites_.size()));
+    ImGui::Text("Current Frame: %d / %d", currentFrame_ + 1, kTitleTextCount);
     ImGui::Text("Is Playing: %s", isPlaying_ ? "Yes" : "No");
     ImGui::Text("Animation Complete: %s", animationComplete_ ? "Yes" : "No");
 
     ImGui::Separator();
     ImGui::Text("Manual Frame Control");
-    if (ImGui::SliderInt("Frame", &currentFrame_, 0, static_cast<int>(titleTextSprites_.size()) - 1)) {
+    if (ImGui::SliderInt("Frame", &currentFrame_, 0, kTitleTextCount - 1)) {
         // 手動変更時はアニメーションを停止
         isPlaying_ = false;
     }
@@ -191,8 +194,7 @@ void TitleScene::DrawImGui()
     ImGui::Separator();
     ImGui::Text("Current Status");
     ImGui::Text("Timer: %.2f", blinkTimer_);
-    float currentAlpha = startButtonText_->GetColor().w;
-    ImGui::Text("Current Alpha: %.2f", currentAlpha);
+    ImGui::Text("Current Alpha: %.2f", layout_.GetAlpha(kStartButtonName));
 
     ImGui::Separator();
     ImGui::Text("Presets");
@@ -247,7 +249,7 @@ void TitleScene::DrawImGui()
         effectTimer_ = 0.0f;
         effectScale_ = 1.0f;
         effectAlpha_ = 0.0f;
-        titleTextEffect_->SetAlpha(0.0f);
+        layout_.SetAlpha(kTitleEffectName, 0.0f);
     }
 
     ImGui::Separator();
@@ -325,21 +327,9 @@ void TitleScene::ResetTitleAnimation()
 void TitleScene::InitializeDebugUI()
 {
 #ifdef _DEBUG
+    // 背景・タイトルテキスト・スタートボタンの配置は Tools > UI Editor で編集する
     DebugUIManager::GetInstance()->RegisterGameObject("TitleScene",
         [this]() { this->DrawImGui(); });
-
-    DebugUIManager::GetInstance()->RegisterGameObject("BackGround",
-        [this]() { if (titleBG_) titleBG_->DrawImGui(); });
-
-    for (int i = 0; i < kTitleTextCount; ++i) {
-        DebugUIManager::GetInstance()->RegisterGameObject(std::format("TitleText{}", i + 1),
-            [this, i]() {
-                titleTextSprites_[i]->DrawImGui();
-            });
-    }
-
-    DebugUIManager::GetInstance()->RegisterGameObject("StartButtonText",
-        [this]() { if (startButtonText_) startButtonText_->DrawImGui(); });
 
     DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
     DebugUIManager::GetInstance()->SetForceFieldManager(forceFieldManager_.get());
@@ -357,36 +347,9 @@ void TitleScene::InitializePostEffects()
     PostEffectManager::GetInstance()->LoadProfile("title");
 }
 
-void TitleScene::InitializeSprites()
+void TitleScene::InitializeUI()
 {
-    titleBG_ = std::make_unique<Sprite>();
-    titleBG_->Initialize(EnginePaths::TexturePath("black.dds"));
-    titleBG_->SetPos(Vector2(0.f, 0.f));
-    titleBG_->SetSize(Vector2(static_cast<float>(WinApp::clientWidth), static_cast<float>(WinApp::clientHeight)));
-
-    // 10枚のアニメーション用画像
-    titleTextSprites_.reserve(kTitleTextCount);
-    for (int i = 0; i < kTitleTextCount; ++i) {
-        std::string texturePath = std::format("title_text/title_text_{}.dds", i + 1);
-        auto sprite = std::make_unique<Sprite>();
-        sprite->Initialize(texturePath);
-        sprite->SetSize(Vector2(titleTextWidth_, titleTextHeight_));
-        sprite->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextWidth_ / 2.f, titleTextY_));
-        titleTextSprites_.push_back(std::move(sprite));
-    }
-
-    startButtonText_ = std::make_unique<Sprite>();
-    startButtonText_->Initialize("titlescene_button.dds");
-    startButtonText_->SetPos(Vector2(
-        WinApp::clientWidth / 2.f - startButtonText_->GetSize().x / 2.f,
-        WinApp::clientHeight - startButtonBottomOffset_));
-
-    // 拡大フェードアウト用
-    titleTextEffect_ = std::make_unique<Sprite>();
-    titleTextEffect_->Initialize("title_text/title_text_10.dds");
-    titleTextEffect_->SetSize(Vector2(titleTextWidth_, titleTextHeight_));
-    titleTextEffect_->SetPos(Vector2(WinApp::clientWidth / 2.f - titleTextWidth_ / 2.f, titleTextY_));
-    titleTextEffect_->SetAlpha(0.0f);
+    layout_.Load("Title");
 }
 
 void TitleScene::InitializeParticles()
@@ -398,19 +361,6 @@ void TitleScene::InitializeParticles()
         slashEmitter->SetParticleCount(slashEmitterStartCount_);
         slashEmitter->SetFrequency(slashEmitterStartFreq_);
     }
-}
-
-void TitleScene::UpdateWindowResize()
-{
-    titleBG_->SetSize(Vector2(static_cast<float>(WinApp::clientWidth), static_cast<float>(WinApp::clientHeight)));
-
-    for (auto& sprite : titleTextSprites_) {
-        sprite->SetPos(Vector2(WinApp::clientWidth / 2.f - sprite->GetSize().x / 2.f, titleTextY_));
-    }
-
-    startButtonText_->SetPos(Vector2(
-        WinApp::clientWidth / 2.f - startButtonText_->GetSize().x / 2.f,
-        WinApp::clientHeight - startButtonBottomOffset_));
 }
 
 void TitleScene::UpdateStartButtonBlink()
@@ -425,7 +375,7 @@ void TitleScene::UpdateStartButtonBlink()
     float normalizedSine = (sineValue + 1.0f) * 0.5f;
     float alpha = blinkMinAlpha_ + (blinkMaxAlpha_ - blinkMinAlpha_) * normalizedSine;
 
-    startButtonText_->SetAlpha(alpha);
+    layout_.SetAlpha(kStartButtonName, alpha);
 }
 
 void TitleScene::UpdateTitleTextAnimation()
@@ -439,13 +389,13 @@ void TitleScene::UpdateTitleTextAnimation()
         frameCounter_ = std::fmod(frameCounter_, static_cast<float>(animationSpeed_));
         currentFrame_++;
 
-        if (currentFrame_ >= titleTextSprites_.size()) {
+        if (currentFrame_ >= kTitleTextCount) {
             if (isLoop_) {
                 currentFrame_ = 0;
             }
             else {
                 // 最後のフレームで停止
-                currentFrame_ = static_cast<int>(titleTextSprites_.size()) - 1;
+                currentFrame_ = kTitleTextCount - 1;
                 isPlaying_ = false;
                 animationComplete_ = true;
             }
@@ -513,16 +463,9 @@ void TitleScene::UpdateTitleEffectAnimation()
         effectAlpha_ = Vec3::Lerp(effectInitialAlpha_, 0.0f, progress);
     }
 
-    titleTextEffect_->SetSize(Vector2(titleTextWidth_ * effectScale_, titleTextHeight_ * effectScale_));
-    // 拡大してもセンターに保つよう位置を補正
-    float centerX = WinApp::clientWidth / 2.f;
-    float centerY = titleTextY_ + titleTextHeight_ / 2.f;
-    titleTextEffect_->SetPos(Vector2(
-        centerX - (titleTextWidth_ / 2.f * effectScale_),
-        centerY - (titleTextHeight_ / 2.f * effectScale_)
-    ));
-    titleTextEffect_->SetAlpha(effectAlpha_);
-    titleTextEffect_->Update();
+    // 基準の大きさはゲームが書き換えない最後のフレームから取る。pivot が中央なので中心を保って拡大される
+    layout_.SetSize(kTitleEffectName, layout_.GetSize(TitleTextName(kTitleTextCount - 1)) * effectScale_);
+    layout_.SetAlpha(kTitleEffectName, effectAlpha_);
 }
 
 void TitleScene::UpdateInput()

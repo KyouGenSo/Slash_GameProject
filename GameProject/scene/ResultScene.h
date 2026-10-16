@@ -1,17 +1,12 @@
 #pragma once
-#include <memory>
 #include <string>
 
 #include "BaseScene.h"
-#include "vector2.h"
+#include "UILayout.h"
 #include "CameraSystem/CameraConfig.h"
 
-namespace Tako {
-class Sprite;
-}
-
 /// <summary>
-/// クリア/ゲームオーバー結果画面。テクスチャ差し替えで両用途を兼ねる
+/// クリア/ゲームオーバー結果画面。レイアウト（resources/Json/UI/Result.json）の Title のテクスチャ差し替えで両用途を兼ねる
 /// </summary>
 class ResultScene : public Tako::BaseScene
 {
@@ -33,16 +28,9 @@ public: //メンバー関数
 private: //メンバー変数
     std::string titleTexture_;
 
-    // sprite
-    std::unique_ptr<Tako::Sprite> backGround_      = nullptr;
-    std::unique_ptr<Tako::Sprite> titleText_       = nullptr;
-    std::unique_ptr<Tako::Sprite> pressButtonText_ = nullptr;
+    // UI
+    Tako::UILayout layout_;
 
     // カメラ非表示 Y 座標
     float cameraHiddenY_ = CameraConfig::HIDDEN_Y;
-
-    // UI 位置・サイズ用変数
-    float titleTextHalfWidth_ = 250.0f;  ///< タイトルテキスト半幅（センタリング用）
-    float titleTextY_         = 300.0f;  ///< タイトルテキスト Y 座標
-    float buttonBottomOffset_ = 300.0f;  ///< ボタン下端からのオフセット
 };

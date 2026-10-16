@@ -54,11 +54,6 @@ private: //非公開関数
     /// </summary>
     void UpdateButtonColors();
 
-    /// <summary>
-    /// 要素の表示を切り替える。エディタで削除・改名されていたら何もしない
-    /// </summary>
-    void SetVisible(const char* name, bool visible);
-
 private: //メンバー変数
     Tako::UILayout layout_;
 

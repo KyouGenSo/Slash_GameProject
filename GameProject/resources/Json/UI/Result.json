@@ -1,0 +1,8 @@
+{
+  "referenceResolution": [1920.0, 1080.0],
+  "elements": [
+    { "name": "Background", "texture": "EngineResources/Texture/black.dds", "pivot": [0.0, 0.0], "anchorMin": [0.0, 0.0], "anchorMax": [1.0, 1.0], "size": [0.0, 0.0] },
+    { "name": "Title", "texture": "gameClear_Text.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 300.0], "size": [500.0, 100.0] },
+    { "name": "PressButton", "texture": "titlescene_button.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.5, 0.0], "position": [0.0, -300.0], "size": [500.0, 80.0] }
+  ]
+}

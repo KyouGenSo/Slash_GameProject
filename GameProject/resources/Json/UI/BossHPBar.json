@@ -1,0 +1,8 @@
+{
+  "referenceResolution": [1920.0, 1080.0],
+  "elements": [
+    { "name": "Background", "texture": "EngineResources/Texture/white.dds", "anchorMin": [0.65, 0.05], "anchorMax": [0.65, 0.05], "pivot": [0.0, 0.0], "position": [0.0, 0.0], "size": [500.0, 30.0], "color": [1.0, 1.0, 1.0, 1.0] },
+    { "name": "Bar2", "texture": "EngineResources/Texture/white.dds", "anchorMin": [0.65, 0.05], "anchorMax": [0.65, 0.05], "pivot": [0.0, 0.0], "position": [0.0, 0.0], "size": [500.0, 30.0], "color": [1.0, 0.3, 0.3, 1.0] },
+    { "name": "Bar", "texture": "EngineResources/Texture/white.dds", "anchorMin": [0.65, 0.05], "anchorMax": [0.65, 0.05], "pivot": [0.0, 0.0], "position": [0.0, 0.0], "size": [500.0, 30.0], "color": [0.5, 0.5, 1.0, 1.0] }
+  ]
+}

@@ -62,12 +62,7 @@ void Player::Initialize()
 
     model_->SetTransform(transform_);
 
-    hpBar_.Initialize(
-        EnginePaths::TexturePath("white.dds"),
-        Vector2(500.0f, 30.0f),
-        0.35f,  // 画面 X 比率
-        0.05f,  // 画面 Y 比率
-        Vector4{ 0.3f, 1.0f, 0.3f, 1.0f });
+    hpBar_.Initialize("PlayerHPBar");
 
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);
     stateMachine_->RegisterState("Idle", std::make_unique<IdleState>());

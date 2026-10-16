@@ -1,13 +1,12 @@
 #pragma once
 #include "BaseScene.h"
-#include"Sprite.h"
+#include "UILayout.h"
 #include"Object3d.h"
 #include "AABB.h"
 #include "EmitterManager.h"
 #include "ForceFieldManager.h"
 #include "PostEffectManager.h"
 #include "CameraSystem/CameraConfig.h"
-#include <vector>
 #include <memory>
 
 /// <summary>
@@ -48,18 +47,13 @@ private: //非公開関数
 	void InitializePostEffects();
 
 	/// <summary>
-	/// 背景・タイトルテキスト・スタートボタンを生成
+	/// 背景・タイトルテキスト・スタートボタンのレイアウト（resources/Json/UI/Title.json）を読み込む
 	/// </summary>
-	void InitializeSprites();
+	void InitializeUI();
 
 	void InitializeParticles();
 
 	// === 更新系関数 === //
-
-	/// <summary>
-	/// ウィンドウサイズに合わせてスプライト位置・サイズを調整
-	/// </summary>
-	void UpdateWindowResize();
 
 	/// <summary>
 	/// sin カーブでアルファ値を変化させ点滅させる
@@ -67,7 +61,7 @@ private: //非公開関数
 	void UpdateStartButtonBlink();
 
 	/// <summary>
-	/// 10枚のスプライトを順次表示するフレームアニメーション
+	/// 10枚のタイトルテキストを順次表示するフレームアニメーション
 	/// </summary>
 	void UpdateTitleTextAnimation();
 
@@ -91,11 +85,8 @@ private: //メンバー変数
     std::unique_ptr<Tako::EmitterManager>    emitterManager_;
     std::unique_ptr<Tako::ForceFieldManager> forceFieldManager_;
 
-    //スプライト
-    std::unique_ptr<Tako::Sprite>              titleBG_;
-    std::vector<std::unique_ptr<Tako::Sprite>> titleTextSprites_;  ///< 10フレーム分
-    std::unique_ptr<Tako::Sprite>              startButtonText_;
-    std::unique_ptr<Tako::Sprite>              titleTextEffect_;   ///< 拡大フェードアウト用
+    //UI
+    Tako::UILayout layout_;
 
     float offsetY_ = CameraConfig::HIDDEN_Y;
 
@@ -103,12 +94,8 @@ private: //メンバー変数
     float cameraY_ = 9.0f;
     float cameraZ_ = -34.0f;
 
-    //UI 位置・サイズ用変数
-    float titleTextWidth_          = 500.0f;
-    float titleTextHeight_         = 200.0f;
-    float titleTextY_              = 100.0f;
-    float startButtonBottomOffset_ = 250.0f;
-    float sceneTransitionProgress_ = 0.9f;    ///< シーン遷移トリガーの進行度 0.0-1.0
+    //シーン遷移
+    float sceneTransitionProgress_ = 0.9f;  ///< シーン遷移トリガーの進行度 0.0-1.0
 
     //タイトルテキストアニメーション制御用変数
     int   currentFrame_      = 0;      ///< 0〜9
