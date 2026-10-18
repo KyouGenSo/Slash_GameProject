@@ -8,6 +8,7 @@
 #include "../Controller/CameraAnimationController.h"
 #include "Vec3Func.h"
 #include "ImGuiManager.h"
+#include "imgui_internal.h"
 #include "LineRenderer.h"
 #include <algorithm>
 #include <numbers>
@@ -175,39 +176,39 @@ void CameraAnimationEditor::SetTarget(const Transform* target, const std::string
     }
 }
 
+std::span<const CameraAnimationEditor::ShortcutBinding> CameraAnimationEditor::Shortcuts() {
+    // 並び順が Help → Shortcuts の一覧の順
+    static constexpr ShortcutBinding kShortcuts[] = {
+        { ImGuiKey_Space, ImGuiInputFlags_None, "Play / Pause", [](CameraAnimationEditor& editor) {
+            if (editor.animation_->GetPlayState() == CameraAnimation::PlayState::PLAYING) {
+                editor.animation_->Pause();
+            }
+            else {
+                editor.animation_->Play();
+            }
+        } },
+        { ImGuiMod_Ctrl | ImGuiKey_Z, ImGuiInputFlags_Repeat, "Undo",            [](CameraAnimationEditor& editor) { editor.Undo(); } },
+        { ImGuiMod_Ctrl | ImGuiKey_Y, ImGuiInputFlags_Repeat, "Redo",            [](CameraAnimationEditor& editor) { editor.Redo(); } },
+        { ImGuiMod_Ctrl | ImGuiKey_C, ImGuiInputFlags_None,   "Copy",            [](CameraAnimationEditor& editor) { editor.CopySelectedKeyframes(); } },
+        { ImGuiMod_Ctrl | ImGuiKey_V, ImGuiInputFlags_Repeat, "Paste",           [](CameraAnimationEditor& editor) { editor.PasteKeyframes(); } },
+        { ImGuiMod_Ctrl | ImGuiKey_A, ImGuiInputFlags_None,   "Select All",      [](CameraAnimationEditor& editor) { editor.timeline_->SelectAll(); } },
+        { ImGuiMod_Ctrl | ImGuiKey_S, ImGuiInputFlags_None,   "Save",            [](CameraAnimationEditor& editor) { editor.animation_->SaveToJson(editor.animation_->GetAnimationName() + ".json"); } },
+        { ImGuiKey_Delete,            ImGuiInputFlags_None,   "Delete Selected", [](CameraAnimationEditor& editor) { editor.DeleteSelectedKeyframes(); } },
+        { ImGuiKey_Escape,            ImGuiInputFlags_None,   "Deselect",        [](CameraAnimationEditor& editor) { editor.timeline_->ClearSelection(); } },
+    };
+    return kShortcuts;
+}
+
 void CameraAnimationEditor::ProcessShortcuts() {
-    if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_Z)) {
-        Undo();
-    }
-
-    if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_Y)) {
-        Redo();
-    }
-
-    if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_C)) {
-        CopySelectedKeyframes();
-    }
-
-    if (ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyPressed(ImGuiKey_V)) {
-        PasteKeyframes();
-    }
-
-    if (ImGui::IsKeyPressed(ImGuiKey_Delete)) {
-        DeleteSelectedKeyframes();
-    }
-
-    // Space: 再生/一時停止トグル
-    if (ImGui::IsKeyPressed(ImGuiKey_Space)) {
-        if (animation_->GetPlayState() == CameraAnimation::PlayState::PLAYING) {
-            animation_->Pause();
+    // Shortcut は、このウィンドウ（子ウィンドウを含む）にフォーカスがあるときだけ反応する。入力欄の編集中は、入力欄の Ctrl+Z などが優先される
+    for (const ShortcutBinding& binding : Shortcuts()) {
+        // 修飾キーの無いキーは、文字の入力中なら入力欄に渡す（入力欄は Space を奪わない）
+        if ((binding.chord & ImGuiMod_Mask_) == 0 && ImGui::GetIO().WantTextInput) {
+            continue;
         }
-        else {
-            animation_->Play();
+        if (ImGui::Shortcut(binding.chord, binding.flags)) {
+            binding.action(*this);
         }
-    }
-
-    if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
-        selectedKeyframes_.clear();
     }
 }
 
@@ -216,10 +217,12 @@ void CameraAnimationEditor::DrawMenuBar() {
         return;
     }
 
+    bool isShortcutsRequested = false;
+
     if (ImGui::BeginMenu("File")) {
         if (ImGui::MenuItem("New Animation", "Ctrl+N")) {
             animation_->ClearKeyframes();
-            selectedKeyframes_.clear();
+            timeline_->ClearSelection();
         }
 
         if (ImGui::MenuItem("Load...", "Ctrl+O")) {
@@ -269,10 +272,7 @@ void CameraAnimationEditor::DrawMenuBar() {
         ImGui::Separator();
 
         if (ImGui::MenuItem("Select All", "Ctrl+A")) {
-            selectedKeyframes_.clear();
-            for (size_t i = 0; i < animation_->GetKeyframeCount(); ++i) {
-                selectedKeyframes_.push_back(static_cast<int>(i));
-            }
+            timeline_->SelectAll();
         }
 
         ImGui::EndMenu();
@@ -307,7 +307,7 @@ void CameraAnimationEditor::DrawMenuBar() {
         if (ImGui::MenuItem("Clear All Keyframes", nullptr, false, animation_ && animation_->GetKeyframeCount() > 0)) {
             if (animation_) {
                 animation_->ClearKeyframes();
-                selectedKeyframes_.clear();
+                timeline_->ClearSelection();
             }
         }
 
@@ -338,7 +338,7 @@ void CameraAnimationEditor::DrawMenuBar() {
 
     if (ImGui::BeginMenu("Help")) {
         if (ImGui::MenuItem("Shortcuts")) {
-            ImGui::OpenPopup("ShortcutsPopup");
+            isShortcutsRequested = true;
         }
         if (ImGui::MenuItem("About")) {
             ImGui::OpenPopup("AboutPopup");
@@ -348,16 +348,17 @@ void CameraAnimationEditor::DrawMenuBar() {
 
     ImGui::EndMenuBar();
 
+    // メニューの中で OpenPopup するとメニュー側のウィンドウの ID になり、下の BeginPopupModal と一致しない
+    if (isShortcutsRequested) {
+        ImGui::OpenPopup("ShortcutsPopup");
+    }
+
     if (ImGui::BeginPopupModal("ShortcutsPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::Text("Keyboard Shortcuts:");
         ImGui::Separator();
-        ImGui::Text("Space: Play/Pause");
-        ImGui::Text("Ctrl+Z: Undo");
-        ImGui::Text("Ctrl+Y: Redo");
-        ImGui::Text("Ctrl+C: Copy");
-        ImGui::Text("Ctrl+V: Paste");
-        ImGui::Text("Delete: Delete Selected");
-        ImGui::Text("1-5: Change Edit Mode");
+        for (const ShortcutBinding& binding : Shortcuts()) {
+            ImGui::Text("%s: %s", ImGui::GetKeyChordName(binding.chord), binding.description);
+        }
         ImGui::Separator();
         if (ImGui::Button("Close")) {
             ImGui::CloseCurrentPopup();
@@ -940,7 +941,7 @@ void CameraAnimationEditor::DeleteSelectedKeyframes() {
         }
     }
 
-    selectedKeyframes_.clear();
+    timeline_->ClearSelection();
 }
 
 void CameraAnimationEditor::Undo() {

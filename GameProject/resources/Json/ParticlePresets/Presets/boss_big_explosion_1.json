@@ -1,4 +1,14 @@
 {
+  "angularVelMax": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "angularVelMin": [
+    0.0,
+    0.0,
+    0.0
+  ],
   "billboard": true,
   "blendMode": 0,
   "collisionRestitution": 0.5,
@@ -22,7 +32,6 @@
   "isActive": false,
   "isEmitting": true,
   "isNormalize": true,
-  "isRandomRotateZ": false,
   "isTemporary": false,
   "lifeTimeRange": [
     0.009999999776482582,
@@ -41,6 +50,16 @@
   ],
   "radius": 0.10000000149011612,
   "randomFlags": 0,
+  "rotateMax": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rotateMin": [
+    0.0,
+    0.0,
+    0.0
+  ],
   "scaleRangeX": [
     50.0,
     50.0

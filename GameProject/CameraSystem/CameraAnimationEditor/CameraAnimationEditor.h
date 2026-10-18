@@ -5,7 +5,9 @@
 #include "CameraAnimation/CameraAnimation.h"
 #include "CameraAnimation/CameraKeyframe.h"
 #include "Camera.h"
+#include "ImGuiManager.h"
 #include <memory>
+#include <span>
 #include <vector>
 
 // Forward declarations
@@ -19,6 +21,17 @@ class CameraAnimationHistory;
 class CameraAnimationEditor {
 private: //定数
     static constexpr int kPathDivision = 24;    ///< 経路線の描画で1区間を何本の線分に分けるか
+
+private: //構造体
+    /// <summary>
+    /// キーボードショートカット 1 件。ProcessShortcuts の判定と Help → Shortcuts の一覧が同じ表を使う
+    /// </summary>
+    struct ShortcutBinding {
+        ImGuiKeyChord   chord;
+        ImGuiInputFlags flags;        ///< ImGuiInputFlags_Repeat なら押し続けで繰り返す
+        const char*     description;
+        void            (*action)(CameraAnimationEditor& editor);
+    };
 
 public: //メンバー関数
     CameraAnimationEditor();
@@ -80,6 +93,11 @@ private: //非公開関数
     void Undo();
     void Redo();
 
+    /// <summary>
+    /// ショートカットの表。ProcessShortcuts と Help → Shortcuts の一覧の両方がこれを使う
+    /// </summary>
+    static std::span<const ShortcutBinding> Shortcuts();
+
 private: //メンバー変数
     bool isOpen_   = false;
     bool showPath_ = true;    ///< カメラ経路を3D空間に線で表示するか
@@ -95,7 +113,7 @@ private: //メンバー変数
     std::unique_ptr<CameraAnimationHistory>     history_;
 
     //選択状態
-    std::vector<int> selectedKeyframes_;
+    std::vector<int> selectedKeyframes_;       ///< タイムラインの選択の写し（描画ごとに更新）。変えるときは timeline_ 側を変える
     int              hoveredKeyframe_   = -1;
 
     //ドラッグ状態

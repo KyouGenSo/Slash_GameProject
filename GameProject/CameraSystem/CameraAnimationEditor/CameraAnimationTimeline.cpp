@@ -63,8 +63,6 @@ void CameraAnimationTimeline::Draw() {
         }
 
         HandleMouseInput();
-
-        HandleKeyboardInput();
     }
     ImGui::EndChild();
 
@@ -82,6 +80,17 @@ void CameraAnimationTimeline::Update(float deltaTime) {
 
     if (isKeyframePreviewActive_) {
         animation_->SetCurrentTime(previewTime_);
+    }
+}
+
+void CameraAnimationTimeline::ClearSelection() {
+    selectedKeyframes_.clear();
+}
+
+void CameraAnimationTimeline::SelectAll() {
+    selectedKeyframes_.clear();
+    for (size_t i = 0; i < animation_->GetKeyframeCount(); ++i) {
+        selectedKeyframes_.push_back(static_cast<int>(i));
     }
 }
 
@@ -505,20 +514,6 @@ void CameraAnimationTimeline::HandleMouseInput() {
             // Shift+ホイール：横スクロール
             offset_ -= ImGui::GetIO().MouseWheel * 0.5f / zoom_;
             ClampOffset();
-        }
-    }
-}
-
-void CameraAnimationTimeline::HandleKeyboardInput() {
-    // Delete の削除処理はエディタークラス側で実行
-    if (ImGui::IsKeyPressed(ImGuiKey_Delete) && !selectedKeyframes_.empty()) {
-    }
-
-    // Ctrl+A: 全選択
-    if (ImGui::GetIO().KeyCtrl && ImGui::IsKeyPressed(ImGuiKey_A)) {
-        selectedKeyframes_.clear();
-        for (size_t i = 0; i < animation_->GetKeyframeCount(); ++i) {
-            selectedKeyframes_.push_back(static_cast<int>(i));
         }
     }
 }

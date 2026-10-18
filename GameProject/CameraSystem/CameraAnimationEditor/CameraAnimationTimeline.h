@@ -37,6 +37,8 @@ public: //メンバー関数
     void Initialize(CameraAnimation* animation);
     void Draw();
     void Update(float deltaTime);
+    void ClearSelection();
+    void SelectAll();
 
     //==========================================================================
     //Setter
@@ -77,7 +79,6 @@ private: //非公開関数
     void DrawKeyframe(int index, float xPos, float yPos, bool isSelected, bool isHovered);
     void DrawSelectionRect();
     void HandleMouseInput();
-    void HandleKeyboardInput();
 
     /// <summary>
     /// 時間→スクリーン X 座標
