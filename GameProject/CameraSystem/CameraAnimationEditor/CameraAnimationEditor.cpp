@@ -200,16 +200,8 @@ std::span<const CameraAnimationEditor::ShortcutBinding> CameraAnimationEditor::S
 }
 
 void CameraAnimationEditor::ProcessShortcuts() {
-    // Shortcut は、このウィンドウ（子ウィンドウを含む）にフォーカスがあるときだけ反応する。入力欄の編集中は、入力欄の Ctrl+Z などが優先される
-    for (const ShortcutBinding& binding : Shortcuts()) {
-        // 修飾キーの無いキーは、文字の入力中なら入力欄に渡す（入力欄は Space を奪わない）
-        if ((binding.chord & ImGuiMod_Mask_) == 0 && ImGui::GetIO().WantTextInput) {
-            continue;
-        }
-        if (ImGui::Shortcut(binding.chord, binding.flags)) {
-            binding.action(*this);
-        }
-    }
+    // このウィンドウ（子ウィンドウを含む）にフォーカスがあるときだけ反応する
+    Tako::ProcessShortcuts(Shortcuts(), *this);
 }
 
 void CameraAnimationEditor::DrawMenuBar() {
@@ -356,9 +348,7 @@ void CameraAnimationEditor::DrawMenuBar() {
     if (ImGui::BeginPopupModal("ShortcutsPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::Text("Keyboard Shortcuts:");
         ImGui::Separator();
-        for (const ShortcutBinding& binding : Shortcuts()) {
-            ImGui::Text("%s: %s", ImGui::GetKeyChordName(binding.chord), binding.description);
-        }
+        Tako::DrawShortcutTable(Shortcuts());
         ImGui::Separator();
         if (ImGui::Button("Close")) {
             ImGui::CloseCurrentPopup();

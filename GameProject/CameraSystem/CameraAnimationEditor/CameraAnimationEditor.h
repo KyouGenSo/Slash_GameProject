@@ -6,6 +6,7 @@
 #include "CameraAnimation/CameraKeyframe.h"
 #include "Camera.h"
 #include "ImGuiManager.h"
+#include "ShortcutTable.h"
 #include <memory>
 #include <span>
 #include <vector>
@@ -23,15 +24,7 @@ private: //定数
     static constexpr int kPathDivision = 24;    ///< 経路線の描画で1区間を何本の線分に分けるか
 
 private: //構造体
-    /// <summary>
-    /// キーボードショートカット 1 件。ProcessShortcuts の判定と Help → Shortcuts の一覧が同じ表を使う
-    /// </summary>
-    struct ShortcutBinding {
-        ImGuiKeyChord   chord;
-        ImGuiInputFlags flags;        ///< ImGuiInputFlags_Repeat なら押し続けで繰り返す
-        const char*     description;
-        void            (*action)(CameraAnimationEditor& editor);
-    };
+    using ShortcutBinding = Tako::ShortcutBinding<CameraAnimationEditor>;
 
 public: //メンバー関数
     CameraAnimationEditor();
