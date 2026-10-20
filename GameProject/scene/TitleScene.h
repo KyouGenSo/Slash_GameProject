@@ -56,24 +56,9 @@ private: //非公開関数
 	// === 更新系関数 === //
 
 	/// <summary>
-	/// sin カーブでアルファ値を変化させ点滅させる
-	/// </summary>
-	void UpdateStartButtonBlink();
-
-	/// <summary>
-	/// 10枚のタイトルテキストを順次表示するフレームアニメーション
-	/// </summary>
-	void UpdateTitleTextAnimation();
-
-	/// <summary>
 	/// タイトルアニメーションと同期しパーティクル発生量を増加
 	/// </summary>
 	void UpdateSlashParticleAnimation();
-
-	/// <summary>
-	/// タイトルテキストの拡大フェードアウト
-	/// </summary>
-	void UpdateTitleEffectAnimation();
 
 	/// <summary>
 	/// スペース/A ボタンでゲームシーンへ遷移
@@ -97,35 +82,10 @@ private: //メンバー変数
     //シーン遷移
     float sceneTransitionProgress_ = 0.9f;  ///< シーン遷移トリガーの進行度 0.0-1.0
 
-    //タイトルテキストアニメーション制御用変数
-    int   currentFrame_      = 0;      ///< 0〜9
-    float frameCounter_      = 0.0f;   ///< 60fps 換算の経過フレーム数
-    int   animationSpeed_    = 1;      ///< 何フレームごとに切り替えるか
-    bool  isPlaying_         = false;
-    bool  isLoop_            = false;
-    bool  animationComplete_ = false;
-
-    //スタートボタン点滅アニメーション用変数
-    float blinkTimer_       = 0.0f;
-    float blinkSpeed_       = 1.2f;
-    float blinkMinAlpha_    = 0.0f;
-    float blinkMaxAlpha_    = 1.0f;
-    bool  isButtonBlinking_ = true;
-
-    //タイトルテキスト拡大エフェクト用変数
-    bool  isEffectPlaying_    = false;
-    float effectTimer_        = 0.0f;
-    float effectDuration_     = 1.5f;   ///< 秒
-    float effectScale_        = 1.0f;
-    float effectMaxScale_     = 1.5f;
-    float effectAlpha_        = 0.5f;
-    float effectInitialAlpha_ = 0.5f;
-    bool  effectTriggered_    = false;  ///< 一度だけ実行するためのフラグ
-
     //slash パーティクルエミッターアニメーション用変数
     bool     isSlashEmitterAnimating_  = false;
     float    slashEmitterAnimTimer_    = 0.0f;
-    float    slashEmitterAnimDuration_ = 2.5f;    ///< タイトルテキストと同期：10フレーム * animationSpeed / 60fps
+    float    slashEmitterAnimDuration_ = 2.5f;    ///< 秒
     uint32_t slashEmitterStartCount_   = 1;
     uint32_t slashEmitterEndCount_     = 300;
     float    slashEmitterStartFreq_    = 1.0f;

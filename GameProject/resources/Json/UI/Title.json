@@ -10,17 +10,8 @@
       "anchorMax": [1.0, 1.0],
       "size": [0.0, 0.0],
       "children": [
-        { "name": "TitleText1", "texture": "title_text/title_text_1.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText2", "texture": "title_text/title_text_2.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText3", "texture": "title_text/title_text_3.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText4", "texture": "title_text/title_text_4.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText5", "texture": "title_text/title_text_5.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText6", "texture": "title_text/title_text_6.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText7", "texture": "title_text/title_text_7.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText8", "texture": "title_text/title_text_8.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText9", "texture": "title_text/title_text_9.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleText10", "texture": "title_text/title_text_10.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleTextEffect", "texture": "title_text/title_text_10.dds", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.5], "position": [0.0, 200.0], "size": [500.0, 200.0], "color": [1.0, 1.0, 1.0, 0.0], "visible": false }
+        { "name": "TitleText", "texture": "title_text/title_text_sheet.png", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
+        { "name": "TitleTextEffect", "texture": "title_text/title_text_sheet.png", "uvLeftTop": [1000.0, 80.0], "uvSize": [250.0, 80.0], "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.5], "position": [0.0, 200.0], "size": [500.0, 200.0] }
       ]
     },
     { "name": "StartButton", "texture": "titlescene_button.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.5, 0.0], "position": [0.0, -250.0], "size": [500.0, 80.0] }

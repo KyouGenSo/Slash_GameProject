@@ -1,0 +1,94 @@
+{
+  "duration": 1.6666667,
+  "events": [],
+  "loop": "Once",
+  "tracks": [
+    {
+      "columns": 5,
+      "keys": [
+        {
+          "ease": "Linear",
+          "time": 0.0,
+          "value": 0.0
+        },
+        {
+          "ease": "Linear",
+          "time": 0.1666667,
+          "value": 10.0
+        }
+      ],
+      "property": "Frame",
+      "rows": 2,
+      "target": "TitleText"
+    },
+    {
+      "keys": [
+        {
+          "ease": "Constant",
+          "time": 0.0,
+          "value": 0.0
+        },
+        {
+          "ease": "Constant",
+          "time": 0.1666667,
+          "value": 1.0
+        },
+        {
+          "ease": "Constant",
+          "time": 1.6666667,
+          "value": 0.0
+        }
+      ],
+      "property": "Visible",
+      "target": "TitleTextEffect"
+    },
+    {
+      "keys": [
+        {
+          "ease": "Linear",
+          "time": 0.1666667,
+          "value": 1.0
+        },
+        {
+          "ease": "Linear",
+          "time": 1.6666667,
+          "value": 1.5
+        }
+      ],
+      "property": "ScaleX",
+      "target": "TitleTextEffect"
+    },
+    {
+      "keys": [
+        {
+          "ease": "Linear",
+          "time": 0.1666667,
+          "value": 1.0
+        },
+        {
+          "ease": "Linear",
+          "time": 1.6666667,
+          "value": 1.5
+        }
+      ],
+      "property": "ScaleY",
+      "target": "TitleTextEffect"
+    },
+    {
+      "keys": [
+        {
+          "ease": "Linear",
+          "time": 0.1666667,
+          "value": 0.5
+        },
+        {
+          "ease": "Linear",
+          "time": 1.6666667,
+          "value": 0.0
+        }
+      ],
+      "property": "ColorA",
+      "target": "TitleTextEffect"
+    }
+  ]
+}

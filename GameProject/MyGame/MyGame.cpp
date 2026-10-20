@@ -255,17 +255,8 @@ void MyGame::LoadTitleTextures()
 {
     TextureManager* tm = TextureManager::GetInstance();
 
-    // タイトルテキストアニメーション用
-    tm->LoadTexture("title_text/title_text_1.dds");
-    tm->LoadTexture("title_text/title_text_2.dds");
-    tm->LoadTexture("title_text/title_text_3.dds");
-    tm->LoadTexture("title_text/title_text_4.dds");
-    tm->LoadTexture("title_text/title_text_5.dds");
-    tm->LoadTexture("title_text/title_text_6.dds");
-    tm->LoadTexture("title_text/title_text_7.dds");
-    tm->LoadTexture("title_text/title_text_8.dds");
-    tm->LoadTexture("title_text/title_text_9.dds");
-    tm->LoadTexture("title_text/title_text_10.dds");
+    // タイトルテキストアニメーション用（10 コマを 5 列×2 行に並べたシート）
+    tm->LoadTexture("title_text/title_text_sheet.png");
 
     // シーン遷移用テキスト
     tm->LoadTexture("titlescene_button.dds");
