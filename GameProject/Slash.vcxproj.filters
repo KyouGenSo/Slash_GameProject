@@ -26,9 +26,6 @@
     <Filter Include="CameraSystem">
       <UniqueIdentifier>{0312f1a8-e010-49cd-8145-fa5b444de6dd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CameraSystem\CameraAnimationEditor">
-      <UniqueIdentifier>{a1b2c3d4-e5f6-7890-abcd-ef1234567890}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CameraSystem\Controller">
       <UniqueIdentifier>{f57ae9da-7b8a-4870-ae5e-44402f6a7ed3}</UniqueIdentifier>
     </Filter>
@@ -62,9 +59,6 @@
     </Filter>
     <Filter Include="Object\Boss\Movement">
       <UniqueIdentifier>{25c158da-6b5c-4fac-9f5e-e540c569d30e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CameraSystem\CameraAnimation">
-      <UniqueIdentifier>{91d85fa5-151f-4004-88ba-6c651e6f09b2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\Boss\BossBehaviorTree\Actions\Move">
       <UniqueIdentifier>{314a5d58-46e8-49d4-b2b1-70184acdb4b6}</UniqueIdentifier>
@@ -129,18 +123,6 @@
     <ClCompile Include="CameraSystem\CameraDebugUI.cpp">
       <Filter>CameraSystem</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.cpp">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.cpp">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.cpp">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.cpp">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClCompile>
     <ClCompile Include="CameraSystem\CameraManager.cpp">
       <Filter>CameraSystem</Filter>
     </ClCompile>
@@ -182,9 +164,6 @@
     </ClCompile>
     <ClCompile Include="Object\Boss\BossBehaviorTree\BossNodeFactory.cpp">
       <Filter>Object\Boss\BossBehaviorTree</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraAnimation\CameraAnimation.cpp">
-      <Filter>CameraSystem\CameraAnimation</Filter>
     </ClCompile>
     <ClCompile Include="Object\Projectile\PlayerBullet.cpp">
       <Filter>Object\Projectile</Filter>
@@ -401,18 +380,6 @@
     <ClInclude Include="CameraSystem\CameraDebugUI.h">
       <Filter>CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.h">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.h">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.h">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.h">
-      <Filter>CameraSystem\CameraAnimationEditor</Filter>
-    </ClInclude>
     <ClInclude Include="CameraSystem\CameraManager.h">
       <Filter>CameraSystem</Filter>
     </ClInclude>
@@ -463,12 +430,6 @@
     </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\BossNodeFactory.h">
       <Filter>Object\Boss\BossBehaviorTree</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraAnimation\CameraAnimation.h">
-      <Filter>CameraSystem\CameraAnimation</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraAnimation\CameraKeyframe.h">
-      <Filter>CameraSystem\CameraAnimation</Filter>
     </ClInclude>
     <ClInclude Include="Object\Projectile\PlayerBullet.h">
       <Filter>Object\Projectile</Filter>

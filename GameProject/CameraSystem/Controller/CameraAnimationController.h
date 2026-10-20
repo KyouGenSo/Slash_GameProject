@@ -1,6 +1,7 @@
 #pragma once
 #include "ICameraController.h"
-#include "CameraAnimation/CameraAnimation.h"
+#include "CameraAnimation.h"
+#include <map>
 #include <memory>
 #include <string>
 
@@ -36,7 +37,7 @@ public: //メンバー関数
     /// </summary>
     /// <param name="mode">再生開始モード</param>
     /// <param name="blendDuration">ブレンド時間（秒）</param>
-    void SetAnimationStartMode(CameraAnimation::StartMode mode, float blendDuration = 0.5f);
+    void SetAnimationStartMode(Tako::CameraAnimation::StartMode mode, float blendDuration = 0.5f);
 
     /// <summary>
     /// 指定名のアニメーションの開始モードとブレンド時間を設定
@@ -45,12 +46,12 @@ public: //メンバー関数
     /// <param name="mode">再生開始モード</param>
     /// <param name="blendDuration">ブレンド時間（秒）</param>
     void SetAnimationStartModeByName(const std::string& animationName,
-        CameraAnimation::StartMode mode, float blendDuration = 0.5f);
+        Tako::CameraAnimation::StartMode mode, float blendDuration = 0.5f);
 
     //========================================================================================
     //キーフレーム管理
     //========================================================================================
-    void AddKeyframe(const CameraKeyframe& keyframe);
+    void AddKeyframe(const Tako::CameraKeyframe& keyframe);
 
     /// <summary>
     /// 現在のカメラ状態をキーフレームとして追加
@@ -58,8 +59,8 @@ public: //メンバー関数
     /// <param name="time">キーフレームの時刻（秒）</param>
     /// <param name="interpolation">補間方式</param>
     void AddKeyframeFromCurrentCamera(float time,
-        CameraKeyframe::InterpolationType interpolation =
-        CameraKeyframe::InterpolationType::LINEAR);
+        Tako::CameraKeyframe::InterpolationType interpolation =
+        Tako::CameraKeyframe::InterpolationType::LINEAR);
 
     void RemoveKeyframe(size_t index);
     void ClearKeyframes();
@@ -97,7 +98,7 @@ public: //メンバー関数
     bool RenameAnimation(const std::string& oldName, const std::string& newName);
 
     /// <summary>
-    /// アニメーションを複製する（キーフレームとループ設定をコピー）
+    /// アニメーションを複製する（キーフレームと再生設定をコピー。ターゲットはコピーしない）
     /// </summary>
     /// <param name="sourceName">複製元の名前</param>
     /// <param name="newName">複製先の名前</param>
@@ -146,15 +147,15 @@ public: //メンバー関数
         return CameraControlPriority::ANIMATION;
     }
 
-    CameraAnimation* GetCurrentAnimation();
+    Tako::CameraAnimation* GetCurrentAnimation();
 
     /// <returns>存在しない場合 nullptr</returns>
-    CameraAnimation* GetAnimation(const std::string& name);
+    Tako::CameraAnimation* GetAnimation(const std::string& name);
 
     std::vector<std::string> GetAnimationList() const;
     size_t GetAnimationCount() const { return animations_.size(); }
     const std::string& GetCurrentAnimationName() const { return currentAnimationName_; }
-    CameraAnimation::PlayState GetPlayState() const;
+    Tako::CameraAnimation::PlayState GetPlayState() const;
 
     /// <returns>現在のアニメーションの長さ（秒）。無ければ 0</returns>
     float GetDuration() const;
@@ -162,13 +163,11 @@ public: //メンバー関数
     /// <returns>現在の再生位置（秒）。無ければ 0</returns>
     float GetCurrentTime() const;
 
-    bool IsEditingKeyframe() const;
-
     /// <returns>未設定の場合 nullptr</returns>
     const Tako::Transform* GetAnimationTarget() const;
 
 private: //メンバー変数
-    std::map<std::string, std::unique_ptr<CameraAnimation>> animations_;
+    std::map<std::string, std::unique_ptr<Tako::CameraAnimation>> animations_;
 
     std::string currentAnimationName_ = "Default";
 

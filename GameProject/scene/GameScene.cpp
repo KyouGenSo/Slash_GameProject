@@ -99,7 +99,6 @@ void GameScene::Finalize()
 {
 #ifdef _DEBUG
     DebugUIManager::GetInstance()->ClearGameObjects();
-    CameraDebugUI::CleanupAnimationEditor();
 #endif
 
     if (player_) {
@@ -368,13 +367,6 @@ void GameScene::InitializeDebugOption()
 
     DebugUIManager::GetInstance()->RegisterGameObject("CameraSystem",
         []() { CameraDebugUI::Draw(); });
-
-    DebugUIManager::GetInstance()->RegisterGameObject("CameraAnimationEditor",
-        []() {
-            CameraDebugUI::DrawAnimationEditorOnly();
-            CameraDebugUI::UpdateAnimationEditor(
-                FrameTimer::GetInstance()->GetDeltaTime());
-        });
 
     DebugUIManager::GetInstance()->RegisterGameObject("ControllerUI",
         [this]() { if (controllerUI_) controllerUI_->DrawImGui(); });

@@ -1,20 +1,14 @@
 #ifdef _DEBUG
 
 #include "CameraDebugUI.h"
-#include "CameraAnimationEditor/CameraAnimationEditor.h"
-#include "Controller/CameraAnimationController.h"
-#include "FrameTimer.h"
 #include "ImGuiManager.h"
 #include <DirectXMath.h>
-#include <sstream>
 
 using namespace Tako;
 
 bool CameraDebugUI::showManagerInfo_ = true;
 bool CameraDebugUI::showControllerInfo_ = true;
 bool CameraDebugUI::showAnimationInfo_ = true;
-std::unique_ptr<CameraAnimationEditor> CameraDebugUI::animationEditor_ = nullptr;
-bool CameraDebugUI::useAdvancedEditor_ = false;
 
 void CameraDebugUI::Draw() {
     if (!ImGui::Begin("Camera System Debug")) {
@@ -207,111 +201,6 @@ void CameraDebugUI::DrawTopDownControllerInfo(TopDownController* controller) {
     ImGui::PopID();
 }
 
-void CameraDebugUI::DrawAnimationInfo(CameraAnimation* animation) {
-    if (!animation) {
-        return;
-    }
-
-    ImGui::PushID("AnimationInfo");
-
-    ImGui::Text("=== Camera Animation ===");
-
-    ImGui::Checkbox("Use Advanced Editor", &useAdvancedEditor_);
-
-    if (useAdvancedEditor_) {
-        if (!animationEditor_) {
-            animationEditor_ = std::make_unique<CameraAnimationEditor>();
-            CameraManager* manager = CameraManager::GetInstance();
-            if (manager && manager->GetCamera()) {
-                animationEditor_->Initialize(animation, manager->GetCamera());
-            }
-        }
-
-        if (ImGui::Button("Open Animation Editor")) {
-            animationEditor_->Open();
-        }
-
-        if (animationEditor_ && animationEditor_->IsOpen()) {
-            animationEditor_->Draw();
-            animationEditor_->Update(0.016f); // 仮の deltaTime
-        }
-
-        ImGui::PopID();
-        return;
-    }
-
-    ImGui::Text("Animation: %s", animation->GetAnimationName().c_str());
-    ImGui::Text("Duration: %.2f seconds", animation->GetDuration());
-    ImGui::Text("Current Time: %.2f", animation->GetPlaybackTime());
-    ImGui::Text("Keyframes: %zu", animation->GetKeyframeCount());
-
-    const char* stateStr = "STOPPED";
-    auto playState = animation->GetPlayState();
-    if (playState == CameraAnimation::PlayState::PLAYING) stateStr = "PLAYING";
-    else if (playState == CameraAnimation::PlayState::PAUSED) stateStr = "PAUSED";
-    ImGui::Text("State: %s", stateStr);
-
-    ImGui::Separator();
-
-    auto* animController = dynamic_cast<CameraAnimationController*>(
-        CameraManager::GetInstance()->GetController("Animation"));
-
-    if (ImGui::Button("Play")) {
-        // コントローラー経由なら isActive_ も更新される
-        if (animController) {
-            animController->Play();
-        }
-        else {
-            animation->Play();
-        }
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Pause")) {
-        if (animController) {
-            animController->Pause();
-        }
-        else {
-            animation->Pause();
-        }
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Stop")) {
-        if (animController) {
-            animController->Stop();
-        }
-        else {
-            animation->Stop();
-        }
-    }
-    ImGui::SameLine();
-    if (ImGui::Button("Reset")) {
-        if (animController) {
-            animController->Reset();
-        }
-        else {
-            animation->Reset();
-        }
-    }
-
-    bool isLooping = animation->IsLooping();
-    if (ImGui::Checkbox("Loop", &isLooping)) {
-        animation->SetLooping(isLooping);
-    }
-
-    static float playSpeed = 1.0f;
-    if (ImGui::SliderFloat("Play Speed", &playSpeed, -2.0f, 2.0f, "%.2f")) {
-        animation->SetPlaySpeed(playSpeed);
-    }
-
-    float currentTime = animation->GetPlaybackTime();
-    if (ImGui::SliderFloat("Timeline", &currentTime, 0.0f,
-        animation->GetDuration(), "%.2f")) {
-        animation->SetCurrentTime(currentTime);
-    }
-
-    ImGui::PopID();
-}
-
 void CameraDebugUI::DrawControllerSwitcher() {
     CameraManager* manager = CameraManager::GetInstance();
     if (!manager) {
@@ -348,83 +237,6 @@ void CameraDebugUI::DrawControllerSwitcher() {
         auto* tdController = dynamic_cast<TopDownController*>(
             manager->GetController("TopDown"));
         DrawTopDownControllerInfo(tdController);
-    }
-}
-
-void CameraDebugUI::DrawCameraState() {
-    CameraManager* manager = CameraManager::GetInstance();
-    if (!manager || !manager->GetCamera()) {
-        return;
-    }
-
-    Camera* camera = manager->GetCamera();
-
-    ImGui::Text("=== Camera State ===");
-
-    Vector3 pos = camera->GetTranslate();
-    ImGui::Text("Position: (%.2f, %.2f, %.2f)", pos.x, pos.y, pos.z);
-
-    Vector3 rot = camera->GetRotate();
-    ImGui::Text("Rotation: (%.1f°, %.1f°, %.1f°)",
-        DirectX::XMConvertToDegrees(rot.x), DirectX::XMConvertToDegrees(rot.y), DirectX::XMConvertToDegrees(rot.z));
-
-    float fov = DirectX::XMConvertToDegrees(camera->GetFovY());
-    ImGui::Text("FOV: %.1f°", fov);
-
-    ImGui::Text("Aspect Ratio: %.3f", camera->GetAspect());
-
-    ImGui::Text("Near/Far: %.2f / %.1f",
-        camera->GetNearClip(), camera->GetFarClip());
-}
-
-void CameraDebugUI::DrawAnimationEditorOnly() {
-    if (!animationEditor_) {
-        InitializeAnimationEditor();
-    }
-
-    if (animationEditor_) {
-        if (!animationEditor_->IsOpen()) {
-            animationEditor_->Open();
-        }
-
-        animationEditor_->Draw();
-    }
-    else {
-        if (ImGui::Begin("Camera Animation Editor")) {
-            ImGui::Text("⚠️ Animation Editor not available");
-            ImGui::TextWrapped("Make sure AnimationController is registered and initialized with a valid CameraAnimation.");
-
-            if (ImGui::Button("Try Initialize")) {
-                InitializeAnimationEditor();
-            }
-            ImGui::End();
-        }
-    }
-}
-
-void CameraDebugUI::InitializeAnimationEditor() {
-
-    animationEditor_.reset();
-
-    CameraManager* manager = CameraManager::GetInstance();
-    if (!manager) return;
-
-    auto* animController = dynamic_cast<CameraAnimationController*>(
-        manager->GetController("Animation"));
-    if (!animController) return;
-
-    animationEditor_ = std::make_unique<CameraAnimationEditor>();
-    animationEditor_->Initialize(animController, manager->GetCamera());
-}
-
-void CameraDebugUI::CleanupAnimationEditor()
-{
-    animationEditor_.reset();
-}
-
-void CameraDebugUI::UpdateAnimationEditor(float deltaTime) {
-    if (animationEditor_ && animationEditor_->IsOpen()) {
-        animationEditor_->Update(deltaTime);
     }
 }
 

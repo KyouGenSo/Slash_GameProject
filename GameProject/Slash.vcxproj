@@ -47,15 +47,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClCompile Include="CameraAnimation\CameraAnimation.cpp" />
     <ClCompile Include="CameraSystem\Controller\CameraAnimationController.cpp" />
     <ClCompile Include="CameraSystem\CameraDebugUI.cpp" />
     <ClCompile Include="CameraSystem\CameraManager.cpp" />
     <ClCompile Include="CameraSystem\Controller\ThirdPersonController.cpp" />
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.cpp" />
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.cpp" />
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.cpp" />
-    <ClCompile Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.cpp" />
     <ClCompile Include="CameraSystem\Controller\TopDownController.cpp" />
     <ClCompile Include="Collision\BossAreaAttackCollider.cpp" />
     <ClCompile Include="Collision\MeteorImpactCollider.cpp" />
@@ -147,17 +142,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraAnimation\CameraAnimation.h" />
-    <ClInclude Include="CameraAnimation\CameraKeyframe.h" />
     <ClInclude Include="CameraSystem\Controller\CameraAnimationController.h" />
     <ClInclude Include="CameraSystem\CameraConfig.h" />
     <ClInclude Include="CameraSystem\CameraDebugUI.h" />
     <ClInclude Include="CameraSystem\CameraManager.h" />
     <ClInclude Include="CameraSystem\Controller\ThirdPersonController.h" />
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationEditor.h" />
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationTimeline.h" />
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationCurveEditor.h" />
-    <ClInclude Include="CameraSystem\CameraAnimationEditor\CameraAnimationHistory.h" />
     <ClInclude Include="CameraSystem\Controller\ICameraController.h" />
     <ClInclude Include="CameraSystem\Controller\TopDownController.h" />
     <ClInclude Include="Collision\BossAreaAttackCollider.h" />

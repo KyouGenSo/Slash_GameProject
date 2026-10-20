@@ -27,7 +27,7 @@ void CameraAnimationController::Update(float deltaTime) {
 }
 
 bool CameraAnimationController::IsActive() const {
-    // プレビューモードで確実にアクティブにするため、アニメーション状態より優先
+    // Activate 済みなら、再生していなくてもアクティブ（ActivateController で切り替えた直後など）
     if (isActive_) {
         return true;
     }
@@ -37,9 +37,8 @@ bool CameraAnimationController::IsActive() const {
         return false;
     }
 
-    // 再生中または編集中もアクティブ扱い
-    return animation->GetPlayState() == CameraAnimation::PlayState::PLAYING ||
-        animation->IsEditingKeyframe();
+    // 再生中もアクティブ扱い
+    return animation->GetPlayState() == CameraAnimation::PlayState::PLAYING;
 }
 
 void CameraAnimationController::Activate() {
@@ -220,14 +219,6 @@ float CameraAnimationController::GetCurrentTime() const {
     return 0.0f;
 }
 
-bool CameraAnimationController::IsEditingKeyframe() const {
-    auto* anim = const_cast<CameraAnimationController*>(this)->GetCurrentAnimation();
-    if (anim) {
-        return anim->IsEditingKeyframe();
-    }
-    return false;
-}
-
 const Transform* CameraAnimationController::GetAnimationTarget() const {
     auto* anim = const_cast<CameraAnimationController*>(this)->GetCurrentAnimation();
     if (anim) {
@@ -348,17 +339,12 @@ bool CameraAnimationController::DuplicateAnimation(const std::string& sourceName
     }
 
     animations_[newName] = std::make_unique<CameraAnimation>();
+    animations_[newName]->FromJson(source->ToJson());
     animations_[newName]->SetAnimationName(newName);
 
     if (camera_) {
         animations_[newName]->SetCamera(camera_);
     }
-
-    for (size_t i = 0; i < source->GetKeyframeCount(); ++i) {
-        animations_[newName]->AddKeyframe(source->GetKeyframe(i));
-    }
-
-    animations_[newName]->SetLooping(source->IsLooping());
 
     return true;
 }

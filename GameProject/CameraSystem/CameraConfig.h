@@ -49,24 +49,6 @@ namespace CameraConfig {
         inline constexpr float INITIAL_BACK_OFFSET = -205.0f;
     }
 
-    //==================== アニメーション設定 ====================
-
-    namespace Animation {
-        inline constexpr float  DEFAULT_PLAY_SPEED    = 1.0f;
-        inline constexpr size_t KEYFRAME_RESERVE_COUNT = 32;
-
-        inline constexpr float DEFAULT_FOV            = 0.45f;  // ラジアン
-        inline constexpr float DEFAULT_BLEND_DURATION = 0.5f;   // 秒
-
-        inline constexpr float MIN_PLAY_SPEED    = -2.0f;
-        inline constexpr float MAX_PLAY_SPEED    = 2.0f;
-        inline constexpr float KEYFRAME_DRAG_STEP = 0.1f;
-
-        inline constexpr float FOV_MIN_DEGREES     = 10.0f;
-        inline constexpr float FOV_MAX_DEGREES     = 120.0f;
-        inline constexpr float DEFAULT_FOV_DEGREES = 45.0f;
-    }
-
     //==================== カメラシェイク設定 ====================
 
     namespace Shake {
