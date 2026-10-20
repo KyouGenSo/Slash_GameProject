@@ -1,0 +1,23 @@
+{
+  "duration": 0.5,
+  "events": [],
+  "loop": "PingPong",
+  "tracks": [
+    {
+      "keys": [
+        {
+          "ease": "InOutSine",
+          "time": 0.0,
+          "value": 1.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.5,
+          "value": 0.2
+        }
+      ],
+      "property": "ColorA",
+      "target": ""
+    }
+  ]
+}

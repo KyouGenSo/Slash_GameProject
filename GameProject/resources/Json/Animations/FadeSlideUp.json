@@ -1,0 +1,39 @@
+{
+  "duration": 0.6,
+  "events": [],
+  "loop": "Once",
+  "tracks": [
+    {
+      "keys": [
+        {
+          "ease": "OutCubic",
+          "time": 0.0,
+          "value": 30.0
+        },
+        {
+          "ease": "OutCubic",
+          "time": 0.6,
+          "value": 0.0
+        }
+      ],
+      "property": "TranslateY",
+      "target": ""
+    },
+    {
+      "keys": [
+        {
+          "ease": "OutCubic",
+          "time": 0.0,
+          "value": 0.0
+        },
+        {
+          "ease": "OutCubic",
+          "time": 0.6,
+          "value": 1.0
+        }
+      ],
+      "property": "ColorA",
+      "target": ""
+    }
+  ]
+}

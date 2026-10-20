@@ -1,0 +1,23 @@
+{
+  "duration": 0.7,
+  "events": [],
+  "loop": "Once",
+  "tracks": [
+    {
+      "keys": [
+        {
+          "ease": "OutBounce",
+          "time": 0.0,
+          "value": -120.0
+        },
+        {
+          "ease": "OutBounce",
+          "time": 0.7,
+          "value": 0.0
+        }
+      ],
+      "property": "TranslateY",
+      "target": ""
+    }
+  ]
+}

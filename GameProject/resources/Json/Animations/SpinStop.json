@@ -1,0 +1,23 @@
+{
+  "duration": 0.85,
+  "events": [],
+  "loop": "Once",
+  "tracks": [
+    {
+      "keys": [
+        {
+          "ease": "OutQuart",
+          "time": 0.0,
+          "value": 0.0
+        },
+        {
+          "ease": "OutQuart",
+          "time": 0.85,
+          "value": 360.0
+        }
+      ],
+      "property": "RotateZ",
+      "target": ""
+    }
+  ]
+}

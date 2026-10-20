@@ -1,0 +1,49 @@
+{
+  "duration": 0.68,
+  "events": [],
+  "loop": "Once",
+  "tracks": [
+    {
+      "keys": [
+        {
+          "ease": "OutCubic",
+          "time": 0.0,
+          "value": 1.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.2,
+          "value": 1.12
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.68,
+          "value": 1.0
+        }
+      ],
+      "property": "ScaleX",
+      "target": ""
+    },
+    {
+      "keys": [
+        {
+          "ease": "OutCubic",
+          "time": 0.0,
+          "value": 1.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.2,
+          "value": 1.12
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.68,
+          "value": 1.0
+        }
+      ],
+      "property": "ScaleY",
+      "target": ""
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "duration": 0.72,
+  "events": [],
+  "loop": "Once",
+  "tracks": [
+    {
+      "keys": [
+        {
+          "ease": "InOutSine",
+          "time": 0.0,
+          "value": 0.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.103,
+          "value": 14.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.206,
+          "value": -12.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.309,
+          "value": 9.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.411,
+          "value": -6.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.514,
+          "value": 4.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.617,
+          "value": -2.0
+        },
+        {
+          "ease": "InOutSine",
+          "time": 0.72,
+          "value": 0.0
+        }
+      ],
+      "property": "TranslateX",
+      "target": ""
+    }
+  ]
+}
