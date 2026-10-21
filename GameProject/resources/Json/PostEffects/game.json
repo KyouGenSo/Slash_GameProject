@@ -1,16 +1,14 @@
 {
-    "Chain": [
-        "DepthBasedOutline",
-        "RGBSplit"
-    ],
-    "Params": {
-        "DepthBasedOutline": [
-            {
+    "Effects": [
+        {
+            "Name": "DepthBasedOutline",
+            "Param": {
                 "outlineThickness": 0.4
             }
-        ],
-        "RGBSplit": [
-            {
+        },
+        {
+            "Name": "RGBSplit",
+            "Param": {
                 "blueOffset": [
                     0.0,
                     0.0
@@ -25,6 +23,6 @@
                     0.0
                 ]
             }
-        ]
-    }
+        }
+    ]
 }

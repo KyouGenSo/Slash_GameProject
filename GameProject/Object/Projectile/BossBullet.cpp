@@ -55,6 +55,7 @@ void BossBullet::Initialize(const Vector3& position, const Vector3& velocity) {
     Projectile::Initialize(position, velocity);
 
     Projectile::SetDefaultModel();
+    model_->SetName("BossBullet");
     model_->Update();
 
     transform_.scale = Vector3(kInitialScale, kInitialScale, kInitialScale);

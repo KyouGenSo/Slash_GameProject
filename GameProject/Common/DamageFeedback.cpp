@@ -23,7 +23,7 @@ void DamageFeedback::TriggerHitFeedback(const HitParams& params)
     vignetteParam.range = params.vignetteRange;
     vignetteParam.color = params.vignetteColor;
     PostEffectManager::GetInstance()->ApplyTemporaryEffect(
-        PostEffectType::Vignette,
+        "Vignette",
         params.vignetteDuration,
         vignetteParam);
 }
@@ -59,7 +59,7 @@ void DamageFeedback::TriggerParryFeedback(
     vignetteParam.range = params.vignetteRange;
     vignetteParam.color = params.vignetteColor;
     PostEffectManager::GetInstance()->ApplyTemporaryEffect(
-        PostEffectType::Vignette,
+        "Vignette",
         params.vignetteDuration,
         vignetteParam);
 }

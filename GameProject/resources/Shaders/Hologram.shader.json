@@ -1,0 +1,37 @@
+{
+    "Defaults": {
+        "color": [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+        ],
+        "fresnelPower": 0.0,
+        "scanlineDensity": 0.0,
+        "scanlineStrength": 0.0
+    },
+    "Fallback": "Lit",
+    "Forward": {
+        "Blend": "Add",
+        "Cull": "None",
+        "DepthWrite": false,
+        "PS": "resources/Shaders/Hologram.PS.hlsl",
+        "VS": "Object3D.VS.hlsl"
+    },
+    "Name": "Hologram",
+    "Properties": {
+        "fresnelPower": [
+            0.5,
+            8.0
+        ],
+        "scanlineDensity": [
+            0.0,
+            40.0
+        ],
+        "scanlineStrength": [
+            0.0,
+            1.0
+        ]
+    },
+    "Queue": 3000
+}

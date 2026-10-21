@@ -11,7 +11,6 @@
 #include "GlobalVariables.h"
 #include "ModelManager.h"
 #include "GPUParticle.h"
-#include "SpriteBasic.h"
 #include "TransitionManager.h"
 
 #include <numbers>

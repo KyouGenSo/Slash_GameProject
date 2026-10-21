@@ -1,11 +1,8 @@
 {
-    "Chain": [
-        "RGBSplit",
-        "Vignette"
-    ],
-    "Params": {
-        "RGBSplit": [
-            {
+    "Effects": [
+        {
+            "Name": "RGBSplit",
+            "Param": {
                 "blueOffset": [
                     0.0,
                     0.0
@@ -20,9 +17,10 @@
                     0.0
                 ]
             }
-        ],
-        "Vignette": [
-            {
+        },
+        {
+            "Name": "Vignette",
+            "Param": {
                 "color": [
                     1.0,
                     1.0,
@@ -31,6 +29,6 @@
                 "power": 0.02,
                 "range": 20.0
             }
-        ]
-    }
+        }
+    ]
 }

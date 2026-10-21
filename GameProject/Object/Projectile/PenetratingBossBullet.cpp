@@ -55,6 +55,7 @@ void PenetratingBossBullet::Initialize(const Vector3& position, const Vector3& v
     Projectile::Initialize(position, velocity);
 
     Projectile::SetDefaultModel();
+    model_->SetName("PenetratingBossBullet");
     model_->Update();
 
     transform_.scale = Vector3(kInitialScale, kInitialScale, kInitialScale);

@@ -2,9 +2,8 @@
 #include "LineRenderer.h"
 #include "GPUParticle.h"
 #include "Input.h"
-#include "Object3dBasic.h"
+#include "Renderer.h"
 #include "SceneManager.h"
-#include "SpriteBasic.h"
 
 #ifdef _DEBUG
 #include"ImGui.h"
@@ -23,8 +22,8 @@ void ResultScene::Initialize()
     ///              初期化処理              ///
     /// ================================== ///
 
-    (*Object3dBasic::GetInstance()->GetCamera())->SetRotate(Vector3(0.2f, 0.0f, 0.0f));
-    (*Object3dBasic::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, cameraHiddenY_, -34.0f));
+    (*Renderer::GetInstance()->GetCamera())->SetRotate(Vector3(0.2f, 0.0f, 0.0f));
+    (*Renderer::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, cameraHiddenY_, -34.0f));
 
     layout_.Load("Result");
     // クリアとゲームオーバーで配置は共通。タイトルの画像だけをコンストラクタで受け取ったものに差し替える
@@ -61,52 +60,16 @@ void ResultScene::Draw()
     /// ================================== ///
     ///              描画処理               ///
     /// ================================== ///
-    //------------------背景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
     layout_.Draw("Background");
-
-
-    //-------------------Model の描画-------------------//
-    Object3dBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-
-    //------------------前景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
     layout_.Draw("Title");
 
     layout_.Draw("PressButton");
-
 }
 
 void ResultScene::DrawWithoutEffect()
 {
-    /// ================================== ///
-    ///              描画処理               ///
-    /// ================================== ///
-
-    //------------------背景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-
-    //-------------------Model の描画-------------------//
-    Object3dBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-
-
-    //------------------前景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-
 }
 
 void ResultScene::DrawImGui()

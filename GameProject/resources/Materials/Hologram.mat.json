@@ -1,0 +1,20 @@
+{
+    "Blend": "Add",
+    "Cull": "None",
+    "DepthTest": true,
+    "DepthWrite": false,
+    "Queue": 3000,
+    "Shader": "Hologram",
+    "Textures": {},
+    "Values": {
+        "color": [
+            0.2,
+            0.9,
+            1.0,
+            1.0
+        ],
+        "fresnelPower": 5.0,
+        "scanlineDensity": 12.0,
+        "scanlineStrength": 0.4
+    }
+}

@@ -1,8 +1,7 @@
 #include "TitleScene.h"
 
 #include "SceneManager.h"
-#include "Object3dBasic.h"
-#include "SpriteBasic.h"
+#include "Renderer.h"
 #include "ModelManager.h"
 #include "Input.h"
 #include "FrameTimer.h"
@@ -57,7 +56,7 @@ void TitleScene::Finalize()
     DebugUIManager::GetInstance()->ClearGameObjects();
 #endif
 
-    PostEffectManager::GetInstance()->ClearEffectChain();
+    PostEffectManager::GetInstance()->ClearEffects();
 }
 
 void TitleScene::Update()
@@ -80,24 +79,10 @@ void TitleScene::Draw()
     ///              描画処理               ///
     /// ================================== ///
 
-    //------------------背景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
     layout_.Draw(kBackgroundName);
-
-
-    //-------------------Model の描画-------------------//
-    Object3dBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-
-    //------------------前景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
     // 拡大エフェクトは TitleTexts の最後の要素なので、タイトルテキストの上に描画される
     layout_.Draw(kTitleTextsName);
-
 }
 
 void TitleScene::DrawWithoutEffect()
@@ -106,24 +91,7 @@ void TitleScene::DrawWithoutEffect()
     ///              描画処理               ///
     /// ================================== ///
 
-    //------------------背景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-
-    //-------------------Model の描画-------------------//
-    Object3dBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-
-
-    //------------------前景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
     layout_.Draw(kStartButtonName);
-
 }
 
 void TitleScene::DrawImGui()
@@ -230,8 +198,8 @@ void TitleScene::InitializeDebugUI()
 
 void TitleScene::InitializeCamera()
 {
-    (*Object3dBasic::GetInstance()->GetCamera())->SetRotate(Vector3(0.2f, 0.0f, 0.0f));
-    (*Object3dBasic::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, cameraY_ + offsetY_, cameraZ_));
+    (*Renderer::GetInstance()->GetCamera())->SetRotate(Vector3(0.2f, 0.0f, 0.0f));
+    (*Renderer::GetInstance()->GetCamera())->SetTranslate(Vector3(0.0f, cameraY_ + offsetY_, cameraZ_));
 }
 
 void TitleScene::InitializePostEffects()

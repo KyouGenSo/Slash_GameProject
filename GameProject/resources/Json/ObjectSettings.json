@@ -1,0 +1,16 @@
+{
+    "Boss": {
+        "MaskId": 1
+    },
+    "BossRepelShockwave": {
+        "CastShadow": false,
+        "Transparent": true
+    },
+    "BossRingShockwave": {
+        "CastShadow": false,
+        "Transparent": true
+    },
+    "Ground": {
+        "CastShadow": false
+    }
+}

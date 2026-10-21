@@ -1,8 +1,7 @@
 // Engine includes
 #include "GameScene.h"
 #include "WinApp.h"
-#include "Object3dBasic.h"
-#include "SpriteBasic.h"
+#include "Renderer.h"
 #include "Input.h"
 #include "LineRenderer.h"
 #include "FrameTimer.h"
@@ -81,7 +80,7 @@ void GameScene::Initialize()
     float shadowMaxDist = gvScene->GetValueFloat("GameScene", "ShadowMaxDistance");
     ShadowRenderer::GetInstance()->SetMaxShadowDistance(shadowMaxDist);
     float lightZ = gvScene->GetValueFloat("GameScene", "DirectionalLightZ");
-    Object3dBasic::GetInstance()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, lightZ));
+    Renderer::GetInstance()->GetLight()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, lightZ));
 
 
     InitializeObject3d();
@@ -121,7 +120,7 @@ void GameScene::Finalize()
 
     DecalManager::GetInstance()->ClearDecals();
 
-    PostEffectManager::GetInstance()->ClearEffectChain();
+    PostEffectManager::GetInstance()->ClearEffects();
 
     pauseMenu_.reset();
 }
@@ -246,39 +245,16 @@ void GameScene::Draw()
     ///              描画処理               ///
     /// ================================== ///
 
-    //-------------------SkyBox の描画-------------------//
+    // 描画順は描画キュー（マテリアル）と sortingOrder で決まる。影はモデルの castShadow で落とす
     skyBox_->Draw();
-
-    //------------------シャドウマップの描画------------------//
-    if (ShadowRenderer::GetInstance()->IsEnabled()) {
-        ShadowRenderer::GetInstance()->BeginShadowPass();
-        ground_->Draw();
-        player_->Draw();
-        boss_->DrawShadow();
-        ShadowRenderer::GetInstance()->EndShadowPass();
-    }
-
-    //------------------背景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-    //-------------------Model の描画-------------------//
-    Object3dBasic::GetInstance()->SetCommonRenderSetting();
 
     ground_->Draw();
     player_->Draw();
     boss_->Draw();
 
-    //------------------前景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
 #ifdef _DEBUG
     CollisionManager::GetInstance()->DrawColliders();
 #endif
-
 }
 
 void GameScene::DrawWithoutEffect()
@@ -286,19 +262,6 @@ void GameScene::DrawWithoutEffect()
     /// ================================== ///
     ///              描画処理               ///
     /// ================================== ///
-
-    //------------------背景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-    //-------------------Model の描画-------------------//
-    Object3dBasic::GetInstance()->SetCommonRenderSetting();
-
-
-
-    //------------------前景 Sprite の描画------------------//
-    SpriteBasic::GetInstance()->SetCommonRenderSetting();
 
     player_->DrawSprite();
     boss_->DrawSprite();
@@ -395,13 +358,14 @@ void GameScene::InitializeObject3d()
     ground_ = std::make_unique<Object3d>();
     ground_->Initialize();
     ground_->SetModel("ground_black.gltf");
+    ground_->SetName("Ground");
     ground_->SetUvTransform(groundUvTransform_);
     ground_->SetEnableHighlight(false);
 
     //-----------Player の初期化----------------//
     player_ = std::make_unique<Player>();
     player_->Initialize();
-    player_->SetCamera((*Object3dBasic::GetInstance()->GetCamera()));
+    player_->SetCamera((*Renderer::GetInstance()->GetCamera()));
     player_->SetInputHandler(inputHandler_.get());
 
     //-----------Boss の初期化--------------------//
@@ -418,7 +382,7 @@ void GameScene::InitializeObject3d()
 void GameScene::InitializeCameraSystem()
 {
     cameraManager_ = CameraManager::GetInstance();
-    cameraManager_->Initialize((*Object3dBasic::GetInstance()->GetCamera()));
+    cameraManager_->Initialize((*Renderer::GetInstance()->GetCamera()));
 
     // ThirdPersonController を登録
     auto tpController = std::make_unique<ThirdPersonController>();
@@ -552,14 +516,13 @@ void GameScene::CheckPause()
             isPaused_ = !isPaused_;
             controllerUI_->SetIsPaused(isPaused_);
             if (isPaused_) {
-                PostEffectManager::GetInstance()->SetEffectParam(PostEffectType::GaussianBlur, GaussianBlurParam{ .sigma = 20.0f, .kernelSize = 30 });
-                PostEffectManager::GetInstance()->AddEffectToChain(PostEffectType::GaussianBlur);
+                pauseBlurId_ = PostEffectManager::GetInstance()->AddEffect("GaussianBlur", GaussianBlurParam{ .sigma = 20.0f, .kernelSize = 30 });
                 player_->SetIsPause(true);
                 boss_->SetIsPause(true);
                 pauseMenu_->Reset();
             }
             else {
-                PostEffectManager::GetInstance()->RemoveEffectFromChain(PostEffectType::GaussianBlur);
+                PostEffectManager::GetInstance()->RemoveEffect(std::exchange(pauseBlurId_, 0));
                 player_->SetIsPause(false);
                 boss_->SetIsPause(false);
             }
@@ -576,7 +539,7 @@ void GameScene::UpdatePause()
     switch (action) {
     case PauseMenu::Action::Resume:
         isPaused_ = false;
-        PostEffectManager::GetInstance()->RemoveEffectFromChain(PostEffectType::GaussianBlur);
+        PostEffectManager::GetInstance()->RemoveEffect(std::exchange(pauseBlurId_, 0));
         controllerUI_->SetIsPaused(false);
         player_->SetIsPause(false);
         boss_->SetIsPause(false);

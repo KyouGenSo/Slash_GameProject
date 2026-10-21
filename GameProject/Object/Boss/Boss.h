@@ -58,7 +58,6 @@ public: //メンバー関数
     void Update(float deltaTime);
 
     void Draw();
-    void DrawShadow();
     void DrawSprite();
     void DrawImGui();
 

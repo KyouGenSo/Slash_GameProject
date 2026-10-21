@@ -129,4 +129,5 @@ private: //メンバー変数
     std::unique_ptr<ControllerUI> controllerUI_;
     std::unique_ptr<PauseMenu>    pauseMenu_;
     bool                          isPaused_     = false;
+    uint32_t                      pauseBlurId_  = 0;      ///< ポーズ中に掛けるブラーのポストエフェクト
 };

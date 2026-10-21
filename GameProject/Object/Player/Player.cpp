@@ -55,6 +55,7 @@ void Player::Initialize()
     model_ = std::make_unique<Object3d>();
     model_->Initialize();
     model_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
+    model_->SetName("Player");
 
     transform_.translate = Vector3(0.0f, initialY_, initialZ_);
     transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
@@ -79,6 +80,7 @@ void Player::Initialize()
     attackBlock_ = std::make_unique<Object3d>();
     attackBlock_->Initialize();
     attackBlock_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
+    attackBlock_->SetName("PlayerAttackBlock");
 }
 
 void Player::Finalize()

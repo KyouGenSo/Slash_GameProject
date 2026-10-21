@@ -62,6 +62,7 @@ void Boss::InitializeModel()
     model_ = std::make_unique<Object3d>();
     model_->Initialize();
     model_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
+    model_->SetName("Boss");
     model_->SetMaterialColor(baseColor_);
 
     transform_.translate = Vector3(0.0f, initialY_, initialZ_);
@@ -72,16 +73,17 @@ void Boss::InitializeModel()
     meleeAttackBlock_ = std::make_unique<Object3d>();
     meleeAttackBlock_->Initialize();
     meleeAttackBlock_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
+    meleeAttackBlock_->SetName("BossMeleeBlock");
     meleeAttackBlock_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
     // 半径1の単位球、SetScale で動的サイズ調整
     repelShockwaveSphere_ = std::make_unique<Object3d>();
     repelShockwaveSphere_->Initialize();
     repelShockwaveSphere_->SetModel(PrimitiveBuilder::CreateSphere({ .radius = 1.0f, .lonDiv = 32, .latDiv = 16 }));
+    repelShockwaveSphere_->SetName("BossRepelShockwave");
     repelShockwaveSphere_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 0.3f));
     repelShockwaveSphere_->SetEnableLighting(false);
     repelShockwaveSphere_->SetScale({ 0.0f, 0.0f, 0.0f });
-    repelShockwaveSphere_->SetTransparent(true);  // 両面描画 + 深度書き込み無効で球全体が透ける
 
     // 外半径1の単位半円リング（弧中心=ローカル+Z）、SetScale で動的サイズ調整
     ringShockwaveModel_ = std::make_unique<Object3d>();
@@ -93,11 +95,11 @@ void Boss::InitializeModel()
         .ringSeg = 1,
         .startAngleDeg = 0.0f,
         .sweepAngleDeg = 180.0f }));
+    ringShockwaveModel_->SetName("BossRingShockwave");
     ringShockwaveModel_->SetTexture("red_perlin_noise.png");
     ringShockwaveModel_->SetMaterialColor(Color::kWhite);
     ringShockwaveModel_->SetEnableLighting(false);
     ringShockwaveModel_->SetScale({ 0.0f, 0.0f, 0.0f });
-    ringShockwaveModel_->SetTransparent(true);
 }
 
 void Boss::InitializeHealth()
@@ -320,15 +322,6 @@ void Boss::Draw()
 
     if (ringShockwaveVisible_ && ringShockwaveModel_) {
         ringShockwaveModel_->Draw();
-    }
-}
-
-void Boss::DrawShadow()
-{
-    model_->Draw();
-
-    if (meleeAttackBlockVisible_ && meleeAttackBlock_) {
-        meleeAttackBlock_->Draw();
     }
 }
 

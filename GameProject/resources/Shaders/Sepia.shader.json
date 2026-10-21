@@ -1,0 +1,13 @@
+{
+    "Name": "Sepia",
+    "PostEffect": {
+        "PS": "resources/Shaders/Sepia.PS.hlsl"
+    },
+    "Properties": {
+        "strength": [0.0, 1.0]
+    },
+    "Defaults": {
+        "toneColor": [1.07, 0.74, 0.43],
+        "strength": 1.0
+    }
+}
