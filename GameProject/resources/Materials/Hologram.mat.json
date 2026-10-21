@@ -1,9 +1,4 @@
 {
-    "Blend": "Add",
-    "Cull": "None",
-    "DepthTest": true,
-    "DepthWrite": false,
-    "Queue": 3000,
     "Shader": "Hologram",
     "Textures": {},
     "Values": {
