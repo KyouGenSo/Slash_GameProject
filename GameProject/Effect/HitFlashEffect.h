@@ -1,4 +1,6 @@
 #pragma once
+#include <optional>
+
 #include "Vector4.h"
 
 namespace Tako {
@@ -22,14 +24,13 @@ public: //メンバー関数
     void Start(const Tako::Vector4& flashColor, float duration = 0.1f);
 
     /// <summary>
-    /// duration 内は flashColor を適用し、経過後に originalColor へ戻す
+    /// duration 内は flashColor をコードの色として上書きし、経過後に始める前のコードの色へ戻す（無かったなら上書きを外す）
     /// </summary>
     /// <param name="deltaTime">前フレームからの経過時間（秒）</param>
     /// <param name="target">色を設定する対象（nullptr なら何もしない）</param>
-    /// <param name="originalColor">duration 経過後に戻す元の色（RGBA）</param>
-    void Update(float deltaTime, Tako::Object3d* target, const Tako::Vector4& originalColor);
+    void Update(float deltaTime, Tako::Object3d* target);
 
-    void Stop() { isActive_ = false; timer_ = 0.0f; }
+    void Stop() { isActive_ = false; hasPrevious_ = false; timer_ = 0.0f; }
 
     //====================
     //Getter
@@ -38,8 +39,10 @@ public: //メンバー関数
     float GetTimer() const { return timer_; }
 
 private: //メンバー変数
-    bool          isActive_     = false;
-    float         timer_        = 0.0f;
-    float         duration_     = 0.1f;
-    Tako::Vector4 flashColor_{};
+    bool                         isActive_      = false;
+    bool                         hasPrevious_   = false;  ///< previousColor_ を読み取り済みか
+    float                        timer_         = 0.0f;
+    float                        duration_      = 0.1f;
+    Tako::Vector4                flashColor_{};
+    std::optional<Tako::Vector4> previousColor_;          ///< 始める前のコードの色（無ければ nullopt）
 };

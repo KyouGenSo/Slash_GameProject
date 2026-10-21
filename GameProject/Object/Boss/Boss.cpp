@@ -63,7 +63,6 @@ void Boss::InitializeModel()
     model_->Initialize();
     model_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
     model_->SetName("Boss");
-    model_->SetMaterialColor(baseColor_);
 
     transform_.translate = Vector3(0.0f, initialY_, initialZ_);
     transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
@@ -74,15 +73,12 @@ void Boss::InitializeModel()
     meleeAttackBlock_->Initialize();
     meleeAttackBlock_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
     meleeAttackBlock_->SetName("BossMeleeBlock");
-    meleeAttackBlock_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 
     // 半径1の単位球、SetScale で動的サイズ調整
     repelShockwaveSphere_ = std::make_unique<Object3d>();
     repelShockwaveSphere_->Initialize();
     repelShockwaveSphere_->SetModel(PrimitiveBuilder::CreateSphere({ .radius = 1.0f, .lonDiv = 32, .latDiv = 16 }));
     repelShockwaveSphere_->SetName("BossRepelShockwave");
-    repelShockwaveSphere_->SetMaterialColor(Vector4(1.0f, 0.0f, 0.0f, 0.3f));
-    repelShockwaveSphere_->SetEnableLighting(false);
     repelShockwaveSphere_->SetScale({ 0.0f, 0.0f, 0.0f });
 
     // 外半径1の単位半円リング（弧中心=ローカル+Z）、SetScale で動的サイズ調整
@@ -96,9 +92,6 @@ void Boss::InitializeModel()
         .startAngleDeg = 0.0f,
         .sweepAngleDeg = 180.0f }));
     ringShockwaveModel_->SetName("BossRingShockwave");
-    ringShockwaveModel_->SetTexture("red_perlin_noise.png");
-    ringShockwaveModel_->SetMaterialColor(Color::kWhite);
-    ringShockwaveModel_->SetEnableLighting(false);
     ringShockwaveModel_->SetScale({ 0.0f, 0.0f, 0.0f });
 }
 
@@ -291,7 +284,7 @@ void Boss::Update(float deltaTime)
     // 硬直・スタン・フェーズ移行スタン・テレポートのいずれかで aura を無効
     SetAuraEmitterActive(!isInRecovery_ && !IsStunned() && !isTeleporting_);
 
-    hitFlashEffect_.Update(deltaTime, model_.get(), baseColor_);
+    hitFlashEffect_.Update(deltaTime, model_.get());
 
     shakeEffect_.Update(deltaTime);
 
@@ -573,6 +566,10 @@ void Boss::SetBulletSignEmitterScaleRangeX(float value) {
             Vector2(1.0f, 1.0f)
         );
     }
+}
+
+Vector4 Boss::GetBaseColor() const {
+    return model_ ? model_->GetBaseMaterialColor() : Color::kWhite;
 }
 
 void Boss::StartStunFlash(const Vector4& color, float duration) {

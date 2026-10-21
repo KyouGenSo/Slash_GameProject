@@ -169,8 +169,7 @@ void Player::UpdatePhysics(float deltaTime)
 
 void Player::UpdateVisuals(float deltaTime)
 {
-    static const Vector4 kOriginalColor = Color::kWhite;
-    hitFlashEffect_.Update(deltaTime, model_.get(), kOriginalColor);
+    hitFlashEffect_.Update(deltaTime, model_.get());
 
     shakeEffect_.Update(deltaTime);
 

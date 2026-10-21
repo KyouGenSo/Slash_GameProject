@@ -43,7 +43,6 @@ using namespace Tako;
 namespace {
     constexpr BYTE  kCameraModeToggleKey = DIK_P;
     constexpr float kFadeDuration        = 0.3f;
-    constexpr float kGroundUvScale       = 100.0f;
     constexpr int   kVortexEmitterCount  = 4;
 }
 
@@ -352,15 +351,10 @@ void GameScene::InitializeObject3d()
     skyBox_ = std::make_unique<SkyBox>();
     skyBox_->Initialize(EnginePaths::TexturePath("my_skybox.dds"));
 
-    groundUvTransform_.translate = Vector3(0.0f, 0.0f, 0.0f);
-    groundUvTransform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
-    groundUvTransform_.scale = Vector3(kGroundUvScale, kGroundUvScale, kGroundUvScale);
     ground_ = std::make_unique<Object3d>();
     ground_->Initialize();
     ground_->SetModel("ground_black.gltf");
     ground_->SetName("Ground");
-    ground_->SetUvTransform(groundUvTransform_);
-    ground_->SetEnableHighlight(false);
 
     //-----------Player の初期化----------------//
     player_ = std::make_unique<Player>();

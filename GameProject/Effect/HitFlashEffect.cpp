@@ -11,9 +11,15 @@ void HitFlashEffect::Start(const Vector4& flashColor, float duration)
     flashColor_ = flashColor;
 }
 
-void HitFlashEffect::Update(float deltaTime, Object3d* target, const Vector4& originalColor)
+void HitFlashEffect::Update(float deltaTime, Object3d* target)
 {
     if (!isActive_ || !target) return;
+
+    // 点滅中に Start し直しても点滅の色を覚えないよう、始めてから最初の 1 回だけ読む
+    if (!hasPrevious_) {
+        previousColor_ = target->GetMaterialProperties().GetVector("color");
+        hasPrevious_ = true;
+    }
 
     timer_ += deltaTime;
 
@@ -22,6 +28,7 @@ void HitFlashEffect::Update(float deltaTime, Object3d* target, const Vector4& or
     }
     else {
         isActive_ = false;
-        target->SetMaterialColor(originalColor);
+        hasPrevious_ = false;
+        target->SetMaterialColor(previousColor_);
     }
 }

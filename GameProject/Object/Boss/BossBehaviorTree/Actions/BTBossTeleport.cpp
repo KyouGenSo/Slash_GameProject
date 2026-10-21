@@ -54,7 +54,6 @@ void BTBossTeleport::OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss) {
     Object3d* model = boss->GetModel();
     if (model) {
         originalMaterialColor_ = boss->GetBaseColor();
-        originalTransparentState_ = model->IsTransparent();
         model->SetTransparent(true);
         UpdateModelAlpha(model, 1.0f);
     }
@@ -107,8 +106,8 @@ void BTBossTeleport::OnCleanup() {
     if (cachedBoss_) {
         Object3d* model = cachedBoss_->GetModel();
         if (model) {
-            model->SetMaterialColor(originalMaterialColor_);
-            model->SetTransparent(originalTransparentState_);
+            model->SetMaterialColor(std::nullopt);
+            model->SetTransparent(std::nullopt);
         }
         cachedBoss_->SetBodyParticleEmitterActive(false);
         // 解除後、次フレームの Boss::Update で aura が再有効化される

@@ -1,16 +1,76 @@
 {
     "Boss": {
-        "MaskId": 1
+        "MaskId": 1,
+        "Values": {
+            "color": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        }
+    },
+    "BossMeleeBlock": {
+        "Values": {
+            "color": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        }
     },
     "BossRepelShockwave": {
         "CastShadow": false,
-        "Transparent": true
+        "Transparent": true,
+        "Values": {
+            "color": [
+                1.0,
+                0.0,
+                0.0,
+                0.3
+            ],
+            "enableLighting": 0
+        }
     },
     "BossRingShockwave": {
         "CastShadow": false,
-        "Transparent": true
+        "Textures": {
+            "gTexture": "red_perlin_noise.png"
+        },
+        "Transparent": true,
+        "Values": {
+            "color": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "enableLighting": 0
+        }
     },
     "Ground": {
-        "CastShadow": false
+        "CastShadow": false,
+        "Values": {
+            "enableHighlight": 0,
+            "uvTransform": [
+                100.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                100.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                100.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        }
     }
 }

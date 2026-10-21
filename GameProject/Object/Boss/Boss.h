@@ -239,10 +239,10 @@ public: //メンバー関数
     Tako::Object3d* GetModel() const { return model_.get(); }
 
     /// <summary>
-    /// ボス本体の素のマテリアル色（被弾フラッシュ・テレポート復帰の基準色）
+    /// ボス本体の素のマテリアル色（Object Settings の Values。テレポートのフェードの基準色）
     /// </summary>
     /// <returns>ボディの基準色 RGBA</returns>
-    const Tako::Vector4& GetBaseColor() const { return baseColor_; }
+    Tako::Vector4 GetBaseColor() const;
 
     const std::string& GetBodyParticleEmitterName() const { return bodyParticleEmitterName_; }
     const std::string& GetRingShockwaveEmitterName() const { return ringShockwaveEmitterName_; }
@@ -268,7 +268,6 @@ private: //非公開関数
 private: //メンバー変数
     std::unique_ptr<Tako::Object3d> model_;
     Tako::Transform                 transform_{};
-    Tako::Vector4                   baseColor_{ 1.0f, 0.0f, 0.0f, 1.0f };  ///< ボディの素の色（フラッシュ/テレポート復帰の基準）
 
     std::unique_ptr<BossStateMachine>   stateMachine_;
     std::unique_ptr<Tako::BehaviorTree> behaviorTree_;

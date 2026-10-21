@@ -110,9 +110,6 @@ private: //メンバー変数
     CameraAnimationController* animationController_ = nullptr;
     bool                       cameraMode_          = false;    ///< true: ThirdPerson, false: TopDown
 
-    //地面UV
-    Tako::Transform groundUvTransform_{};
-
     //弾管理
     std::unique_ptr<ProjectileManager> projectileManager_;
 

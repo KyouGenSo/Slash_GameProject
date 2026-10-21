@@ -124,7 +124,10 @@ void BTBossRingShockwave::UpdateRingVisual(Boss* boss, float alpha) {
     ring->SetTranslate(Vector3(pos.x, spawnHeight_, pos.z));
     ring->SetRotate(Vector3(0.0f, lockedYaw_, 0.0f));
     ring->SetScale(Vector3(scale, 1.0f, scale));
-    ring->SetMaterialColor(Vector4(1.0f, 1.0f, 1.0f, alpha));
+    // RGB は Object Settings の色のまま、アルファだけ演出で変える
+    Vector4 color = ring->GetBaseMaterialColor();
+    color.w = alpha;
+    ring->SetMaterialColor(color);
     // WRAP サンプラーなので剰余を取らず加算のみでシームレスにループする
     ring->SetUvTransform(Transform{ Vector3(1.0f, 1.0f, 1.0f),
                                     Vector3(0.0f, 0.0f, 0.0f),
@@ -137,6 +140,11 @@ void BTBossRingShockwave::OnCleanup() {
 
     if (cachedBoss_) {
         cachedBoss_->SetRingShockwaveVisible(false);
+        // 演出の上書きを外し、Object Settings の値に戻す
+        if (Object3d* ring = cachedBoss_->GetRingShockwaveModel()) {
+            ring->SetMaterialColor(std::nullopt);
+            ring->SetUvTransform(std::nullopt);
+        }
     }
 
     if (cachedEmitterManager_ && !emitterName_.empty()) {

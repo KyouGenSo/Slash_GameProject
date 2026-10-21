@@ -71,5 +71,4 @@ private: //メンバー変数
     Tako::Vector3                                          targetTeleportPosition_{};          ///< OnInitialize で確定
     bool                                                   teleportFired_            = false;
     Tako::Vector4 originalMaterialColor_{1.0f, 0.0f, 0.0f, 0.0f};                              ///< OnInitialize 時の値
-    bool                                                   originalTransparentState_ = false;  ///< OnInitialize 時の値
 };
