@@ -254,14 +254,8 @@ void GameScene::Draw()
 #ifdef _DEBUG
     CollisionManager::GetInstance()->DrawColliders();
 #endif
-}
 
-void GameScene::DrawWithoutEffect()
-{
-    /// ================================== ///
-    ///              描画処理               ///
-    /// ================================== ///
-
+    // スプライトは描画キューが Overlay なので、ポストエフェクトの後に描かれる
     player_->DrawSprite();
     boss_->DrawSprite();
 

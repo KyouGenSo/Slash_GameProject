@@ -83,14 +83,8 @@ void TitleScene::Draw()
 
     // 拡大エフェクトは TitleTexts の最後の要素なので、タイトルテキストの上に描画される
     layout_.Draw(kTitleTextsName);
-}
 
-void TitleScene::DrawWithoutEffect()
-{
-    /// ================================== ///
-    ///              描画処理               ///
-    /// ================================== ///
-
+    // Background と TitleTexts は Post Effect をオンにしてあり、StartButton はポストエフェクトの後に描かれる
     layout_.Draw(kStartButtonName);
 }
 

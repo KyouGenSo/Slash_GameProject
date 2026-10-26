@@ -21,7 +21,6 @@ public: //メンバー関数
     void Update() override;
 
     void Draw() override;
-    void DrawWithoutEffect() override;
 
     void DrawImGui() override;
 

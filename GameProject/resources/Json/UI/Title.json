@@ -1,19 +1,259 @@
 {
-  "referenceResolution": [1920.0, 1080.0],
   "elements": [
-    { "name": "Background", "texture": "EngineResources/Texture/black.dds", "pivot": [0.0, 0.0], "anchorMin": [0.0, 0.0], "anchorMax": [1.0, 1.0], "size": [0.0, 0.0] },
     {
-      "name": "TitleTexts",
-      "texture": "",
-      "pivot": [0.0, 0.0],
-      "anchorMin": [0.0, 0.0],
-      "anchorMax": [1.0, 1.0],
-      "size": [0.0, 0.0],
-      "children": [
-        { "name": "TitleText", "texture": "title_text/title_text_sheet.png", "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.0], "position": [0.0, 100.0], "size": [500.0, 200.0] },
-        { "name": "TitleTextEffect", "texture": "title_text/title_text_sheet.png", "uvLeftTop": [1000.0, 80.0], "uvSize": [250.0, 80.0], "anchorMin": [0.5, 0.0], "anchorMax": [0.5, 0.0], "pivot": [0.5, 0.5], "position": [0.0, 200.0], "size": [500.0, 200.0] }
-      ]
+      "anchorMax": [
+        1.0,
+        1.0
+      ],
+      "anchorMin": [
+        0.0,
+        0.0
+      ],
+      "children": [],
+      "color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "flip": [
+        false,
+        false
+      ],
+      "locked": false,
+      "name": "Background",
+      "pivot": [
+        0.0,
+        0.0
+      ],
+      "position": [
+        0.0,
+        0.0
+      ],
+      "postEffect": true,
+      "preserveAspect": false,
+      "rotation": 0.0,
+      "size": [
+        0.0,
+        0.0
+      ],
+      "sliceOverride": false,
+      "sliced": false,
+      "texture": "EngineResources/Texture/black.dds",
+      "uvLeftTop": [
+        0.0,
+        0.0
+      ],
+      "uvSize": [
+        512.0,
+        512.0
+      ],
+      "visible": true
     },
-    { "name": "StartButton", "texture": "titlescene_button.dds", "anchorMin": [0.5, 1.0], "anchorMax": [0.5, 1.0], "pivot": [0.5, 0.0], "position": [0.0, -250.0], "size": [500.0, 80.0] }
+    {
+      "anchorMax": [
+        1.0,
+        1.0
+      ],
+      "anchorMin": [
+        0.0,
+        0.0
+      ],
+      "children": [
+        {
+          "anchorMax": [
+            0.5,
+            0.0
+          ],
+          "anchorMin": [
+            0.5,
+            0.0
+          ],
+          "children": [],
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "flip": [
+            false,
+            false
+          ],
+          "locked": false,
+          "name": "TitleText",
+          "pivot": [
+            0.5,
+            0.0
+          ],
+          "position": [
+            0.0,
+            100.0
+          ],
+          "postEffect": false,
+          "preserveAspect": false,
+          "rotation": 0.0,
+          "size": [
+            500.0,
+            200.0
+          ],
+          "sliceOverride": false,
+          "sliced": false,
+          "texture": "title_text/title_text_sheet.png",
+          "uvLeftTop": [
+            0.0,
+            0.0
+          ],
+          "uvSize": [
+            1250.0,
+            160.0
+          ],
+          "visible": true
+        },
+        {
+          "anchorMax": [
+            0.5,
+            0.0
+          ],
+          "anchorMin": [
+            0.5,
+            0.0
+          ],
+          "children": [],
+          "color": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "flip": [
+            false,
+            false
+          ],
+          "locked": false,
+          "name": "TitleTextEffect",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "position": [
+            0.0,
+            200.0
+          ],
+          "postEffect": false,
+          "preserveAspect": false,
+          "rotation": 0.0,
+          "size": [
+            500.0,
+            200.0
+          ],
+          "sliceOverride": false,
+          "sliced": false,
+          "texture": "title_text/title_text_sheet.png",
+          "uvLeftTop": [
+            1000.0,
+            80.0
+          ],
+          "uvSize": [
+            250.0,
+            80.0
+          ],
+          "visible": true
+        }
+      ],
+      "color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "flip": [
+        false,
+        false
+      ],
+      "locked": false,
+      "name": "TitleTexts",
+      "pivot": [
+        0.0,
+        0.0
+      ],
+      "position": [
+        0.0,
+        0.0
+      ],
+      "postEffect": true,
+      "preserveAspect": false,
+      "rotation": 0.0,
+      "size": [
+        0.0,
+        0.0
+      ],
+      "sliceOverride": false,
+      "sliced": false,
+      "texture": "",
+      "uvLeftTop": [
+        0.0,
+        0.0
+      ],
+      "uvSize": [
+        0.0,
+        0.0
+      ],
+      "visible": true
+    },
+    {
+      "anchorMax": [
+        0.5,
+        1.0
+      ],
+      "anchorMin": [
+        0.5,
+        1.0
+      ],
+      "children": [],
+      "color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "flip": [
+        false,
+        false
+      ],
+      "locked": false,
+      "name": "StartButton",
+      "pivot": [
+        0.5,
+        0.0
+      ],
+      "position": [
+        0.0,
+        -250.0
+      ],
+      "postEffect": false,
+      "preserveAspect": false,
+      "rotation": 0.0,
+      "size": [
+        500.0,
+        80.0
+      ],
+      "sliceOverride": false,
+      "sliced": false,
+      "texture": "titlescene_button.dds",
+      "uvLeftTop": [
+        0.0,
+        0.0
+      ],
+      "uvSize": [
+        500.0,
+        80.0
+      ],
+      "visible": true
+    }
+  ],
+  "referenceResolution": [
+    1920.0,
+    1080.0
   ]
 }

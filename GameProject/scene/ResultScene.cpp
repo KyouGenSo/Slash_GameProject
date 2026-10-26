@@ -68,10 +68,6 @@ void ResultScene::Draw()
     layout_.Draw("PressButton");
 }
 
-void ResultScene::DrawWithoutEffect()
-{
-}
-
 void ResultScene::DrawImGui()
 {
 #ifdef _DEBUG
