@@ -1,7 +1,8 @@
 {
     "Name": "Sepia",
     "PostEffect": {
-        "PS": "resources/Shaders/Sepia.PS.hlsl"
+        "PS": "resources/Shaders/Sepia.PS.hlsl",
+        "Fade": ["strength"]
     },
     "Properties": {
         "strength": [0.0, 1.0]

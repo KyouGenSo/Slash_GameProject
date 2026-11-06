@@ -38,6 +38,9 @@
                 },
                 "PS": "resources/Shaders/SoftBloom.PS.hlsl"
             }
+        ],
+        "Fade": [
+            "intensity"
         ]
     },
     "Properties": {
