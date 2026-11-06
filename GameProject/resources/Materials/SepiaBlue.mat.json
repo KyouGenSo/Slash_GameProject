@@ -1,0 +1,12 @@
+{
+    "Shader": "Sepia",
+    "Textures": {},
+    "Values": {
+        "strength": 0.8,
+        "toneColor": [
+            0.45,
+            0.7,
+            1.2
+        ]
+    }
+}
