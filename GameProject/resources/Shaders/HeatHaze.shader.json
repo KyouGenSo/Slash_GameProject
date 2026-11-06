@@ -1,0 +1,35 @@
+{
+    "Defaults": {
+        "color": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "scale": 4.0,
+        "speed": 3.0,
+        "strength": 0.01
+    },
+    "Forward": {
+        "Cull": "None",
+        "DepthWrite": false,
+        "PS": "resources/Shaders/HeatHaze.PS.hlsl",
+        "VS": "Object3D.VS.hlsl"
+    },
+    "Name": "HeatHaze",
+    "Properties": {
+        "scale": [
+            0.0,
+            20.0
+        ],
+        "speed": [
+            0.0,
+            10.0
+        ],
+        "strength": [
+            0.0,
+            0.05
+        ]
+    },
+    "Queue": 3000
+}

@@ -1,0 +1,40 @@
+{
+    "Defaults": {
+        "color": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "outlineColor": [
+            1.0,
+            0.45,
+            0.1,
+            1.0
+        ],
+        "outlineWidth": 0.05
+    },
+    "Fallback": "Lit",
+    "Forward": [
+        {
+            "Blend": "Opaque",
+            "Entry": "Body",
+            "PS": "resources/Shaders/Outline.PS.hlsl",
+            "VS": "Object3D.VS.hlsl"
+        },
+        {
+            "Blend": "Opaque",
+            "Cull": "Front",
+            "Entry": "Edge",
+            "PS": "resources/Shaders/Outline.PS.hlsl",
+            "VS": "resources/Shaders/Outline.VS.hlsl"
+        }
+    ],
+    "Name": "Outline",
+    "Properties": {
+        "outlineWidth": [
+            0.0,
+            0.3
+        ]
+    }
+}
