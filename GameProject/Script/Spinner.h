@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "Script.h"
 #include "Vector3.h"
 
 #include <numbers>
@@ -8,7 +8,7 @@
 /// Actor を一定の速さで回す
 /// </summary>
 TCLASS()
-class Spinner : public Tako::Component {
+class Spinner : public Tako::Script {
     GENERATED_BODY()
 
 public: //メンバー関数

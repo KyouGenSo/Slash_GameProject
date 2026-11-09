@@ -8,7 +8,10 @@ class Boss;
 /// <summary>
 /// プレイヤーを向いたまま後方へイージング移動で離脱。移動本体は BossRetreatExecutor へ委譲。
 /// </summary>
+TCLASS()
 class BTBossRetreat : public Tako::BTNode {
+    GENERATED_BODY()
+
 public: //メンバー関数
     BTBossRetreat();
     virtual ~BTBossRetreat() = default;
@@ -20,41 +23,28 @@ public: //メンバー関数
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) override;
     void Reset() override;
 
-    void ApplyParameters(const nlohmann::json& params) override {
-        executor_.ApplyJson(params);
-    }
-
-    nlohmann::json ExtractParameters() const override {
-        return executor_.ToJson();
-    }
-
 #ifdef _DEBUG
-    bool DrawImGui() override {
-        return executor_.DrawImGui("##retreat");
-    }
+    bool DrawCustomImGui() override;
 #endif
 
     //====================================
     //Setter
     //====================================
-    void SetRetreatSpeed(float speed) {
-        auto p = executor_.GetParameters();
-        p.retreatSpeed = speed;
-        executor_.SetParameters(p);
-    }
-    void SetTargetDistance(float distance) {
-        auto p = executor_.GetParameters();
-        p.targetDistance = distance;
-        executor_.SetParameters(p);
-    }
+    void SetRetreatSpeed(float speed) { retreatSpeed_ = speed; }
+    void SetTargetDistance(float distance) { targetDistance_ = distance; }
 
     //====================================
     //Getter
     //====================================
-    float GetRetreatSpeed()   const { return executor_.GetParameters().retreatSpeed; }
-    float GetTargetDistance() const { return executor_.GetParameters().targetDistance; }
+    float GetRetreatSpeed()   const { return retreatSpeed_; }
+    float GetTargetDistance() const { return targetDistance_; }
 
 private: //メンバー変数
+    TPROPERTY(Edit, ClampMin = 10, ClampMax = 200, Speed = 1)
+    float retreatSpeed_   = BossRetreatExecutor::Parameters{}.retreatSpeed;
+    TPROPERTY(Edit, Tooltip = "プレイヤーからの目標距離", ClampMin = 1, ClampMax = 100, Speed = 0.5)
+    float targetDistance_ = BossRetreatExecutor::Parameters{}.targetDistance;
+
     Boss*               boss_           = nullptr;
     BossRetreatExecutor executor_{};
     bool                isFirstExecute_ = true;

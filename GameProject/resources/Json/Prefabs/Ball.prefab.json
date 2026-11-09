@@ -47,7 +47,7 @@
       }
     },
     "Mover": {
-      "type": "Mover",
+      "type": "ScriptComponent",
       "order": 1,
       "properties": {
         "offset": [
@@ -55,7 +55,8 @@
           0.0,
           0.0
         ],
-        "period": 4.0
+        "period": 4.0,
+        "script": "Mover"
       }
     },
     "ColliderComponent": {
@@ -78,10 +79,11 @@
       }
     },
     "DestroyOnHit": {
-      "type": "DestroyOnHit",
+      "type": "ScriptComponent",
       "order": 3,
       "properties": {
-        "otherName": "Wall"
+        "otherName": "Wall",
+        "script": "DestroyOnHit"
       }
     }
   }

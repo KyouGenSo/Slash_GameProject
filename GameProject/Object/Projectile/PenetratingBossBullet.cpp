@@ -7,7 +7,7 @@
 #include "CollisionManager.h"
 #include "EmitterManager.h"
 #include "RandomEngine.h"
-#include "GlobalVariables.h"
+#include "Settings/BossSettings.h"
 #include <format>
 
 using namespace Tako;
@@ -15,10 +15,9 @@ using namespace Tako;
 uint32_t PenetratingBossBullet::id = 0;
 
 PenetratingBossBullet::PenetratingBossBullet(EmitterManager* emittermanager) {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    damage_ = gv->GetValueFloat("PenetratingBossBullet", "Damage");
-    lifeTime_ = gv->GetValueFloat("PenetratingBossBullet", "Lifetime");
+    const BulletSettings& bullet = Tako::GameSettings::Get<BossSettings>().penetratingBullet;
+    damage_ = bullet.damage;
+    lifeTime_ = bullet.lifetime;
 
     RandomEngine* rng = RandomEngine::GetInstance();
 
@@ -83,7 +82,7 @@ void PenetratingBossBullet::Initialize(const Vector3& position, const Vector3& v
             SetActive(false);
         });
     }
-    float colliderRadius = GlobalVariables::GetInstance()->GetValueFloat("PenetratingBossBullet", "ColliderRadius");
+    float colliderRadius = Tako::GameSettings::Get<BossSettings>().penetratingBullet.colliderRadius;
     collider_->SetTransform(&transform_);
     collider_->SetRadius(colliderRadius);
     collider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));

@@ -251,7 +251,7 @@ private: //非公開関数
     void InitializeModel();
     void InitializeHealth();
     void InitializeColliders();
-    void InitializeEffects();
+    void ApplyEffectSettings();
     void InitializeAI();
     void InitializeStateMachine();
 

@@ -12,7 +12,8 @@
 #include "EnginePaths.h"
 #include "ColorFunc.h"
 #include "BossBehaviorTree/BossNodeFactory.h"
-#include "GlobalVariables.h"
+#include "Settings/BossSettings.h"
+#include "Settings/GameplaySettings.h"
 #include "EmitterManager.h"
 #include "FrameTimer.h"
 #include "State/BossStateMachine.h"
@@ -41,7 +42,7 @@ void Boss::Initialize()
     InitializeModel();
     InitializeHealth();
     InitializeColliders();
-    InitializeEffects();
+    ApplyEffectSettings();
     InitializeAI();
     InitializeStateMachine();
 }
@@ -104,10 +105,10 @@ void Boss::InitializeHealth()
 
 void Boss::InitializeColliders()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
+    const BossSettings& settings = Tako::GameSettings::Get<BossSettings>();
 
     // 本体コライダー
-    float bodySize = gv->GetValueFloat("Boss", "BodyColliderSize");
+    float bodySize = settings.bodyColliderSize;
     bodyCollider_ = std::make_unique<OBBCollider>();
     bodyCollider_->SetTransform(&transform_);
     bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
@@ -117,23 +118,20 @@ void Boss::InitializeColliders()
     CollisionManager::GetInstance()->AddCollider(bodyCollider_.get());
 
     // 近接攻撃コライダー
-    float meleeColliderSizeX = gv->GetValueFloat("BossMeleeAttackCollider", "ColliderSizeX");
-    float meleeColliderSizeY = gv->GetValueFloat("BossMeleeAttackCollider", "ColliderSizeY");
-    float meleeColliderSizeZ = gv->GetValueFloat("BossMeleeAttackCollider", "ColliderSizeZ");
-    float meleeOffsetZ = gv->GetValueFloat("BossMeleeAttackCollider", "OffsetZ");
+    const BossSettings::MeleeCollider& melee = settings.melee;
     meleeAttackCollider_ = std::make_unique<BossMeleeAttackCollider>(this);
     meleeAttackCollider_->SetTransform(&transform_);
-    meleeAttackCollider_->SetSize(Vector3(meleeColliderSizeX, meleeColliderSizeY, meleeColliderSizeZ));
-    meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, meleeOffsetZ));
+    meleeAttackCollider_->SetSize(melee.size);
+    meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, melee.offsetZ));
     meleeAttackCollider_->SetOwner(this);
     CollisionManager::GetInstance()->AddCollider(meleeAttackCollider_.get());
 }
 
-void Boss::InitializeEffects()
+void Boss::ApplyEffectSettings()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    shakeEffect_.SetDefaultDuration(gv->GetValueFloat("Boss", "ShakeDuration"));
-    shakeEffect_.SetDefaultIntensity(gv->GetValueFloat("Boss", "ShakeIntensity"));
+    const ShakeSettings& shake = Tako::GameSettings::Get<BossSettings>().shake;
+    shakeEffect_.SetDefaultDuration(shake.duration);
+    shakeEffect_.SetDefaultIntensity(shake.intensity);
 }
 
 void Boss::InitializeAuraEmitter()
@@ -345,7 +343,7 @@ void Boss::OnHit(float damage, float shakeIntensityOverride)
         TriggerPhaseTransitionStun();
     }
 
-    float hitEffectDuration = GlobalVariables::GetInstance()->GetValueFloat("Boss", "HitEffectDuration");
+    float hitEffectDuration = Tako::GameSettings::Get<BossSettings>().hitEffectDuration;
     hitFlashEffect_.Start(Color::kWhite, hitEffectDuration);
 
     StartShake(shakeIntensityOverride);
@@ -353,6 +351,8 @@ void Boss::OnHit(float damage, float shakeIntensityOverride)
 
 void Boss::StartShake(float intensity)
 {
+    // Engine Settings で変えた値をすぐ試せるよう、揺らすたびに読み直す
+    ApplyEffectSettings();
     shakeEffect_.Start(intensity);
 }
 
@@ -409,17 +409,7 @@ void Boss::DrawImGui()
         ImGui::Text("Offset: (%.3f, %.3f, %.3f)", offset.x, offset.y, offset.z);
 
         ImGui::Separator();
-        float duration = shakeEffect_.GetDefaultDuration();
-        if (ImGui::DragFloat("Duration", &duration, 0.01f, 0.0f, 2.0f)) {
-            shakeEffect_.SetDefaultDuration(duration);
-            GlobalVariables::GetInstance()->SetValue("Boss", "ShakeDuration", duration);
-        }
-        float intensity = shakeEffect_.GetDefaultIntensity();
-        if (ImGui::DragFloat("Intensity", &intensity, 0.01f, 0.0f, 1.0f)) {
-            shakeEffect_.SetDefaultIntensity(intensity);
-            GlobalVariables::GetInstance()->SetValue("Boss", "ShakeIntensity", intensity);
-        }
-
+        ImGui::TextDisabled("Duration / Intensity: Engine Settings > Game > Boss");
         if (ImGui::Button("Test Shake")) {
             StartShake();
         }
@@ -623,14 +613,14 @@ void Boss::OnMeleeAttackHit(float damage, const Vector3& knockbackDir, bool isKn
             stunnedState->EnableKnockback(knockbackDir);
         }
         CameraManager::GetInstance()->StartShake(0.3f);
-        FrameTimer::GetInstance()->SetTimeScaleForDuration(0.0f, GlobalVariables::GetInstance()->GetValueFloat("HitStop", "Duration"));
+        FrameTimer::GetInstance()->SetTimeScaleForDuration(0.0f, Tako::GameSettings::Get<GameplaySettings>().hitStopDuration);
         return;
     }
 
     if (currentState == "PhaseTransitionStun") {
         CompletePhaseTransition();
         CameraManager::GetInstance()->StartShake(0.3f);
-        FrameTimer::GetInstance()->SetTimeScaleForDuration(0.0f, GlobalVariables::GetInstance()->GetValueFloat("HitStop", "Duration"));
+        FrameTimer::GetInstance()->SetTimeScaleForDuration(0.0f, Tako::GameSettings::Get<GameplaySettings>().hitStopDuration);
         return;
     }
 
@@ -639,7 +629,7 @@ void Boss::OnMeleeAttackHit(float damage, const Vector3& knockbackDir, bool isKn
         if (isInRecovery_ || forceVulnerable_) {
             OnHit(damage, 1.0f);
             CameraManager::GetInstance()->StartShake(0.3f);
-            FrameTimer::GetInstance()->SetTimeScaleForDuration(0.0f, GlobalVariables::GetInstance()->GetValueFloat("HitStop", "Duration"));
+            FrameTimer::GetInstance()->SetTimeScaleForDuration(0.0f, Tako::GameSettings::Get<GameplaySettings>().hitStopDuration);
             pendingStunDirection_ = knockbackDir;
             pendingStunWithKnockback_ = isKnockbackCombo;
             stateMachine_->ChangeState("Stunned");

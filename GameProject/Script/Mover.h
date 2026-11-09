@@ -1,12 +1,12 @@
 #pragma once
-#include "Component.h"
+#include "Script.h"
 #include "Vector3.h"
 
 /// <summary>
 /// BeginPlay の位置から offset まで行って戻るのを繰り返す
 /// </summary>
 TCLASS()
-class Mover : public Tako::Component {
+class Mover : public Tako::Script {
     GENERATED_BODY()
 
 public: //メンバー関数

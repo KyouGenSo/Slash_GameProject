@@ -1,6 +1,6 @@
 #include "DashEffectManager.h"
 #include "EmitterManager.h"
-#include "GlobalVariables.h"
+#include "Settings/GameplaySettings.h"
 #include "Vec3Func.h"
 #include <cmath>
 
@@ -19,8 +19,8 @@ void DashEffectManager::Update(float deltaTime, const Tako::Vector3& playerPosit
 
     // ダッシュ終了後も追いつくまで補間を継続する
     if (isActive_) {
-        // GlobalVariables の値があれば params より優先
-        float lerpSpeed = Tako::GlobalVariables::GetInstance()->GetValueFloat("DashEffect", "LerpSpeed");
+        // GameplaySettings の値が 0 より大きければ params より優先
+        float lerpSpeed = Tako::GameSettings::Get<GameplaySettings>().dashEffectLerpSpeed;
         if (lerpSpeed <= 0.0f) {
             lerpSpeed = params_.lerpSpeed;
         }

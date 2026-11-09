@@ -6,11 +6,9 @@
 #include "../../Boss/Boss.h"
 #include "CollisionManager.h"
 #include "Object3d.h"
-#include "GlobalVariables.h"
 
 #include <algorithm>
 #include <cmath>
-#include <format>
 #include <numbers>
 
 #ifdef _DEBUG
@@ -25,29 +23,18 @@ using namespace Tako;
 
 void AttackState::LoadComboData()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
+    const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
 
-    maxMoveTime_ = gv->GetValueFloat("AttackState", "MoveTime");
-    lungeAngle_ = gv->GetValueFloat("AttackState", "LungeAngle");
-    lungeMaxDistance_ = gv->GetValueFloat("AttackState", "LungeMaxDistance");
-    stepDistance_ = gv->GetValueFloat("AttackState", "StepDistance");
-    blockRadius_ = gv->GetValueFloat("AttackState", "BlockRadius");
-    blockScale_ = gv->GetValueFloat("AttackState", "BlockScale");
-    recoveryTime_ = gv->GetValueFloat("AttackState", "RecoveryTime");
-    maxCombo_ = gv->GetValueInt("AttackState", "MaxCombo");
+    maxMoveTime_ = settings.attack.moveTime;
+    lungeAngle_ = settings.attack.lungeAngle;
+    lungeMaxDistance_ = settings.attack.lungeMaxDistance;
+    stepDistance_ = settings.attack.stepDistance;
+    blockRadius_ = settings.attack.blockRadius;
+    blockScale_ = settings.attack.blockScale;
+    recoveryTime_ = settings.attack.recoveryTime;
 
-    for (int i = 0; i < kMaxComboCount; ++i) {
-        std::string prefix = std::format("Combo{}_", i);
-
-        combos_[i].startAngle = gv->GetValueFloat("AttackState", prefix + "StartAngle");
-        combos_[i].swingAngle = gv->GetValueFloat("AttackState", prefix + "SwingAngle");
-        combos_[i].swingDirection = gv->GetValueFloat("AttackState", prefix + "SwingDirection");
-        combos_[i].attackDuration = gv->GetValueFloat("AttackState", prefix + "AttackDuration");
-        combos_[i].damage = gv->GetValueFloat("AttackState", prefix + "Damage");
-
-        int axisValue = gv->GetValueInt("AttackState", prefix + "Axis");
-        combos_[i].axis = (axisValue == 0) ? SwingAxis::Horizontal : SwingAxis::Vertical;
-    }
+    combos_ = settings.combos;
+    maxCombo_ = static_cast<int>(combos_.size());
 }
 
 //=========================================================================================
@@ -397,7 +384,7 @@ void AttackState::DrawImGui(Player* player)
     }
 
     if (ImGui::TreeNode("All Combo Data")) {
-        for (int i = 0; i < kMaxComboCount; ++i) {
+        for (int i = 0; i < static_cast<int>(combos_.size()); ++i) {
             const ComboData& combo = combos_[i];
             bool isCurrentCombo = (i == GetComboIndex());
 

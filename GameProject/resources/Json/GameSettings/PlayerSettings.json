@@ -1,0 +1,85 @@
+{
+    "speed": 0.5,
+    "moveInputDeadzone": 0.10000000149011612,
+    "rotationLerpSpeed": 0.20000000298023224,
+    "initialY": 2.5,
+    "initialZ": -120.0,
+    "attackStartDistance": 5.5,
+    "attackMoveRotationLerp": 0.5,
+    "bossLookatLerp": 1.149999976158142,
+    "attackMoveSpeed": 50.0,
+    "bodyColliderSize": 3.200000047683716,
+    "meleeColliderSize": [
+        9.0,
+        3.5,
+        9.899999618530273
+    ],
+    "meleeColliderOffsetZ": 4.699999809265137,
+    "attack": {
+        "moveTime": 0.800000011920929,
+        "lungeAngle": 60.0,
+        "lungeMaxDistance": 20.0,
+        "stepDistance": 5.0,
+        "blockRadius": 4.0,
+        "blockScale": 0.5,
+        "recoveryTime": 0.5
+    },
+    "combos": [
+        {
+            "startAngle": -1.5707999467849731,
+            "swingAngle": 3.141590118408203,
+            "swingDirection": 1.0,
+            "attackDuration": 0.20000000298023224,
+            "damage": 3.5,
+            "axis": "Horizontal"
+        },
+        {
+            "startAngle": 1.5707999467849731,
+            "swingAngle": 3.141590118408203,
+            "swingDirection": -1.0,
+            "attackDuration": 0.20000000298023224,
+            "damage": 3.5,
+            "axis": "Horizontal"
+        },
+        {
+            "startAngle": 1.5290000438690186,
+            "swingAngle": 3.141590118408203,
+            "swingDirection": -1.0,
+            "attackDuration": 0.25,
+            "damage": 3.5,
+            "axis": "Vertical"
+        },
+        {
+            "startAngle": 0.0,
+            "swingAngle": 6.283180236816406,
+            "swingDirection": -1.0,
+            "attackDuration": 0.30000001192092896,
+            "damage": 5.0,
+            "axis": "Horizontal"
+        }
+    ],
+    "dash": {
+        "duration": 0.05000000074505806,
+        "speed": 10.0,
+        "cooldown": 0.5
+    },
+    "parry": {
+        "duration": 0.30000001192092896,
+        "successHealAmount": 5.0,
+        "cooldown": 0.25
+    },
+    "shoot": {
+        "fireRate": 0.20000000298023224,
+        "moveSpeedMultiplier": 0.6000000238418579,
+        "aimRotationLerp": 1.0,
+        "aimAssistEnabled": true,
+        "aimAssistAngle": 25.0,
+        "aimAssistStrength": 0.699999988079071,
+        "bulletSpeed": 180.0
+    },
+    "bullet": {
+        "damage": 1.0,
+        "lifetime": 5.0,
+        "colliderRadius": 5.0
+    }
+}

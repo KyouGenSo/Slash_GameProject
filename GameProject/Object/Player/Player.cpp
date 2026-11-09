@@ -17,7 +17,7 @@
 #include "CollisionManager.h"
 #include "../../Collision/CollisionTypeId.h"
 #include "../Boss/Boss.h"
-#include "GlobalVariables.h"
+#include "Settings/PlayerSettings.h"
 #include "../../Common/GameConst.h"
 #include "../../Common/DamageFeedback.h"
 #include "FrameTimer.h"
@@ -50,14 +50,13 @@ Player::~Player()
 
 void Player::Initialize()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
     model_ = std::make_unique<Object3d>();
     model_->Initialize();
     model_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
     model_->SetName("Player");
 
-    transform_.translate = Vector3(0.0f, initialY_, initialZ_);
+    const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
+    transform_.translate = Vector3(0.0f, settings.initialY, settings.initialZ);
     transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
     transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
@@ -97,7 +96,7 @@ void Player::Update()
 {
     if (isPause_) return;
 
-    SyncGlobalVariables();
+    SyncSettings();
 
     float deltaTime = FrameTimer::GetInstance()->GetDeltaTime();
 
@@ -109,14 +108,14 @@ void Player::Update()
     UpdateTransform();
 }
 
-void Player::SyncGlobalVariables()
+void Player::SyncSettings()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    speed_ = gv->GetValueFloat("Player", "Speed");
-    attackMinDist_ = gv->GetValueFloat("Player", "AttackStartDistance");
-    attackMoveRotationLerp_ = gv->GetValueFloat("Player", "AttackMoveRotationLerp");
-    bossLookatLerp_ = gv->GetValueFloat("Player", "BossLookatLerp");
-    attackMoveSpeed_ = gv->GetValueFloat("Player", "AttackMoveSpeed");
+    const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
+    speed_ = settings.speed;
+    attackMinDist_ = settings.attackStartDistance;
+    attackMoveRotationLerp_ = settings.attackMoveRotationLerp;
+    bossLookatLerp_ = settings.bossLookatLerp;
+    attackMoveSpeed_ = settings.attackMoveSpeed;
 }
 
 void Player::UpdateCombat(float deltaTime)
@@ -202,9 +201,9 @@ void Player::Move(float deltaTime, float speedMultiplier, bool isApplyDirCalulat
 {
     if (!inputHandlerPtr_) return;
 
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    float deadzone = gv->GetValueFloat("Player", "MoveInputDeadzone");
-    float rotationLerpSpeed = gv->GetValueFloat("Player", "RotationLerpSpeed");
+    const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
+    float deadzone = settings.moveInputDeadzone;
+    float rotationLerpSpeed = settings.rotationLerpSpeed;
 
     Vector2 moveDir = inputHandlerPtr_->GetMoveDirection();
     if (moveDir.Length() < deadzone) return;
@@ -271,12 +270,8 @@ bool Player::HasReachedTarget() const
 
 void Player::SetupColliders()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    float bodySize = gv->GetValueFloat("Player", "BodyColliderSize");
-    float meleeX = gv->GetValueFloat("Player", "MeleeColliderX");
-    float meleeY = gv->GetValueFloat("Player", "MeleeColliderY");
-    float meleeZ = gv->GetValueFloat("Player", "MeleeColliderZ");
-    float meleeOffsetZ = gv->GetValueFloat("Player", "MeleeColliderOffsetZ");
+    const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
+    float bodySize = settings.bodyColliderSize;
 
     // 本体
     bodyCollider_ = std::make_unique<OBBCollider>();
@@ -289,8 +284,8 @@ void Player::SetupColliders()
     // 攻撃範囲
     meleeAttackCollider_ = std::make_unique<MeleeAttackCollider>(this);
     meleeAttackCollider_->SetTransform(&transform_);
-    meleeAttackCollider_->SetSize(Vector3(meleeX, meleeY, meleeZ));
-    meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, meleeOffsetZ));
+    meleeAttackCollider_->SetSize(settings.meleeColliderSize);
+    meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, settings.meleeColliderOffsetZ));
     meleeAttackCollider_->SetActive(false);
 
     CollisionManager* collisionManager = CollisionManager::GetInstance();
@@ -300,11 +295,11 @@ void Player::SetupColliders()
 
 void Player::UpdateCollider()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
+    const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
 
     if (!bodyCollider_) return;
 
-    float bodySize = gv->GetValueFloat("Player", "BodyColliderSize");
+    float bodySize = settings.bodyColliderSize;
     bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
 
     if (!meleeAttackCollider_) return;
@@ -314,13 +309,8 @@ void Player::UpdateCollider()
         Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(transform_.rotate.y);
         meleeAttackCollider_->SetOrientation(rotationMatrix);
 
-        float meleeX = gv->GetValueFloat("Player", "MeleeColliderX");
-        float meleeY = gv->GetValueFloat("Player", "MeleeColliderY");
-        float meleeZ = gv->GetValueFloat("Player", "MeleeColliderZ");
-        float meleeOffsetZ = gv->GetValueFloat("Player", "MeleeColliderOffsetZ");
-
-        meleeAttackCollider_->SetSize(Vector3(meleeX, meleeY, meleeZ));
-        meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, meleeOffsetZ));
+        meleeAttackCollider_->SetSize(settings.meleeColliderSize);
+        meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, settings.meleeColliderOffsetZ));
     }
 }
 
@@ -535,12 +525,6 @@ void Player::DrawImGui()
                 ImGui::TreePop();
             }
 
-            if (ImGui::TreeNode("Initial Position")) {
-                ImGui::DragFloat("Initial Y", &initialY_, 0.1f, 0.0f, 10.0f);
-                ImGui::DragFloat("Initial Z", &initialZ_, 1.0f, -200.0f, 0.0f);
-                ImGui::TreePop();
-            }
-
             ImGui::EndTabItem();
         }
 
@@ -694,8 +678,7 @@ bool Player::CanParry() const
 
 void Player::StartParryCooldown()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    float cooldown = gv->GetValueFloat("ParryState", "ParryCooldown");
+    float cooldown = Tako::GameSettings::Get<PlayerSettings>().parry.cooldown;
     if (cooldown <= 0.0f) {
         cooldown = 1.0f;  // デフォルト1秒
     }
@@ -709,8 +692,7 @@ bool Player::CanDash() const
 
 void Player::StartDashCooldown()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    float cooldown = gv->GetValueFloat("DashState", "DashCooldown");
+    float cooldown = Tako::GameSettings::Get<PlayerSettings>().dash.cooldown;
     if (cooldown <= 0.0f) {
         cooldown = 0.5f;  // デフォルト0.5秒
     }
@@ -719,8 +701,7 @@ void Player::StartDashCooldown()
 
 void Player::OnParrySuccess()
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    float healAmount = gv->GetValueFloat("ParryState", "ParrySuccessHealAmount");
+    float healAmount = Tako::GameSettings::Get<PlayerSettings>().parry.successHealAmount;
     hp_ = std::min<float>(hp_ + healAmount, kMaxHp);
 
     Vector3 effectPos = GetFrontPosition(2.0f);

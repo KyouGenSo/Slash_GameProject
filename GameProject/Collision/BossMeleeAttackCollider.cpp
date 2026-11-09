@@ -2,14 +2,13 @@
 #include "../Object/Boss/Boss.h"
 #include "../Object/Player/Player.h"
 #include "CollisionTypeId.h"
-#include "GlobalVariables.h"
+#include "Settings/BossSettings.h"
 
 using namespace Tako;
 
 BossMeleeAttackCollider::BossMeleeAttackCollider(Boss* boss)
     : boss_(boss) {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    damage_ = gv->GetValueFloat("BossMeleeAttackCollider", "Damage");
+    damage_ = Tako::GameSettings::Get<BossSettings>().melee.damage;
 
     SetTypeID(CollisionTypeId::BOSS_ATTACK);
     SetActive(false);

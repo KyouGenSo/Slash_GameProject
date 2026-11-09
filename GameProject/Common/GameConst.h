@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// 固定値の定数。調整が必要なパラメータは GlobalVariables を使う
+/// 固定値の定数。調整が必要なパラメータは GameSettings（Settings/ の各クラス）を使う
 /// </summary>
 namespace GameConst {
 

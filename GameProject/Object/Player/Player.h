@@ -230,7 +230,7 @@ public: //メンバー関数
     bool HasReachedTarget() const;
 
 private: //非公開関数
-    void SyncGlobalVariables();
+    void SyncSettings();
 
     /// <summary>
     /// HP、クールダウン、死亡判定の更新
@@ -301,8 +301,6 @@ private: //メンバー変数
     BulletSpawner bulletSpawner_;
 
     //調整パラメータ（ImGui 編集用）
-    float initialY_               = 2.5f;
-    float initialZ_               = -120.0f;
     float attackMinDist_          = 5.0f;     ///< 攻撃開始距離
     float attackMoveRotationLerp_ = 0.3f;     ///< 攻撃移動中の回転補間速度
     float bossLookatLerp_         = 1.15f;    ///< ボス視線追従補間速度

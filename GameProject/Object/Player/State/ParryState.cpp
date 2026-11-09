@@ -2,7 +2,7 @@
 #include "PlayerStateMachine.h"
 #include "../Player.h"
 #include "Input/InputHandler.h"
-#include "GlobalVariables.h"
+#include "Settings/PlayerSettings.h"
 #include "EmitterManager.h"
 #include <algorithm>  // for std::min
 #ifdef _DEBUG
@@ -27,8 +27,7 @@ void ParryState::Enter(Player* player)
 
 void ParryState::Update(Player* player, float deltaTime)
 {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    parryDuration_ = gv->GetValueFloat("ParryState", "ParryDuration");
+    parryDuration_ = Tako::GameSettings::Get<PlayerSettings>().parry.duration;
 
     parryTimer_ += deltaTime;
 

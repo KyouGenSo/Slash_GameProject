@@ -24,6 +24,7 @@ Tako::BTNodeStatus BTBossRetreat::Execute(Tako::BTBlackboard* blackboard) {
     const float deltaTime = blackboard->GetDeltaTime();
 
     if (isFirstExecute_) {
+        executor_.SetParameters({ retreatSpeed_, targetDistance_ });
         executor_.Begin(boss_, player);
         isFirstExecute_ = false;
 
@@ -55,3 +56,10 @@ void BTBossRetreat::Reset() {
     executor_.Reset();
     isFirstExecute_ = true;
 }
+
+#ifdef _DEBUG
+bool BTBossRetreat::DrawCustomImGui() {
+    executor_.DrawRuntimeInfo();
+    return false;
+}
+#endif

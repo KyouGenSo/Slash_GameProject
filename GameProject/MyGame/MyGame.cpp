@@ -8,12 +8,10 @@
 #include "LineRenderer.h"
 #include "PostEffectManager.h"
 #include "FrameTimer.h"
-#include "GlobalVariables.h"
 #include "ModelManager.h"
 #include "GPUParticle.h"
 #include "TransitionManager.h"
 
-#include <numbers>
 
 #ifdef _DEBUG
 #include "DebugUIManager.h"
@@ -30,10 +28,6 @@ void MyGame::Initialize()
     SceneManager::GetInstance()->ChangeToStartupScene();
 
     LoadTextures();
-
-    RegisterGlobalVariables();
-
-    GlobalVariables::GetInstance()->LoadFiles();
 }
 
 void MyGame::Finalize()
@@ -55,191 +49,6 @@ void MyGame::Update()
 void MyGame::Draw()
 {
     TakoFramework::Draw();
-}
-
-void MyGame::RegisterGlobalVariables()
-{
-    RegisterInputVariables();
-    RegisterGameSceneVariables();
-    RegisterPlayerVariables();
-    RegisterBossVariables();
-    RegisterProjectileVariables();
-    RegisterStateVariables();
-}
-
-void MyGame::RegisterInputVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("Input");
-    gv->AddItem("Input", "TriggerThreshold", 0.5f);
-}
-
-void MyGame::RegisterGameSceneVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("GameScene");
-    gv->AddItem("GameScene", "ShadowMaxDistance", 100.0f);
-    gv->AddItem("GameScene", "DirectionalLightZ", -0.05f);
-
-    gv->CreateGroup("DashEffect");
-    gv->AddItem("DashEffect", "LerpSpeed", 35.0f);
-
-    gv->CreateGroup("CameraShake");
-    gv->AddItem("CameraShake", "Duration", 0.3f);
-    gv->AddItem("CameraShake", "Intensity", 0.5f);
-
-    gv->CreateGroup("HitStop");
-    gv->AddItem("HitStop", "Duration", 0.08f);
-}
-
-void MyGame::RegisterPlayerVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("Player");
-    gv->AddItem("Player", "BodyColliderSize", 3.2f);
-    gv->AddItem("Player", "MeleeColliderX", 5.0f);
-    gv->AddItem("Player", "MeleeColliderY", 2.0f);
-    gv->AddItem("Player", "MeleeColliderZ", 17.0f);
-    gv->AddItem("Player", "MeleeColliderOffsetZ", 10.0f);
-    gv->AddItem("Player", "MoveInputDeadzone", 0.1f);
-    gv->AddItem("Player", "RotationLerpSpeed", 0.2f);
-    gv->AddItem("Player", "Speed", 0.5f);
-    gv->AddItem("Player", "InitialY", 2.5f);
-    gv->AddItem("Player", "InitialZ", -120.0f);
-    gv->AddItem("Player", "AttackStartDistance", 5.0f);
-    gv->AddItem("Player", "AttackMoveRotationLerp", 0.3f);
-    gv->AddItem("Player", "BossLookatLerp", 1.15f);
-    gv->AddItem("Player", "AttackMoveSpeed", 30.0f);
-}
-
-void MyGame::RegisterBossVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("Boss");
-    gv->AddItem("Boss", "BodyColliderSize", 3.2f);
-    gv->AddItem("Boss", "HitEffectDuration", 0.1f);
-    gv->AddItem("Boss", "ShakeDuration", 0.3f);
-    gv->AddItem("Boss", "ShakeIntensity", 0.2f);
-
-    gv->CreateGroup("BossMeleeAttackCollider");
-    gv->AddItem("BossMeleeAttackCollider", "Damage", 10.0f);
-    gv->AddItem("BossMeleeAttackCollider", "ColliderSizeX", 2.0f);
-    gv->AddItem("BossMeleeAttackCollider", "ColliderSizeY", 2.0f);
-    gv->AddItem("BossMeleeAttackCollider", "ColliderSizeZ", 2.0f);
-    gv->AddItem("BossMeleeAttackCollider", "OffsetZ", 3.0f);
-}
-
-void MyGame::RegisterProjectileVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("BossBullet");
-    gv->AddItem("BossBullet", "ColliderRadius", 1.0f);
-    gv->AddItem("BossBullet", "Damage", 10.0f);
-    gv->AddItem("BossBullet", "Lifetime", 5.0f);
-
-    gv->CreateGroup("PenetratingBossBullet");
-    gv->AddItem("PenetratingBossBullet", "ColliderRadius", 1.0f);
-    gv->AddItem("PenetratingBossBullet", "Damage", 15.0f);
-    gv->AddItem("PenetratingBossBullet", "Lifetime", 5.0f);
-
-    gv->CreateGroup("PlayerBullet");
-    gv->AddItem("PlayerBullet", "Damage", 10.0f);
-    gv->AddItem("PlayerBullet", "Lifetime", 3.0f);
-    gv->AddItem("PlayerBullet", "ColliderRadius", 0.5f);
-    gv->AddItem("PlayerBullet", "Speed", 30.0f);
-}
-
-void MyGame::RegisterStateVariables()
-{
-    RegisterAttackStateVariables();
-    RegisterDashStateVariables();
-    RegisterParryStateVariables();
-    RegisterShootStateVariables();
-}
-
-void MyGame::RegisterAttackStateVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("AttackState");
-    gv->AddItem("AttackState", "MoveTime", 0.8f);
-    gv->AddItem("AttackState", "LungeAngle", 60.0f);
-    gv->AddItem("AttackState", "LungeMaxDistance", 20.0f);
-    gv->AddItem("AttackState", "StepDistance", 5.0f);
-    gv->AddItem("AttackState", "BlockRadius", 4.0f);
-    gv->AddItem("AttackState", "BlockScale", 0.5f);
-    gv->AddItem("AttackState", "RecoveryTime", 0.5f);
-    gv->AddItem("AttackState", "MaxCombo", 4);
-
-    // Combo0: 左振り（水平）
-    gv->AddItem("AttackState", "Combo0_StartAngle", -1.5708f);
-    gv->AddItem("AttackState", "Combo0_SwingAngle", std::numbers::pi_v<float>);
-    gv->AddItem("AttackState", "Combo0_SwingDirection", 1.0f);
-    gv->AddItem("AttackState", "Combo0_AttackDuration", 0.15f);
-    gv->AddItem("AttackState", "Combo0_Damage", 5.0f);
-    gv->AddItem("AttackState", "Combo0_Axis", 0);
-
-    // Combo1: 右振り（水平）
-    gv->AddItem("AttackState", "Combo1_StartAngle", 1.5708f);
-    gv->AddItem("AttackState", "Combo1_SwingAngle", std::numbers::pi_v<float>);
-    gv->AddItem("AttackState", "Combo1_SwingDirection", -1.0f);
-    gv->AddItem("AttackState", "Combo1_AttackDuration", 0.15f);
-    gv->AddItem("AttackState", "Combo1_Damage", 5.0f);
-    gv->AddItem("AttackState", "Combo1_Axis", 0);
-
-    // Combo2: 縦切り（垂直）
-    gv->AddItem("AttackState", "Combo2_StartAngle", -1.5708f);
-    gv->AddItem("AttackState", "Combo2_SwingAngle", std::numbers::pi_v<float>);
-    gv->AddItem("AttackState", "Combo2_SwingDirection", 1.0f);
-    gv->AddItem("AttackState", "Combo2_AttackDuration", 0.2f);
-    gv->AddItem("AttackState", "Combo2_Damage", 5.0f);
-    gv->AddItem("AttackState", "Combo2_Axis", 1);
-
-    // Combo3: 大回転（水平360度）
-    gv->AddItem("AttackState", "Combo3_StartAngle", 0.0f);
-    gv->AddItem("AttackState", "Combo3_SwingAngle", std::numbers::pi_v<float> * 2);
-    gv->AddItem("AttackState", "Combo3_SwingDirection", -1.0f);
-    gv->AddItem("AttackState", "Combo3_AttackDuration", 0.3f);
-    gv->AddItem("AttackState", "Combo3_Damage", 10.0f);
-    gv->AddItem("AttackState", "Combo3_Axis", 0);
-}
-
-void MyGame::RegisterDashStateVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("DashState");
-    gv->AddItem("DashState", "Duration", 0.05f);
-    gv->AddItem("DashState", "Speed", 10.0f);
-    gv->AddItem("DashState", "DashCooldown", 0.5f);
-}
-
-void MyGame::RegisterParryStateVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("ParryState");
-    gv->AddItem("ParryState", "ParryDuration", 0.5f);
-    gv->AddItem("ParryState", "ParrySuccessHealAmount", 5.0f);
-    gv->AddItem("ParryState", "ParryCooldown", 1.0f);
-}
-
-void MyGame::RegisterShootStateVariables()
-{
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-
-    gv->CreateGroup("ShootState");
-    gv->AddItem("ShootState", "FireRate", 0.2f);
-    gv->AddItem("ShootState", "MoveSpeedMultiplier", 0.5f);
-    gv->AddItem("ShootState", "AimRotationLerp", 0.3f);
-    gv->AddItem("ShootState", "AimAssistEnabled", true);
-    gv->AddItem("ShootState", "AimAssistAngle", 30.0f);
-    gv->AddItem("ShootState", "AimAssistStrength", 1.0f);
 }
 
 void MyGame::LoadTextures()

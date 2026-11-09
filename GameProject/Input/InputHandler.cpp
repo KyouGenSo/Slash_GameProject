@@ -4,7 +4,6 @@
 #include "Object/Player/Player.h"
 #include "Input.h"
 #include "Vector2.h"
-#include "GlobalVariables.h"
 
 using namespace Tako;
 

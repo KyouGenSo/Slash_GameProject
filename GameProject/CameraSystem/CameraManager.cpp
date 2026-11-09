@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <format>
 #include "RandomEngine.h"
-#include "GlobalVariables.h"
+#include "Settings/GameplaySettings.h"
 
 using namespace Tako;
 
@@ -218,7 +218,7 @@ void CameraManager::ApplyShakeOffset() {
 }
 
 void CameraManager::LoadShakeParameters() {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    shakeDuration_ = gv->GetValueFloat("CameraShake", "Duration");
-    shakeIntensity_ = gv->GetValueFloat("CameraShake", "Intensity");
+    const ShakeSettings& shake = Tako::GameSettings::Get<GameplaySettings>().cameraShake;
+    shakeDuration_ = shake.duration;
+    shakeIntensity_ = shake.intensity;
 }

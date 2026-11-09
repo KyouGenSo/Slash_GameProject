@@ -2,7 +2,7 @@
 #include "PlayerStateMachine.h"
 #include "../Player.h"
 #include "Input/InputHandler.h"
-#include "GlobalVariables.h"
+#include "Settings/PlayerSettings.h"
 #ifdef _DEBUG
 #include "ImGuiManager.h"
 #endif
@@ -20,9 +20,9 @@ void DashState::Enter(Player* player)
 
 void DashState::Update(Player* player, float deltaTime)
 {
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	duration_ = gv->GetValueFloat("DashState", "Duration");
-	speed_ = gv->GetValueFloat("DashState", "Speed");
+	const PlayerSettings::Dash& dash = Tako::GameSettings::Get<PlayerSettings>().dash;
+	duration_ = dash.duration;
+	speed_ = dash.speed;
 
 	timer_ += deltaTime;
 

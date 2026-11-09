@@ -8,7 +8,7 @@
 #include "Mat4x4Func.h"
 #include "Vec3Func.h"
 #include "FrameTimer.h"
-#include "GlobalVariables.h"
+#include "Settings/PlayerSettings.h"
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -29,12 +29,12 @@ void ShootState::Enter(Player* player)
 
 void ShootState::Update(Player* player, float deltaTime)
 {
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	fireRate_ = gv->GetValueFloat("ShootState", "FireRate");
-	moveSpeedMultiplier_ = gv->GetValueFloat("ShootState", "MoveSpeedMultiplier");
-	aimAssistEnabled_ = gv->GetValueBool("ShootState", "AimAssistEnabled");
-	aimAssistAngle_ = gv->GetValueFloat("ShootState", "AimAssistAngle");
-	aimAssistStrength_ = gv->GetValueFloat("ShootState", "AimAssistStrength");
+	const PlayerSettings::Shoot& shoot = Tako::GameSettings::Get<PlayerSettings>().shoot;
+	fireRate_ = shoot.fireRate;
+	moveSpeedMultiplier_ = shoot.moveSpeedMultiplier;
+	aimAssistEnabled_ = shoot.aimAssistEnabled;
+	aimAssistAngle_ = shoot.aimAssistAngle;
+	aimAssistStrength_ = shoot.aimAssistStrength;
 
 	// 射撃無効時（フェーズ2など）は撃たずに離脱
 	if (!player->IsShootingEnabled()) {
@@ -124,7 +124,7 @@ void ShootState::CalculateAimDirection(Player* player, float deltaTime)
     // 発射方向にプレイヤーを向ける
     if (aimDirection_.Length() > 0.01f) {
         float targetAngle = std::atan2(aimDirection_.x, aimDirection_.z);
-        float aimRotationLerp = GlobalVariables::GetInstance()->GetValueFloat("ShootState", "AimRotationLerp");
+        float aimRotationLerp = Tako::GameSettings::Get<PlayerSettings>().shoot.aimRotationLerp;
         if (aimRotationLerp <= 0.0f) {
             aimRotationLerp = 0.3f;  // デフォルト値
         }
@@ -159,8 +159,7 @@ void ShootState::Fire(Player* player)
 {
 	Vector3 position = player->GetTranslate();
 
-	GlobalVariables* gv = GlobalVariables::GetInstance();
-	float bulletSpeed = gv->GetValueFloat("PlayerBullet", "Speed");
+	float bulletSpeed = Tako::GameSettings::Get<PlayerSettings>().shoot.bulletSpeed;
 	if (bulletSpeed <= 0.0f) {
 		bulletSpeed = 30.0f;  // デフォルト値
 	}
@@ -210,17 +209,8 @@ void ShootState::DrawImGui(Player* player)
 	}
 
 	if (ImGui::TreeNode("Aim Assist")) {
-		// Update() が毎フレーム GlobalVariables から読むため、メンバではなく SetValue で書き戻す
-		GlobalVariables* gv = GlobalVariables::GetInstance();
-
-		bool enabled = aimAssistEnabled_;
-		if (ImGui::Checkbox("Enabled", &enabled)) gv->SetValue("ShootState", "AimAssistEnabled", enabled);
-
-		float angle = aimAssistAngle_;
-		if (ImGui::SliderFloat("Assist Angle", &angle, 0.0f, 90.0f, "%.1f deg")) gv->SetValue("ShootState", "AimAssistAngle", angle);
-
-		float strength = aimAssistStrength_;
-		if (ImGui::SliderFloat("Strength", &strength, 0.0f, 1.0f, "%.2f")) gv->SetValue("ShootState", "AimAssistStrength", strength);
+		// 値は Engine Settings > Game > Player の Shoot で変える
+		ImGui::Text("Enabled: %s  Angle: %.1f deg  Strength: %.2f", aimAssistEnabled_ ? "true" : "false", aimAssistAngle_, aimAssistStrength_);
 
 		Boss* boss = player->GetTargetEnemy();
 		Tako::Vector3 toEnemy = boss ? boss->GetTranslate() - player->GetTranslate() : Tako::Vector3();

@@ -13,7 +13,7 @@
 #include "Model.h"
 #include "ShadowRenderer.h"
 #include "CollisionManager.h"
-#include "GlobalVariables.h"
+#include "Settings/GameplaySettings.h"
 #include "PostEffectManager.h"
 #include "DecalManager.h"
 #include "EnginePaths.h"
@@ -75,10 +75,10 @@ void GameScene::Initialize()
     InitializeDebugOption();
 
     /// ----------------------シーンの描画設定---------------------------------------------------------///
-    GlobalVariables* gvScene = GlobalVariables::GetInstance();
-    float shadowMaxDist = gvScene->GetValueFloat("GameScene", "ShadowMaxDistance");
+    const GameplaySettings& gameplay = Tako::GameSettings::Get<GameplaySettings>();
+    float shadowMaxDist = gameplay.shadowMaxDistance;
     ShadowRenderer::GetInstance()->SetMaxShadowDistance(shadowMaxDist);
-    float lightZ = gvScene->GetValueFloat("GameScene", "DirectionalLightZ");
+    float lightZ = gameplay.directionalLightZ;
     Renderer::GetInstance()->GetLight()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, lightZ));
 
 

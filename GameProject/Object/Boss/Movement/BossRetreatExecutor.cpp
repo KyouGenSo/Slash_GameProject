@@ -95,22 +95,6 @@ void BossRetreatExecutor::Reset() {
     retreatDuration_ = 0.0f;
 }
 
-void BossRetreatExecutor::ApplyJson(const nlohmann::json& j) {
-    if (j.contains("retreatSpeed")) {
-        params_.retreatSpeed = j["retreatSpeed"];
-    }
-    if (j.contains("targetDistance")) {
-        params_.targetDistance = j["targetDistance"];
-    }
-}
-
-nlohmann::json BossRetreatExecutor::ToJson() const {
-    return {
-        {"retreatSpeed",   params_.retreatSpeed},
-        {"targetDistance", params_.targetDistance}
-    };
-}
-
 Vector3 BossRetreatExecutor::FindBestRetreatDirection(const Boss* boss,
                                                       const Vector3& primaryDirection,
                                                       float retreatDistance) const {
@@ -163,24 +147,9 @@ float BossRetreatExecutor::EvaluateDirection(const Boss* boss,
 }
 
 #ifdef _DEBUG
-bool BossRetreatExecutor::DrawImGui(const char* idSuffix) {
-    bool changed = false;
-
-    const std::string speedLabel  = std::string("Retreat Speed")   + idSuffix;
-    const std::string targetLabel = std::string("Target Distance") + idSuffix;
-
-    if (ImGui::DragFloat(speedLabel.c_str(), &params_.retreatSpeed, 1.0f, 10.0f, 200.0f)) {
-        changed = true;
-    }
-    if (ImGui::DragFloat(targetLabel.c_str(), &params_.targetDistance, 0.5f, 1.0f, 100.0f)) {
-        changed = true;
-    }
-
-    ImGui::Separator();
-    ImGui::Text("Runtime Info:");
+void BossRetreatExecutor::DrawRuntimeInfo() const {
+    ImGui::SeparatorText("Runtime Info");
     ImGui::Text("Duration: %.2f sec", retreatDuration_);
     ImGui::Text("Elapsed: %.2f sec", elapsedTime_);
-
-    return changed;
 }
 #endif

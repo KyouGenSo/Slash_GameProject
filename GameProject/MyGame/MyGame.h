@@ -17,28 +17,6 @@ public: //メンバー関数
     void Draw() override;
 
 private: //非公開関数
-    void RegisterGlobalVariables();
-
-    void RegisterInputVariables();
-
-    void RegisterGameSceneVariables();
-
-    void RegisterPlayerVariables();
-
-    void RegisterBossVariables();
-
-    void RegisterProjectileVariables();
-
-    void RegisterStateVariables();
-
-    void RegisterAttackStateVariables();
-
-    void RegisterDashStateVariables();
-
-    void RegisterParryStateVariables();
-
-    void RegisterShootStateVariables();
-
     void LoadTextures();
 
     void LoadTitleTextures();

@@ -8,7 +8,7 @@
 #include "CollisionManager.h"
 #include "EmitterManager.h"
 #include "ForceFieldManager.h"
-#include "GlobalVariables.h"
+#include "Settings/PlayerSettings.h"
 #include <format>
 
 using namespace Tako;
@@ -16,12 +16,11 @@ using namespace Tako;
 uint32_t PlayerBullet::id = 0;
 
 PlayerBullet::PlayerBullet(EmitterManager* emitterManager) {
-    GlobalVariables* gv = GlobalVariables::GetInstance();
+    const BulletSettings& bullet = Tako::GameSettings::Get<PlayerSettings>().bullet;
+    damage_ = bullet.damage;
+    lifeTime_ = bullet.lifetime;
 
-    damage_ = gv->GetValueFloat("PlayerBullet", "Damage");
-    lifeTime_ = gv->GetValueFloat("PlayerBullet", "Lifetime");
-
-    // GlobalVariables 未登録時のフォールバック
+    // 0 以下に設定されたときの既定値
     if (damage_ <= 0.0f) {
         damage_ = 10.0f;
     }
@@ -82,8 +81,7 @@ void PlayerBullet::Initialize(const Vector3& position, const Vector3& velocity) 
         });
     }
 
-    GlobalVariables* gv = GlobalVariables::GetInstance();
-    float colliderRadius = gv->GetValueFloat("PlayerBullet", "ColliderRadius");
+    float colliderRadius = Tako::GameSettings::Get<PlayerSettings>().bullet.colliderRadius;
     if (colliderRadius <= 0.0f) {
         colliderRadius = 0.5f;
     }

@@ -47,15 +47,16 @@
       }
     },
     "Spinner": {
-      "type": "Spinner",
+      "type": "ScriptComponent",
       "order": 1,
       "properties": {
-        "speed": 3.1415927,
         "axis": [
           0.0,
           1.0,
           0.0
-        ]
+        ],
+        "script": "Spinner",
+        "speed": 3.1415927
       }
     }
   }

@@ -1,7 +1,8 @@
 #pragma once
-#include <array>
+#include <vector>
 
 #include "PlayerState.h"
+#include "Settings/PlayerSettings.h"
 
 class Boss;
 
@@ -10,29 +11,9 @@ class Boss;
 /// </summary>
 class AttackState : public PlayerState
 {
-private: //定数
-    static constexpr int kMaxComboCount = 4;
-
 private: //構造体
-    /// <summary>
-    /// 攻撃ブロックの回転軸
-    /// </summary>
-    enum class SwingAxis {
-        Horizontal, ///< 水平回転（XZ 平面）
-        Vertical    ///< 垂直回転（プレイヤー向き基準の YZ 平面）
-    };
-
-    /// <summary>
-    /// コンボごとの攻撃データ
-    /// </summary>
-    struct ComboData {
-        float startAngle;      ///< ラジアン
-        float swingAngle;      ///< 振り幅（ラジアン）
-        float swingDirection;  ///< +1.0f / -1.0f
-        float attackDuration;  ///< 秒
-        float damage;
-        SwingAxis axis;
-    };
+    using SwingAxis = PlayerSettings::SwingAxis;
+    using ComboData = PlayerSettings::ComboStep;
 
     /// <summary>
     /// 攻撃フェーズ
@@ -112,11 +93,11 @@ private: //メンバー変数
     float stepDistance_     = 5.0f;   ///< 判定外時の前方ステップ距離
 
     //コンボ
-    int  comboIndex_       = 0;      ///< 0-3
+    int  comboIndex_       = 0;      ///< 0 から maxCombo_ - 1
     int  maxCombo_         = 4;
     bool hasBufferedInput_ = false;  ///< 先行入力フラグ
 
-    std::array<ComboData, kMaxComboCount> combos_{};
+    std::vector<ComboData> combos_;  ///< Enter のたびに PlayerSettings から写す
 
     //攻撃ブロック回転制御
     float blockAngle_  = 0.0f;

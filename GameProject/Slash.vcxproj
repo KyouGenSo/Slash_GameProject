@@ -145,6 +145,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Settings\SettingsTypes.h" />
+    <ClInclude Include="Settings\PlayerSettings.h" />
+    <ClInclude Include="Settings\GameplaySettings.h" />
+    <ClInclude Include="Settings\BossSettings.h" />
     <ClInclude Include="Script\DestroyOnHit.h" />
     <ClInclude Include="Script\Mover.h" />
     <ClInclude Include="Script\Spinner.h" />

@@ -1,6 +1,5 @@
 #pragma once
 #include "Vector3.h"
-#include <json.hpp>
 
 class Boss;
 class Player;
@@ -44,15 +43,11 @@ public: //メンバー関数
     /// </summary>
     void Reset();
 
-    void ApplyJson(const nlohmann::json& j);
-
-    nlohmann::json ToJson() const;
-
 #ifdef _DEBUG
     /// <summary>
-    /// ImGui 編集 UI を描画。変更があれば true
+    /// 実行中の所要時間と経過時間を ImGui に出す
     /// </summary>
-    bool DrawImGui(const char* idSuffix);
+    void DrawRuntimeInfo() const;
 #endif
 
     //==========================================

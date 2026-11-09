@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include "Script.h"
 
 #include <string>
 
@@ -7,7 +7,7 @@
 /// 同じ Actor の ColliderComponent が他の Actor に当たったら、この Actor を消す
 /// </summary>
 TCLASS()
-class DestroyOnHit : public Tako::Component {
+class DestroyOnHit : public Tako::Script {
     GENERATED_BODY()
 
 public: //メンバー関数
