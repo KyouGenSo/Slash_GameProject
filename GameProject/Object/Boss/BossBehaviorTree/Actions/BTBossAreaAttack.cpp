@@ -10,10 +10,6 @@
 #include <cmath>
 #include <algorithm>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossAreaAttack::BTBossAreaAttack() {
@@ -243,49 +239,6 @@ void BTBossAreaAttack::EndAttackPhase(Boss* boss) {
     }
 }
 
-void BTBossAreaAttack::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("warningDuration")) warningDuration_ = params["warningDuration"];
-    if (params.contains("blinkDuration"))   blinkDuration_ = params["blinkDuration"];
-    if (params.contains("attackDuration"))  attackDuration_ = params["attackDuration"];
-    if (params.contains("recoveryTime"))    recoveryTime_ = params["recoveryTime"];
-    if (params.contains("minQuadrants"))    minQuadrants_ = params["minQuadrants"];
-    if (params.contains("maxQuadrants"))    maxQuadrants_ = params["maxQuadrants"];
-    if (params.contains("damage"))          damage_ = params["damage"];
-    if (params.contains("blinkFrequency"))  blinkFrequency_ = params["blinkFrequency"];
+void BTBossAreaAttack::PostEditChange() {
+    maxQuadrants_ = (std::max)(maxQuadrants_, minQuadrants_);
 }
-
-void BTBossAreaAttack::OnExtractParameters(nlohmann::json& out) const {
-    out["warningDuration"] = warningDuration_;
-    out["blinkDuration"]   = blinkDuration_;
-    out["attackDuration"]  = attackDuration_;
-    out["recoveryTime"]    = recoveryTime_;
-    out["minQuadrants"]    = minQuadrants_;
-    out["maxQuadrants"]    = maxQuadrants_;
-    out["damage"]          = damage_;
-    out["blinkFrequency"]  = blinkFrequency_;
-}
-
-#ifdef _DEBUG
-bool BTBossAreaAttack::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Warning Duration##area", &warningDuration_, 0.05f, 0.1f, 5.0f)) changed = true;
-    if (ImGui::DragFloat("Blink Duration##area", &blinkDuration_, 0.05f, 0.1f, 3.0f))     changed = true;
-    if (ImGui::DragFloat("Attack Duration##area", &attackDuration_, 0.05f, 0.1f, 3.0f))   changed = true;
-    if (ImGui::DragFloat("Recovery Time##area", &recoveryTime_, 0.05f, 0.0f, 3.0f))       changed = true;
-
-    ImGui::SeparatorText("Attack Parameters");
-    if (ImGui::DragInt("Min Quadrants##area", &minQuadrants_, 1, 1, kQuadrantCount))      changed = true;
-    if (ImGui::DragInt("Max Quadrants##area", &maxQuadrants_, 1, 1, kQuadrantCount))      changed = true;
-    if (ImGui::DragFloat("Damage##area", &damage_, 0.5f, 1.0f, 50.0f))                    changed = true;
-    if (ImGui::DragFloat("Blink Frequency##area", &blinkFrequency_, 0.5f, 1.0f, 30.0f))   changed = true;
-
-    if (minQuadrants_ > maxQuadrants_) {
-        maxQuadrants_ = minQuadrants_;
-        changed = true;
-    }
-
-    return changed;
-}
-#endif

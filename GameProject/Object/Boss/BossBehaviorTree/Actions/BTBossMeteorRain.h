@@ -15,7 +15,10 @@ class Boss;
 /// 弾を上方へ発射し、フェーズ2エリア内のランダム位置へ着弾させる。
 /// 水平方向への全方位弾も同時に放つ。
 /// </summary>
+TCLASS()
 class BTBossMeteorRain : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr int   kMaxImpacts          = 20;
     static constexpr int   kMaxPlacementRetries = 30;
@@ -83,12 +86,7 @@ protected: //非公開関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
+    void PostEditChange() override;
 
 private: //非公開関数
     /// <summary>
@@ -124,22 +122,39 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float chargeTime_            = 0.5f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float launchDuration_        = 0.5f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 5, Speed = 0.05)
     float warningDuration_       = 1.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float blinkDuration_         = 0.8f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float impactDuration_        = 0.3f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_          = 0.8f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = kMaxImpacts, Speed = 1)
     int   minImpacts_            = 3;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = kMaxImpacts, Speed = 1)
     int   maxImpacts_            = 6;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 20, Speed = 0.5)
     float impactRadius_          = 4.0f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 50, Speed = 0.5)
     float damage_                = 15.0f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float blinkFrequency_        = 10.0f;
+    TPROPERTY(Edit, Category = "Launch Parameters", ClampMin = 5, ClampMax = 100, Speed = 1)
     float launchSpeed_           = 30.0f;
+    TPROPERTY(Edit, Category = "Launch Parameters", ClampMin = 0, ClampMax = 20, Speed = 0.5)
     float launchSpreadXZ_        = 5.0f;
+    TPROPERTY(Edit, Category = "Launch Parameters", ClampMin = 5, ClampMax = 100, Speed = 1)
     float horizontalSpeed_       = 20.0f;
+    TPROPERTY(Edit, Category = "Launch Parameters", ClampMin = 1, ClampMax = 20, Speed = 1)
     int   horizontalBulletCount_ = 10;
+    TPROPERTY(Edit, Category = "Launch Parameters", ClampMin = 5, ClampMax = 100, Speed = 1)
     float fallSpeed_             = 40.0f;
+    TPROPERTY(Edit, Category = "Launch Parameters", ClampMin = 5, ClampMax = 100, Speed = 1)
     float fallHeight_            = 40.0f;
 
     //ランタイム状態

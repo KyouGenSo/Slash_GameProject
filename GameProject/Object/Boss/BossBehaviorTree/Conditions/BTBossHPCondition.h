@@ -5,8 +5,12 @@
 /// <summary>
 /// 現在 HP を最大 HP に対するパーセンテージで閾値比較する条件ノード
 /// </summary>
+TCLASS()
 class BTBossHPCondition : public Tako::BTNode {
+    GENERATED_BODY()
+
 public: //構造体
+    TENUM()
     enum class Comparison {
         Less = 0,
         LessOrEqual = 1,
@@ -25,12 +29,6 @@ public: //メンバー関数
     /// <returns>比較条件を満たせば Success。満たさない、または boss が未設定なら Failure</returns>
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) override;
     void Reset() override;
-    void ApplyParameters(const nlohmann::json& params) override;
-    nlohmann::json ExtractParameters() const override;
-
-#ifdef _DEBUG
-    bool DrawImGui() override;
-#endif
 
     //=====================================
     //Setter
@@ -53,6 +51,8 @@ private: //非公開関数
     bool EvaluateCondition(float currentPercent) const;
 
 private: //メンバー変数
+    TPROPERTY(Edit, DisplayName = "HP Threshold %", ClampMin = 0, ClampMax = 100, Speed = 1)
     float      thresholdPercent_ = 50.0f;                    ///< 閾値（パーセンテージ: 0〜100）
+    TPROPERTY(Edit, EnumAsInt)
     Comparison comparison_       = Comparison::LessOrEqual;
 };

@@ -13,7 +13,10 @@ class Boss;
 /// <summary>
 /// ボス攻撃アクションノードの基底クラス。
 /// </summary>
+TCLASS()
 class AttackNode : public Tako::BTNode {
+    GENERATED_BODY()
+
 public: //メンバー関数
     AttackNode();
     virtual ~AttackNode() = default;
@@ -26,14 +29,6 @@ public: //メンバー関数
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) final;
 
     void Reset() override;
-
-    void ApplyParameters(const nlohmann::json& params) override;
-
-    [[nodiscard]] nlohmann::json ExtractParameters() const override;
-
-#ifdef _DEBUG
-    bool DrawImGui() override;
-#endif
 
 protected: //非公開関数
     //========================================================================================================
@@ -58,14 +53,6 @@ protected: //非公開関数
     /// 後始末。Reset / 成功終了 / Failure 経路で共通に呼ばれる。
     /// </summary>
     virtual void OnCleanup() {}
-
-    virtual void OnApplyParameters(const nlohmann::json& params) { (void)params; }
-
-    virtual void OnExtractParameters(nlohmann::json& out) const { (void)out; }
-
-#ifdef _DEBUG
-    virtual bool OnDrawImGui() { return false; }
-#endif
 
     //========================================================================================================
     //派生クラスが利用する Helper
@@ -103,6 +90,7 @@ protected: //メンバー変数
     //共通メンバ
     float elapsedTime_           = 0.0f;
     bool  isFirstExecute_        = true;
+    TPROPERTY(Edit, Tooltip = "ON: Recovery 状態でなくても近接でスタン誘発")
     bool  isBypassRecoveryGuard_ = false;  ///< true で攻撃中も常時スタン誘発可（Recovery 状態と無関係に近接でスタン）
     bool  enteredRecovery_       = false;
 

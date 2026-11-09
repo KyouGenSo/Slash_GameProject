@@ -12,7 +12,10 @@ class Boss;
 /// プレイヤー位置に円形 Decal で範囲を予告し、上空から落下する爆発体が
 /// 着地した瞬間に爆発バースト・ダメージ判定・白黒フラッシュを同時発生させる攻撃。
 /// </summary>
+TCLASS()
 class BTBossBigExplosion : public AttackNode {
+    GENERATED_BODY()
+
 public: //定数
     static constexpr const char* kEmitterFallFlash   = "boss_big_explosion_1";
     static constexpr const char* kEmitterImpactSpark = "boss_big_explosion_2";
@@ -89,14 +92,6 @@ protected: //メンバー関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
-
 private: //非公開関数
     /// <summary>
     /// Decal の透明度をサインカーブで点滅させる
@@ -126,22 +121,39 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 5, Speed = 0.05)
     float warningDuration_        = 0.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float blinkDuration_          = 0.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float impactDuration_         = 0.8f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_           = 1.5f;
+    TPROPERTY(Edit, Category = "Fall", ClampMin = 5, ClampMax = 80, Speed = 0.5)
     float spawnHeight_            = 70.0f;  ///< 落下エミッタの発生高度
+    TPROPERTY(Edit, Category = "Fall", ClampMin = 1, ClampMax = 100, Speed = 0.5)
     float fallSpeed_              = 30.0f;
+    TPROPERTY(Edit, Category = "Attack Area", ClampMin = 1, ClampMax = 40, Speed = 0.5)
     float attackRadius_           = 50.0f;
+    TPROPERTY(Edit, Category = "Attack Area", ClampMin = 1, ClampMax = 100, Speed = 0.5)
     float damage_                 = 30.0f;
+    TPROPERTY(Edit, Category = "Attack Area", ClampMin = 0, ClampMax = 5, Speed = 0.1)
     float colliderY_              = 1.0f;   ///< 球コライダー中心の高さ
+    TPROPERTY(Edit, Category = "Attack Area", ClampMin = 0.05, ClampMax = 1, Speed = 0.01)
     float colliderActiveDuration_ = 0.2f;
+    TPROPERTY(Edit, Category = "Impact Burst", ClampMin = 0.02, ClampMax = 1, Speed = 0.01)
     float burstDuration_          = 0.1f;   ///< 着地バーストエミッタの有効時間
+    TPROPERTY(Edit, Category = "Impact Burst", ClampMin = 0, ClampMax = 5, Speed = 0.1)
     float impactYOffset_          = 10.0f;  ///< 着地バーストエミッタの高さ
+    TPROPERTY(Edit, Category = "Impact Burst")
     bool  syncEmitterRadius_      = false;  ///< ON で球エミッタ半径を attackRadius_ に同期（エディタ調整値を上書き）
+    TPROPERTY(Edit, Category = "Decal", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float blinkFrequency_         = 10.0f;
+    TPROPERTY(Edit, Category = "BW Filter", DisplayName = "BW Enabled")
     bool  bwEnabled_              = true;
+    TPROPERTY(Edit, Category = "BW Filter", DisplayName = "BW Duration", ClampMin = 0.05, ClampMax = 1, Speed = 0.01)
     float bwDuration_             = 0.22f;
+    TPROPERTY(Edit, Category = "BW Filter", DisplayName = "BW Threshold", ClampMin = 0, ClampMax = 1, Speed = 0.01)
     float bwThreshold_            = 0.02f;  ///< 白黒2値化の輝度しきい値
 
     //ランタイム状態

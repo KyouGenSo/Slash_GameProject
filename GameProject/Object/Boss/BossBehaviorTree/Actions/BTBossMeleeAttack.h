@@ -8,7 +8,10 @@ class Boss;
 /// <summary>
 /// 武器ブロックを振る近接攻撃。コンボ抽選で 1 撃または 3 連撃。
 /// </summary>
+TCLASS()
 class BTBossMeleeAttack : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDirectionEpsilon = 0.01f;
     static constexpr float kBlockStartAngle = -std::numbers::pi_v<float> / 2.0f;
@@ -64,11 +67,8 @@ protected: //非公開関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
 #ifdef _DEBUG
-    bool OnDrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
 private: //非公開関数
@@ -125,15 +125,25 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float prepareTime_      = 1.0f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float attackDuration_   = 0.3f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_     = 0.3f;
+    TPROPERTY(Edit, ClampMin = 0.5, ClampMax = 10, Speed = 0.1)
     float blockRadius_      = 8.0f;
+    TPROPERTY(Edit, ClampMin = 0.1, ClampMax = 5, Speed = 0.1)
     float blockScale_       = 0.5f;
+    TPROPERTY(Edit, Angle, ClampMin = 0, ClampMax = 360)
     float swingAngle_       = static_cast<float>(std::numbers::pi);
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 50, Speed = 1)
     float rushDistance_     = 20.0f;
+    TPROPERTY(Edit, ClampMin = 1, ClampMax = 20, Speed = 0.5)
     float stopDistance_     = 5.0f;
+    TPROPERTY(Edit, Category = "Combo", ClampMin = 0.1, ClampMax = 2, Speed = 0.05)
     float comboInterval_    = 0.5f;
+    TPROPERTY(Edit, Category = "Combo", ClampMin = 0, ClampMax = 1, Speed = 0.01)
     float comboProbability_ = 0.5f;
 
     //ランタイム状態

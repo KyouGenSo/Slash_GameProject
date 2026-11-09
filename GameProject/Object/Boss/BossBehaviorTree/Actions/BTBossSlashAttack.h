@@ -12,7 +12,10 @@ class Boss;
 /// <summary>
 /// プレイヤー位置を狙い、円形 Decal で範囲を予告してから斬撃を発動する遠距離攻撃。
 /// </summary>
+TCLASS()
 class BTBossSlashAttack : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDecalBaseAlpha = 0.3f;
     static constexpr float kBlinkAlphaMin = 0.15f;
@@ -58,14 +61,6 @@ protected: //メンバー関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
-
 private: //非公開関数
     /// <summary>
     /// Decal の透明度をサインカーブで点滅させる
@@ -84,12 +79,19 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 5, Speed = 0.05)
     float warningDuration_ = 1.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float blinkDuration_   = 0.8f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float attackDuration_  = 0.3f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_    = 0.5f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float attackRadius_    = 8.0f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 50, Speed = 0.5)
     float damage_          = 15.0f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float blinkFrequency_  = 10.0f;
 
     //ランタイム状態

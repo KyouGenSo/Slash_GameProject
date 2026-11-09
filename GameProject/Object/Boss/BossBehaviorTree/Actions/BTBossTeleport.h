@@ -15,8 +15,12 @@ class Boss;
 /// フェードアウト → 瞬間移動 → フェードイン で移動。フェード中は body MeshEmitter でディゾルブ演出。
 /// テレポート先は固定座標かステージ内ランダムから選択。EnterAttackRecovery は呼ばない（硬直なし仕様）。
 /// </summary>
+TCLASS()
 class BTBossTeleport : public AttackNode {
+    GENERATED_BODY()
+
 public: //構造体
+    TENUM()
     enum class TeleportMode : int {
         Fixed            = 0,  ///< 固定座標 (targetPositionX/Y/Z)
         RandomFromBoss   = 1,  ///< ボス現在位置を中心にランダム
@@ -38,13 +42,8 @@ protected: //メンバー関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
+    void PostEditChange() override;
+    void PostLoad(const nlohmann::json& raw) override;
 
 private: //非公開関数
     /// <summary>
@@ -56,15 +55,25 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 5, Speed = 0.05)
     float        fadeOutDuration_         = 0.3f;                          ///< 秒
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 5, Speed = 0.05)
     float        fadeInDuration_          = 0.3f;                          ///< 秒
+    TPROPERTY(Edit, EnumAsInt, Tooltip = "Fixed: 固定座標 / RandomFromBoss: ボス中心 / RandomFromPlayer: プレイヤー中心")
     TeleportMode mode_                    = TeleportMode::RandomFromBoss;
+    TPROPERTY(Edit, Category = "Fixed", Speed = 0.5)
     float        targetPositionX_         = 0.0f;                          ///< Fixed 用
+    TPROPERTY(Edit, Category = "Fixed", Speed = 0.5)
     float        targetPositionY_         = 0.0f;                          ///< Fixed 用
+    TPROPERTY(Edit, Category = "Fixed", Speed = 0.5)
     float        targetPositionZ_         = 0.0f;                          ///< Fixed 用
+    TPROPERTY(Edit, Category = "Random From Boss", ClampMin = 0, ClampMax = 200, Speed = 0.5)
     float        randomMinDistance_       = 10.0f;                         ///< RandomFromBoss 用
+    TPROPERTY(Edit, Category = "Random From Boss", ClampMin = 0, ClampMax = 200, Speed = 0.5)
     float        randomMaxDistance_       = 30.0f;                         ///< RandomFromBoss 用
+    TPROPERTY(Edit, Category = "Random From Player", ClampMin = 0, ClampMax = 200, Speed = 0.5)
     float        playerRandomMinDistance_ = 10.0f;                         ///< RandomFromPlayer 用
+    TPROPERTY(Edit, Category = "Random From Player", ClampMin = 0, ClampMax = 200, Speed = 0.5)
     float        playerRandomMaxDistance_ = 30.0f;                         ///< RandomFromPlayer 用
 
     //ランタイム状態

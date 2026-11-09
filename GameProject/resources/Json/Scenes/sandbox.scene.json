@@ -1,0 +1,143 @@
+{
+  "actors": [
+    {
+      "id": 1,
+      "prefab": "SpinningCube",
+      "overrides": [
+        {
+          "op": "replace",
+          "path": "/properties/name",
+          "value": "Cube A"
+        },
+        {
+          "op": "replace",
+          "path": "/properties/transform/translate",
+          "value": [
+            -6.0,
+            2.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prefab": "SpinningCube",
+      "overrides": [
+        {
+          "op": "replace",
+          "path": "/properties/name",
+          "value": "Cube B"
+        },
+        {
+          "op": "replace",
+          "path": "/properties/transform/translate",
+          "value": [
+            6.0,
+            2.0,
+            0.0
+          ]
+        },
+        {
+          "op": "replace",
+          "path": "/components/Spinner/properties/speed",
+          "value": 6.2831855
+        },
+        {
+          "op": "replace",
+          "path": "/components/Spinner/properties/axis",
+          "value": [
+            1.0,
+            1.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prefab": "Ball",
+      "overrides": [
+        {
+          "op": "replace",
+          "path": "/properties/transform/translate",
+          "value": [
+            -8.0,
+            2.0,
+            6.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "Actor",
+      "properties": {
+        "name": "Wall",
+        "transform": {
+          "scale": [
+            0.5,
+            2.0,
+            2.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            2.0,
+            6.0
+          ]
+        }
+      },
+      "components": {
+        "MeshComponent": {
+          "type": "MeshComponent",
+          "order": 0,
+          "properties": {
+            "model": "EngineResources/Model/white_cube.gltf",
+            "settingsName": "",
+            "offset": {
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          }
+        },
+        "ColliderComponent": {
+          "type": "ColliderComponent",
+          "order": 1,
+          "properties": {
+            "shape": "Box",
+            "radius": 1.0,
+            "size": [
+              1.5,
+              6.0,
+              6.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "layer": 31
+          }
+        }
+      }
+    }
+  ]
+}

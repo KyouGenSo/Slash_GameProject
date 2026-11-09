@@ -47,6 +47,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="Script\DestroyOnHit.cpp" />
+    <ClCompile Include="Script\Mover.cpp" />
+    <ClCompile Include="Script\Spinner.cpp" />
     <ClCompile Include="CameraSystem\Controller\CameraAnimationController.cpp" />
     <ClCompile Include="CameraSystem\CameraDebugUI.cpp" />
     <ClCompile Include="CameraSystem\CameraManager.cpp" />
@@ -142,6 +145,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Script\DestroyOnHit.h" />
+    <ClInclude Include="Script\Mover.h" />
+    <ClInclude Include="Script\Spinner.h" />
     <ClInclude Include="CameraSystem\Controller\CameraAnimationController.h" />
     <ClInclude Include="CameraSystem\CameraConfig.h" />
     <ClInclude Include="CameraSystem\CameraDebugUI.h" />

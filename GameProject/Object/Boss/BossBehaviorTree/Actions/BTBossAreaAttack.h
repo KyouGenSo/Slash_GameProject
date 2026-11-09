@@ -14,7 +14,10 @@ class Boss;
 /// フェーズ2エリアを4象限に分割し、ランダムに1〜3象限を攻撃する。
 /// プレイヤーのいる象限は確定で含める。
 /// </summary>
+TCLASS()
 class BTBossAreaAttack : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr int   kQuadrantCount       = 4;
     static constexpr float kDecalBaseAlpha      = 0.3f;
@@ -64,12 +67,7 @@ private: //非公開関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
+    void PostEditChange() override;
 
     /// <summary>
     /// 攻撃象限をランダム選択して activeQuadrants_ を更新（プレイヤー象限は確定）
@@ -111,13 +109,21 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 5, Speed = 0.05)
     float warningDuration_ = 1.5f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float blinkDuration_   = 1.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float attackDuration_  = 0.5f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_    = 0.5f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = kQuadrantCount, Speed = 1)
     int   minQuadrants_    = 1;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = kQuadrantCount, Speed = 1)
     int   maxQuadrants_    = 3;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 50, Speed = 0.5)
     float damage_          = 15.0f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float blinkFrequency_  = 10.0f;
 
     //ランタイム状態

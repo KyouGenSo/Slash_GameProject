@@ -11,10 +11,6 @@
 #include <cmath>
 #include <numbers>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossBigExplosion::BTBossBigExplosion() {
@@ -245,79 +241,3 @@ void BTBossBigExplosion::OnCleanup() {
     colliderClosed_ = false;
 }
 
-void BTBossBigExplosion::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("warningDuration"))        warningDuration_ = params["warningDuration"];
-    if (params.contains("blinkDuration"))          blinkDuration_ = params["blinkDuration"];
-    if (params.contains("impactDuration"))         impactDuration_ = params["impactDuration"];
-    if (params.contains("recoveryTime"))           recoveryTime_ = params["recoveryTime"];
-    if (params.contains("spawnHeight"))            spawnHeight_ = params["spawnHeight"];
-    if (params.contains("fallSpeed"))              fallSpeed_ = params["fallSpeed"];
-    if (params.contains("attackRadius"))           attackRadius_ = params["attackRadius"];
-    if (params.contains("damage"))                 damage_ = params["damage"];
-    if (params.contains("colliderY"))              colliderY_ = params["colliderY"];
-    if (params.contains("colliderActiveDuration")) colliderActiveDuration_ = params["colliderActiveDuration"];
-    if (params.contains("burstDuration"))          burstDuration_ = params["burstDuration"];
-    if (params.contains("impactYOffset"))          impactYOffset_ = params["impactYOffset"];
-    if (params.contains("syncEmitterRadius"))      syncEmitterRadius_ = params["syncEmitterRadius"];
-    if (params.contains("blinkFrequency"))         blinkFrequency_ = params["blinkFrequency"];
-    if (params.contains("bwEnabled"))              bwEnabled_ = params["bwEnabled"];
-    if (params.contains("bwDuration"))             bwDuration_ = params["bwDuration"];
-    if (params.contains("bwThreshold"))            bwThreshold_ = params["bwThreshold"];
-}
-
-void BTBossBigExplosion::OnExtractParameters(nlohmann::json& out) const {
-    out["warningDuration"]        = warningDuration_;
-    out["blinkDuration"]          = blinkDuration_;
-    out["impactDuration"]         = impactDuration_;
-    out["recoveryTime"]           = recoveryTime_;
-    out["spawnHeight"]            = spawnHeight_;
-    out["fallSpeed"]              = fallSpeed_;
-    out["attackRadius"]           = attackRadius_;
-    out["damage"]                 = damage_;
-    out["colliderY"]              = colliderY_;
-    out["colliderActiveDuration"] = colliderActiveDuration_;
-    out["burstDuration"]          = burstDuration_;
-    out["impactYOffset"]          = impactYOffset_;
-    out["syncEmitterRadius"]      = syncEmitterRadius_;
-    out["blinkFrequency"]         = blinkFrequency_;
-    out["bwEnabled"]              = bwEnabled_;
-    out["bwDuration"]             = bwDuration_;
-    out["bwThreshold"]            = bwThreshold_;
-}
-
-#ifdef _DEBUG
-bool BTBossBigExplosion::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Warning Duration##bigexpl", &warningDuration_, 0.05f, 0.0f, 5.0f))          changed = true;
-    if (ImGui::DragFloat("Blink Duration##bigexpl", &blinkDuration_, 0.05f, 0.0f, 3.0f))              changed = true;
-    if (ImGui::DragFloat("Impact Duration##bigexpl", &impactDuration_, 0.05f, 0.1f, 3.0f))            changed = true;
-    if (ImGui::DragFloat("Recovery Time##bigexpl", &recoveryTime_, 0.05f, 0.0f, 3.0f))                changed = true;
-
-    ImGui::SeparatorText("Fall");
-    if (ImGui::DragFloat("Spawn Height##bigexpl", &spawnHeight_, 0.5f, 5.0f, 80.0f))                  changed = true;
-    if (ImGui::DragFloat("Fall Speed##bigexpl", &fallSpeed_, 0.5f, 1.0f, 100.0f))                     changed = true;
-
-    ImGui::SeparatorText("Attack Area");
-    if (ImGui::DragFloat("Attack Radius##bigexpl", &attackRadius_, 0.5f, 1.0f, 40.0f))                changed = true;
-    if (ImGui::DragFloat("Damage##bigexpl", &damage_, 0.5f, 1.0f, 100.0f))                            changed = true;
-    if (ImGui::DragFloat("Collider Y##bigexpl", &colliderY_, 0.1f, 0.0f, 5.0f))                       changed = true;
-    if (ImGui::DragFloat("Collider Active Time##bigexpl", &colliderActiveDuration_, 0.01f, 0.05f, 1.0f)) changed = true;
-
-    ImGui::SeparatorText("Impact Burst");
-    if (ImGui::DragFloat("Burst Duration##bigexpl", &burstDuration_, 0.01f, 0.02f, 1.0f))             changed = true;
-    if (ImGui::DragFloat("Impact Y Offset##bigexpl", &impactYOffset_, 0.1f, 0.0f, 5.0f))              changed = true;
-    if (ImGui::Checkbox("Sync Emitter Radius##bigexpl", &syncEmitterRadius_))                         changed = true;
-
-    ImGui::SeparatorText("Decal");
-    if (ImGui::DragFloat("Blink Frequency##bigexpl", &blinkFrequency_, 0.5f, 1.0f, 30.0f))            changed = true;
-
-    ImGui::SeparatorText("BW Filter");
-    if (ImGui::Checkbox("BW Enabled##bigexpl", &bwEnabled_))                                          changed = true;
-    if (ImGui::DragFloat("BW Duration##bigexpl", &bwDuration_, 0.01f, 0.05f, 1.0f))                   changed = true;
-    if (ImGui::DragFloat("BW Threshold##bigexpl", &bwThreshold_, 0.01f, 0.0f, 1.0f))                  changed = true;
-
-    return changed;
-}
-#endif

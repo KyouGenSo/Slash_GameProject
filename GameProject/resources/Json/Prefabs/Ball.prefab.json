@@ -1,0 +1,88 @@
+{
+  "type": "Actor",
+  "properties": {
+    "name": "Ball",
+    "transform": {
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "translate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "components": {
+    "MeshComponent": {
+      "type": "MeshComponent",
+      "order": 0,
+      "properties": {
+        "model": "EngineResources/Model/sphere.gltf",
+        "settingsName": "",
+        "offset": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "Mover": {
+      "type": "Mover",
+      "order": 1,
+      "properties": {
+        "offset": [
+          8.0,
+          0.0,
+          0.0
+        ],
+        "period": 4.0
+      }
+    },
+    "ColliderComponent": {
+      "type": "ColliderComponent",
+      "order": 2,
+      "properties": {
+        "shape": "Sphere",
+        "radius": 1.0,
+        "size": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "layer": 31
+      }
+    },
+    "DestroyOnHit": {
+      "type": "DestroyOnHit",
+      "order": 3,
+      "properties": {
+        "otherName": "Wall"
+      }
+    }
+  }
+}

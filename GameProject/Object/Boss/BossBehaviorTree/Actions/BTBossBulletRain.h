@@ -15,7 +15,10 @@ class Player;
 /// ステージ全域のランダム位置へ予兆デカール付きの弾を間隔スケジュールで降らせる弾雨攻撃。
 /// 弾ごとにライフサイクルが独立し、複数弾の予兆・落下がオーバーラップする。
 /// </summary>
+TCLASS()
 class BTBossBulletRain : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr int   kMaxPoolSize         = 50;  ///< 同時進行スロット数の上限
     static constexpr int   kMaxPlacementRetries = 30;
@@ -93,11 +96,8 @@ protected: //非公開関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
 #ifdef _DEBUG
-    bool OnDrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
 private: //非公開関数
@@ -131,22 +131,39 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float chargeTime_           = 0.0f;
+    TPROPERTY(Edit, Category = "Spawn", ClampMin = 0.1, ClampMax = 60, Speed = 0.1)
     float rainDuration_         = 10.0f;
+    TPROPERTY(Edit, Category = "Spawn", ClampMin = 0.02, ClampMax = 2, Speed = 0.01)
     float spawnInterval_        = 0.1f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float warningDuration_      = 0.5f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float blinkDuration_        = 0.5f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float blinkFrequency_       = 10.0f;
+    TPROPERTY(Edit, Category = "Fall & Impact", ClampMin = 5, ClampMax = 100, Speed = 1)
     float fallHeight_           = 40.0f;
+    TPROPERTY(Edit, Category = "Fall & Impact", ClampMin = 5, ClampMax = 200, Speed = 1)
     float fallSpeed_            = 100.0f;
+    TPROPERTY(Edit, Category = "Fall & Impact", ClampMin = 0.5, ClampMax = 20, Speed = 0.5)
     float impactRadius_         = 3.5f;
+    TPROPERTY(Edit, Category = "Fall & Impact", ClampMin = 0.05, ClampMax = 1, Speed = 0.01)
     float impactActiveDuration_ = 0.15f;
+    TPROPERTY(Edit, Category = "Fall & Impact", ClampMin = 0, ClampMax = 5, Speed = 0.1)
     float colliderY_            = 1.0f;
+    TPROPERTY(Edit, Category = "Fall & Impact", ClampMin = 0, ClampMax = 50, Speed = 0.5)
     float damage_               = 10.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_         = 2.0f;
+    TPROPERTY(Edit, Category = "Targeting", ClampMin = 0, ClampMax = 1, Speed = 0.01)
     float playerAimProbability_ = 0.1f;
+    TPROPERTY(Edit, Category = "Targeting", ClampMin = 0, ClampMax = 20, Speed = 0.5)
     float playerAimRadius_      = 10.0f;
+    TPROPERTY(Edit, Category = "Targeting", ClampMin = 0, ClampMax = 30, Speed = 0.5)
     float stageMargin_          = 5.0f;
+    TPROPERTY(Edit, Category = "Targeting", ClampMin = 0, ClampMax = 20, Speed = 0.5)
     float minSeparation_        = 10.0f;
 
     //ランタイム状態

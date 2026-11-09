@@ -265,70 +265,10 @@ std::string BTBossVortexTempest::MakeVortexEmitterName(int i) const {
     return vortexEmitterBaseName_ + "_" + std::to_string(i);
 }
 
-void BTBossVortexTempest::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("warningTime"))        warningTime_ = params["warningTime"];
-    if (params.contains("expandTime"))         expandTime_ = params["expandTime"];
-    if (params.contains("sustainTime"))        sustainTime_ = params["sustainTime"];
-    if (params.contains("decayTime"))          decayTime_ = params["decayTime"];
-    if (params.contains("orbitRadius"))        orbitRadius_ = params["orbitRadius"];
-    if (params.contains("angularSpeed"))       angularSpeed_ = params["angularSpeed"];
-    if (params.contains("minDoT"))             minDoT_ = params["minDoT"];
-    if (params.contains("maxDoT"))             maxDoT_ = params["maxDoT"];
-    if (params.contains("damageTickInterval")) damageTickInterval_ = params["damageTickInterval"];
-
-    if (params.contains("attractPresetName") && params["attractPresetName"].is_string()) {
-        attractPresetName_ = params["attractPresetName"].get<std::string>();
-    }
-    if (params.contains("dirPresetName") && params["dirPresetName"].is_string()) {
-        dirPresetName_ = params["dirPresetName"].get<std::string>();
-    }
-    if (params.contains("vortexPresetName") && params["vortexPresetName"].is_string()) {
-        vortexPresetName_ = params["vortexPresetName"].get<std::string>();
-    }
-    if (params.contains("vortexEmitterBaseName") && params["vortexEmitterBaseName"].is_string()) {
-        vortexEmitterBaseName_ = params["vortexEmitterBaseName"].get<std::string>();
-    }
-    if (params.contains("markerBlinkFrequency")) markerBlinkFrequency_ = params["markerBlinkFrequency"];
-}
-
-void BTBossVortexTempest::OnExtractParameters(nlohmann::json& out) const {
-    out["warningTime"]            = warningTime_;
-    out["expandTime"]             = expandTime_;
-    out["sustainTime"]            = sustainTime_;
-    out["decayTime"]              = decayTime_;
-    out["orbitRadius"]            = orbitRadius_;
-    out["angularSpeed"]           = angularSpeed_;
-    out["minDoT"]                 = minDoT_;
-    out["maxDoT"]                 = maxDoT_;
-    out["damageTickInterval"]     = damageTickInterval_;
-    out["attractPresetName"]      = attractPresetName_;
-    out["dirPresetName"]          = dirPresetName_;
-    out["vortexPresetName"]       = vortexPresetName_;
-    out["vortexEmitterBaseName"]  = vortexEmitterBaseName_;
-    out["markerBlinkFrequency"]   = markerBlinkFrequency_;
-}
-
 #ifdef _DEBUG
-bool BTBossVortexTempest::OnDrawImGui() {
-    bool changed = false;
-    if (ImGui::DragFloat("Warning Time##vortex",      &warningTime_,        0.05f, 0.0f, 5.0f))   changed = true;
-    if (ImGui::DragFloat("Expand Time##vortex",       &expandTime_,         0.05f, 0.0f, 3.0f))   changed = true;
-    if (ImGui::DragFloat("Sustain Time##vortex",      &sustainTime_,        0.1f,  0.0f, 15.0f))  changed = true;
-    if (ImGui::DragFloat("Decay Time##vortex",        &decayTime_,          0.05f, 0.0f, 3.0f))   changed = true;
-    if (ImGui::DragFloat("Orbit Radius##vortex",      &orbitRadius_,        0.5f,  0.0f, 30.0f))  changed = true;
-    if (ImGui::DragFloat("Angular Speed##vortex",     &angularSpeed_,       0.05f, -5.0f, 5.0f))  changed = true;
-    if (ImGui::DragFloat("Min DoT##vortex",           &minDoT_,             0.5f,  0.0f, 100.0f)) changed = true;
-    if (ImGui::DragFloat("Max DoT##vortex",           &maxDoT_,             0.5f,  0.0f, 100.0f)) changed = true;
-    if (ImGui::DragFloat("DoT Tick Interval##vortex", &damageTickInterval_, 0.05f, 0.05f, 5.0f))  changed = true;
-    if (ImGui::DragFloat("Marker Blink Hz##vortex",   &markerBlinkFrequency_, 0.1f, 0.5f, 20.0f)) changed = true;
-
-    ImGui::Separator();
-    ImGui::TextDisabled("ForceField Presets (read-only here; edit JSON)");
-    ImGui::TextDisabled("  Attract: %s", attractPresetName_.c_str());
-    ImGui::TextDisabled("  Dir    : %s", dirPresetName_.c_str());
-    ImGui::TextDisabled("  Vortex : %s", vortexPresetName_.c_str());
+bool BTBossVortexTempest::DrawCustomImGui() {
     ImGui::TextDisabled("Total ForceField count: %d (= %d vortex x %d slots)",
         kVortexCount * kFieldsPerVortex, kVortexCount, kFieldsPerVortex);
-    return changed;
+    return false;
 }
 #endif

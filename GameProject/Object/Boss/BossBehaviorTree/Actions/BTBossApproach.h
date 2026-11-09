@@ -9,7 +9,10 @@ class Player;
 /// <summary>
 /// プレイヤー方向へイージング移動で接近し、一定距離で停止する
 /// </summary>
+TCLASS()
 class BTBossApproach : public Tako::BTNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDirectionEpsilon = 0.01f;
     static constexpr float kArrivalThreshold = 0.5f;
@@ -27,19 +30,8 @@ public: //メンバー関数
 
     void Reset() override;
 
-    void ApplyParameters(const nlohmann::json& params) override {
-        if (params.contains("approachSpeed")) {
-            approachSpeed_ = params["approachSpeed"];
-        }
-        if (params.contains("targetDistance")) {
-            targetDistance_ = params["targetDistance"];
-        }
-    }
-
-    nlohmann::json ExtractParameters() const override;
-
 #ifdef _DEBUG
-    bool DrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
     //====================================
@@ -71,7 +63,9 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, ClampMin = 10, ClampMax = 200, Speed = 1)
     float approachSpeed_  = 80.0f;
+    TPROPERTY(Edit, ClampMin = 1, ClampMax = 50, Speed = 0.5)
     float targetDistance_ = 12.0f;  ///< プレイヤーからの停止距離
 
     //状態管理

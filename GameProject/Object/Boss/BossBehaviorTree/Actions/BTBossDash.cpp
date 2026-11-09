@@ -8,10 +8,6 @@
 #include <algorithm>
 #include <cmath>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossDash::BTBossDash() {
@@ -107,39 +103,5 @@ void BTBossDash::UpdateDashMovement(Boss* boss, float deltaTime) {
     }
 }
 
-nlohmann::json BTBossDash::ExtractParameters() const {
-    return {
-        {"dashSpeed", dashSpeed_},
-        {"dashDuration", dashDuration_}
-    };
-}
-
 #ifdef _DEBUG
-bool BTBossDash::DrawImGui() {
-    bool changed = false;
-
-    if (ImGui::DragFloat("Speed##dash", &dashSpeed_, 1.0f, 10.0f, 200.0f)) {
-        changed = true;
-    }
-    if (ImGui::DragFloat("Duration##dash", &dashDuration_, 0.05f, 0.1f, 3.0f)) {
-        changed = true;
-    }
-    if (ImGui::DragFloat("Min Distance##dash", &minDistance_, 0.1f, 0.0f, 100.0f)) {
-        changed = true;
-    }
-    if (ImGui::DragFloat("Max Distance##dash", &maxDistance_, 0.1f, 0.0f, 100.0f)) {
-        changed = true;
-    }
-
-    ImGui::Separator();
-    ImGui::Text("Effect Parameters:");
-    if (ImGui::DragFloat("Vibration Freq##dash", &vibrationFreq_, 1.0f, 1.0f, 100.0f)) {
-        changed = true;
-    }
-    if (ImGui::DragFloat("Vibration Amp##dash", &vibrationAmp_, 0.01f, 0.0f, 0.5f)) {
-        changed = true;
-    }
-
-    return changed;
-}
 #endif

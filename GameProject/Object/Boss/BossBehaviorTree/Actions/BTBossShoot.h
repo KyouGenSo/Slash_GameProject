@@ -8,7 +8,10 @@ class Boss;
 /// <summary>
 /// プレイヤー方向へ扇状に複数弾を一斉発射する。
 /// </summary>
+TCLASS()
 class BTBossShoot : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDirectionEpsilon = 0.01f;
     static constexpr float kAngleEpsilon = 0.001f;
@@ -44,14 +47,6 @@ protected: //メンバー関数
 
     void OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss) override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
-
 private: //非公開関数
     /// <summary>
     /// プレイヤー方向を中心に bulletCount_ 発を扇状に一斉発射する。
@@ -68,11 +63,16 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float chargeTime_    = 0.9f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_  = 0.5f;
     float totalDuration_ = 1.0f;     ///< OnInitialize で算出
+    TPROPERTY(Edit, ClampMin = 5, ClampMax = 100, Speed = 1)
     float bulletSpeed_   = 20.0f;
+    TPROPERTY(Edit, Angle, ClampMin = 0, ClampMax = 45)
     float spreadAngle_   = 0.2618f;  ///< ラジアン、約 15 度
+    TPROPERTY(Edit, ClampMin = 1, ClampMax = 10, Speed = 1)
     int   bulletCount_   = 3;
 
     //ランタイム状態

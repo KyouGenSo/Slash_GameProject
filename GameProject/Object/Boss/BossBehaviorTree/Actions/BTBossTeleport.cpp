@@ -6,10 +6,6 @@
 #include "RandomEngine.h"
 #include <algorithm>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossTeleport::BTBossTeleport() {
@@ -122,85 +118,14 @@ void BTBossTeleport::UpdateModelAlpha(Tako::Object3d* model, float alpha) const 
     model->SetMaterialColor(c);
 }
 
-void BTBossTeleport::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("fadeOutDuration"))   fadeOutDuration_   = params["fadeOutDuration"];
-    if (params.contains("fadeInDuration"))    fadeInDuration_    = params["fadeInDuration"];
-    if (params.contains("mode") && params["mode"].is_number_integer()) {
-        mode_ = static_cast<TeleportMode>(params["mode"].get<int>());
-    }
-    else if (params.contains("useRandomPosition")) {
-        // 後方互換: 旧 bool キーから新 enum へ変換 (true → RandomFromBoss, false → Fixed)
-        mode_ = params["useRandomPosition"].get<bool>()
-            ? TeleportMode::RandomFromBoss : TeleportMode::Fixed;
-    }
-    if (params.contains("targetPositionX"))         targetPositionX_         = params["targetPositionX"];
-    if (params.contains("targetPositionY"))         targetPositionY_         = params["targetPositionY"];
-    if (params.contains("targetPositionZ"))         targetPositionZ_         = params["targetPositionZ"];
-    if (params.contains("randomMinDistance"))       randomMinDistance_       = params["randomMinDistance"];
-    if (params.contains("randomMaxDistance"))       randomMaxDistance_       = params["randomMaxDistance"];
-    if (params.contains("playerRandomMinDistance")) playerRandomMinDistance_ = params["playerRandomMinDistance"];
-    if (params.contains("playerRandomMaxDistance")) playerRandomMaxDistance_ = params["playerRandomMaxDistance"];
+void BTBossTeleport::PostEditChange() {
+    randomMaxDistance_       = (std::max)(randomMaxDistance_, randomMinDistance_);
+    playerRandomMaxDistance_ = (std::max)(playerRandomMaxDistance_, playerRandomMinDistance_);
 }
 
-void BTBossTeleport::OnExtractParameters(nlohmann::json& out) const {
-    out["fadeOutDuration"]         = fadeOutDuration_;
-    out["fadeInDuration"]          = fadeInDuration_;
-    out["mode"]                    = static_cast<int>(mode_);
-    out["targetPositionX"]         = targetPositionX_;
-    out["targetPositionY"]         = targetPositionY_;
-    out["targetPositionZ"]         = targetPositionZ_;
-    out["randomMinDistance"]       = randomMinDistance_;
-    out["randomMaxDistance"]       = randomMaxDistance_;
-    out["playerRandomMinDistance"] = playerRandomMinDistance_;
-    out["playerRandomMaxDistance"] = playerRandomMaxDistance_;
+void BTBossTeleport::PostLoad(const nlohmann::json& raw) {
+    // 旧 bool キーから変換する（true → RandomFromBoss, false → Fixed）
+    if (raw.is_object() && !raw.contains("mode") && raw.contains("useRandomPosition") && raw["useRandomPosition"].is_boolean()) {
+        mode_ = raw["useRandomPosition"].get<bool>() ? TeleportMode::RandomFromBoss : TeleportMode::Fixed;
+    }
 }
-
-#ifdef _DEBUG
-bool BTBossTeleport::OnDrawImGui() {
-    bool changed = false;
-    if (ImGui::DragFloat("Fade Out Duration##teleport", &fadeOutDuration_, 0.05f, 0.0f, 5.0f)) changed = true;
-    if (ImGui::DragFloat("Fade In Duration##teleport",  &fadeInDuration_,  0.05f, 0.0f, 5.0f)) changed = true;
-
-    static const char* kModeLabels[] = {
-        "Fixed (固定座標)",
-        "Random From Boss (ボス中心)",
-        "Random From Player (プレイヤー中心)",
-    };
-    int modeInt = static_cast<int>(mode_);
-    if (ImGui::Combo("Mode##teleport", &modeInt, kModeLabels, IM_ARRAYSIZE(kModeLabels))) {
-        mode_ = static_cast<TeleportMode>(modeInt);
-        changed = true;
-    }
-
-    switch (mode_) {
-    case TeleportMode::Fixed: {
-        float pos[3] = { targetPositionX_, targetPositionY_, targetPositionZ_ };
-        if (ImGui::DragFloat3("Target Position##teleport", pos, 0.5f)) {
-            targetPositionX_ = pos[0];
-            targetPositionY_ = pos[1];
-            targetPositionZ_ = pos[2];
-            changed = true;
-        }
-        break;
-    }
-    case TeleportMode::RandomFromBoss: {
-        if (ImGui::DragFloat("Boss Random Min Distance##teleport", &randomMinDistance_, 0.5f, 0.0f, 200.0f)) changed = true;
-        if (ImGui::DragFloat("Boss Random Max Distance##teleport", &randomMaxDistance_, 0.5f, 0.0f, 200.0f)) changed = true;
-        if (randomMaxDistance_ < randomMinDistance_) {
-            randomMaxDistance_ = randomMinDistance_;
-        }
-        break;
-    }
-    case TeleportMode::RandomFromPlayer: {
-        if (ImGui::DragFloat("Player Random Min Distance##teleport", &playerRandomMinDistance_, 0.5f, 0.0f, 200.0f)) changed = true;
-        if (ImGui::DragFloat("Player Random Max Distance##teleport", &playerRandomMaxDistance_, 0.5f, 0.0f, 200.0f)) changed = true;
-        if (playerRandomMaxDistance_ < playerRandomMinDistance_) {
-            playerRandomMaxDistance_ = playerRandomMinDistance_;
-        }
-        break;
-    }
-    }
-
-    return changed;
-}
-#endif

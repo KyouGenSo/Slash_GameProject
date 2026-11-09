@@ -14,7 +14,10 @@ class Boss;
 /// その線に沿ってレーザー（Box エミッター）を撃つ遠距離攻撃。
 /// 発生時にデカール追従を止め、ビームを凍結する。
 /// </summary>
+TCLASS()
 class BTBossTrackingLaser : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDecalBaseAlpha = 0.3f;
     static constexpr float kBlinkAlphaMin = 0.15f;
@@ -69,14 +72,6 @@ protected: //メンバー関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
-
 private: //非公開関数
     /// <summary>
     /// ボス→プレイヤー方向からビームの中心・yaw（ラジアン）・全長を求める。
@@ -115,16 +110,27 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 5, Speed = 0.05)
     float aimDuration_       = 1.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float blinkDuration_     = 0.6f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.05, ClampMax = 3, Speed = 0.05)
     float attackDuration_    = 0.25f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_      = 0.5f;
+    TPROPERTY(Edit, Category = "Beam Shape", ClampMin = 0.2, ClampMax = 10, Speed = 0.1)
     float beamWidth_         = 2.0f;
+    TPROPERTY(Edit, Category = "Beam Shape", ClampMin = 0, ClampMax = 20, Speed = 0.1)
     float endOffset_         = 3.0f;
+    TPROPERTY(Edit, Category = "Beam Shape", ClampMin = 0, ClampMax = 10, Speed = 0.1)
     float beamHeight_        = 1.0f;
+    TPROPERTY(Edit, Category = "Beam Shape", ClampMin = 0.5, ClampMax = 10, Speed = 0.1)
     float colliderHeight_    = 3.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 1, Speed = 0.01)
     float laserEmitDuration_ = 0.05f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 50, Speed = 0.5)
     float damage_            = 15.0f;
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float blinkFrequency_    = 10.0f;
 
     //ランタイム状態
@@ -146,5 +152,6 @@ private: //メンバー変数
     std::string                              emitterName_;
     Tako::Vector3                            presetBoxSize_{};
     std::string                              chargeEmitterName_;
+    TPROPERTY(Edit, Category = "Charge Effect", Speed = 0.1)
     Tako::Vector3                            chargeOffset_{ 0.0f, 3.5f, 3.0f };
 };

@@ -5,7 +5,10 @@
 /// <summary>
 /// プレイヤーがボス方向へ射撃中かを判定する条件ノード
 /// </summary>
+TCLASS()
 class BTBossPlayerShootingCondition : public Tako::BTNode {
+    GENERATED_BODY()
+
 public: //メンバー関数
     BTBossPlayerShootingCondition();
     virtual ~BTBossPlayerShootingCondition() = default;
@@ -17,11 +20,8 @@ public: //メンバー関数
     /// <returns>ボス方向へ射撃中なら Success。非射撃中・閾値外・boss/player が未設定なら Failure</returns>
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) override;
     void Reset() override;
-    void ApplyParameters(const nlohmann::json& params) override;
-    nlohmann::json ExtractParameters() const override;
-
 #ifdef _DEBUG
-    bool DrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
     //=============================
@@ -35,5 +35,6 @@ public: //メンバー関数
     float GetAngleThreshold() const { return angleThreshold_; }
 
 private: //メンバー変数
+    TPROPERTY(Edit, Tooltip = "度", ClampMin = 0, ClampMax = 180, Speed = 1)
     float angleThreshold_ = 30.0f;    ///< 許容角度（度数法）
 };

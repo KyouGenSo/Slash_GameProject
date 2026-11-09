@@ -9,7 +9,10 @@ class Boss;
 /// ステージ中央へ移動し、全方位へ弾を一定時間ばらまく。
 /// 通常弾（速い）と貫通弾（遅い）を penetratingRatio_ で混ぜる。
 /// </summary>
+TCLASS()
 class BTBossBarrage : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDirectionEpsilon = 0.001f;
 
@@ -57,11 +60,8 @@ protected: //非公開関数
 
     void OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss) override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
 #ifdef _DEBUG
-    bool OnDrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
 private: //非公開関数
@@ -79,16 +79,26 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 2, Speed = 0.05)
     float moveDuration_   = 0.5f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float chargeTime_     = 0.8f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.5, ClampMax = 10, Speed = 0.1)
     float firingDuration_ = 3.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_   = 0.5f;
+    TPROPERTY(Edit, Category = "Fire Control", ClampMin = 0.02, ClampMax = 0.5, Speed = 0.01)
     float fireInterval_   = 0.08f;
 
+    TPROPERTY(Edit, Category = "Normal Bullet Speed", ClampMin = 5, ClampMax = 100, Speed = 1)
     float normalBulletSpeedMin_      = 20.0f;
+    TPROPERTY(Edit, Category = "Normal Bullet Speed", ClampMin = 5, ClampMax = 100, Speed = 1)
     float normalBulletSpeedMax_      = 35.0f;
+    TPROPERTY(Edit, Category = "Penetrating Bullet Speed", ClampMin = 5, ClampMax = 50, Speed = 1)
     float penetratingBulletSpeedMin_ = 10.0f;
+    TPROPERTY(Edit, Category = "Penetrating Bullet Speed", ClampMin = 5, ClampMax = 50, Speed = 1)
     float penetratingBulletSpeedMax_ = 20.0f;
+    TPROPERTY(Edit, Category = "Bullet Type Ratio", ClampMin = 0, ClampMax = 1, Speed = 0.01)
     float penetratingRatio_          = 0.3f;
 
     //ランタイム状態

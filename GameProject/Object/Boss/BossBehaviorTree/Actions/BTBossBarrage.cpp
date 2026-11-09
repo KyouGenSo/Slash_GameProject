@@ -108,58 +108,9 @@ void BTBossBarrage::FireRandomBullet(Boss* boss) {
     }
 }
 
-void BTBossBarrage::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("moveDuration"))              moveDuration_ = params["moveDuration"];
-    if (params.contains("chargeTime"))                chargeTime_ = params["chargeTime"];
-    if (params.contains("firingDuration"))            firingDuration_ = params["firingDuration"];
-    if (params.contains("recoveryTime"))              recoveryTime_ = params["recoveryTime"];
-    if (params.contains("fireInterval"))              fireInterval_ = params["fireInterval"];
-    if (params.contains("normalBulletSpeedMin"))      normalBulletSpeedMin_ = params["normalBulletSpeedMin"];
-    if (params.contains("normalBulletSpeedMax"))      normalBulletSpeedMax_ = params["normalBulletSpeedMax"];
-    if (params.contains("penetratingBulletSpeedMin")) penetratingBulletSpeedMin_ = params["penetratingBulletSpeedMin"];
-    if (params.contains("penetratingBulletSpeedMax")) penetratingBulletSpeedMax_ = params["penetratingBulletSpeedMax"];
-    if (params.contains("penetratingRatio"))          penetratingRatio_ = params["penetratingRatio"];
-}
-
-void BTBossBarrage::OnExtractParameters(nlohmann::json& out) const {
-    out["moveDuration"]              = moveDuration_;
-    out["chargeTime"]                = chargeTime_;
-    out["firingDuration"]            = firingDuration_;
-    out["recoveryTime"]              = recoveryTime_;
-    out["fireInterval"]              = fireInterval_;
-    out["normalBulletSpeedMin"]      = normalBulletSpeedMin_;
-    out["normalBulletSpeedMax"]      = normalBulletSpeedMax_;
-    out["penetratingBulletSpeedMin"] = penetratingBulletSpeedMin_;
-    out["penetratingBulletSpeedMax"] = penetratingBulletSpeedMax_;
-    out["penetratingRatio"]          = penetratingRatio_;
-}
-
 #ifdef _DEBUG
-bool BTBossBarrage::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Move Duration##barrage", &moveDuration_, 0.05f, 0.1f, 2.0f))   changed = true;
-    if (ImGui::DragFloat("Charge Time##barrage", &chargeTime_, 0.05f, 0.0f, 3.0f))       changed = true;
-    if (ImGui::DragFloat("Firing Duration##barrage", &firingDuration_, 0.1f, 0.5f, 10.0f)) changed = true;
-    if (ImGui::DragFloat("Recovery Time##barrage", &recoveryTime_, 0.05f, 0.0f, 3.0f))   changed = true;
-
-    ImGui::SeparatorText("Fire Control");
-    if (ImGui::DragFloat("Fire Interval##barrage", &fireInterval_, 0.01f, 0.02f, 0.5f))  changed = true;
-    float fireRate = 1.0f / fireInterval_;
-    ImGui::Text("Fire Rate: %.1f shots/sec", fireRate);
-
-    ImGui::SeparatorText("Normal Bullet Speed");
-    if (ImGui::DragFloat("Speed Min##normal", &normalBulletSpeedMin_, 1.0f, 5.0f, 100.0f))      changed = true;
-    if (ImGui::DragFloat("Speed Max##normal", &normalBulletSpeedMax_, 1.0f, 5.0f, 100.0f))      changed = true;
-
-    ImGui::SeparatorText("Penetrating Bullet Speed");
-    if (ImGui::DragFloat("Speed Min##penetrating", &penetratingBulletSpeedMin_, 1.0f, 5.0f, 50.0f)) changed = true;
-    if (ImGui::DragFloat("Speed Max##penetrating", &penetratingBulletSpeedMax_, 1.0f, 5.0f, 50.0f)) changed = true;
-
-    ImGui::SeparatorText("Bullet Type Ratio");
-    if (ImGui::SliderFloat("Penetrating Ratio##barrage", &penetratingRatio_, 0.0f, 1.0f))           changed = true;
-
-    return changed;
+bool BTBossBarrage::DrawCustomImGui() {
+    ImGui::Text("Fire Rate: %.1f shots/sec", 1.0f / fireInterval_);
+    return false;
 }
 #endif

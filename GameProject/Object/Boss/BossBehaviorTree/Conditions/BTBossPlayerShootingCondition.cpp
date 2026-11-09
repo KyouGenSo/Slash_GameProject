@@ -50,28 +50,9 @@ void BTBossPlayerShootingCondition::Reset() {
     Tako::BTNode::Reset();
 }
 
-void BTBossPlayerShootingCondition::ApplyParameters(const nlohmann::json& params) {
-    if (params.contains("angleThreshold")) {
-        angleThreshold_ = params["angleThreshold"].get<float>();
-    }
-}
-
-nlohmann::json BTBossPlayerShootingCondition::ExtractParameters() const {
-    return {
-        {"angleThreshold", angleThreshold_}
-    };
-}
-
 #ifdef _DEBUG
-bool BTBossPlayerShootingCondition::DrawImGui() {
-    bool changed = false;
-
-    if (ImGui::DragFloat("Angle Threshold##shoot", &angleThreshold_, 1.0f, 0.0f, 180.0f, "%.1f deg")) {
-        changed = true;
-    }
-
+bool BTBossPlayerShootingCondition::DrawCustomImGui() {
     ImGui::TextDisabled("Success if: shooting && aim angle <= %.1f deg", angleThreshold_);
-
-    return changed;
+    return false;
 }
 #endif

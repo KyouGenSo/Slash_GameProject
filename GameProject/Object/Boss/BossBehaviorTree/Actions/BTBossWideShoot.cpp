@@ -3,10 +3,6 @@
 #include "../../../Player/Player.h"
 #include <cmath>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossWideShoot::BTBossWideShoot() {
@@ -143,51 +139,6 @@ Vector3 BTBossWideShoot::CalculateBulletDirection(const Vector3& baseDirection, 
     return rotatedDirection.Normalize();
 }
 
-void BTBossWideShoot::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("chargeTime"))             chargeTime_ = params["chargeTime"];
-    if (params.contains("recoveryTime"))           recoveryTime_ = params["recoveryTime"];
-    if (params.contains("firingDuration"))         firingDuration_ = params["firingDuration"];
-    if (params.contains("sweepAngle"))             sweepAngle_ = params["sweepAngle"];
-    if (params.contains("bulletsPerSweep"))        bulletsPerSweep_ = params["bulletsPerSweep"];
-    if (params.contains("sweepCount"))             sweepCount_ = params["sweepCount"];
-    if (params.contains("normalBulletSpeed"))      normalBulletSpeed_ = params["normalBulletSpeed"];
-    if (params.contains("penetratingBulletSpeed")) penetratingBulletSpeed_ = params["penetratingBulletSpeed"];
-    if (params.contains("penetratingCount"))       penetratingCount_ = params["penetratingCount"];
+void BTBossWideShoot::PostEditChange() {
+    penetratingCount_ = (std::min)(penetratingCount_, bulletsPerSweep_);
 }
-
-void BTBossWideShoot::OnExtractParameters(nlohmann::json& out) const {
-    out["chargeTime"]             = chargeTime_;
-    out["recoveryTime"]           = recoveryTime_;
-    out["firingDuration"]         = firingDuration_;
-    out["sweepAngle"]             = sweepAngle_;
-    out["bulletsPerSweep"]        = bulletsPerSweep_;
-    out["sweepCount"]             = sweepCount_;
-    out["normalBulletSpeed"]      = normalBulletSpeed_;
-    out["penetratingBulletSpeed"] = penetratingBulletSpeed_;
-    out["penetratingCount"]       = penetratingCount_;
-}
-
-#ifdef _DEBUG
-bool BTBossWideShoot::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Time Control");
-    if (ImGui::DragFloat("Charge Time##wide", &chargeTime_, 0.05f, 0.0f, 3.0f))       changed = true;
-    if (ImGui::DragFloat("Recovery Time##wide", &recoveryTime_, 0.05f, 0.0f, 3.0f))   changed = true;
-    if (ImGui::DragFloat("Firing Duration##wide", &firingDuration_, 0.1f, 0.1f, 5.0f)) changed = true;
-
-    ImGui::SeparatorText("Sweep Control");
-    if (ImGui::SliderAngle("Sweep Angle##wide", &sweepAngle_, 0.0f, 90.0f))           changed = true;
-    if (ImGui::DragInt("Bullets Per Sweep##wide", &bulletsPerSweep_, 1, 1, 30))       changed = true;
-    if (ImGui::DragInt("Sweep Count##wide", &sweepCount_, 1, 1, 5))                   changed = true;
-
-    ImGui::SeparatorText("Bullet Speed");
-    if (ImGui::DragFloat("Normal Speed##wide", &normalBulletSpeed_, 1.0f, 5.0f, 100.0f))                changed = true;
-    if (ImGui::DragFloat("Penetrating Speed##wide", &penetratingBulletSpeed_, 1.0f, 5.0f, 50.0f))       changed = true;
-
-    ImGui::SeparatorText("Bullet Type");
-    if (ImGui::DragInt("Penetrating Count##wide", &penetratingCount_, 1, 0, bulletsPerSweep_))          changed = true;
-
-    return changed;
-}
-#endif

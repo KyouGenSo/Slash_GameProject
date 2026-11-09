@@ -1,10 +1,6 @@
 #include "BTBossHPCondition.h"
 #include "../../Boss.h"
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 BTBossHPCondition::BTBossHPCondition() {
     name_ = "HPCondition";
 }
@@ -47,37 +43,3 @@ bool BTBossHPCondition::EvaluateCondition(float currentPercent) const {
     }
 }
 
-void BTBossHPCondition::ApplyParameters(const nlohmann::json& params) {
-    if (params.contains("thresholdPercent")) {
-        thresholdPercent_ = params["thresholdPercent"].get<float>();
-    }
-    if (params.contains("comparison")) {
-        comparison_ = static_cast<Comparison>(params["comparison"].get<int>());
-    }
-}
-
-nlohmann::json BTBossHPCondition::ExtractParameters() const {
-    return {
-        {"thresholdPercent", thresholdPercent_},
-        {"comparison", static_cast<int>(comparison_)}
-    };
-}
-
-#ifdef _DEBUG
-bool BTBossHPCondition::DrawImGui() {
-    bool changed = false;
-
-    if (ImGui::DragFloat("HP Threshold %##hp", &thresholdPercent_, 1.0f, 0.0f, 100.0f, "%.1f%%")) {
-        changed = true;
-    }
-
-    int comp = static_cast<int>(comparison_);
-    const char* compItems[] = { "Less (<)", "Less Or Equal (<=)", "Greater (>)", "Greater Or Equal (>=)" };
-    if (ImGui::Combo("Comparison##hp", &comp, compItems, IM_ARRAYSIZE(compItems))) {
-        comparison_ = static_cast<Comparison>(comp);
-        changed = true;
-    }
-
-    return changed;
-}
-#endif

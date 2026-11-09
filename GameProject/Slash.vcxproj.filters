@@ -66,8 +66,20 @@
     <Filter Include="Object\Boss\BossBehaviorTree\Actions\Attack">
       <UniqueIdentifier>{c0bb8d4c-7774-4e03-8475-e4f8e5fa7fe5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script">
+      <UniqueIdentifier>{841b436a-130b-406c-8a9e-ee7fe1399829}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Script\DestroyOnHit.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\Mover.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\Spinner.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
     <ClCompile Include="MyGame\MyGame.cpp">
       <Filter>MyGame</Filter>
     </ClCompile>
@@ -314,6 +326,15 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Script\DestroyOnHit.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\Mover.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\Spinner.h">
+      <Filter>Script</Filter>
+    </ClInclude>
     <ClInclude Include="Collision\CollisionTypeId.h">
       <Filter>Collision</Filter>
     </ClInclude>

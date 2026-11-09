@@ -43,44 +43,13 @@ void BTBossDistanceCondition::Reset() {
     Tako::BTNode::Reset();
 }
 
-void BTBossDistanceCondition::ApplyParameters(const nlohmann::json& params) {
-    if (params.contains("minDistance")) {
-        minDistance_ = params["minDistance"].get<float>();
-    }
-    if (params.contains("maxDistance")) {
-        maxDistance_ = params["maxDistance"].get<float>();
-    }
-}
-
-nlohmann::json BTBossDistanceCondition::ExtractParameters() const {
-    return {
-        {"minDistance", minDistance_},
-        {"maxDistance", maxDistance_}
-    };
+void BTBossDistanceCondition::PostEditChange() {
+    maxDistance_ = (std::max)(maxDistance_, minDistance_);
 }
 
 #ifdef _DEBUG
-bool BTBossDistanceCondition::DrawImGui() {
-    bool changed = false;
-
-    if (ImGui::DragFloat("Min Distance##dist", &minDistance_, 0.5f, 0.0f, 100.0f, "%.1f")) {
-        // min が max を超えないように
-        if (minDistance_ > maxDistance_) {
-            minDistance_ = maxDistance_;
-        }
-        changed = true;
-    }
-
-    if (ImGui::DragFloat("Max Distance##dist", &maxDistance_, 0.5f, 0.0f, 100.0f, "%.1f")) {
-        // max が min を下回らないように
-        if (maxDistance_ < minDistance_) {
-            maxDistance_ = minDistance_;
-        }
-        changed = true;
-    }
-
+bool BTBossDistanceCondition::DrawCustomImGui() {
     ImGui::TextDisabled("Success if: %.1f <= distance <= %.1f", minDistance_, maxDistance_);
-
-    return changed;
+    return false;
 }
 #endif

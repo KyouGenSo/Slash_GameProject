@@ -131,29 +131,11 @@ void BTBossApproach::UpdateApproachMovement(Boss* boss, float deltaTime) {
     }
 }
 
-nlohmann::json BTBossApproach::ExtractParameters() const {
-    return {
-        {"approachSpeed", approachSpeed_},
-        {"targetDistance", targetDistance_}
-    };
-}
-
 #ifdef _DEBUG
-bool BTBossApproach::DrawImGui() {
-    bool changed = false;
-
-    if (ImGui::DragFloat("Approach Speed##approach", &approachSpeed_, 1.0f, 10.0f, 200.0f)) {
-        changed = true;
-    }
-    if (ImGui::DragFloat("Target Distance##approach", &targetDistance_, 0.5f, 1.0f, 50.0f)) {
-        changed = true;
-    }
-
-    ImGui::Separator();
-    ImGui::Text("Runtime Info:");
+bool BTBossApproach::DrawCustomImGui() {
+    ImGui::SeparatorText("Runtime Info");
     ImGui::Text("Duration: %.2f sec", approachDuration_);
     ImGui::Text("Elapsed: %.2f sec", elapsedTime_);
-
-    return changed;
+    return false;
 }
 #endif

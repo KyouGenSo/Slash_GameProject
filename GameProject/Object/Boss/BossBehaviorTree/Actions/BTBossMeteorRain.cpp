@@ -8,10 +8,6 @@
 #include <cmath>
 #include <algorithm>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossMeteorRain::BTBossMeteorRain() {
@@ -287,78 +283,6 @@ void BTBossMeteorRain::EndImpactPhase(Boss* /*boss*/) {
     }
 }
 
-void BTBossMeteorRain::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("chargeTime"))            chargeTime_ = params["chargeTime"];
-    if (params.contains("launchDuration"))        launchDuration_ = params["launchDuration"];
-    if (params.contains("warningDuration"))       warningDuration_ = params["warningDuration"];
-    if (params.contains("blinkDuration"))         blinkDuration_ = params["blinkDuration"];
-    if (params.contains("impactDuration"))        impactDuration_ = params["impactDuration"];
-    if (params.contains("recoveryTime"))          recoveryTime_ = params["recoveryTime"];
-    if (params.contains("minImpacts"))            minImpacts_ = params["minImpacts"];
-    if (params.contains("maxImpacts"))            maxImpacts_ = params["maxImpacts"];
-    if (params.contains("impactRadius"))          impactRadius_ = params["impactRadius"];
-    if (params.contains("damage"))                damage_ = params["damage"];
-    if (params.contains("blinkFrequency"))        blinkFrequency_ = params["blinkFrequency"];
-    if (params.contains("launchSpeed"))           launchSpeed_ = params["launchSpeed"];
-    if (params.contains("launchSpreadXZ"))        launchSpreadXZ_ = params["launchSpreadXZ"];
-    if (params.contains("fallSpeed"))             fallSpeed_ = params["fallSpeed"];
-    if (params.contains("fallHeight"))            fallHeight_ = params["fallHeight"];
-    if (params.contains("horizontalSpeed"))       horizontalSpeed_ = params["horizontalSpeed"];
-    if (params.contains("horizontalBulletCount")) horizontalBulletCount_ = params["horizontalBulletCount"];
+void BTBossMeteorRain::PostEditChange() {
+    maxImpacts_ = (std::max)(maxImpacts_, minImpacts_);
 }
-
-void BTBossMeteorRain::OnExtractParameters(nlohmann::json& out) const {
-    out["chargeTime"]            = chargeTime_;
-    out["launchDuration"]        = launchDuration_;
-    out["warningDuration"]       = warningDuration_;
-    out["blinkDuration"]         = blinkDuration_;
-    out["impactDuration"]        = impactDuration_;
-    out["recoveryTime"]          = recoveryTime_;
-    out["minImpacts"]            = minImpacts_;
-    out["maxImpacts"]            = maxImpacts_;
-    out["impactRadius"]          = impactRadius_;
-    out["damage"]                = damage_;
-    out["blinkFrequency"]        = blinkFrequency_;
-    out["launchSpeed"]           = launchSpeed_;
-    out["launchSpreadXZ"]        = launchSpreadXZ_;
-    out["fallSpeed"]             = fallSpeed_;
-    out["fallHeight"]            = fallHeight_;
-    out["horizontalSpeed"]       = horizontalSpeed_;
-    out["horizontalBulletCount"] = horizontalBulletCount_;
-}
-
-#ifdef _DEBUG
-bool BTBossMeteorRain::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Charge Time##meteor", &chargeTime_, 0.05f, 0.0f, 3.0f))         changed = true;
-    if (ImGui::DragFloat("Launch Duration##meteor", &launchDuration_, 0.05f, 0.1f, 3.0f)) changed = true;
-    if (ImGui::DragFloat("Warning Duration##meteor", &warningDuration_, 0.05f, 0.1f, 5.0f)) changed = true;
-    if (ImGui::DragFloat("Blink Duration##meteor", &blinkDuration_, 0.05f, 0.1f, 3.0f))   changed = true;
-    if (ImGui::DragFloat("Impact Duration##meteor", &impactDuration_, 0.05f, 0.1f, 3.0f)) changed = true;
-    if (ImGui::DragFloat("Recovery Time##meteor", &recoveryTime_, 0.05f, 0.0f, 3.0f))     changed = true;
-
-    ImGui::SeparatorText("Attack Parameters");
-    if (ImGui::DragInt("Min Impacts##meteor", &minImpacts_, 1, 1, kMaxImpacts))           changed = true;
-    if (ImGui::DragInt("Max Impacts##meteor", &maxImpacts_, 1, 1, kMaxImpacts))           changed = true;
-    if (ImGui::DragFloat("Impact Radius##meteor", &impactRadius_, 0.5f, 1.0f, 20.0f))     changed = true;
-    if (ImGui::DragFloat("Damage##meteor", &damage_, 0.5f, 1.0f, 50.0f))                  changed = true;
-    if (ImGui::DragFloat("Blink Frequency##meteor", &blinkFrequency_, 0.5f, 1.0f, 30.0f)) changed = true;
-
-    ImGui::SeparatorText("Launch Parameters");
-    if (ImGui::DragFloat("Launch Speed##meteor", &launchSpeed_, 1.0f, 5.0f, 100.0f))      changed = true;
-    if (ImGui::DragFloat("Launch Spread XZ##meteor", &launchSpreadXZ_, 0.5f, 0.0f, 20.0f)) changed = true;
-    if (ImGui::DragFloat("Fall Speed##meteor", &fallSpeed_, 1.0f, 5.0f, 100.0f))          changed = true;
-    if (ImGui::DragFloat("Fall Height##meteor", &fallHeight_, 1.0f, 5.0f, 100.0f))        changed = true;
-    if (ImGui::DragFloat("Horizontal Speed##meteor", &horizontalSpeed_, 1.0f, 5.0f, 100.0f))                 changed = true;
-    if (ImGui::DragInt("Horizontal Bullet Count##meteor", &horizontalBulletCount_, 1, 1, 20))                changed = true;
-
-    if (minImpacts_ > maxImpacts_) {
-        maxImpacts_ = minImpacts_;
-        changed = true;
-    }
-
-    return changed;
-}
-#endif

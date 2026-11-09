@@ -8,7 +8,10 @@ class Boss;
 /// <summary>
 /// ランダム方向へエリア内で一定距離ダッシュする
 /// </summary>
+TCLASS()
 class BTBossDash : public Tako::BTNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDirectionEpsilon = 0.01f;
 
@@ -24,21 +27,6 @@ public: //メンバー関数
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) override;
 
     void Reset() override;
-
-    void ApplyParameters(const nlohmann::json& params) override {
-        if (params.contains("dashSpeed")) {
-            dashSpeed_ = params["dashSpeed"];
-        }
-        if (params.contains("dashDuration")) {
-            dashDuration_ = params["dashDuration"];
-        }
-    }
-
-    nlohmann::json ExtractParameters() const override;
-
-#ifdef _DEBUG
-    bool DrawImGui() override;
-#endif
 
     //==================================
     //Setter
@@ -69,7 +57,9 @@ private: //非公開関数
 private: //メンバー変数
     //ダッシュ方向・パラメータ
     Tako::Vector3 dashDirection_;
+    TPROPERTY(Edit, ClampMin = 10, ClampMax = 200, Speed = 1)
     float         dashSpeed_     = 60.0f;
+    TPROPERTY(Edit, ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float         dashDuration_  = 0.5f;
 
     //ランタイム状態
@@ -79,8 +69,12 @@ private: //メンバー変数
     bool          isFirstExecute_ = true;
 
     //距離・振動パラメータ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 100, Speed = 0.1)
     float minDistance_   = 10.0f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 100, Speed = 0.1)
     float maxDistance_   = 50.0f;
+    TPROPERTY(Edit, Category = "Effect", ClampMin = 1, ClampMax = 100, Speed = 1)
     float vibrationFreq_ = 50.0f;  ///< ダッシュ中の上下振動の周波数
+    TPROPERTY(Edit, Category = "Effect", ClampMin = 0, ClampMax = 0.5, Speed = 0.01)
     float vibrationAmp_  = 0.05f;  ///< ダッシュ中の上下振動の振幅
 };

@@ -18,7 +18,10 @@ class Boss;
 /// ボスを公転する 4 渦点それぞれに 3 種の ForceField プリセット（Attract/Directional/Vortex）を
 /// 重ね、合計 12 力場で合成トルネードを作る。持続中は内側ほど強い DoT を与える。
 /// </summary>
+TCLASS()
 class BTBossVortexTempest : public AttackNode {
+    GENERATED_BODY()
+
 public: //定数
     static constexpr int kVortexCount = 4;
     static constexpr int kFieldsPerVortex = 3;  ///< Attract + Dir + Vortex
@@ -63,12 +66,8 @@ protected: //メンバー関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
 #ifdef _DEBUG
-    bool OnDrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
 private: //非公開関数
@@ -81,34 +80,48 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 5, Speed = 0.05)
     float warningTime_ = 1.5f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float expandTime_  = 0.5f;  ///< 強度ランプアップ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 15, Speed = 0.1)
     float sustainTime_ = 4.5f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float decayTime_   = 0.5f;  ///< ランプダウン + 硬直
 
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 30, Speed = 0.5)
     float orbitRadius_  = 8.0f;  ///< 公転半径
+    TPROPERTY(Edit, ClampMin = -5, ClampMax = 5, Speed = 0.05)
     float angularSpeed_ = 0.6f;  ///< rad/秒
 
+    TPROPERTY(Edit, DisplayName = "Min DoT", ClampMin = 0, ClampMax = 100, Speed = 0.5)
     float minDoT_ = 5.0f;   ///< 外周時の DoT（damage/秒）
+    TPROPERTY(Edit, DisplayName = "Max DoT", ClampMin = 0, ClampMax = 100, Speed = 0.5)
     float maxDoT_ = 15.0f;  ///< 中心時の DoT（damage/秒）
 
     /// <summary>
     /// DoT 適用間隔（秒）。毎フレーム OnHit を呼ぶと HitFlash/Shake が連打されるため、
     /// 累積バッファ + Tick 方式で間引く。
     /// </summary>
+    TPROPERTY(Edit, DisplayName = "DoT Tick Interval", ClampMin = 0.05, ClampMax = 5, Speed = 0.05)
     float damageTickInterval_ = 0.5f;
 
     //ForceField プリセット名
+    TPROPERTY(Visible, Category = "Presets")
     std::string attractPresetName_ = "boss_vortexattacck_attract";
+    TPROPERTY(Visible, Category = "Presets")
     std::string dirPresetName_     = "boss_vortexattacck_dir";
+    TPROPERTY(Visible, Category = "Presets")
     std::string vortexPresetName_  = "boss_vortexattack_vortex";
 
     //エミッター名
+    TPROPERTY(Visible, Category = "Presets")
     std::string vortexEmitterBaseName_ = "boss_vortex";
 
     /// <summary>
     /// 予兆点滅周波数（Hz）
     /// </summary>
+    TPROPERTY(Edit, DisplayName = "Marker Blink Hz", ClampMin = 0.5, ClampMax = 20, Speed = 0.1)
     float markerBlinkFrequency_ = 4.0f;
 
     //ランタイム状態

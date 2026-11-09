@@ -3,10 +3,6 @@
 #include "../../../Player/Player.h"
 #include <cmath>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossShoot::BTBossShoot() {
@@ -80,30 +76,3 @@ Vector3 BTBossShoot::CalculateBulletDirection(const Vector3& baseDirection, floa
     return rotatedDirection.Normalize();
 }
 
-void BTBossShoot::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("chargeTime"))   chargeTime_ = params["chargeTime"];
-    if (params.contains("bulletSpeed"))  bulletSpeed_ = params["bulletSpeed"];
-    if (params.contains("spreadAngle"))  spreadAngle_ = params["spreadAngle"];
-    if (params.contains("recoveryTime")) recoveryTime_ = params["recoveryTime"];
-    if (params.contains("bulletCount"))  bulletCount_ = params["bulletCount"];
-}
-
-void BTBossShoot::OnExtractParameters(nlohmann::json& out) const {
-    out["chargeTime"]   = chargeTime_;
-    out["recoveryTime"] = recoveryTime_;
-    out["bulletSpeed"]  = bulletSpeed_;
-    out["spreadAngle"]  = spreadAngle_;
-    out["bulletCount"]  = bulletCount_;
-}
-
-#ifdef _DEBUG
-bool BTBossShoot::OnDrawImGui() {
-    bool changed = false;
-    if (ImGui::DragFloat("Charge Time##shoot", &chargeTime_, 0.05f, 0.0f, 3.0f))     changed = true;
-    if (ImGui::DragFloat("Recovery Time##shoot", &recoveryTime_, 0.05f, 0.0f, 3.0f)) changed = true;
-    if (ImGui::DragFloat("Bullet Speed##shoot", &bulletSpeed_, 1.0f, 5.0f, 100.0f))  changed = true;
-    if (ImGui::SliderAngle("Spread Angle##shoot", &spreadAngle_, 0.0f, 45.0f))       changed = true;
-    if (ImGui::DragInt("Bullet Count##shoot", &bulletCount_, 1, 1, 10))              changed = true;
-    return changed;
-}
-#endif

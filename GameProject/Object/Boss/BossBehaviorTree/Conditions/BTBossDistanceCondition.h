@@ -5,7 +5,10 @@
 /// <summary>
 /// プレイヤーとの水平距離が指定範囲内かを判定する条件ノード
 /// </summary>
+TCLASS()
 class BTBossDistanceCondition : public Tako::BTNode {
+    GENERATED_BODY()
+
 public: //メンバー関数
     BTBossDistanceCondition();
     virtual ~BTBossDistanceCondition() = default;
@@ -17,11 +20,9 @@ public: //メンバー関数
     /// <returns>範囲内なら Success。範囲外または boss/player が未設定なら Failure</returns>
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) override;
     void Reset() override;
-    void ApplyParameters(const nlohmann::json& params) override;
-    nlohmann::json ExtractParameters() const override;
-
+    void PostEditChange() override;
 #ifdef _DEBUG
-    bool DrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
     //=============================
@@ -37,6 +38,8 @@ public: //メンバー関数
     float GetMaxDistance() const { return maxDistance_; }
 
 private: //メンバー変数
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 100, Speed = 0.5)
     float minDistance_ = 0.0f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 100, Speed = 0.5)
     float maxDistance_ = 15.0f;
 };

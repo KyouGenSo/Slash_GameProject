@@ -7,10 +7,6 @@
 #include <algorithm>
 #include <cmath>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossRingShockwave::BTBossRingShockwave() {
@@ -156,77 +152,3 @@ void BTBossRingShockwave::OnCleanup() {
     traveled_ = 0.0f;
 }
 
-void BTBossRingShockwave::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("warningTime"))        warningTime_ = params["warningTime"];
-    if (params.contains("moveSpeed"))          moveSpeed_ = params["moveSpeed"];
-    if (params.contains("initialScale"))       initialScale_ = params["initialScale"];
-    if (params.contains("maxScale"))           maxScale_ = params["maxScale"];
-    if (params.contains("maxDistance"))        maxDistance_ = params["maxDistance"];
-    if (params.contains("damage"))             damage_ = params["damage"];
-    if (params.contains("fadeTime"))           fadeTime_ = params["fadeTime"];
-    if (params.contains("recoveryTime"))       recoveryTime_ = params["recoveryTime"];
-    if (params.contains("colliderY"))          colliderY_ = params["colliderY"];
-    if (params.contains("colliderScale"))      colliderScale_ = params["colliderScale"];
-    if (params.contains("spawnHeight"))        spawnHeight_ = params["spawnHeight"];
-    if (params.contains("spawnOffsetForward")) spawnOffsetForward_ = params["spawnOffsetForward"];
-    if (params.contains("segmentCount"))       segmentCount_ = params["segmentCount"];
-    if (params.contains("blinkFrequency"))     blinkFrequency_ = params["blinkFrequency"];
-    if (params.contains("uvScrollU"))          uvScrollU_ = params["uvScrollU"];
-    if (params.contains("uvScrollV"))          uvScrollV_ = params["uvScrollV"];
-}
-
-void BTBossRingShockwave::OnExtractParameters(nlohmann::json& out) const {
-    out["warningTime"]        = warningTime_;
-    out["moveSpeed"]          = moveSpeed_;
-    out["initialScale"]       = initialScale_;
-    out["maxScale"]           = maxScale_;
-    out["maxDistance"]        = maxDistance_;
-    out["damage"]             = damage_;
-    out["fadeTime"]           = fadeTime_;
-    out["recoveryTime"]       = recoveryTime_;
-    out["colliderY"]          = colliderY_;
-    out["colliderScale"]      = colliderScale_;
-    out["spawnHeight"]        = spawnHeight_;
-    out["spawnOffsetForward"] = spawnOffsetForward_;
-    out["segmentCount"]       = segmentCount_;
-    out["blinkFrequency"]     = blinkFrequency_;
-    out["uvScrollU"]          = uvScrollU_;
-    out["uvScrollV"]          = uvScrollV_;
-}
-
-#ifdef _DEBUG
-bool BTBossRingShockwave::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Warning Time##ringshock", &warningTime_, 0.05f, 0.1f, 5.0f))          changed = true;
-    if (ImGui::DragFloat("Fade Time##ringshock", &fadeTime_, 0.05f, 0.0f, 2.0f))                changed = true;
-    if (ImGui::DragFloat("Recovery Time##ringshock", &recoveryTime_, 0.05f, 0.0f, 3.0f))        changed = true;
-
-    ImGui::SeparatorText("Shockwave Motion");
-    if (ImGui::DragFloat("Move Speed##ringshock", &moveSpeed_, 0.5f, 1.0f, 60.0f))              changed = true;
-    if (ImGui::DragFloat("Max Distance##ringshock", &maxDistance_, 0.5f, 5.0f, 100.0f))         changed = true;
-    if (ImGui::DragFloat("Spawn Offset Forward##ringshock", &spawnOffsetForward_, 0.1f, 0.0f, 10.0f)) changed = true;
-
-    ImGui::SeparatorText("Shockwave Scale");
-    if (ImGui::DragFloat("Initial Scale##ringshock", &initialScale_, 0.1f, 0.5f, 20.0f))        changed = true;
-    if (ImGui::DragFloat("Max Scale##ringshock", &maxScale_, 0.1f, 1.0f, 50.0f))                changed = true;
-
-    ImGui::SeparatorText("UV Scroll");
-    if (ImGui::DragFloat("UV Scroll U##ringshock", &uvScrollU_, 0.05f, -5.0f, 5.0f))            changed = true;
-    if (ImGui::DragFloat("UV Scroll V##ringshock", &uvScrollV_, 0.05f, -5.0f, 5.0f))            changed = true;
-
-    ImGui::SeparatorText("Collider");
-    if (ImGui::DragInt("Segment Count##ringshock", &segmentCount_, 1,
-                       RingColliderGroup::kMinSegments, RingColliderGroup::kMaxSegments))       changed = true;
-    if (ImGui::DragFloat("Collider Y##ringshock", &colliderY_, 0.1f, 0.0f, 5.0f))               changed = true;
-    if (ImGui::DragFloat("Collider Scale##ringshock", &colliderScale_, 0.05f, 0.1f, 3.0f))      changed = true;
-    if (ImGui::DragFloat("Spawn Height##ringshock", &spawnHeight_, 0.05f, 0.0f, 3.0f))          changed = true;
-
-    ImGui::SeparatorText("Attack Parameters");
-    if (ImGui::DragFloat("Damage##ringshock", &damage_, 0.5f, 1.0f, 50.0f))                     changed = true;
-    if (ImGui::DragFloat("Blink Frequency##ringshock", &blinkFrequency_, 0.5f, 1.0f, 30.0f))    changed = true;
-
-    return changed;
-}
-#endif

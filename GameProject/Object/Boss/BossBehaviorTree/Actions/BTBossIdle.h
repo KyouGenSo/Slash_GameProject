@@ -7,7 +7,10 @@ class Boss;
 /// <summary>
 /// プレイヤーを向きつつ idleDuration_ だけ待機する
 /// </summary>
+TCLASS()
 class BTBossIdle : public Tako::BTNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDirectionEpsilon = 0.01f;
 
@@ -23,18 +26,6 @@ public: //メンバー関数
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) override;
 
     void Reset() override;
-
-    void ApplyParameters(const nlohmann::json& params) override {
-        if (params.contains("idleDuration")) {
-            idleDuration_ = params["idleDuration"];
-        }
-    }
-
-    nlohmann::json ExtractParameters() const override;
-
-#ifdef _DEBUG
-    bool DrawImGui() override;
-#endif
 
     //================================
     //Setter
@@ -56,7 +47,9 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 10, Speed = 0.1)
     float idleDuration_  = 2.0f;
+    TPROPERTY(Edit, ClampMin = 0.1, ClampMax = 20, Speed = 0.1)
     float rotationSpeed_ = 5.0f;   ///< ラジアン/秒
 
     //ランタイム状態

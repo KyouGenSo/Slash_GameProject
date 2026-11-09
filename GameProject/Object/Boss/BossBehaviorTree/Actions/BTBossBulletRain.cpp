@@ -283,80 +283,13 @@ void BTBossBulletRain::UpdateBullet(int index, Boss* boss, float deltaTime) {
     b.stateTimer += deltaTime;
 }
 
-void BTBossBulletRain::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("chargeTime"))           chargeTime_ = params["chargeTime"];
-    if (params.contains("rainDuration"))         rainDuration_ = params["rainDuration"];
-    if (params.contains("spawnInterval"))        spawnInterval_ = params["spawnInterval"];
-    if (params.contains("warningDuration"))      warningDuration_ = params["warningDuration"];
-    if (params.contains("blinkDuration"))        blinkDuration_ = params["blinkDuration"];
-    if (params.contains("blinkFrequency"))       blinkFrequency_ = params["blinkFrequency"];
-    if (params.contains("fallHeight"))           fallHeight_ = params["fallHeight"];
-    if (params.contains("fallSpeed"))            fallSpeed_ = params["fallSpeed"];
-    if (params.contains("impactRadius"))         impactRadius_ = params["impactRadius"];
-    if (params.contains("impactActiveDuration")) impactActiveDuration_ = params["impactActiveDuration"];
-    if (params.contains("colliderY"))            colliderY_ = params["colliderY"];
-    if (params.contains("damage"))               damage_ = params["damage"];
-    if (params.contains("recoveryTime"))         recoveryTime_ = params["recoveryTime"];
-    if (params.contains("playerAimProbability")) playerAimProbability_ = params["playerAimProbability"];
-    if (params.contains("playerAimRadius"))      playerAimRadius_ = params["playerAimRadius"];
-    if (params.contains("stageMargin"))          stageMargin_ = params["stageMargin"];
-    if (params.contains("minSeparation"))        minSeparation_ = params["minSeparation"];
-}
-
-void BTBossBulletRain::OnExtractParameters(nlohmann::json& out) const {
-    out["chargeTime"]           = chargeTime_;
-    out["rainDuration"]         = rainDuration_;
-    out["spawnInterval"]        = spawnInterval_;
-    out["warningDuration"]      = warningDuration_;
-    out["blinkDuration"]        = blinkDuration_;
-    out["blinkFrequency"]       = blinkFrequency_;
-    out["fallHeight"]           = fallHeight_;
-    out["fallSpeed"]            = fallSpeed_;
-    out["impactRadius"]         = impactRadius_;
-    out["impactActiveDuration"] = impactActiveDuration_;
-    out["colliderY"]            = colliderY_;
-    out["damage"]               = damage_;
-    out["recoveryTime"]         = recoveryTime_;
-    out["playerAimProbability"] = playerAimProbability_;
-    out["playerAimRadius"]      = playerAimRadius_;
-    out["stageMargin"]          = stageMargin_;
-    out["minSeparation"]        = minSeparation_;
-}
-
 #ifdef _DEBUG
-bool BTBossBulletRain::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Charge Time##bulletRain", &chargeTime_, 0.05f, 0.0f, 3.0f))           changed = true;
-    if (ImGui::DragFloat("Warning Duration##bulletRain", &warningDuration_, 0.05f, 0.0f, 3.0f)) changed = true;
-    if (ImGui::DragFloat("Blink Duration##bulletRain", &blinkDuration_, 0.05f, 0.0f, 3.0f))     changed = true;
-    if (ImGui::DragFloat("Blink Frequency##bulletRain", &blinkFrequency_, 0.5f, 1.0f, 30.0f))   changed = true;
-    if (ImGui::DragFloat("Recovery Time##bulletRain", &recoveryTime_, 0.05f, 0.0f, 3.0f))       changed = true;
-
-    ImGui::SeparatorText("Spawn");
-    if (ImGui::DragFloat("Rain Duration##bulletRain", &rainDuration_, 0.1f, 0.1f, 60.0f))       changed = true;
-    if (ImGui::DragFloat("Spawn Interval##bulletRain", &spawnInterval_, 0.01f, 0.02f, 2.0f))    changed = true;
+bool BTBossBulletRain::DrawCustomImGui() {
     float interval = (std::max)(spawnInterval_, 0.01f);
     int totalBullets = static_cast<int>(rainDuration_ / interval) + 1;
     float lifecycle = warningDuration_ + blinkDuration_ + fallHeight_ / (std::max)(fallSpeed_, 0.01f) + impactActiveDuration_;
     int pool = std::clamp(static_cast<int>(std::ceil(lifecycle / interval)) + 2, 1, kMaxPoolSize);
     ImGui::TextDisabled("Bullets: %d | Pool: %d/%d", totalBullets, (std::min)(pool, totalBullets), kMaxPoolSize);
-
-    ImGui::SeparatorText("Fall & Impact");
-    if (ImGui::DragFloat("Fall Height##bulletRain", &fallHeight_, 1.0f, 5.0f, 100.0f))          changed = true;
-    if (ImGui::DragFloat("Fall Speed##bulletRain", &fallSpeed_, 1.0f, 5.0f, 200.0f))            changed = true;
-    if (ImGui::DragFloat("Impact Radius##bulletRain", &impactRadius_, 0.5f, 0.5f, 20.0f))       changed = true;
-    if (ImGui::DragFloat("Impact Active Duration##bulletRain", &impactActiveDuration_, 0.01f, 0.05f, 1.0f)) changed = true;
-    if (ImGui::DragFloat("Collider Y##bulletRain", &colliderY_, 0.1f, 0.0f, 5.0f))              changed = true;
-    if (ImGui::DragFloat("Damage##bulletRain", &damage_, 0.5f, 0.0f, 50.0f))                    changed = true;
-
-    ImGui::SeparatorText("Targeting");
-    if (ImGui::DragFloat("Player Aim Probability##bulletRain", &playerAimProbability_, 0.01f, 0.0f, 1.0f)) changed = true;
-    if (ImGui::DragFloat("Player Aim Radius##bulletRain", &playerAimRadius_, 0.5f, 0.0f, 20.0f)) changed = true;
-    if (ImGui::DragFloat("Stage Margin##bulletRain", &stageMargin_, 0.5f, 0.0f, 30.0f))         changed = true;
-    if (ImGui::DragFloat("Min Separation##bulletRain", &minSeparation_, 0.5f, 0.0f, 20.0f))     changed = true;
-
-    return changed;
+    return false;
 }
 #endif

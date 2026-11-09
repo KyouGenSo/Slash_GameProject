@@ -7,10 +7,6 @@
 
 #include <cmath>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossSlashAttack::BTBossSlashAttack() {
@@ -145,41 +141,3 @@ void BTBossSlashAttack::OnCleanup() {
     hasEndedAttack_ = false;
 }
 
-void BTBossSlashAttack::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("warningDuration")) warningDuration_ = params["warningDuration"];
-    if (params.contains("blinkDuration"))   blinkDuration_ = params["blinkDuration"];
-    if (params.contains("attackDuration"))  attackDuration_ = params["attackDuration"];
-    if (params.contains("recoveryTime"))    recoveryTime_ = params["recoveryTime"];
-    if (params.contains("attackRadius"))    attackRadius_ = params["attackRadius"];
-    if (params.contains("damage"))          damage_ = params["damage"];
-    if (params.contains("blinkFrequency"))  blinkFrequency_ = params["blinkFrequency"];
-}
-
-void BTBossSlashAttack::OnExtractParameters(nlohmann::json& out) const {
-    out["warningDuration"] = warningDuration_;
-    out["blinkDuration"]   = blinkDuration_;
-    out["attackDuration"]  = attackDuration_;
-    out["recoveryTime"]    = recoveryTime_;
-    out["attackRadius"]    = attackRadius_;
-    out["damage"]          = damage_;
-    out["blinkFrequency"]  = blinkFrequency_;
-}
-
-#ifdef _DEBUG
-bool BTBossSlashAttack::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Warning Duration##slash", &warningDuration_, 0.05f, 0.1f, 5.0f))   changed = true;
-    if (ImGui::DragFloat("Blink Duration##slash", &blinkDuration_, 0.05f, 0.1f, 3.0f))       changed = true;
-    if (ImGui::DragFloat("Attack Duration##slash", &attackDuration_, 0.05f, 0.1f, 3.0f))     changed = true;
-    if (ImGui::DragFloat("Recovery Time##slash", &recoveryTime_, 0.05f, 0.0f, 3.0f))         changed = true;
-
-    ImGui::SeparatorText("Attack Parameters");
-    if (ImGui::DragFloat("Attack Radius##slash", &attackRadius_, 0.5f, 1.0f, 30.0f))         changed = true;
-    if (ImGui::DragFloat("Damage##slash", &damage_, 0.5f, 1.0f, 50.0f))                      changed = true;
-    if (ImGui::DragFloat("Blink Frequency##slash", &blinkFrequency_, 0.5f, 1.0f, 30.0f))     changed = true;
-
-    return changed;
-}
-#endif

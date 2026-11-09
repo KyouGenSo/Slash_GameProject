@@ -1,10 +1,6 @@
 #include "BTBossPhaseCondition.h"
 #include "../../Boss.h"
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 BTBossPhaseCondition::BTBossPhaseCondition() {
     name_ = "PhaseCondition";
 }
@@ -46,39 +42,3 @@ bool BTBossPhaseCondition::EvaluateCondition(uint32_t currentPhase) const {
     }
 }
 
-void BTBossPhaseCondition::ApplyParameters(const nlohmann::json& params) {
-    if (params.contains("targetPhase")) {
-        targetPhase_ = params["targetPhase"].get<uint32_t>();
-    }
-    if (params.contains("comparison")) {
-        comparison_ = static_cast<Comparison>(params["comparison"].get<int>());
-    }
-}
-
-nlohmann::json BTBossPhaseCondition::ExtractParameters() const {
-    return {
-        {"targetPhase", targetPhase_},
-        {"comparison", static_cast<int>(comparison_)}
-    };
-}
-
-#ifdef _DEBUG
-bool BTBossPhaseCondition::DrawImGui() {
-    bool changed = false;
-
-    int phase = static_cast<int>(targetPhase_);
-    if (ImGui::DragInt("Target Phase##phase", &phase, 1, 1, 2)) {
-        targetPhase_ = static_cast<uint32_t>(phase);
-        changed = true;
-    }
-
-    int comp = static_cast<int>(comparison_);
-    const char* compItems[] = { "Equal (==)", "Not Equal (!=)", "Greater Or Equal (>=)", "Less Or Equal (<=)" };
-    if (ImGui::Combo("Comparison##phase", &comp, compItems, IM_ARRAYSIZE(compItems))) {
-        comparison_ = static_cast<Comparison>(comp);
-        changed = true;
-    }
-
-    return changed;
-}
-#endif

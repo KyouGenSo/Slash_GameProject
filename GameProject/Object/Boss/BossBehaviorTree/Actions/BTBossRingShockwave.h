@@ -11,7 +11,10 @@ class Boss;
 /// 半円リング衝撃波をボス前方へ発射する攻撃。予兆中はプレイヤーへ追従し、
 /// 発射時に方向を固定して前進しながら初期スケールから最大スケールへ拡大する。
 /// </summary>
+TCLASS()
 class BTBossRingShockwave : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kBlinkAlphaMin       = 0.15f;
     static constexpr float kBlinkAlphaAmplitude = 0.55f;
@@ -77,14 +80,6 @@ protected: //メンバー関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
-
 private: //非公開関数
     /// <summary>
     /// 前進距離に応じた現在のリング外半径（initialScale → maxScale の線形補間）
@@ -98,21 +93,37 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 5, Speed = 0.05)
     float warningTime_        = 1.0f;
+    TPROPERTY(Edit, Category = "Shockwave Motion", ClampMin = 1, ClampMax = 60, Speed = 0.5)
     float moveSpeed_          = 45.0f;
+    TPROPERTY(Edit, Category = "Shockwave Scale", ClampMin = 0.5, ClampMax = 20, Speed = 0.1)
     float initialScale_       = 15.0f;   ///< 発射時のリング外半径
+    TPROPERTY(Edit, Category = "Shockwave Scale", ClampMin = 1, ClampMax = 50, Speed = 0.1)
     float maxScale_           = 60.0f;   ///< 最大到達時のリング外半径
+    TPROPERTY(Edit, Category = "Shockwave Motion", ClampMin = 5, ClampMax = 100, Speed = 0.5)
     float maxDistance_        = 100.0f;  ///< 前進距離（到達で消滅開始）
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 50, Speed = 0.5)
     float damage_             = 10.0f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 2, Speed = 0.05)
     float fadeTime_           = 0.3f;
+    TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_       = 1.0f;
+    TPROPERTY(Edit, Category = "Collider", ClampMin = 0, ClampMax = 5, Speed = 0.1)
     float colliderY_          = -3.0f;  ///< 球コライダー中心の高さ
+    TPROPERTY(Edit, Category = "Collider", ClampMin = 0.1, ClampMax = 3, Speed = 0.05)
     float colliderScale_      = 0.1f;   ///< コライダー帯厚の倍率（帯中心は見た目のリングと一致）
+    TPROPERTY(Edit, Category = "Collider", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float spawnHeight_        = 0.1f;   ///< リングモデルの Y 座標
+    TPROPERTY(Edit, Category = "Shockwave Motion", ClampMin = 0, ClampMax = 10, Speed = 0.1)
     float spawnOffsetForward_ = 0.0f;   ///< ボス前方への発生オフセット
+    TPROPERTY(Edit, Category = "Collider", ClampMin = RingColliderGroup::kMinSegments, ClampMax = RingColliderGroup::kMaxSegments, Speed = 1)
     int   segmentCount_       = 16;     ///< 弧上の球コライダー数
+    TPROPERTY(Edit, Category = "Attack Parameters", ClampMin = 1, ClampMax = 30, Speed = 0.5)
     float blinkFrequency_     = 10.0f;
+    TPROPERTY(Edit, Category = "UV Scroll", DisplayName = "UV Scroll U", ClampMin = -5, ClampMax = 5, Speed = 0.05)
     float uvScrollU_          = 0.3f;   ///< テクスチャの円周方向スクロール速度（UV/秒）
+    TPROPERTY(Edit, Category = "UV Scroll", DisplayName = "UV Scroll V", ClampMin = -5, ClampMax = 5, Speed = 0.05)
     float uvScrollV_          = -1.2f;  ///< テクスチャの径方向スクロール速度（UV/秒）
 
     //ランタイム状態

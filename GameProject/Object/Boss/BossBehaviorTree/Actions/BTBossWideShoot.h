@@ -8,7 +8,10 @@ class Boss;
 /// <summary>
 /// 角度をスイープしながら連射する大範囲射撃。通常弾（速い）と貫通弾（遅い）を混ぜて発射する。
 /// </summary>
+TCLASS()
 class BTBossWideShoot : public AttackNode {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kDirectionEpsilon = 0.001f;
     static constexpr float kAngleEpsilon = 0.0001f;
@@ -52,13 +55,7 @@ protected: //メンバー関数
 
     void OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss) override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
-
-#ifdef _DEBUG
-    bool OnDrawImGui() override;
-#endif
+    void PostEditChange() override;
 
 private: //非公開関数
     void AimAtPlayer(Tako::BTBlackboard* blackboard, float deltaTime);
@@ -90,15 +87,24 @@ private: //非公開関数
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, Category = "Time Control", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float chargeTime_             = 0.8f;
+    TPROPERTY(Edit, Category = "Time Control", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float recoveryTime_           = 0.5f;
+    TPROPERTY(Edit, Category = "Time Control", ClampMin = 0.1, ClampMax = 5, Speed = 0.1)
     float firingDuration_         = 1.0f;     ///< 全体の発射時間（秒）
     float fireInterval_           = 0.0f;     ///< OnInitialize で算出
+    TPROPERTY(Edit, Angle, Category = "Sweep Control", ClampMin = 0, ClampMax = 90)
     float sweepAngle_             = 1.0472f;  ///< ラジアン、約 60 度
+    TPROPERTY(Edit, Category = "Sweep Control", ClampMin = 1, ClampMax = 30, Speed = 1)
     int   bulletsPerSweep_        = 12;
+    TPROPERTY(Edit, Category = "Sweep Control", ClampMin = 1, ClampMax = 5, Speed = 1)
     int   sweepCount_             = 2;
+    TPROPERTY(Edit, Category = "Bullet Speed", ClampMin = 5, ClampMax = 100, Speed = 1)
     float normalBulletSpeed_      = 40.0f;
+    TPROPERTY(Edit, Category = "Bullet Speed", ClampMin = 5, ClampMax = 50, Speed = 1)
     float penetratingBulletSpeed_ = 15.0f;
+    TPROPERTY(Edit, Category = "Bullet Type", ClampMin = 0, ClampMax = bulletsPerSweep_, Speed = 1)
     int   penetratingCount_       = 4;        ///< 1スイープあたり
 
     //ランタイム状態

@@ -1,0 +1,62 @@
+{
+  "type": "Actor",
+  "properties": {
+    "name": "SpinningCube",
+    "transform": {
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "translate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "components": {
+    "MeshComponent": {
+      "type": "MeshComponent",
+      "order": 0,
+      "properties": {
+        "model": "EngineResources/Model/white_cube.gltf",
+        "settingsName": "",
+        "offset": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "Spinner": {
+      "type": "Spinner",
+      "order": 1,
+      "properties": {
+        "speed": 3.1415927,
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ]
+      }
+    }
+  }
+}

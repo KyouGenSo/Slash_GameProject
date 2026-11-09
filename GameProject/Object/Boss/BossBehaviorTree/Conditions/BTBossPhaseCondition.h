@@ -5,8 +5,12 @@
 /// <summary>
 /// 現在のボスフェーズを指定値と比較する条件ノード
 /// </summary>
+TCLASS()
 class BTBossPhaseCondition : public Tako::BTNode {
+    GENERATED_BODY()
+
 public: //構造体
+    TENUM()
     enum class Comparison {
         Equal = 0,
         NotEqual = 1,
@@ -25,12 +29,6 @@ public: //メンバー関数
     /// <returns>比較条件を満たせば Success。満たさない、または boss が未設定なら Failure</returns>
     Tako::BTNodeStatus Execute(Tako::BTBlackboard* blackboard) override;
     void Reset() override;
-    void ApplyParameters(const nlohmann::json& params) override;
-    nlohmann::json ExtractParameters() const override;
-
-#ifdef _DEBUG
-    bool DrawImGui() override;
-#endif
 
     //=================================
     //Setter
@@ -53,6 +51,8 @@ private: //非公開関数
     bool EvaluateCondition(uint32_t currentPhase) const;
 
 private: //メンバー変数
+    TPROPERTY(Edit, ClampMin = 1, ClampMax = 2, Speed = 1)
     uint32_t   targetPhase_ = 2;
+    TPROPERTY(Edit, EnumAsInt)
     Comparison comparison_  = Comparison::Equal;
 };

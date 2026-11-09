@@ -5,10 +5,6 @@
 #include <cmath>
 #include <numbers>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossIdle::BTBossIdle() {
@@ -89,21 +85,3 @@ void BTBossIdle::LookAtPlayer(Tako::BTBlackboard* blackboard, float deltaTime) {
     }
 }
 
-nlohmann::json BTBossIdle::ExtractParameters() const {
-    return {{"idleDuration", idleDuration_}};
-}
-
-#ifdef _DEBUG
-bool BTBossIdle::DrawImGui() {
-    bool changed = false;
-
-    if (ImGui::DragFloat("Idle Duration##idle", &idleDuration_, 0.1f, 0.0f, 10.0f)) {
-        changed = true;
-    }
-    if (ImGui::DragFloat("Rotation Speed##idle", &rotationSpeed_, 0.1f, 0.1f, 20.0f)) {
-        changed = true;
-    }
-
-    return changed;
-}
-#endif

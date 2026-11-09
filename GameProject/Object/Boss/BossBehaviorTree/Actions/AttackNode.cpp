@@ -4,10 +4,6 @@
 #include "EmitterManager.h"
 #include <cmath>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 AttackNode::AttackNode() {
     name_ = "AttackNode";  // 派生クラスのコンストラクタで上書きされる
 }
@@ -104,30 +100,3 @@ Tako::Vector3 AttackNode::FacePlayerInstant(Tako::BTBlackboard* blackboard, floa
     return dir;
 }
 
-void AttackNode::ApplyParameters(const nlohmann::json& params) {
-    if (params.contains("isBypassRecoveryGuard")) {
-        isBypassRecoveryGuard_ = params["isBypassRecoveryGuard"];
-    }
-    OnApplyParameters(params);
-}
-
-nlohmann::json AttackNode::ExtractParameters() const {
-    nlohmann::json out = {
-        {"isBypassRecoveryGuard", isBypassRecoveryGuard_},
-    };
-    OnExtractParameters(out);
-    return out;
-}
-
-#ifdef _DEBUG
-bool AttackNode::DrawImGui() {
-    bool changed = false;
-    if (ImGui::Checkbox("Bypass Recovery Guard##attackNode", &isBypassRecoveryGuard_)) {
-        changed = true;
-    }
-    ImGui::TextDisabled("ON: Recovery 状態でなくても近接でスタン誘発");
-    ImGui::Separator();
-    if (OnDrawImGui()) changed = true;
-    return changed;
-}
-#endif

@@ -10,10 +10,6 @@
 #include <numbers>
 #include <DirectXMath.h>
 
-#ifdef _DEBUG
-#include "ImGuiManager.h"
-#endif
-
 using namespace Tako;
 
 BTBossTrackingLaser::BTBossTrackingLaser() {
@@ -241,63 +237,3 @@ void BTBossTrackingLaser::OnCleanup() {
     hasStoppedEmit_ = false;
 }
 
-void BTBossTrackingLaser::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("aimDuration"))       aimDuration_ = params["aimDuration"];
-    if (params.contains("blinkDuration"))     blinkDuration_ = params["blinkDuration"];
-    if (params.contains("attackDuration"))    attackDuration_ = params["attackDuration"];
-    if (params.contains("recoveryTime"))      recoveryTime_ = params["recoveryTime"];
-    if (params.contains("beamWidth"))         beamWidth_ = params["beamWidth"];
-    if (params.contains("endOffset"))         endOffset_ = params["endOffset"];
-    if (params.contains("beamHeight"))        beamHeight_ = params["beamHeight"];
-    if (params.contains("colliderHeight"))    colliderHeight_ = params["colliderHeight"];
-    if (params.contains("laserEmitDuration")) laserEmitDuration_ = params["laserEmitDuration"];
-    if (params.contains("damage"))            damage_ = params["damage"];
-    if (params.contains("blinkFrequency"))    blinkFrequency_ = params["blinkFrequency"];
-    if (params.contains("chargeOffset")) {
-        const auto& p = params["chargeOffset"];
-        chargeOffset_ = Vector3(p[0].get<float>(), p[1].get<float>(), p[2].get<float>());
-    }
-}
-
-void BTBossTrackingLaser::OnExtractParameters(nlohmann::json& out) const {
-    out["aimDuration"]       = aimDuration_;
-    out["blinkDuration"]     = blinkDuration_;
-    out["attackDuration"]    = attackDuration_;
-    out["recoveryTime"]      = recoveryTime_;
-    out["beamWidth"]         = beamWidth_;
-    out["endOffset"]         = endOffset_;
-    out["beamHeight"]        = beamHeight_;
-    out["colliderHeight"]    = colliderHeight_;
-    out["laserEmitDuration"] = laserEmitDuration_;
-    out["damage"]            = damage_;
-    out["blinkFrequency"]    = blinkFrequency_;
-    out["chargeOffset"]      = { chargeOffset_.x, chargeOffset_.y, chargeOffset_.z };
-}
-
-#ifdef _DEBUG
-bool BTBossTrackingLaser::OnDrawImGui() {
-    bool changed = false;
-
-    ImGui::SeparatorText("Phase Timing");
-    if (ImGui::DragFloat("Aim Duration##laser", &aimDuration_, 0.05f, 0.1f, 5.0f))         changed = true;
-    if (ImGui::DragFloat("Blink Duration##laser", &blinkDuration_, 0.05f, 0.1f, 3.0f))     changed = true;
-    if (ImGui::DragFloat("Attack Duration##laser", &attackDuration_, 0.05f, 0.05f, 3.0f))  changed = true;
-    if (ImGui::DragFloat("Recovery Time##laser", &recoveryTime_, 0.05f, 0.0f, 3.0f))       changed = true;
-    if (ImGui::DragFloat("Laser Emit Duration##laser", &laserEmitDuration_, 0.01f, 0.0f, 1.0f)) changed = true;
-
-    ImGui::SeparatorText("Beam Shape");
-    if (ImGui::DragFloat("Beam Width##laser", &beamWidth_, 0.1f, 0.2f, 10.0f))             changed = true;
-    if (ImGui::DragFloat("End Offset##laser", &endOffset_, 0.1f, 0.0f, 20.0f))             changed = true;
-    if (ImGui::DragFloat("Beam Height##laser", &beamHeight_, 0.1f, 0.0f, 10.0f))           changed = true;
-    if (ImGui::DragFloat("Collider Height##laser", &colliderHeight_, 0.1f, 0.5f, 10.0f))   changed = true;
-
-    ImGui::SeparatorText("Charge Effect");
-    if (ImGui::DragFloat3("Charge Offset##laser", &chargeOffset_.x, 0.1f))                 changed = true;
-
-    ImGui::SeparatorText("Attack Parameters");
-    if (ImGui::DragFloat("Damage##laser", &damage_, 0.5f, 1.0f, 50.0f))                    changed = true;
-    if (ImGui::DragFloat("Blink Frequency##laser", &blinkFrequency_, 0.5f, 1.0f, 30.0f))   changed = true;
-
-    return changed;
-}
-#endif

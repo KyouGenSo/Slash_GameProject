@@ -170,44 +170,14 @@ void BTBossRepelShockwave::OnCleanup() {
     barrierActivated_ = false;
 }
 
-void BTBossRepelShockwave::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("warningTime"))  warningTime_ = params["warningTime"];
-    if (params.contains("expandTime"))   expandTime_ = params["expandTime"];
-    if (params.contains("sustainTime"))  sustainTime_ = params["sustainTime"];
-    if (params.contains("maxRadius"))    maxRadius_ = params["maxRadius"];
-    if (params.contains("strength"))     strength_ = params["strength"];
-    if (params.contains("falloff"))      falloff_ = params["falloff"];
-    if (params.contains("affectMask") && params["affectMask"].is_number_unsigned()) {
-        affectMask_ = params["affectMask"].get<uint32_t>();
-    }
-}
-
-void BTBossRepelShockwave::OnExtractParameters(nlohmann::json& out) const {
-    out["warningTime"]      = warningTime_;
-    out["expandTime"]       = expandTime_;
-    out["sustainTime"]      = sustainTime_;
-    out["maxRadius"]        = maxRadius_;
-    out["strength"]         = strength_;
-    out["falloff"]          = falloff_;
-    out["affectMask"]       = affectMask_;
-}
-
 #ifdef _DEBUG
-bool BTBossRepelShockwave::OnDrawImGui() {
+bool BTBossRepelShockwave::DrawCustomImGui() {
     bool changed = false;
-    if (ImGui::DragFloat("Warning Time##repel",  &warningTime_,  0.05f, 0.0f, 3.0f))  changed = true;
-    if (ImGui::DragFloat("Expand Time##repel",   &expandTime_,   0.05f, 0.0f, 3.0f))  changed = true;
-    if (ImGui::DragFloat("Sustain Time##repel",  &sustainTime_,  0.05f, 0.0f, 3.0f))  changed = true;
-    if (ImGui::DragFloat("Max Radius##repel",    &maxRadius_,    0.5f,  0.0f, 50.0f)) changed = true;
-    if (ImGui::DragFloat("Strength##repel",      &strength_,     1.0f,  0.0f, 200.0f))changed = true;
-    if (ImGui::DragFloat("Falloff##repel",       &falloff_,      0.05f, 0.0f, 5.0f))  changed = true;
-
     int maskInt = static_cast<int>(affectMask_);
-    if (ImGui::CheckboxFlags("Affect Bullets##repel", &maskInt, GameForceField::AffectBullets)) changed = true;
-    if (ImGui::CheckboxFlags("Affect Player##repel",  &maskInt, GameForceField::AffectPlayer))  changed = true;
-    if (ImGui::CheckboxFlags("Affect Boss##repel",    &maskInt, GameForceField::AffectBoss))    changed = true;
+    if (ImGui::CheckboxFlags("Affect Bullets", &maskInt, GameForceField::AffectBullets)) changed = true;
+    if (ImGui::CheckboxFlags("Affect Player",  &maskInt, GameForceField::AffectPlayer))  changed = true;
+    if (ImGui::CheckboxFlags("Affect Boss",    &maskInt, GameForceField::AffectBoss))    changed = true;
     affectMask_ = static_cast<uint32_t>(maskInt);
-
     return changed;
 }
 #endif

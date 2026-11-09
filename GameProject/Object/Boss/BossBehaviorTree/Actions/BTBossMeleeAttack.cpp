@@ -262,56 +262,12 @@ void BTBossMeleeAttack::UpdateBlockPosition(Boss* boss) {
     }
 }
 
-void BTBossMeleeAttack::OnApplyParameters(const nlohmann::json& params) {
-    if (params.contains("prepareTime"))      prepareTime_ = params["prepareTime"];
-    if (params.contains("attackDuration"))   attackDuration_ = params["attackDuration"];
-    if (params.contains("recoveryTime"))     recoveryTime_ = params["recoveryTime"];
-    if (params.contains("blockRadius"))      blockRadius_ = params["blockRadius"];
-    if (params.contains("blockScale"))       blockScale_ = params["blockScale"];
-    if (params.contains("swingAngle"))       swingAngle_ = params["swingAngle"];
-    if (params.contains("rushDistance"))     rushDistance_ = params["rushDistance"];
-    if (params.contains("stopDistance"))     stopDistance_ = params["stopDistance"];
-    if (params.contains("comboInterval"))    comboInterval_ = params["comboInterval"];
-    if (params.contains("comboProbability")) comboProbability_ = params["comboProbability"];
-}
-
-void BTBossMeleeAttack::OnExtractParameters(nlohmann::json& out) const {
-    out["prepareTime"]      = prepareTime_;
-    out["attackDuration"]   = attackDuration_;
-    out["recoveryTime"]     = recoveryTime_;
-    out["blockRadius"]      = blockRadius_;
-    out["blockScale"]       = blockScale_;
-    out["swingAngle"]       = swingAngle_;
-    out["rushDistance"]     = rushDistance_;
-    out["stopDistance"]     = stopDistance_;
-    out["comboInterval"]    = comboInterval_;
-    out["comboProbability"] = comboProbability_;
-}
-
 #ifdef _DEBUG
-bool BTBossMeleeAttack::OnDrawImGui() {
-    bool changed = false;
-
-    if (ImGui::DragFloat("Prepare Time##melee", &prepareTime_, 0.05f, 0.0f, 3.0f))     changed = true;
-    if (ImGui::DragFloat("Attack Duration##melee", &attackDuration_, 0.05f, 0.0f, 3.0f)) changed = true;
-    if (ImGui::DragFloat("Recovery Time##melee", &recoveryTime_, 0.05f, 0.0f, 3.0f))   changed = true;
-    if (ImGui::DragFloat("Block Radius##melee", &blockRadius_, 0.1f, 0.5f, 10.0f))     changed = true;
-    if (ImGui::DragFloat("Block Scale##melee", &blockScale_, 0.1f, 0.1f, 5.0f))        changed = true;
-    if (ImGui::SliderAngle("Swing Angle##melee", &swingAngle_, 0.0f, 360.0f))          changed = true;
-    if (ImGui::DragFloat("Rush Distance##melee", &rushDistance_, 1.0f, 0.0f, 50.0f))   changed = true;
-    if (ImGui::DragFloat("Stop Distance##melee", &stopDistance_, 0.5f, 1.0f, 20.0f))   changed = true;
-
-    ImGui::Separator();
-    ImGui::Text("Combo Parameters:");
-    if (ImGui::SliderFloat("Combo Probability##melee", &comboProbability_, 0.0f, 1.0f)) changed = true;
-    if (ImGui::DragFloat("Combo Interval##melee", &comboInterval_, 0.05f, 0.1f, 2.0f))  changed = true;
-
-    ImGui::Separator();
-    ImGui::Text("Debug Info:");
+bool BTBossMeleeAttack::DrawCustomImGui() {
+    ImGui::SeparatorText("Debug Info");
     ImGui::Text("Mode: %s", isComboMode_ ? "COMBO (3 hits)" : "SINGLE (1 hit)");
     ImGui::Text("Combo: %d / %d", comboIndex_ + 1, comboMaxCount_);
     ImGui::Text("Swing Direction: %s", currentSwingDirection_ > 0 ? "Right->Left" : "Left->Right");
-
-    return changed;
+    return false;
 }
 #endif

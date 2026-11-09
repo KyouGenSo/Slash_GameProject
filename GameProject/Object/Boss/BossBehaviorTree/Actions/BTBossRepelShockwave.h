@@ -16,7 +16,10 @@ class Boss;
 /// <summary>
 /// ボス中心の放射状 Repel 力場。プレイヤー弾は速度逆転で吹き飛び、速度低下で消滅する（PlayerBullet 側で対応）。
 /// </summary>
+TCLASS()
 class BTBossRepelShockwave : public AttackNode {
+    GENERATED_BODY()
+
 public: //メンバー関数
     BTBossRepelShockwave();
     virtual ~BTBossRepelShockwave() = default;
@@ -40,25 +43,29 @@ protected: //非公開関数
 
     void OnCleanup() override;
 
-    void OnApplyParameters(const nlohmann::json& params) override;
-
-    void OnExtractParameters(nlohmann::json& out) const override;
 #ifdef _DEBUG
-    bool OnDrawImGui() override;
+    bool DrawCustomImGui() override;
 #endif
 
 private: //メンバー変数
     //パラメータ
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float warningTime_ = 0.5f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float expandTime_  = 0.4f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float sustainTime_ = 0.2f;   ///< 最大半径での余韻 = 硬直
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 50, Speed = 0.5)
     float maxRadius_   = 12.0f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 200, Speed = 1)
     float strength_    = 50.0f;
+    TPROPERTY(Edit, ClampMin = 0, ClampMax = 5, Speed = 0.05)
     float falloff_     = 1.0f;   ///< 距離減衰
 
     /// <summary>
     /// 既定: プレイヤー弾 + プレイヤー本体
     /// </summary>
+    TPROPERTY()
     uint32_t affectMask_ = GameForceField::AffectBullets | GameForceField::AffectPlayer;
 
     //ランタイム状態
