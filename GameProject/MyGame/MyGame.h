@@ -15,15 +15,4 @@ public: //メンバー関数
     void Update() override;
 
     void Draw() override;
-
-private: //非公開関数
-    void LoadTextures();
-
-    void LoadTitleTextures();
-
-    void LoadButtonTextures();
-
-    void LoadJoystickTextures();
-
-    void LoadActionIconTextures();
 };

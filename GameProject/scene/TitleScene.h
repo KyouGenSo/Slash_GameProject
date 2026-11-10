@@ -66,7 +66,7 @@ private: //非公開関数
 
 private: //メンバー変数
     //エミッター・フォースフィールド
-    std::unique_ptr<Tako::EmitterManager>    emitterManager_;
+    Tako::EmitterManager*                    emitterManager_ = nullptr;  ///< シーン（BaseScene）の物
     std::unique_ptr<Tako::ForceFieldManager> forceFieldManager_;
 
     //UI

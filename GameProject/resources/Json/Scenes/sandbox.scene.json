@@ -98,7 +98,6 @@
           "order": 0,
           "properties": {
             "model": "EngineResources/Model/white_cube.gltf",
-            "settingsName": "",
             "offset": {
               "scale": [
                 1.0,
@@ -135,6 +134,163 @@
               0.0
             ],
             "layer": 31
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "Actor",
+      "properties": {
+        "name": "Main Camera",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            9.0,
+            -34.0
+          ]
+        }
+      },
+      "components": {
+        "CameraComponent": {
+          "type": "CameraComponent",
+          "order": 0,
+          "properties": {
+            "fovY": 0.45,
+            "nearClip": 0.1,
+            "farClip": 1000.0,
+            "priority": 0
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "Actor",
+      "properties": {
+        "name": "Directional Light",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            1.0471975511965976,
+            0.5235987755982988,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            10.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "LightComponent": {
+          "type": "LightComponent",
+          "order": 0,
+          "properties": {
+            "type": "Directional",
+            "color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "intensity": 1.0,
+            "range": 10.0,
+            "decay": 1.0,
+            "spotAngle": 1.0471975511965976,
+            "shadowDistance": 50.0
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "Actor",
+      "properties": {
+        "name": "Lamp",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            4.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "LightComponent": {
+          "type": "LightComponent",
+          "order": 0,
+          "properties": {
+            "color": [
+              1.0,
+              0.55,
+              0.2,
+              1.0
+            ],
+            "intensity": 2.0,
+            "range": 12.0,
+            "decay": 1.0,
+            "spotAngle": 1.0471975511965976,
+            "shadowDistance": 50.0,
+            "type": "Point"
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "Actor",
+      "properties": {
+        "name": "Sky",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "SkyBoxComponent": {
+          "type": "SkyBoxComponent",
+          "order": 0,
+          "properties": {
+            "texture": "EngineResources/Texture/my_skybox.dds"
           }
         }
       }

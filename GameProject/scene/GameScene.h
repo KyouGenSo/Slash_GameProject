@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseScene.h"
 #include "Transform.h"
-#include  "SkyBox.h"
 #include "Object/Boss/Boss.h"
 #include "Object/Player/Player.h"
 #include "Input/InputHandler.h"
@@ -19,7 +18,6 @@
 #include <vector>
 
 namespace Tako {
-    class Object3d;
     class EmitterManager;
     class ForceFieldManager;
     class Sprite;
@@ -76,8 +74,6 @@ private: //非公開関数
 
     void InitializeDebugOption();
 
-    void InitializePostEffect();
-
     void InitializeObject3d();
 
     void InitializeCameraSystem();
@@ -95,11 +91,9 @@ private: //非公開関数
 private: //メンバー変数
     //エミッター・フォースフィールド
     std::unique_ptr<Tako::ForceFieldManager> forceFieldManager_;
-    std::unique_ptr<Tako::EmitterManager>    emitterManager_;
+    Tako::EmitterManager*                    emitterManager_ = nullptr;  ///< シーン（BaseScene）の物
 
     //シーンオブジェクト
-    std::unique_ptr<Tako::SkyBox>   skyBox_;
-    std::unique_ptr<Tako::Object3d> ground_;
     std::unique_ptr<Player>         player_;
     std::unique_ptr<Boss>           boss_;
     std::unique_ptr<InputHandler>   inputHandler_;

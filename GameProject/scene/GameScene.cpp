@@ -9,14 +9,10 @@
 #include "SceneManager.h"
 #include "EmitterManager.h"
 #include "ForceFieldManager.h"
-#include "Object3d.h"
 #include "Model.h"
-#include "ShadowRenderer.h"
 #include "CollisionManager.h"
-#include "Settings/GameplaySettings.h"
 #include "PostEffectManager.h"
 #include "DecalManager.h"
-#include "EnginePaths.h"
 
 // Game includes
 #include "CameraSystem/CameraManager.h"
@@ -55,7 +51,7 @@ void GameScene::Initialize()
     /// ----------------------エンジンクラス初期化---------------------------------------------------------///
     CollisionManager::GetInstance()->Initialize();
 
-    emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
+    emitterManager_ = &GetEmitterManager();
 
     // シーンプリセット統合保存のため EmitterManager に連携
     forceFieldManager_ = std::make_unique<ForceFieldManager>(GPUParticle::GetInstance());
@@ -70,17 +66,7 @@ void GameScene::Initialize()
     pauseMenu_ = std::make_unique<PauseMenu>();
     pauseMenu_->Initialize();
 
-    InitializePostEffect();
-
     InitializeDebugOption();
-
-    /// ----------------------シーンの描画設定---------------------------------------------------------///
-    const GameplaySettings& gameplay = Tako::GameSettings::Get<GameplaySettings>();
-    float shadowMaxDist = gameplay.shadowMaxDistance;
-    ShadowRenderer::GetInstance()->SetMaxShadowDistance(shadowMaxDist);
-    float lightZ = gameplay.directionalLightZ;
-    Renderer::GetInstance()->GetLight()->SetDirectionalLightDirection(Vector3(0.0f, -1.0f, lightZ));
-
 
     InitializeObject3d();
 
@@ -118,8 +104,6 @@ void GameScene::Finalize()
     CollisionManager::GetInstance()->Reset();
 
     DecalManager::GetInstance()->ClearDecals();
-
-    PostEffectManager::GetInstance()->ClearEffects();
 
     pauseMenu_.reset();
 }
@@ -195,8 +179,6 @@ void GameScene::UpdateGameFlow()
 
 void GameScene::UpdateObjects()
 {
-    skyBox_->Update();
-    ground_->Update();
     player_->Update();
     boss_->Update(FrameTimer::GetInstance()->GetDeltaTime());
     controllerUI_->Update();
@@ -245,9 +227,6 @@ void GameScene::Draw()
     /// ================================== ///
 
     // 描画順は描画キュー（マテリアル）と sortingOrder で決まる。影はモデルの castShadow で落とす
-    skyBox_->Draw();
-
-    ground_->Draw();
     player_->Draw();
     boss_->Draw();
 
@@ -330,26 +309,12 @@ void GameScene::InitializeDebugOption()
     DebugUIManager::GetInstance()->RegisterGameObject("PauseMenu",
         [this]() { if (pauseMenu_) pauseMenu_->DrawImGui(); });
 
-    DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
     DebugUIManager::GetInstance()->SetForceFieldManager(forceFieldManager_.get());
 #endif
 }
 
-void GameScene::InitializePostEffect()
-{
-    PostEffectManager::GetInstance()->LoadProfile("game");
-}
-
 void GameScene::InitializeObject3d()
 {
-    skyBox_ = std::make_unique<SkyBox>();
-    skyBox_->Initialize(EnginePaths::TexturePath("my_skybox.dds"));
-
-    ground_ = std::make_unique<Object3d>();
-    ground_->Initialize();
-    ground_->SetModel("ground_black.gltf");
-    ground_->SetName("Ground");
-
     //-----------Player の初期化----------------//
     player_ = std::make_unique<Player>();
     player_->Initialize();
@@ -439,7 +404,7 @@ void GameScene::InitializeEmitterManager()
     emitterManager_->LoadPreset("boss_big_explosion_4", BTBossBigExplosion::kEmitterImpactSmoke);
     emitterManager_->SetEmitterActive(BTBossBigExplosion::kEmitterImpactSmoke, false);
 
-    boss_->SetEmitterManager(emitterManager_.get());
+    boss_->SetEmitterManager(emitterManager_);
 
     // ボスモデルをスポーン形状とする MeshEmitter
     boss_->InitializeAuraEmitter();
@@ -454,7 +419,7 @@ void GameScene::InitializeEmitterManager()
 
     player_->SetForceFieldManager(forceFieldManager_.get());
 
-    player_->SetEmitterManager(emitterManager_.get());
+    player_->SetEmitterManager(emitterManager_);
 
     emitterManager_->LoadPreset("parry_true", "parry_effect");
     emitterManager_->SetEmitterActive("parry_effect", false);
@@ -463,18 +428,18 @@ void GameScene::InitializeEmitterManager()
 
 void GameScene::InitializeEffectManager()
 {
-    overEffectManager_ = std::make_unique<OverEffectManager>(emitterManager_.get());
+    overEffectManager_ = std::make_unique<OverEffectManager>(emitterManager_);
     overEffectManager_->SetTarget(player_.get());
 
-    clearEffectManager_ = std::make_unique<ClearEffectManager>(emitterManager_.get());
+    clearEffectManager_ = std::make_unique<ClearEffectManager>(emitterManager_);
     clearEffectManager_->SetTarget(boss_.get());
 
-    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_.get(), GameConst::kBossPhase2AreaSize);
+    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_, GameConst::kBossPhase2AreaSize);
 
-    dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_.get());
+    dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_);
     dashEffectManager_->InitializePosition(player_->GetTranslate());
 
-    projectileManager_ = std::make_unique<ProjectileManager>(emitterManager_.get());
+    projectileManager_ = std::make_unique<ProjectileManager>(emitterManager_);
 
     // プレイヤー弾を ForceField の影響下に置く
     projectileManager_->SetForceFieldManager(forceFieldManager_.get());

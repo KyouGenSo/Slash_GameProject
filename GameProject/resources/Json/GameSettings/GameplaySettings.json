@@ -1,7 +1,5 @@
 {
     "triggerThreshold": 0.5,
-    "shadowMaxDistance": 150.0,
-    "directionalLightZ": -0.05000000074505806,
     "dashEffectLerpSpeed": 33.5,
     "cameraShake": {
         "duration": 0.3,

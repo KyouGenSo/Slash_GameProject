@@ -1,0 +1,188 @@
+{
+  "actors": [
+    {
+      "id": 1,
+      "type": "Actor",
+      "properties": {
+        "name": "Ground",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "MeshComponent": {
+          "type": "MeshComponent",
+          "order": 0,
+          "properties": {
+            "model": "ground_black.gltf",
+            "offset": {
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "renderSettings": {
+              "CastShadow": false,
+              "Values": {
+                "enableHighlight": 0,
+                "uvTransform": [
+                  100.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  100.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  100.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "Actor",
+      "properties": {
+        "name": "Sky",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "SkyBoxComponent": {
+          "type": "SkyBoxComponent",
+          "order": 0,
+          "properties": {
+            "texture": "EngineResources/Texture/my_skybox.dds"
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "Actor",
+      "properties": {
+        "name": "Directional Light",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            1.6207547225168395,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            10.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "LightComponent": {
+          "type": "LightComponent",
+          "order": 0,
+          "properties": {
+            "type": "Directional",
+            "color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "intensity": 1.0,
+            "range": 10.0,
+            "decay": 1.0,
+            "spotAngle": 1.0471975511965976,
+            "shadowDistance": 150.0
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "Actor",
+      "properties": {
+        "name": "Post Process",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "PostProcessComponent": {
+          "type": "PostProcessComponent",
+          "order": 0,
+          "properties": {
+            "profile": "game"
+          }
+        }
+      }
+    }
+  ]
+}

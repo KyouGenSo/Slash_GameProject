@@ -26,7 +26,6 @@
       "order": 0,
       "properties": {
         "model": "EngineResources/Model/white_cube.gltf",
-        "settingsName": "",
         "offset": {
           "scale": [
             1.0,

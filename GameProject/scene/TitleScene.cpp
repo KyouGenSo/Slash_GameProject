@@ -37,7 +37,7 @@ void TitleScene::Initialize()
     ///              初期化処理              ///
     /// ================================== ///
 
-    emitterManager_ = std::make_unique<EmitterManager>(GPUParticle::GetInstance());
+    emitterManager_ = &GetEmitterManager();
 
     // シーンプリセット統合保存のため連携
     forceFieldManager_ = std::make_unique<ForceFieldManager>(GPUParticle::GetInstance());
@@ -55,8 +55,6 @@ void TitleScene::Finalize()
 #ifdef _DEBUG
     DebugUIManager::GetInstance()->ClearGameObjects();
 #endif
-
-    PostEffectManager::GetInstance()->ClearEffects();
 }
 
 void TitleScene::Update()
@@ -185,7 +183,6 @@ void TitleScene::InitializeDebugUI()
     DebugUIManager::GetInstance()->RegisterGameObject("TitleScene",
         [this]() { this->DrawImGui(); });
 
-    DebugUIManager::GetInstance()->SetEmitterManager(emitterManager_.get());
     DebugUIManager::GetInstance()->SetForceFieldManager(forceFieldManager_.get());
 #endif
 }

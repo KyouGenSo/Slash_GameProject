@@ -26,7 +26,6 @@
       "order": 0,
       "properties": {
         "model": "EngineResources/Model/sphere.gltf",
-        "settingsName": "",
         "offset": {
           "scale": [
             1.0,

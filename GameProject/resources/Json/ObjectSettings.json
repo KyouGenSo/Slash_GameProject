@@ -48,29 +48,5 @@
             ],
             "enableLighting": 0
         }
-    },
-    "Ground": {
-        "CastShadow": false,
-        "Values": {
-            "enableHighlight": 0,
-            "uvTransform": [
-                100.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                100.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                100.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
-        }
     }
 }

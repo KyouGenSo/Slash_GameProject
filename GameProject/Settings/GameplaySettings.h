@@ -3,7 +3,7 @@
 #include "SettingsTypes.h"
 
 /// <summary>
-/// 入力・シーンの描画・演出など、持ち主が 1 つに決まらない調整値
+/// 入力・演出など、持ち主が 1 つに決まらない調整値
 /// </summary>
 TCLASS()
 class GameplaySettings : public Tako::GameSettings {
@@ -12,11 +12,6 @@ class GameplaySettings : public Tako::GameSettings {
 public: //メンバー変数
     TPROPERTY(Edit, Category = "Input", Tooltip = "トリガーを押したとみなす深さ", ClampMin = 0, ClampMax = 1, Speed = 0.01)
     float triggerThreshold = 0.5f;
-
-    TPROPERTY(Edit, Category = "Scene", Tooltip = "影を落とす最大距離", ClampMin = 0)
-    float shadowMaxDistance = 100.0f;
-    TPROPERTY(Edit, Category = "Scene", Tooltip = "平行光源の向き (0, -1, z) の z", Speed = 0.01)
-    float directionalLightZ = -0.05f;
 
     TPROPERTY(Edit, Category = "Effect", Tooltip = "ダッシュの粒子がプレイヤーに追いつく速さ。0 以下なら DashEffectManager の値", Speed = 0.5)
     float         dashEffectLerpSpeed = 35.0f;
