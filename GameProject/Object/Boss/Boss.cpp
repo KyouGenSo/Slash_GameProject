@@ -1,4 +1,10 @@
 #include "Boss.h"
+#include "BaseScene.h"
+#include "Script/Bullet.h"
+#include "BehaviorTreeComponent.h"
+#include "MeshComponent.h"
+#include "UILayoutComponent.h"
+#include "Boss.h"
 #include <algorithm>
 #include <filesystem>
 #include "Object3d.h"
@@ -11,7 +17,6 @@
 #include "WinApp.h"
 #include "EnginePaths.h"
 #include "ColorFunc.h"
-#include "BossBehaviorTree/BossNodeFactory.h"
 #include "Settings/BossSettings.h"
 #include "Settings/GameplaySettings.h"
 #include "EmitterManager.h"
@@ -31,20 +36,43 @@
 
 using namespace Tako;
 
+namespace {
+
+    MeshComponent* MeshOf(const Tako::Actor* actor) {
+        return actor ? actor->GetComponent<MeshComponent>() : nullptr;
+    }
+
+    void SetMeshVisible(const Tako::Actor* actor, bool visible) {
+        if (MeshComponent* mesh = MeshOf(actor)) {
+            mesh->SetVisible(visible);
+        }
+    }
+
+}
+
 Boss::Boss()
 {}
 
 Boss::~Boss()
 {}
 
-void Boss::Initialize()
+void Boss::BeginPlay()
 {
+    Tako::BaseScene* scene = GetOwner()->GetScene();
+    emitterManager_    = &scene->GetEmitterManager();
+    forceFieldManager_ = &scene->GetForceFieldManager();
+
     InitializeModel();
     InitializeHealth();
     InitializeColliders();
     ApplyEffectSettings();
     InitializeAI();
     InitializeStateMachine();
+
+    // ボスのモデルとリングの形に沿って出すエミッターは、形（Object3d）を結び付けるのでここで作る
+    InitializeAuraEmitter();
+    InitializeBodyParticleEmitter();
+    InitializeRingShockwaveEmitter();
 }
 
 void Boss::InitializeStateMachine()
@@ -60,45 +88,30 @@ void Boss::InitializeStateMachine()
 
 void Boss::InitializeModel()
 {
-    model_ = std::make_unique<Object3d>();
-    model_->Initialize();
-    model_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
-    model_->SetName("Boss");
-
-    transform_.translate = Vector3(0.0f, initialY_, initialZ_);
-    transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
-    transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
-    model_->SetTransform(transform_);
-
-    meleeAttackBlock_ = std::make_unique<Object3d>();
-    meleeAttackBlock_->Initialize();
-    meleeAttackBlock_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
-    meleeAttackBlock_->SetName("BossMeleeBlock");
-
-    // 半径1の単位球、SetScale で動的サイズ調整
-    repelShockwaveSphere_ = std::make_unique<Object3d>();
-    repelShockwaveSphere_->Initialize();
-    repelShockwaveSphere_->SetModel(PrimitiveBuilder::CreateSphere({ .radius = 1.0f, .lonDiv = 32, .latDiv = 16 }));
-    repelShockwaveSphere_->SetName("BossRepelShockwave");
-    repelShockwaveSphere_->SetScale({ 0.0f, 0.0f, 0.0f });
-
-    // 外半径1の単位半円リング（弧中心=ローカル+Z）、SetScale で動的サイズ調整
-    ringShockwaveModel_ = std::make_unique<Object3d>();
-    ringShockwaveModel_->Initialize();
-    ringShockwaveModel_->SetModel(PrimitiveBuilder::CreateRing({
-        .innerRadius = 1.0f - kRingShockwaveWidthFraction,
-        .outerRadius = 1.0f,
-        .segments = 48,
-        .ringSeg = 1,
-        .startAngleDeg = 0.0f,
-        .sweepAngleDeg = 180.0f }));
-    ringShockwaveModel_->SetName("BossRingShockwave");
-    ringShockwaveModel_->SetScale({ 0.0f, 0.0f, 0.0f });
+    // 半径 1 の単位球。大きさは Actor の scale で変える
+    if (MeshComponent* sphere = MeshOf(GetOwner()->Resolve(repelShockwaveSphere_))) {
+        sphere->SetGeneratedModel(PrimitiveBuilder::CreateSphere({ .radius = 1.0f, .lonDiv = 32, .latDiv = 16 }));
+    }
+    // 外半径 1 の単位半円リング（弧の中心がローカルの +Z）。大きさは Actor の scale で変える
+    if (MeshComponent* ring = MeshOf(GetRingShockwaveActor())) {
+        ring->SetGeneratedModel(PrimitiveBuilder::CreateRing({
+            .innerRadius = 1.0f - kRingShockwaveWidthFraction,
+            .outerRadius = 1.0f,
+            .segments = 48,
+            .ringSeg = 1,
+            .startAngleDeg = 0.0f,
+            .sweepAngleDeg = 180.0f }));
+    }
+    SetMeleeAttackBlockVisible(false);
+    SetRepelShockwaveSphereVisible(false);
+    SetRingShockwaveVisible(false);
 }
 
 void Boss::InitializeHealth()
 {
-    hpBar_.Initialize("BossHPBar");
+    if (UILayoutComponent* layout = GetOwner()->GetComponent<UILayoutComponent>()) {
+        hpBar_.Bind(&layout->GetLayout());
+    }
 
     phaseManager_.Initialize(kMaxHp, kPhase2Threshold, kPhase2InitialHp);
 }
@@ -107,20 +120,10 @@ void Boss::InitializeColliders()
 {
     const BossSettings& settings = Tako::GameSettings::Get<BossSettings>();
 
-    // 本体コライダー
-    float bodySize = settings.bodyColliderSize;
-    bodyCollider_ = std::make_unique<OBBCollider>();
-    bodyCollider_->SetTransform(&transform_);
-    bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
-    bodyCollider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
-    bodyCollider_->SetTypeID(CollisionTypeId::BOSS);
-    bodyCollider_->SetOwner(this);
-    CollisionManager::GetInstance()->AddCollider(bodyCollider_.get());
-
-    // 近接攻撃コライダー
+    // 近接攻撃コライダー（本体は同じ Actor の ColliderComponent）
     const BossSettings::MeleeCollider& melee = settings.melee;
     meleeAttackCollider_ = std::make_unique<BossMeleeAttackCollider>(this);
-    meleeAttackCollider_->SetTransform(&transform_);
+    meleeAttackCollider_->SetTransform(&GetOwner()->GetTransform());
     meleeAttackCollider_->SetSize(melee.size);
     meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, melee.offsetZ));
     meleeAttackCollider_->SetOwner(this);
@@ -136,7 +139,7 @@ void Boss::ApplyEffectSettings()
 
 void Boss::InitializeAuraEmitter()
 {
-    if (!emitterManager_ || !model_) {
+    if (!emitterManager_ || !GetModel()) {
         return;
     }
 
@@ -145,8 +148,8 @@ void Boss::InitializeAuraEmitter()
         emitterManager_->RemoveEmitter(auraEmitterName_);
     }
 
-    emitterManager_->LoadPreset(auraEmitterName_, auraEmitterName_, model_.get());
-    emitterManager_->LoadPreset(darkAuraEmitterName_, darkAuraEmitterName_, model_.get());
+    emitterManager_->LoadPreset(auraEmitterName_, auraEmitterName_, GetModel());
+    emitterManager_->LoadPreset(darkAuraEmitterName_, darkAuraEmitterName_, GetModel());
 
     emitterManager_->SetEmitterActive(auraEmitterName_, !isInRecovery_ && !IsStunned() && !isTeleporting_);
     emitterManager_->SetEmitterActive(darkAuraEmitterName_, !isInRecovery_ && !IsStunned() && !isTeleporting_);
@@ -161,7 +164,7 @@ void Boss::SetAuraEmitterActive(bool active)
 
 void Boss::InitializeBodyParticleEmitter()
 {
-    if (!emitterManager_ || !model_) {
+    if (!emitterManager_ || !GetModel()) {
         return;
     }
 
@@ -170,7 +173,7 @@ void Boss::InitializeBodyParticleEmitter()
         emitterManager_->RemoveEmitter(bodyParticleEmitterName_);
     }
 
-    emitterManager_->LoadPreset(bodyParticleEmitterName_, bodyParticleEmitterName_, model_.get());
+    emitterManager_->LoadPreset(bodyParticleEmitterName_, bodyParticleEmitterName_, GetModel());
 
     emitterManager_->SetEmitterActive(bodyParticleEmitterName_, false);
 }
@@ -183,7 +186,7 @@ void Boss::SetBodyParticleEmitterActive(bool active)
 
 void Boss::InitializeRingShockwaveEmitter()
 {
-    if (!emitterManager_ || !ringShockwaveModel_) {
+    if (!emitterManager_ || !GetRingShockwaveModel()) {
         return;
     }
 
@@ -192,44 +195,23 @@ void Boss::InitializeRingShockwaveEmitter()
         emitterManager_->RemoveEmitter(ringShockwaveEmitterName_);
     }
 
-    emitterManager_->LoadPreset(ringShockwaveEmitterName_, ringShockwaveEmitterName_, ringShockwaveModel_.get());
+    emitterManager_->LoadPreset(ringShockwaveEmitterName_, ringShockwaveEmitterName_, GetRingShockwaveModel());
 
     emitterManager_->SetEmitterActive(ringShockwaveEmitterName_, false);
 }
 
 void Boss::InitializeAI()
 {
-    // BehaviorTree 生成前に Boss 専用ノード型を Registry に登録する必要がある
-    BossNodeFactory::RegisterAll();
-
-    behaviorTree_ = std::make_unique<Tako::BehaviorTree>();
-    auto* bb = behaviorTree_->GetBlackboard();
-    bb->SetPtr<Boss>("boss", this);
-    bb->SetPtr<Player>("player", player_);
-    behaviorTree_->LoadFromJSON("resources/Json/BT/BossTree.json");
-
-#ifdef _DEBUG
-    nodeEditor_ = std::make_unique<Tako::BehaviorTreeEditor>();
-    Tako::EditorConfig editorConfig{
-        .btJsonDir = "resources/Json/BT/",
-        .initialTreeFile = "BossTree.json",
-        .windowName = "Boss Behavior Tree Editor",
-        .nodeInspectorName = "Node Inspector##BNE",
-        .canvasName = "Boss Node Editor Canvas",
-    };
-    nodeEditor_->Initialize(editorConfig);
-    Tako::BTNodePtr runtimeTree = nodeEditor_->BuildRuntimeTree();
-    if (runtimeTree && behaviorTree_) {
-        behaviorTree_->SetRootNode(runtimeTree);
+    // ツリーは BehaviorTreeComponent が読む。ノードが使う相手を Blackboard に入れる
+    if (Tako::BehaviorTree* tree = GetBehaviorTree()) {
+        Tako::BTBlackboard* blackboard = tree->GetBlackboard();
+        blackboard->SetPtr<Boss>("boss", this);
+        blackboard->SetPtr<Player>("player", player_);
     }
-#endif
 }
 
-void Boss::Finalize()
+void Boss::EndPlay()
 {
-    if (bodyCollider_) {
-        CollisionManager::GetInstance()->RemoveCollider(bodyCollider_.get());
-    }
     if (meleeAttackCollider_) {
         CollisionManager::GetInstance()->RemoveCollider(meleeAttackCollider_.get());
     }
@@ -244,14 +226,54 @@ void Boss::Finalize()
         if (emitterManager_->HasEmitter(bodyParticleEmitterName_)) {
             emitterManager_->RemoveEmitter(bodyParticleEmitterName_);
         }
+        if (emitterManager_->HasEmitter(ringShockwaveEmitterName_)) {
+            emitterManager_->RemoveEmitter(ringShockwaveEmitterName_);
+        }
     }
+}
 
-#ifdef _DEBUG
-    if (nodeEditor_) {
-        nodeEditor_->Finalize();
-        nodeEditor_.reset();
-    }
-#endif
+void Boss::Tick(float deltaTime)
+{
+    Update(deltaTime);
+}
+
+Tako::Object3d* Boss::GetModel() const
+{
+    MeshComponent* mesh = GetOwner()->GetComponent<MeshComponent>();
+    return mesh ? mesh->GetObject3d() : nullptr;
+}
+
+Tako::Object3d* Boss::GetRingShockwaveModel() const
+{
+    MeshComponent* mesh = MeshOf(GetRingShockwaveActor());
+    return mesh ? mesh->GetObject3d() : nullptr;
+}
+
+Tako::BehaviorTree* Boss::GetBehaviorTree() const
+{
+    Tako::BehaviorTreeComponent* component = GetOwner()->GetComponent<Tako::BehaviorTreeComponent>();
+    return component ? &component->GetTree() : nullptr;
+}
+
+void Boss::SetMeleeAttackBlockVisible(bool visible)
+{
+    SetMeshVisible(GetMeleeAttackBlock(), visible);
+}
+
+bool Boss::IsMeleeAttackBlockVisible() const
+{
+    const MeshComponent* mesh = MeshOf(GetMeleeAttackBlock());
+    return mesh && mesh->IsVisible();
+}
+
+void Boss::SetRepelShockwaveSphereVisible(bool visible)
+{
+    SetMeshVisible(GetOwner()->Resolve(repelShockwaveSphere_), visible);
+}
+
+void Boss::SetRingShockwaveVisible(bool visible)
+{
+    SetMeshVisible(GetRingShockwaveActor(), visible);
 }
 
 void Boss::Update(float deltaTime)
@@ -267,65 +289,33 @@ void Boss::Update(float deltaTime)
     // ステートマシンが全てを駆動（Normal 内で BT が動く）
     if (!isPause_) {
         stateMachine_->Update(deltaTime);
-
-#ifdef _DEBUG
-        if (stateMachine_->GetCurrentStateName() == "Normal" &&
-            nodeEditor_ && showNodeEditor_ && behaviorTree_) {
-            Tako::BTNodePtr currentNode = behaviorTree_->GetCurrentRunningNode();
-            if (currentNode) {
-                nodeEditor_->HighlightRunningNode(currentNode);
-            }
-        }
-#endif
     }
 
     // 硬直・スタン・フェーズ移行スタン・テレポートのいずれかで aura を無効
     SetAuraEmitterActive(!isInRecovery_ && !IsStunned() && !isTeleporting_);
 
-    hitFlashEffect_.Update(deltaTime, model_.get());
+    hitFlashEffect_.Update(deltaTime, GetModel());
 
     shakeEffect_.Update(deltaTime);
 
-    // シェイクオフセットを適用したトランスフォームで描画
-    Transform renderTransform = transform_;
-    renderTransform.translate += shakeEffect_.GetOffset();
-    model_->SetTransform(renderTransform);
-    model_->Update();
-
-    // 表示中のみ位置をボスに追従
-    if (repelShockwaveSphereVisible_ && repelShockwaveSphere_) {
-        repelShockwaveSphere_->SetTranslate(transform_.translate);
-        repelShockwaveSphere_->Update();
-    }
-}
-
-void Boss::Draw()
-{
-    model_->Draw();
-
-    if (meleeAttackBlockVisible_ && meleeAttackBlock_) {
-        meleeAttackBlock_->Draw();
+    // Actor の位置は変えず、見た目だけを揺らす
+    if (MeshComponent* mesh = GetOwner()->GetComponent<MeshComponent>()) {
+        Transform offset = mesh->GetOffset();
+        offset.translate = shakeEffect_.GetOffset();
+        mesh->SetOffset(offset);
     }
 
-    if (repelShockwaveSphereVisible_ && repelShockwaveSphere_) {
-        repelShockwaveSphere_->Draw();
-    }
-
-    if (ringShockwaveVisible_ && ringShockwaveModel_) {
-        ringShockwaveModel_->Draw();
+    // 衝撃波の球はボスの位置に置き続ける
+    if (Tako::Actor* sphere = GetOwner()->Resolve(repelShockwaveSphere_)) {
+        sphere->GetTransform().translate = GetOwner()->GetTransform().translate;
     }
 }
 
 void Boss::SetRepelShockwaveSphereScale(float radius)
 {
-    if (repelShockwaveSphere_) {
-        repelShockwaveSphere_->SetScale({ radius, radius, radius });
+    if (Tako::Actor* sphere = GetOwner()->Resolve(repelShockwaveSphere_)) {
+        sphere->GetTransform().scale = { radius, radius, radius };
     }
-}
-
-void Boss::DrawSprite()
-{
-    hpBar_.Draw();
 }
 
 void Boss::OnHit(float damage, float shakeIntensityOverride)
@@ -356,9 +346,9 @@ void Boss::StartShake(float intensity)
     shakeEffect_.Start(intensity);
 }
 
-void Boss::DrawImGui()
-{
 #ifdef _DEBUG
+bool Boss::DrawCustomImGui()
+{
 
     ImGui::SeparatorText("Basic Status");
 
@@ -390,16 +380,11 @@ void Boss::DrawImGui()
 
     if (ImGui::CollapsingHeader("Transform")) {
         ImGui::Text("Position: (%.2f, %.2f, %.2f)",
-            transform_.translate.x, transform_.translate.y, transform_.translate.z);
+            GetOwner()->GetTransform().translate.x, GetOwner()->GetTransform().translate.y, GetOwner()->GetTransform().translate.z);
         ImGui::Text("Rotation: (%.2f, %.2f, %.2f)",
-            transform_.rotate.x, transform_.rotate.y, transform_.rotate.z);
+            GetOwner()->GetTransform().rotate.x, GetOwner()->GetTransform().rotate.y, GetOwner()->GetTransform().rotate.z);
         ImGui::Text("Scale: (%.2f, %.2f, %.2f)",
-            transform_.scale.x, transform_.scale.y, transform_.scale.z);
-
-        ImGui::Separator();
-        ImGui::Text("Initial Position (for respawn):");
-        ImGui::DragFloat("Initial Y", &initialY_, 0.1f, 0.0f, 10.0f);
-        ImGui::DragFloat("Initial Z", &initialZ_, 1.0f, -50.0f, 50.0f);
+            GetOwner()->GetTransform().scale.x, GetOwner()->GetTransform().scale.y, GetOwner()->GetTransform().scale.z);
     }
 
     if (ImGui::CollapsingHeader("Shake Effect")) {
@@ -412,43 +397,6 @@ void Boss::DrawImGui()
         ImGui::TextDisabled("Duration / Intensity: Engine Settings > Game > Boss");
         if (ImGui::Button("Test Shake")) {
             StartShake();
-        }
-    }
-
-    if (ImGui::CollapsingHeader("Collider")) {
-        if (bodyCollider_) {
-            ImGui::Text("Active: %s", bodyCollider_->IsActive() ? "Yes" : "No");
-            ImGui::Text("Type ID: %d (Enemy)", bodyCollider_->GetTypeID());
-
-            Vector3 offset = bodyCollider_->GetOffset();
-            ImGui::Text("Offset: (%.2f, %.2f, %.2f)", offset.x, offset.y, offset.z);
-
-            Vector3 size = bodyCollider_->GetSize();
-            ImGui::Text("Size: (%.2f, %.2f, %.2f)", size.x, size.y, size.z);
-
-            Vector3 center = bodyCollider_->GetCenter();
-            ImGui::Text("Center: (%.2f, %.2f, %.2f)", center.x, center.y, center.z);
-        }
-    }
-
-    ImGui::SeparatorText("Behavior Tree");
-
-    if (behaviorTree_) {
-        ImGui::SameLine();
-        if (nodeEditor_) {
-            ImGui::SameLine();
-            if (ImGui::Button("Node Editor")) {
-                showNodeEditor_ = !showNodeEditor_;
-                nodeEditor_->SetVisible(showNodeEditor_);
-            }
-
-            ImGui::SameLine();
-            if (ImGui::Button("Apply Editor Tree")) {
-                Tako::BTNodePtr runtimeTree = nodeEditor_->BuildRuntimeTree();
-                if (runtimeTree && behaviorTree_) {
-                    behaviorTree_->SetRootNode(runtimeTree);
-                }
-            }
         }
     }
 
@@ -494,33 +442,22 @@ void Boss::DrawImGui()
     }
     ImGui::PopStyleColor(3);
 
-    if (nodeEditor_ && showNodeEditor_) {
-        nodeEditor_->Update();
-    }
-
-#endif
+    return false;
 }
+#endif
 
 void Boss::RequestBulletSpawn(const Vector3& position, const Vector3& velocity) {
-    bulletSpawner_.RequestSpawn(position, velocity);
-}
-
-std::vector<BulletSpawnRequest> Boss::ConsumePendingBullets() {
-    return bulletSpawner_.Consume();
+    Bullet::Spawn(*GetOwner()->GetScene(), "BossBullet", position, velocity);
 }
 
 void Boss::RequestPenetratingBulletSpawn(const Vector3& position, const Vector3& velocity) {
-    penetratingBulletSpawner_.RequestSpawn(position, velocity);
-}
-
-std::vector<BulletSpawnRequest> Boss::ConsumePendingPenetratingBullets() {
-    return penetratingBulletSpawner_.Consume();
+    Bullet::Spawn(*GetOwner()->GetScene(), "PenetratingBossBullet", position, velocity);
 }
 
 void Boss::SetPlayer(Player* player) {
     player_ = player;
-    if (behaviorTree_) {
-        behaviorTree_->GetBlackboard()->SetPtr<Player>("player", player);
+    if (Tako::BehaviorTree* tree = GetBehaviorTree()) {
+        tree->GetBlackboard()->SetPtr<Player>("player", player);
     }
 }
 
@@ -559,7 +496,8 @@ void Boss::SetBulletSignEmitterScaleRangeX(float value) {
 }
 
 Vector4 Boss::GetBaseColor() const {
-    return model_ ? model_->GetBaseMaterialColor() : Color::kWhite;
+    const Tako::Object3d* model = GetModel();
+    return model ? model->GetBaseMaterialColor() : Color::kWhite;
 }
 
 void Boss::StartStunFlash(const Vector4& color, float duration) {
@@ -592,7 +530,7 @@ bool Boss::IsInPhaseTransitionStun() const {
 void Boss::ResetActionState() {
     isInRecovery_ = false;
     isDashing_ = false;
-    meleeAttackBlockVisible_ = false;
+    SetMeleeAttackBlockVisible(false);
     SetAttackSignEmitterActive(false);
     SetBulletSignEmitterActive(false);
     if (meleeAttackCollider_) {

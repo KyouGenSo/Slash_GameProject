@@ -74,6 +74,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Script\GameCamera.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\Bullet.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\GameDirector.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\ResultScreen.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\TitleScreen.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\Follow.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
     <ClCompile Include="Script\DestroyOnHit.cpp">
       <Filter>Script</Filter>
     </ClCompile>
@@ -85,15 +103,6 @@
     </ClCompile>
     <ClCompile Include="MyGame\MyGame.cpp">
       <Filter>MyGame</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\GameScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneFactory.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\TitleScene.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Player\State\IdleState.cpp">
@@ -132,9 +141,6 @@
     <ClCompile Include="Object\Boss\BossPhaseManager.cpp">
       <Filter>Object\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\ResultScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="CameraSystem\CameraDebugUI.cpp">
       <Filter>CameraSystem</Filter>
     </ClCompile>
@@ -153,15 +159,6 @@
     <ClCompile Include="Collision\MeleeAttackCollider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Projectile\BossBullet.cpp">
-      <Filter>Object\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Projectile\Projectile.cpp">
-      <Filter>Object\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision\BulletCollider.cpp">
-      <Filter>Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRepelShockwave.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
     </ClCompile>
@@ -177,12 +174,6 @@
     <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\BossNodeFactory.cpp">
-      <Filter>Object\Boss\BossBehaviorTree</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Projectile\PlayerBullet.cpp">
-      <Filter>Object\Projectile</Filter>
-    </ClCompile>
     <ClCompile Include="Collision\BossMeleeAttackCollider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
@@ -193,9 +184,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\EasingMover.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\BulletSpawner.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="UI\HPBarUI.cpp">
@@ -221,12 +209,6 @@
     </ClCompile>
     <ClCompile Include="Effect\BulletSignEffect.cpp">
       <Filter>Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Projectile\PenetratingBossBullet.cpp">
-      <Filter>Object\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="Object\Projectile\ProjectileManager.cpp">
-      <Filter>Object\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="Effect\ShakeEffect.cpp">
       <Filter>Effect</Filter>
@@ -329,6 +311,27 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Script\GameCamera.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSystem\CameraSettings.h">
+      <Filter>CameraSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\Bullet.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\GameDirector.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\ResultScreen.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\TitleScreen.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\Follow.h">
+      <Filter>Script</Filter>
+    </ClInclude>
     <ClInclude Include="Settings\SettingsTypes.h">
       <Filter>Settings</Filter>
     </ClInclude>
@@ -355,15 +358,6 @@
     </ClInclude>
     <ClInclude Include="MyGame\MyGame.h">
       <Filter>MyGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\GameScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneFactory.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\TitleScene.h">
-      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Object\Player\State\IdleState.h">
       <Filter>Object\Player\State</Filter>
@@ -407,12 +401,6 @@
     <ClInclude Include="Object\Boss\BossPhaseManager.h">
       <Filter>Object\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\ResultScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraSystem\CameraConfig.h">
-      <Filter>CameraSystem</Filter>
-    </ClInclude>
     <ClInclude Include="CameraSystem\CameraDebugUI.h">
       <Filter>CameraSystem</Filter>
     </ClInclude>
@@ -432,15 +420,6 @@
       <Filter>CameraSystem\Controller</Filter>
     </ClInclude>
     <ClInclude Include="Collision\MeleeAttackCollider.h">
-      <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Projectile\BossBullet.h">
-      <Filter>Object\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Projectile\Projectile.h">
-      <Filter>Object\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision\BulletCollider.h">
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRepelShockwave.h">
@@ -464,17 +443,8 @@
     <ClInclude Include="Common\ForceFieldAffectMask.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\BossNodeFactory.h">
-      <Filter>Object\Boss\BossBehaviorTree</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Projectile\PlayerBullet.h">
-      <Filter>Object\Projectile</Filter>
-    </ClInclude>
     <ClInclude Include="Collision\BossMeleeAttackCollider.h">
       <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\BulletSpawnRequest.h">
-      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\CooldownTimer.h">
       <Filter>Common</Filter>
@@ -483,9 +453,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\EasingMover.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\BulletSpawner.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\DynamicBoundary.h">
@@ -514,12 +481,6 @@
     </ClInclude>
     <ClInclude Include="Effect\BulletSignEffect.h">
       <Filter>Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Projectile\PenetratingBossBullet.h">
-      <Filter>Object\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="Object\Projectile\ProjectileManager.h">
-      <Filter>Object\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="Effect\ShakeEffect.h">
       <Filter>Effect</Filter>

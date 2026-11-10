@@ -1,5 +1,4 @@
 {
-    "bodyColliderSize": 3.200000047683716,
     "hitEffectDuration": 0.15000000596046448,
     "shake": {
         "duration": 0.3,
@@ -13,15 +12,5 @@
             8.5
         ],
         "offsetZ": 8.0
-    },
-    "bullet": {
-        "damage": 5.0,
-        "lifetime": 5.0,
-        "colliderRadius": 1.0
-    },
-    "penetratingBullet": {
-        "damage": 15.0,
-        "lifetime": 5.0,
-        "colliderRadius": 1.0
     }
 }

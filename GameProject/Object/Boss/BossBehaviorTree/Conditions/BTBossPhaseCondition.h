@@ -5,7 +5,7 @@
 /// <summary>
 /// 現在のボスフェーズを指定値と比較する条件ノード
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Phase Condition", Category = "Condition", Color = 0x8033E6)
 class BTBossPhaseCondition : public Tako::BTNode {
     GENERATED_BODY()
 

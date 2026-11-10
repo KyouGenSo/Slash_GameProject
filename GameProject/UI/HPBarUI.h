@@ -15,7 +15,10 @@ public: //メンバー関数
     /// Background と Bar（2段バーなら Bar2 も）を持つレイアウトを読み込む
     /// </summary>
     /// <param name="layoutName">レイアウト名（拡張子なし）</param>
-    void Initialize(const std::string& layoutName);
+    /// <summary>
+    /// 幅を変えるレイアウトを決める。更新と描画はレイアウトの持ち主が行う
+    /// </summary>
+    void Bind(Tako::UILayout* layout) { layout_ = layout; }
 
     /// <summary>
     /// 現在値/最大値の比率でバー幅を更新する
@@ -33,7 +36,6 @@ public: //メンバー関数
     /// <param name="phase">現在のフェーズ（1: 手前バー減少 / 2: 手前バー0幅・奥バー減少）</param>
     void UpdateDual(float currentHp, float maxHp, float phase2Threshold, uint32_t phase);
 
-    void Draw();
 
     //=======================================================
     //Setter
@@ -60,5 +62,5 @@ private: //非公開関数
     void SetFillRatio(const char* barName, float ratio);
 
 private: //メンバー変数
-    Tako::UILayout layout_;
+    Tako::UILayout* layout_ = nullptr;  ///< 非所有（UILayoutComponent の物）
 };

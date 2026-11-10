@@ -15,7 +15,7 @@ class Boss;
 /// 弾を上方へ発射し、フェーズ2エリア内のランダム位置へ着弾させる。
 /// 水平方向への全方位弾も同時に放つ。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Meteor Rain", Category = "Action", Color = 0xE68000)
 class BTBossMeteorRain : public AttackNode {
     GENERATED_BODY()
 

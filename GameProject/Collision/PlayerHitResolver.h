@@ -3,7 +3,7 @@
 
 #include "Collider.h"
 #include "CollisionTypeId.h"
-#include "../Object/Player/Player.h"
+#include "ColliderOwner.h"
 
 /// <summary>
 /// 相手が PLAYER のとき、パリィ中なら OnParrySuccess、否なら OnHit(damage)
@@ -14,7 +14,8 @@ inline void ResolvePlayerHit(Tako::Collider* other, float damage) {
     if (!other) return;
     if (!other->IsType(CollisionTypeId::PLAYER)) return;
 
-    Player* player = static_cast<Player*>(other->GetOwner());
+    Player* player = PlayerOf(other);
+    if (!player) return;
     if (player->IsParrying()) {
         player->OnParrySuccess();
         return;

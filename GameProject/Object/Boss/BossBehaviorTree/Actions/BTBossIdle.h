@@ -7,7 +7,7 @@ class Boss;
 /// <summary>
 /// プレイヤーを向きつつ idleDuration_ だけ待機する
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Idle", Category = "Action", Color = 0x33CC66)
 class BTBossIdle : public Tako::BTNode {
     GENERATED_BODY()
 
@@ -50,7 +50,7 @@ private: //メンバー変数
     TPROPERTY(Edit, ClampMin = 0, ClampMax = 10, Speed = 0.1)
     float idleDuration_  = 2.0f;
     TPROPERTY(Edit, ClampMin = 0.1, ClampMax = 20, Speed = 0.1)
-    float rotationSpeed_ = 5.0f;   ///< ラジアン/秒
+    float rotationSpeed_ = 5.0f;  ///< ラジアン/秒
 
     //ランタイム状態
     float elapsedTime_    = 0.0f;

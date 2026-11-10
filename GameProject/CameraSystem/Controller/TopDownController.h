@@ -1,6 +1,6 @@
 #pragma once
 #include "ICameraController.h"
-#include "../CameraConfig.h"
+#include "../CameraSettings.h"
 #include "Vector3.h"
 
 /// <summary>
@@ -19,6 +19,12 @@ public: //メンバー関数
     //========================================================
     //Setter
     //========================================================
+    /// <summary>
+    /// 調整値をまとめて反映する（GameCamera の Inspector の値）
+    /// </summary>
+    /// <param name="resetsCurrent">true なら、今の高さと引きも始まりの値に戻す</param>
+    void ApplySettings(const TopDownCameraSettings& settings, bool resetsCurrent);
+
     void SetBaseHeight(float height) {
         baseHeight_ = height;
     }
@@ -82,22 +88,22 @@ private: //非公開関数
 
 private: //メンバー変数
     Tako::Vector3 interpolatedTargetPos_ = {};
-    float         currentHeight_         = CameraConfig::TopDown::BASE_HEIGHT;
-    float         currentBackOffset_     = CameraConfig::TopDown::BASE_BACK_OFFSET;
+    float         currentHeight_         = TopDownCameraSettings{}.initialHeight;
+    float         currentBackOffset_     = TopDownCameraSettings{}.initialBackOffset;
 
-    float baseHeight_       = CameraConfig::TopDown::BASE_HEIGHT;
-    float heightMultiplier_ = CameraConfig::TopDown::HEIGHT_MULTIPLIER;
-    float minHeight_        = CameraConfig::TopDown::MIN_HEIGHT;
-    float maxHeight_        = CameraConfig::TopDown::MAX_HEIGHT;
+    float baseHeight_       = TopDownCameraSettings{}.baseHeight;
+    float heightMultiplier_ = TopDownCameraSettings{}.heightMultiplier;
+    float minHeight_        = TopDownCameraSettings{}.minHeight;
+    float maxHeight_        = TopDownCameraSettings{}.maxHeight;
 
-    float cameraAngleX_ = CameraConfig::TopDown::DEFAULT_ANGLE_X;
+    float cameraAngleX_ = TopDownCameraSettings{}.angleX;
 
-    float baseBackOffset_       = CameraConfig::TopDown::BASE_BACK_OFFSET;
-    float backOffsetMultiplier_ = CameraConfig::TopDown::BACK_OFFSET_MULTIPLIER;
-    float minBackOffset_        = CameraConfig::TopDown::MIN_BACK_OFFSET;
-    float maxBackOffset_        = CameraConfig::TopDown::MAX_BACK_OFFSET;
+    float baseBackOffset_       = TopDownCameraSettings{}.baseBackOffset;
+    float backOffsetMultiplier_ = TopDownCameraSettings{}.backOffsetMultiplier;
+    float minBackOffset_        = TopDownCameraSettings{}.minBackOffset;
+    float maxBackOffset_        = TopDownCameraSettings{}.maxBackOffset;
 
-    float followSmoothness_ = CameraConfig::FOLLOW_SMOOTHNESS;
+    float followSmoothness_ = TopDownCameraSettings{}.followSmoothness;
 
-    float standardFov_ = CameraConfig::STANDARD_FOV;
+    float standardFov_ = TopDownCameraSettings{}.fov;
 };

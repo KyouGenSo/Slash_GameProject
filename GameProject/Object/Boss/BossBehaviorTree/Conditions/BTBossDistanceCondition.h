@@ -5,7 +5,7 @@
 /// <summary>
 /// プレイヤーとの水平距離が指定範囲内かを判定する条件ノード
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Distance Condition", Category = "Condition", Color = 0x33B280)
 class BTBossDistanceCondition : public Tako::BTNode {
     GENERATED_BODY()
 

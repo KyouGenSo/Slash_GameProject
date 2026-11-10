@@ -2,7 +2,6 @@
 
 #include"Audio.h"
 #include"Input.h"
-#include "scene/SceneFactory.h"
 #include "SceneManager.h"
 #include "LineRenderer.h"
 #include "PostEffectManager.h"
@@ -22,8 +21,7 @@ void MyGame::Initialize()
 {
     TakoFramework::Initialize();
 
-    sceneFactory_ = std::make_unique<SceneFactory>();
-    SceneManager::GetInstance()->SetSceneFactory(sceneFactory_.get());
+    // シーンはすべて resources/Json/Scenes のファイルから作る（C++ のシーンクラスは無い）
     SceneManager::GetInstance()->ChangeToStartupScene();
 }
 

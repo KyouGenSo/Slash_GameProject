@@ -8,7 +8,7 @@ class Boss;
 /// <summary>
 /// プレイヤーを向いたまま後方へイージング移動で離脱。移動本体は BossRetreatExecutor へ委譲。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Retreat", Category = "Action", Color = 0x4CB2E6)
 class BTBossRetreat : public Tako::BTNode {
     GENERATED_BODY()
 

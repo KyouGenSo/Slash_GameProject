@@ -14,7 +14,7 @@ class Boss;
 /// フェーズ2エリアを4象限に分割し、ランダムに1〜3象限を攻撃する。
 /// プレイヤーのいる象限は確定で含める。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Area Attack", Category = "Action", Color = 0xE61A1A)
 class BTBossAreaAttack : public AttackNode {
     GENERATED_BODY()
 

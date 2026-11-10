@@ -9,7 +9,7 @@ class Player;
 /// <summary>
 /// プレイヤー方向へイージング移動で接近し、一定距離で停止する
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Approach", Category = "Action", Color = 0x66E666)
 class BTBossApproach : public Tako::BTNode {
     GENERATED_BODY()
 

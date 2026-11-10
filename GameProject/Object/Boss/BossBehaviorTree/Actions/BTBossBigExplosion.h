@@ -12,7 +12,7 @@ class Boss;
 /// プレイヤー位置に円形 Decal で範囲を予告し、上空から落下する爆発体が
 /// 着地した瞬間に爆発バースト・ダメージ判定・白黒フラッシュを同時発生させる攻撃。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Big Explosion", Category = "Action", Color = 0xFFBF26)
 class BTBossBigExplosion : public AttackNode {
     GENERATED_BODY()
 

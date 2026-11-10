@@ -2,12 +2,13 @@
 #include <memory>
 #include <vector>
 
+#include "Actor.h"
+#include "ActorRef.h"
+#include "Script.h"
 #include "Transform.h"
 #include "Vector3.h"
 
 #include "../../Common/CooldownTimer.h"
-#include "../../Common/BulletSpawnRequest.h"
-#include "../../Common/BulletSpawner.h"
 #include "../../Common/EasingMover.h"
 #include "../../Common/DynamicBoundary.h"
 #include "../../UI/HPBarUI.h"
@@ -28,10 +29,14 @@ class MeleeAttackCollider;
 class Boss;
 
 /// <summary>
-/// プレイヤーキャラクター。移動・戦闘・HP・状態遷移・当たり判定を統括する
+/// プレイヤーキャラクター。移動・戦闘・HP・状態遷移を統括する。
+/// 位置は Actor の Transform、見た目は同じ Actor の MeshComponent、本体の当たり判定は ColliderComponent（層 PLAYER）、
+/// HP バーは UILayoutComponent が持つ
 /// </summary>
-class Player
-{
+TCLASS()
+class Player : public Tako::Script {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr float kVelocityEpsilon = 0.01f;
     static constexpr float kBoundaryDisabled = 9999.0f;
@@ -46,11 +51,13 @@ public: //メンバー関数
     Player();
     ~Player();
 
-    void Initialize();
-    void Finalize();
-    void Update();
-    void Draw();
-    void DrawSprite();
+    void BeginPlay() override;
+    void EndPlay() override;
+
+    /// <summary>
+    /// シーンの並びで GameDirector の後に呼ばれる（入力とポーズが決まった後）
+    /// </summary>
+    void Tick(float deltaTime) override;
 
     /// <summary>
     /// 入力方向へ移動し、向きを補間更新する
@@ -69,7 +76,12 @@ public: //メンバー関数
     void MoveToTarget(const Tako::Vector3& targetPos, float deltaTime, float stopDistance = 0.0f);
 
     void ResetMoveToTarget();
-    void DrawImGui();
+#ifdef _DEBUG
+    /// <summary>
+    /// 状態・近接コライダー・入力などのデバッグ表示
+    /// </summary>
+    bool DrawCustomImGui() override;
+#endif
     void SetupColliders();
     void UpdateCollider();
     void LookAtBoss(float deltaTime);
@@ -104,7 +116,6 @@ public: //メンバー関数
     /// 溜まった弾生成リクエストを取り出してキューを空にする
     /// </summary>
     /// <returns>未処理の生成リクエスト一覧（取得後キューは空になる）</returns>
-    std::vector<BulletSpawnRequest> ConsumePendingBullets();
 
     //======================================================================================
     //Setter
@@ -119,14 +130,14 @@ public: //メンバー関数
     /// </summary>
     void SetMode(bool mode) { mode_ = mode; }
 
-    void SetTransform(const Tako::Transform& transform) { transform_ = transform; }
-    void SetTranslate(const Tako::Vector3& translate) { transform_.translate = translate; }
-    void SetRotate(const Tako::Vector3& rotate) { transform_.rotate = rotate; }
-    void SetScale(const Tako::Vector3& scale) { transform_.scale = scale; }
+    void SetTransform(const Tako::Transform& transform) { GetOwner()->GetTransform() = transform; }
+    void SetTranslate(const Tako::Vector3& translate) { GetOwner()->GetTransform().translate = translate; }
+    void SetRotate(const Tako::Vector3& rotate) { GetOwner()->GetTransform().rotate = rotate; }
+    void SetScale(const Tako::Vector3& scale) { GetOwner()->GetTransform().scale = scale; }
     void SetHp(float hp) { hp_ = hp; if (hp_ < 0.f) hp_ = 0.f; }
     void SetInvincible(bool isInvincible) { isInvincible_ = isInvincible; }
     void SetInputHandler(InputHandler* inputHandler) { inputHandlerPtr_ = inputHandler; }
-    void SetAttackBlockVisible(bool visible) { attackBlockVisible_ = visible; }
+    void SetAttackBlockVisible(bool visible);
 
     /// <summary>
     /// 動的移動範囲を最小・最大値で直接設定する
@@ -185,16 +196,22 @@ public: //メンバー関数
     /// </summary>
     Tako::Vector3 GetAimDirection() const;
 
-    const Tako::Transform& GetTransform() const { return transform_; }
-    Tako::Transform* GetTransformPtr() { return &transform_; }
-    Tako::Vector3 GetTranslate() const { return transform_.translate; }
-    Tako::Vector3 GetRotate() const { return transform_.rotate; }
-    Tako::Vector3 GetScale() const { return transform_.scale; }
-    Tako::Object3d* GetModel() const { return model_.get(); }
+    const Tako::Transform& GetTransform() const { return GetOwner()->GetTransform(); }
+    Tako::Transform* GetTransformPtr() { return &GetOwner()->GetTransform(); }
+    Tako::Vector3 GetTranslate() const { return GetOwner()->GetTransform().translate; }
+    Tako::Vector3 GetRotate() const { return GetOwner()->GetTransform().rotate; }
+    Tako::Vector3 GetScale() const { return GetOwner()->GetTransform().scale; }
+    /// <summary>
+    /// 同じ Actor の MeshComponent の描画物。無ければ nullptr
+    /// </summary>
+    Tako::Object3d* GetModel() const;
     PlayerStateMachine* GetStateMachine() const { return stateMachine_.get(); }
     MeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
-    Tako::Object3d* GetAttackBlock() const { return attackBlock_.get(); }
-    bool IsAttackBlockVisible() const { return attackBlockVisible_; }
+    /// <summary>
+    /// 攻撃ブロックの Actor。指していなければ nullptr
+    /// </summary>
+    Tako::Actor* GetAttackBlock() const { return GetOwner()->Resolve(attackBlock_); }
+    bool IsAttackBlockVisible() const;
     Tako::Vector3& GetVelocity() { return velocity_; }
     InputHandler* GetInputHandler() { return inputHandlerPtr_; }
     float GetAttackMinDistance() const { return attackMinDist_; }
@@ -230,6 +247,8 @@ public: //メンバー関数
     bool HasReachedTarget() const;
 
 private: //非公開関数
+    void Update();
+
     void SyncSettings();
 
     /// <summary>
@@ -256,16 +275,14 @@ private: //メンバー変数
     DynamicBoundary dynamicBounds_;
 
     //コア
-    std::unique_ptr<Tako::Object3d> model_;
-    Tako::Camera*                   camera_             = nullptr;
-    Tako::Transform                 transform_{};
-    Tako::Vector3                   velocity_{};
-    Tako::Vector3                   externalVelocity_{};            ///< m/s、ForceField による反発
-    Tako::ForceFieldManager*        forceFieldManager_  = nullptr;  ///< 非所有
-    float                           speed_              = 0.5f;
-    float                           targetAngle_        = 0.f;
-    float                           hp_                 = kMaxHp;
-    bool                            isDead_             = false;
+    Tako::Camera*            camera_             = nullptr;
+    Tako::Vector3            velocity_{};
+    Tako::Vector3            externalVelocity_{};            ///< m/s、ForceField による反発
+    Tako::ForceFieldManager* forceFieldManager_  = nullptr;  ///< 非所有
+    float                    speed_              = 0.5f;
+    float                    targetAngle_        = 0.f;
+    float                    hp_                 = kMaxHp;
+    bool                     isDead_             = false;
 
     //フラグ
     bool mode_                = false;  ///< true: ThirdPerson, false: TopDown
@@ -279,13 +296,12 @@ private: //メンバー変数
     InputHandler*                       inputHandlerPtr_;
     Tako::EmitterManager*               emitterManager_  = nullptr;
 
-    //コライダー
-    std::unique_ptr<Tako::OBBCollider>   bodyCollider_;
+    //コライダー（本体は同じ Actor の ColliderComponent）
     std::unique_ptr<MeleeAttackCollider> meleeAttackCollider_;
 
     //攻撃ブロック
-    std::unique_ptr<Tako::Object3d> attackBlock_;                 ///< 攻撃時に表示される回転ブロック
-    bool                            attackBlockVisible_ = false;
+    TPROPERTY(Edit, Tooltip = "攻撃の間だけ見せる、振る物の Actor（MeshComponent を付ける）")
+    Tako::ActorRef attackBlock_;
 
     //攻撃
     Boss*       targetEnemy_     = nullptr;
@@ -298,12 +314,11 @@ private: //メンバー変数
     CooldownTimer dashCooldown_;
 
     //弾生成
-    BulletSpawner bulletSpawner_;
 
     //調整パラメータ（ImGui 編集用）
-    float attackMinDist_          = 5.0f;     ///< 攻撃開始距離
-    float attackMoveRotationLerp_ = 0.3f;     ///< 攻撃移動中の回転補間速度
-    float bossLookatLerp_         = 1.15f;    ///< ボス視線追従補間速度
+    float attackMinDist_          = 5.0f;   ///< 攻撃開始距離
+    float attackMoveRotationLerp_ = 0.3f;   ///< 攻撃移動中の回転補間速度
+    float bossLookatLerp_         = 1.15f;  ///< ボス視線追従補間速度
 
     //UI・エフェクト
     HPBarUI        hpBar_;

@@ -14,7 +14,7 @@ class Boss;
 /// その線に沿ってレーザー（Box エミッター）を撃つ遠距離攻撃。
 /// 発生時にデカール追従を止め、ビームを凍結する。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Tracking Laser", Category = "Action", Color = 0xE6991A)
 class BTBossTrackingLaser : public AttackNode {
     GENERATED_BODY()
 
@@ -141,17 +141,17 @@ private: //メンバー変数
 
     //発生時に凍結するビーム形状
     Tako::Vector3 firedCenter_{};
-    float         firedYawRad_ = 0.0f;
-    float         firedLength_ = 0.0f;
+    float         firedYawRad_   = 0.0f;
+    float         firedLength_   = 0.0f;
 
     //Decal / コライダー / パーティクル
-    std::unique_ptr<Tako::Decal>             beamDecal_;
-    std::unique_ptr<BossAreaAttackCollider>  beamCollider_;
-    Tako::Transform                          colliderTransform_;
-    bool                                     particleInitialized_ = false;
-    std::string                              emitterName_;
-    Tako::Vector3                            presetBoxSize_{};
-    std::string                              chargeEmitterName_;
+    std::unique_ptr<Tako::Decal>                  beamDecal_;
+    std::unique_ptr<BossAreaAttackCollider>       beamCollider_;
+    Tako::Transform                               colliderTransform_;
+    bool                                          particleInitialized_ = false;
+    std::string                                   emitterName_;
+    Tako::Vector3                                 presetBoxSize_{};
+    std::string                                   chargeEmitterName_;
     TPROPERTY(Edit, Category = "Charge Effect", Speed = 0.1)
-    Tako::Vector3                            chargeOffset_{ 0.0f, 3.5f, 3.0f };
+    Tako::Vector3 chargeOffset_{ 0.0f, 3.5f, 3.0f };
 };

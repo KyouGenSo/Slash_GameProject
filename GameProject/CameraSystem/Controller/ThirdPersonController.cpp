@@ -47,7 +47,7 @@ void ThirdPersonController::Reset() {
     // カメラをターゲットの向きに合わせる（ラジアン）
     camera_->SetRotate(Vector3(0.0f, primaryTarget_->rotate.y, 0.0f));
     destinationAngleY_ = primaryTarget_->rotate.y;
-    destinationAngleX_ = CameraConfig::ThirdPerson::DEFAULT_ANGLE_X;
+    destinationAngleX_ = defaultAngleX_;
     destinationAngleZ_ = 0.0f;
 
     offset_ = offsetOrigin_;
@@ -69,8 +69,7 @@ void ThirdPersonController::ProcessInput(float deltaTime) {
     if (!input_->RStickInDeadZone()) {
         isRotating_ = true;
         float rotateX = input_->GetRightStick().x;
-        destinationAngleY_ += rotateX * rotateStep *
-            CameraConfig::ThirdPerson::GAMEPAD_ROTATE_MULTIPLIER;
+        destinationAngleY_ += rotateX * rotateStep * gamepadRotateMultiplier_;
     }
     else {
         isRotating_ = false;
@@ -149,7 +148,20 @@ Vector3 ThirdPersonController::CalculateLookAtRotation() const {
     float angleX = -std::atan2(direction.y, horizontalDistance);
 
     // 見下ろし角を加算
-    angleX += CameraConfig::ThirdPerson::LOOK_DOWN_ANGLE;
+    angleX += lookDownAngle_;
 
     return Vector3(angleX, angleY, 0.0f);
+}
+
+void ThirdPersonController::ApplySettings(const ThirdPersonCameraSettings& settings) {
+    offset_                  = settings.offset;
+    offsetOrigin_            = settings.offset;
+    defaultAngleX_           = settings.angleX;
+    lookDownAngle_           = settings.lookDownAngle;
+    gamepadRotateMultiplier_ = settings.gamepadRotateMultiplier;
+    rotateSpeed_             = settings.rotateSpeed * (std::numbers::pi_v<float> / 180.0f);
+    followSmoothness_        = settings.followSmoothness;
+    offsetLerpSpeed_         = settings.offsetLerpSpeed;
+    rotationLerpSpeed_       = settings.rotationLerpSpeed;
+    standardFov_             = settings.fov;
 }

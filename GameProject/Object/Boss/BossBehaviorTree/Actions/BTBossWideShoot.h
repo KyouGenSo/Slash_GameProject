@@ -8,7 +8,7 @@ class Boss;
 /// <summary>
 /// 角度をスイープしながら連射する大範囲射撃。通常弾（速い）と貫通弾（遅い）を混ぜて発射する。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Wide Shoot", Category = "Action", Color = 0xF24C99)
 class BTBossWideShoot : public AttackNode {
     GENERATED_BODY()
 

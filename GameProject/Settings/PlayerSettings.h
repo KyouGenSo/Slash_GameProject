@@ -132,10 +132,6 @@ public: //メンバー変数
     float moveInputDeadzone = 0.1f;
     TPROPERTY(Edit, Category = "Move", ClampMin = 0, Speed = 0.01)
     float rotationLerpSpeed = 0.2f;
-    TPROPERTY(Edit, Category = "Move", Tooltip = "開始位置の高さ")
-    float initialY          = 2.5f;
-    TPROPERTY(Edit, Category = "Move", Tooltip = "開始位置の奥行き")
-    float initialZ          = -120.0f;
 
     TPROPERTY(Edit, Category = "Attack Move", Tooltip = "攻撃を始めるボスとの距離", ClampMin = 0)
     float attackStartDistance    = 5.0f;
@@ -146,8 +142,6 @@ public: //メンバー変数
     TPROPERTY(Edit, Category = "Attack Move", ClampMin = 0)
     float attackMoveSpeed        = 30.0f;
 
-    TPROPERTY(Edit, Category = "Collider", Tooltip = "本体の箱の全長", ClampMin = 0, Speed = 0.05)
-    float         bodyColliderSize     = 3.2f;
     TPROPERTY(Edit, Category = "Collider", Tooltip = "近接攻撃の箱の全長", ClampMin = 0, Speed = 0.05)
     Tako::Vector3 meleeColliderSize    = { 5.0f, 2.0f, 17.0f };
     TPROPERTY(Edit, Category = "Collider", Tooltip = "近接攻撃の箱の前方へのずれ", Speed = 0.05)
@@ -169,6 +163,4 @@ public: //メンバー変数
     TPROPERTY(Edit, Category = "States")
     Shoot shoot;
 
-    TPROPERTY(Edit, Category = "Bullet")
-    BulletSettings bullet = { 10.0f, 3.0f, 0.5f };
 };

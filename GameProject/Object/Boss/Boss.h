@@ -3,23 +3,21 @@
 #include <string>
 #include <vector>
 
+#include "Actor.h"
+#include "ActorRef.h"
+#include "Script.h"
 #include "Transform.h"
 #include "vector2.h"
 #include "Vector4.h"
 #include "Vector3.h"
 
 // 共通定義
-#include "../../Common/BulletSpawnRequest.h"
 #include "../../Effect/ShakeEffect.h"
 #include "../../Effect/HitFlashEffect.h"
-#include "../../Common/BulletSpawner.h"
 #include "../../UI/HPBarUI.h"
 #include "BossPhaseManager.h"
 #include "BehaviorTree.h"
 
-#ifdef _DEBUG
-#include "BehaviorTreeEditor.h"
-#endif
 
 // Tako namespace 前方宣言
 namespace Tako {
@@ -38,8 +36,10 @@ class BossMeleeAttackCollider;
 /// <summary>
 /// ボスキャラクター。HP・フェーズ・状態遷移・BehaviorTree・各種エフェクト/当たり判定を統括する
 /// </summary>
-class Boss
-{
+TCLASS()
+class Boss : public Tako::Script {
+    GENERATED_BODY()
+
 public: //定数
     static constexpr float kRingShockwaveWidthFraction = 0.15f;  ///< リング衝撃波メッシュの帯幅比（外半径 1 基準）
 
@@ -53,13 +53,21 @@ public: //メンバー関数
     Boss();
     ~Boss();
 
-    void Initialize();
-    void Finalize();
-    void Update(float deltaTime);
+    void BeginPlay() override;
+    void EndPlay() override;
 
-    void Draw();
-    void DrawSprite();
-    void DrawImGui();
+    /// <summary>
+    /// シーンの並びでプレイヤーの後に呼ばれる
+    /// </summary>
+    void Tick(float deltaTime) override;
+
+
+#ifdef _DEBUG
+    /// <summary>
+    /// 状態の表示と、HP・フェーズを変えるデバッグ操作
+    /// </summary>
+    bool DrawCustomImGui() override;
+#endif
 
     /// <summary>
     /// ダメージ処理。HP を減算し、フェーズ移行スタン判定とヒットフラッシュ・シェイクを行う
@@ -85,7 +93,6 @@ public: //メンバー関数
     /// 保留中の弾生成リクエストを move で取り出す（取り出し後はスポナー内が空になる）
     /// </summary>
     /// <returns>登録済みの通常弾リクエスト一覧</returns>
-    std::vector<BulletSpawnRequest> ConsumePendingBullets();
 
     /// <summary>
     /// 貫通弾の生成リクエストをスポナーに登録する（生成は後で Consume 時に行う）
@@ -98,7 +105,6 @@ public: //メンバー関数
     /// 保留中の貫通弾生成リクエストを move で取り出す（取り出し後はスポナー内が空になる）
     /// </summary>
     /// <returns>登録済みの貫通弾リクエスト一覧</returns>
-    std::vector<BulletSpawnRequest> ConsumePendingPenetratingBullets();
 
     /// <summary>
     /// 近接攻撃ヒット時の統合処理。現在のステートに応じてダメージ・スタン・離脱を判定する。
@@ -154,10 +160,10 @@ public: //メンバー関数
     //=================================================================
     //Setter
     //=================================================================
-    void SetTransform(const Tako::Transform& transform) { transform_ = transform; }
-    void SetTranslate(const Tako::Vector3& translate) { transform_.translate = translate; }
-    void SetRotate(const Tako::Vector3& rotate) { transform_.rotate = rotate; }
-    void SetScale(const Tako::Vector3& scale) { transform_.scale = scale; }
+    void SetTransform(const Tako::Transform& transform) { GetOwner()->GetTransform() = transform; }
+    void SetTranslate(const Tako::Vector3& translate) { GetOwner()->GetTransform().translate = translate; }
+    void SetRotate(const Tako::Vector3& rotate) { GetOwner()->GetTransform().rotate = rotate; }
+    void SetScale(const Tako::Vector3& scale) { GetOwner()->GetTransform().scale = scale; }
     void SetHp(float hp) { hp_ = hp; }
     void SetPhase(uint32_t phase) { phaseManager_.SetPhase(phase); }
     void SetPlayer(Player* player);
@@ -176,9 +182,9 @@ public: //メンバー関数
     void SetTeleporting(bool teleporting) { isTeleporting_ = teleporting; }
 
     void SetDashing(bool dashing);
-    void SetMeleeAttackBlockVisible(bool visible) { meleeAttackBlockVisible_ = visible; }
-    void SetRepelShockwaveSphereVisible(bool visible) { repelShockwaveSphereVisible_ = visible; }
-    void SetRingShockwaveVisible(bool visible) { ringShockwaveVisible_ = visible; }
+    void SetMeleeAttackBlockVisible(bool visible);
+    void SetRepelShockwaveSphereVisible(bool visible);
+    void SetRingShockwaveVisible(bool visible);
     void SetAttackSignEmitterActive(bool active);
     void SetAttackSignEmitterPosition(const Tako::Vector3& position);
     void SetBulletSignEmitterActive(bool active);
@@ -192,7 +198,10 @@ public: //メンバー関数
     //Getter
     //=================================================================
     BossStateMachine* GetStateMachine() const { return stateMachine_.get(); }
-    Tako::BehaviorTree* GetBehaviorTree() const { return behaviorTree_.get(); }
+    /// <summary>
+    /// 同じ Actor の BehaviorTreeComponent のツリー。無ければ nullptr
+    /// </summary>
+    Tako::BehaviorTree* GetBehaviorTree() const;
 
     /// <summary>
     /// スタンまたはフェーズ移行スタン中か
@@ -212,21 +221,27 @@ public: //メンバー関数
     bool IsForceVulnerable() const { return forceVulnerable_; }
     bool IsTeleporting() const { return isTeleporting_; }
     bool IsDashing() const { return isDashing_; }
-    const Tako::Transform& GetTransform() const { return transform_; }
-    Tako::Transform& GetWorldTransform() { return transform_; }
-    Tako::Transform* GetTransformPtr() { return &transform_; }
-    Tako::Vector3 GetTranslate() const { return transform_.translate; }
-    Tako::Vector3 GetRotate() const { return transform_.rotate; }
-    Tako::Vector3 GetScale() const { return transform_.scale; }
+    const Tako::Transform& GetTransform() const { return GetOwner()->GetTransform(); }
+    Tako::Transform& GetWorldTransform() { return GetOwner()->GetTransform(); }
+    Tako::Transform* GetTransformPtr() { return &GetOwner()->GetTransform(); }
+    Tako::Vector3 GetTranslate() const { return GetOwner()->GetTransform().translate; }
+    Tako::Vector3 GetRotate() const { return GetOwner()->GetTransform().rotate; }
+    Tako::Vector3 GetScale() const { return GetOwner()->GetTransform().scale; }
     float GetHp() const { return hp_; }
     static constexpr float GetMaxHp() { return kMaxHp; }
     uint8_t GetPhase() const { return phaseManager_.GetPhase(); }
     bool IsDead() const { return phaseManager_.IsDead(); }
     BossPhaseManager& GetPhaseManager() { return phaseManager_; }
-    Tako::OBBCollider* GetCollider() const { return bodyCollider_.get(); }
-    Tako::Object3d* GetMeleeAttackBlock() const { return meleeAttackBlock_.get(); }
-    bool IsMeleeAttackBlockVisible() const { return meleeAttackBlockVisible_; }
-    Tako::Object3d* GetRingShockwaveModel() const { return ringShockwaveModel_.get(); }
+    /// <summary>
+    /// 近接攻撃で振るブロックの Actor。指していなければ nullptr
+    /// </summary>
+    Tako::Actor* GetMeleeAttackBlock() const { return GetOwner()->Resolve(meleeAttackBlock_); }
+    bool IsMeleeAttackBlockVisible() const;
+    /// <summary>
+    /// リング衝撃波の Actor（位置・向き・大きさを動かす）と、その描画物（色と UV を動かす）
+    /// </summary>
+    Tako::Actor* GetRingShockwaveActor() const { return GetOwner()->Resolve(ringShockwave_); }
+    Tako::Object3d* GetRingShockwaveModel() const;
     BossMeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
     Tako::EmitterManager* GetEmitterManager() const { return emitterManager_; }
     Tako::ForceFieldManager* GetForceFieldManager() const { return forceFieldManager_; }
@@ -236,7 +251,10 @@ public: //メンバー関数
     /// ボス本体モデルを取得する（MeshEmitter のスポーン形状などに使う）
     /// </summary>
     /// <returns>ボス本体の Object3d。未初期化なら nullptr</returns>
-    Tako::Object3d* GetModel() const { return model_.get(); }
+    /// <summary>
+    /// 同じ Actor の MeshComponent の描画物。無ければ nullptr
+    /// </summary>
+    Tako::Object3d* GetModel() const;
 
     /// <summary>
     /// ボス本体の素のマテリアル色（Object Settings の Values。テレポートのフェードの基準色）
@@ -248,7 +266,12 @@ public: //メンバー関数
     const std::string& GetRingShockwaveEmitterName() const { return ringShockwaveEmitterName_; }
 
 private: //非公開関数
+    /// <summary>
+    /// 球とリングはコードで作る形なので、それぞれの MeshComponent に渡す
+    /// </summary>
     void InitializeModel();
+
+    void Update(float deltaTime);
     void InitializeHealth();
     void InitializeColliders();
     void ApplyEffectSettings();
@@ -266,16 +289,9 @@ private: //非公開関数
     void CompletePhaseTransition();
 
 private: //メンバー変数
-    std::unique_ptr<Tako::Object3d> model_;
-    Tako::Transform                 transform_{};
 
-    std::unique_ptr<BossStateMachine>   stateMachine_;
-    std::unique_ptr<Tako::BehaviorTree> behaviorTree_;
+    std::unique_ptr<BossStateMachine> stateMachine_;
 
-#ifdef _DEBUG
-    std::unique_ptr<Tako::BehaviorTreeEditor> nodeEditor_;
-    bool                                      showNodeEditor_ = false;
-#endif
 
     Player*          player_       = nullptr;
     float            hp_           = kMaxHp;
@@ -296,18 +312,17 @@ private: //メンバー変数
     bool forceVulnerable_ = false;  ///< true の間は硬直外でもスタン誘発を許可
     bool isTeleporting_   = false;  ///< true の間は aura を無効化
 
-    std::unique_ptr<Tako::OBBCollider> bodyCollider_;
 
     //近接攻撃関連
-    std::unique_ptr<Tako::Object3d> meleeAttackBlock_;
-    bool                            meleeAttackBlockVisible_ = false;
+    TPROPERTY(Edit, Tooltip = "近接攻撃で振るブロックの Actor（MeshComponent を付ける）")
+    Tako::ActorRef meleeAttackBlock_;
 
-    std::unique_ptr<Tako::Object3d> repelShockwaveSphere_;
-    bool                            repelShockwaveSphereVisible_ = false;
+    TPROPERTY(Edit, Tooltip = "反発の衝撃波の球の Actor（MeshComponent を付ける。モデルはコードが作る）")
+    Tako::ActorRef repelShockwaveSphere_;
 
     //リング衝撃波（BTBossRingShockwave が transform を駆動）
-    std::unique_ptr<Tako::Object3d> ringShockwaveModel_;
-    bool                            ringShockwaveVisible_ = false;
+    TPROPERTY(Edit, Tooltip = "リング衝撃波の Actor（MeshComponent を付ける。モデルはコードが作る）")
+    Tako::ActorRef ringShockwave_;
 
     std::unique_ptr<BossMeleeAttackCollider> meleeAttackCollider_;
 
@@ -330,12 +345,8 @@ private: //メンバー変数
     HitFlashEffect hitFlashEffect_;
     ShakeEffect    shakeEffect_;
 
-    BulletSpawner bulletSpawner_;
-    BulletSpawner penetratingBulletSpawner_;  ///< 貫通弾用
 
     HPBarUI hpBar_;
 
-    float initialY_ = 2.5f;
-    float initialZ_ = 10.0f;
 };
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "Script.h"
 #include "UILayout.h"
 #include "Vector2.h"
 
@@ -6,19 +7,32 @@
 class Boss;
 
 /// <summary>
-/// ゲームパッドの入力状態を表示する UI。
-/// ボタン押下で Up/Down、スティック方向で画像を切り替える（配置は resources/Json/UI/ControllerUI.json）
+/// ゲームパッドの入力状態を表示する UI。同じ Actor の UILayoutComponent の画像を、
+/// ボタン押下で Up/Down、スティック方向で切り替える（配置は resources/Json/UI/ControllerUI.json）
 /// </summary>
-class ControllerUI
-{
+TCLASS()
+class ControllerUI : public Tako::Script {
+    GENERATED_BODY()
+
 private: //定数
     static constexpr int kStickDirectionCount = 8;
 
 public: //メンバー関数
-    void Initialize();
-    void Update();
-    void Draw();
-    void DrawImGui();
+    void BeginPlay() override;
+
+    void Tick(float deltaTime) override;
+
+    /// <summary>
+    /// ポーズ中も、押したボタンの画像を切り替える
+    /// </summary>
+    bool TickWhilePaused() const override { return true; }
+
+#ifdef _DEBUG
+    /// <summary>
+    /// 今のボタンとスティックの状態
+    /// </summary>
+    bool DrawCustomImGui() override;
+#endif
 
     //=============================
     //Setter
@@ -42,7 +56,10 @@ private: //非公開関数
     int GetStickDirectionIndex(const Tako::Vector2& stick) const;
 
 private: //メンバー変数
-    Tako::UILayout layout_;
+    TPROPERTY(Edit, Tooltip = "スティック入力がこの値未満なら無視する", ClampMin = 0, ClampMax = 1, Speed = 0.01)
+    float stickDeadzone_ = 0.3f;
+
+    Tako::UILayout* layout_ = nullptr;  ///< 非所有（同じ Actor の UILayoutComponent の物）。無ければ何もしない
 
     // 現在の表示状態
     bool isAPressed_    = false;
@@ -51,9 +68,6 @@ private: //メンバー変数
     bool isYPressed_    = false;
     int  leftStickDir_  = 0;      ///< 0-7
     int  rightStickDir_ = 0;      ///< 0-7
-
-    // スティック入力がこの値未満なら無視
-    float stickDeadzone_ = 0.3f;
 
     Boss* boss_     = nullptr;  ///< フェーズ判定用
     bool  isPaused_ = false;

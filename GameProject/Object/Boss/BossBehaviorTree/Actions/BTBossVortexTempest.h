@@ -18,7 +18,7 @@ class Boss;
 /// ボスを公転する 4 渦点それぞれに 3 種の ForceField プリセット（Attract/Directional/Vortex）を
 /// 重ね、合計 12 力場で合成トルネードを作る。持続中は内側ほど強い DoT を与える。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Vortex Tempest", Category = "Action", Color = 0x994CE6)
 class BTBossVortexTempest : public AttackNode {
     GENERATED_BODY()
 

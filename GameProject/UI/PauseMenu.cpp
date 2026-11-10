@@ -1,5 +1,8 @@
 #include "PauseMenu.h"
+#include "Actor.h"
 #include "Input.h"
+#include "Logger.h"
+#include "UILayoutComponent.h"
 
 #ifdef _DEBUG
 #include "imgui.h"
@@ -7,14 +10,22 @@
 
 using namespace Tako;
 
-void PauseMenu::Initialize()
+void PauseMenu::BeginPlay()
 {
-    layout_.Load("PauseMenu");
+    UILayoutComponent* component = GetOwner()->GetComponent<UILayoutComponent>();
+    if (!component) {
+        Logger::Log("PauseMenu: the Actor has no UILayoutComponent\n");
+        return;
+    }
+    layout_ = &component->GetLayout();
     Reset();
 }
 
 PauseMenu::Action PauseMenu::Update()
 {
+    if (!layout_) {
+        return Action::None;
+    }
     Input* input = Input::GetInstance();
 
     isDPadUpPressed_ = input->PushButton(GamepadButton::DPad_Up);
@@ -30,15 +41,14 @@ PauseMenu::Action PauseMenu::Update()
     }
 
     // 押下中のボタン画像に差し替える（上下同時押しは上を優先）
-    layout_.SetVisible("DpadNeutral", !isDPadUpPressed_ && !isDPadDownPressed_);
-    layout_.SetVisible("DpadUp", isDPadUpPressed_);
-    layout_.SetVisible("DpadDown", !isDPadUpPressed_ && isDPadDownPressed_);
-    layout_.SetVisible("AButtonUp", !isAPressed_);
-    layout_.SetVisible("AButtonDown", isAPressed_);
+    layout_->SetVisible("DpadNeutral", !isDPadUpPressed_ && !isDPadDownPressed_);
+    layout_->SetVisible("DpadUp", isDPadUpPressed_);
+    layout_->SetVisible("DpadDown", !isDPadUpPressed_ && isDPadDownPressed_);
+    layout_->SetVisible("AButtonUp", !isAPressed_);
+    layout_->SetVisible("AButtonDown", isAPressed_);
 
     // エディタで Reload されても選択色が戻るよう毎フレーム設定する
     UpdateButtonColors();
-    layout_.Update();
 
     if (input->TriggerButton(GamepadButton::A)) {
         switch (selectedIndex_) {
@@ -51,11 +61,6 @@ PauseMenu::Action PauseMenu::Update()
     return Action::None;
 }
 
-void PauseMenu::Draw()
-{
-    layout_.Draw();
-}
-
 void PauseMenu::Reset()
 {
     selectedIndex_ = 0;
@@ -64,26 +69,26 @@ void PauseMenu::Reset()
 
 void PauseMenu::UpdateButtonColors()
 {
+    if (!layout_) {
+        return;
+    }
     for (int i = 0; i < kButtonCount; ++i) {
         if (i == selectedIndex_) {
-            layout_.SetColor(kButtonNames[i], { kSelectedColorR, kSelectedColorG, kSelectedColorB, 1.0f });
+            layout_->SetColor(kButtonNames[i], { kSelectedColorR, kSelectedColorG, kSelectedColorB, 1.0f });
         } else {
-            layout_.SetColor(kButtonNames[i], { kUnselectedColorR, kUnselectedColorG, kUnselectedColorB, 1.0f });
+            layout_->SetColor(kButtonNames[i], { kUnselectedColorR, kUnselectedColorG, kUnselectedColorB, 1.0f });
         }
     }
 }
 
-void PauseMenu::DrawImGui()
-{
 #ifdef _DEBUG
-    if (ImGui::TreeNode("PauseMenu")) {
-        ImGui::Text("Selected Index: %d", selectedIndex_);
-        ImGui::Text("Input States:");
-        ImGui::Text("  DPad Up: %s", isDPadUpPressed_ ? "Pressed" : "Released");
-        ImGui::Text("  DPad Down: %s", isDPadDownPressed_ ? "Pressed" : "Released");
-        ImGui::Text("  A Button: %s", isAPressed_ ? "Pressed" : "Released");
-        ImGui::TextDisabled("Layout \"%s\" is edited in Tools > UI Editor", layout_.GetName().c_str());
-        ImGui::TreePop();
-    }
-#endif
+bool PauseMenu::DrawCustomImGui()
+{
+    ImGui::Text("Selected: %s (index: %d)", kButtonNames[selectedIndex_], selectedIndex_);
+    ImGui::SeparatorText("Input States");
+    ImGui::Text("DPad Up: %s", isDPadUpPressed_ ? "Pressed" : "Released");
+    ImGui::Text("DPad Down: %s", isDPadDownPressed_ ? "Pressed" : "Released");
+    ImGui::Text("A Button: %s", isAPressed_ ? "Pressed" : "Released");
+    return false;
 }
+#endif

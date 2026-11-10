@@ -9,7 +9,7 @@ class Boss;
 /// ステージ中央へ移動し、全方位へ弾を一定時間ばらまく。
 /// 通常弾（速い）と貫通弾（遅い）を penetratingRatio_ で混ぜる。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Barrage", Category = "Action", Color = 0xB233E6)
 class BTBossBarrage : public AttackNode {
     GENERATED_BODY()
 

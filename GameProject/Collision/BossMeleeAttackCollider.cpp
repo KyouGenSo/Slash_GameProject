@@ -1,6 +1,6 @@
 #include "BossMeleeAttackCollider.h"
 #include "../Object/Boss/Boss.h"
-#include "../Object/Player/Player.h"
+#include "ColliderOwner.h"
 #include "CollisionTypeId.h"
 #include "Settings/BossSettings.h"
 
@@ -18,7 +18,8 @@ void BossMeleeAttackCollider::OnCollisionEnter(Collider* other) {
     if (!other || hasHitPlayer_) return;
 
     if (other->IsType(CollisionTypeId::PLAYER)) {
-        Player* player = static_cast<Player*>(other->GetOwner());
+        Player* player = PlayerOf(other);
+        if (!player) return;
 
         if (player->IsParrying()) {
             player->OnParrySuccess();

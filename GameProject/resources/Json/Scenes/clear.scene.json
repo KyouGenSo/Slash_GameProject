@@ -1,0 +1,76 @@
+{
+  "actors": [
+    {
+      "id": 1,
+      "type": "Actor",
+      "properties": {
+        "name": "Main Camera",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            -1000.0,
+            -34.0
+          ]
+        }
+      },
+      "components": {
+        "CameraComponent": {
+          "type": "CameraComponent",
+          "properties": {},
+          "order": 0
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "Actor",
+      "properties": {
+        "name": "Result UI",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "UILayoutComponent": {
+          "type": "UILayoutComponent",
+          "properties": {
+            "layout": "Result"
+          },
+          "order": 0
+        },
+        "Script": {
+          "type": "ScriptComponent",
+          "properties": {
+            "script": "ResultScreen",
+            "titleTexture": "gameClear_Text.dds"
+          },
+          "order": 1
+        }
+      }
+    }
+  ]
+}

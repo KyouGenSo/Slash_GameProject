@@ -1,0 +1,228 @@
+{
+  "actors": [
+    {
+      "id": 1,
+      "type": "Actor",
+      "properties": {
+        "name": "Main Camera",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            -991.0,
+            -34.0
+          ]
+        }
+      },
+      "components": {
+        "CameraComponent": {
+          "type": "CameraComponent",
+          "properties": {},
+          "order": 0
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "Actor",
+      "properties": {
+        "name": "Post Process",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "PostProcessComponent": {
+          "type": "PostProcessComponent",
+          "properties": {
+            "profile": "title"
+          },
+          "order": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "Actor",
+      "properties": {
+        "name": "Title UI",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "UILayoutComponent": {
+          "type": "UILayoutComponent",
+          "properties": {
+            "layout": "Title"
+          },
+          "order": 0
+        },
+        "Script": {
+          "type": "ScriptComponent",
+          "properties": {
+            "script": "TitleScreen",
+            "slashParticle": {
+              "actor": 12
+            }
+          },
+          "order": 1
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "Actor",
+      "properties": {
+        "name": "Border Left",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            -15.0,
+            -1000.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "ParticleSystemComponent": {
+          "type": "ParticleSystemComponent",
+          "properties": {
+            "preset": "title_border1",
+            "playOnStart": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "order": 0
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "Actor",
+      "properties": {
+        "name": "Border Right",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            15.0,
+            -1000.0,
+            0.0
+          ]
+        }
+      },
+      "components": {
+        "ParticleSystemComponent": {
+          "type": "ParticleSystemComponent",
+          "properties": {
+            "preset": "title_border2",
+            "playOnStart": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "order": 0
+        }
+      }
+    },
+    {
+      "id": 12,
+      "type": "Actor",
+      "properties": {
+        "name": "Slash",
+        "transform": {
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            -1003.0,
+            14.0
+          ]
+        }
+      },
+      "components": {
+        "ParticleSystemComponent": {
+          "type": "ParticleSystemComponent",
+          "properties": {
+            "preset": "title_slash",
+            "playOnStart": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "order": 0
+        }
+      }
+    }
+  ]
+}

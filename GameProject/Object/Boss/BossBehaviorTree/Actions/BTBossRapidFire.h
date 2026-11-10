@@ -8,7 +8,7 @@ class Boss;
 /// <summary>
 /// 発射中もプレイヤー方向を追尾し続ける連続射撃。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Rapid Fire", Category = "Action", Color = 0xE63380)
 class BTBossRapidFire : public AttackNode {
     GENERATED_BODY()
 

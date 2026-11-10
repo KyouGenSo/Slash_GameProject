@@ -8,7 +8,7 @@ class Boss;
 /// <summary>
 /// ランダム方向へエリア内で一定距離ダッシュする
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Dash", Category = "Action", Color = 0x4CCC80)
 class BTBossDash : public Tako::BTNode {
     GENERATED_BODY()
 

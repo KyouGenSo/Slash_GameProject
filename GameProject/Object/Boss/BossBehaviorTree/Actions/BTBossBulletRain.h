@@ -15,7 +15,7 @@ class Player;
 /// ステージ全域のランダム位置へ予兆デカール付きの弾を間隔スケジュールで降らせる弾雨攻撃。
 /// 弾ごとにライフサイクルが独立し、複数弾の予兆・落下がオーバーラップする。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Bullet Rain", Category = "Action", Color = 0x4C8CF2)
 class BTBossBulletRain : public AttackNode {
     GENERATED_BODY()
 

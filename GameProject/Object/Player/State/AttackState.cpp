@@ -240,7 +240,7 @@ void AttackState::ProcessRecovery(Player* player, float deltaTime)
 
 void AttackState::UpdateBlockPosition(Player* player)
 {
-    Object3d* block = player->GetAttackBlock();
+    Tako::Actor* block = player->GetAttackBlock();
     if (!block) return;
 
     const ComboData& currentCombo = combos_[comboIndex_];

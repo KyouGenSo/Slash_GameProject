@@ -12,16 +12,10 @@ namespace {
     constexpr const char* kElementNames[] = { kBackgroundName, kBar2Name, kBarName };
 }
 
-void HPBarUI::Initialize(const std::string& layoutName)
-{
-    layout_.Load(layoutName);
-}
-
 void HPBarUI::Update(float currentValue, float maxValue)
 {
     float ratio = (maxValue > 0.0f) ? (currentValue / maxValue) : 0.0f;
     SetFillRatio(kBarName, std::clamp(ratio, 0.0f, 1.0f));
-    layout_.Update();
 }
 
 void HPBarUI::UpdateDual(float currentHp, float maxHp, float phase2Threshold, uint32_t phase)
@@ -42,35 +36,32 @@ void HPBarUI::UpdateDual(float currentHp, float maxHp, float phase2Threshold, ui
         SetFillRatio(kBarName, 0.0f);
         SetFillRatio(kBar2Name, std::clamp(phase2Ratio, 0.0f, 1.0f));
     }
-    layout_.Update();
-}
-
-void HPBarUI::Draw()
-{
-    layout_.Draw();
 }
 
 void HPBarUI::SetPosition(float screenXRatio, float screenYRatio)
 {
+    if (!layout_) return;
     for (const char* name : kElementNames) {
-        layout_.SetAnchor(name, { screenXRatio, screenYRatio });
+        layout_->SetAnchor(name, { screenXRatio, screenYRatio });
     }
 }
 
 void HPBarUI::SetBarColor(const Vector4& color)
 {
-    layout_.SetColor(kBarName, color);
+    if (layout_) layout_->SetColor(kBarName, color);
 }
 
 void HPBarUI::SetAnchorPoint(const Vector2& anchor)
 {
+    if (!layout_) return;
     for (const char* name : kElementNames) {
-        layout_.SetPivot(name, anchor);
+        layout_->SetPivot(name, anchor);
     }
 }
 
 void HPBarUI::SetFillRatio(const char* barName, float ratio)
 {
     // 満タンの幅はゲームが書き換えない Background から取る（UI Editor で幅を変えるとそのまま反映される）
-    layout_.SetSize(barName, { layout_.GetSize(kBackgroundName).x * ratio, layout_.GetSize(barName).y });
+    if (!layout_) return;
+    layout_->SetSize(barName, { layout_->GetSize(kBackgroundName).x * ratio, layout_->GetSize(barName).y });
 }

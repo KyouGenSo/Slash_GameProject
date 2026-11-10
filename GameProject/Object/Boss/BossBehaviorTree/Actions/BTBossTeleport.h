@@ -15,7 +15,7 @@ class Boss;
 /// フェードアウト → 瞬間移動 → フェードイン で移動。フェード中は body MeshEmitter でディゾルブ演出。
 /// テレポート先は固定座標かステージ内ランダムから選択。EnterAttackRecovery は呼ばない（硬直なし仕様）。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Teleport", Category = "Action", Color = 0x80E6E6)
 class BTBossTeleport : public AttackNode {
     GENERATED_BODY()
 

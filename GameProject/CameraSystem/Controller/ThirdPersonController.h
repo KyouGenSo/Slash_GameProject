@@ -2,7 +2,7 @@
 #include <numbers>
 
 #include "ICameraController.h"
-#include "../CameraConfig.h"
+#include "../CameraSettings.h"
 #include "Vector3.h"
 #include "Input.h"
 
@@ -25,6 +25,11 @@ public: //メンバー関数
     //========================================================
     //Setter
     //========================================================
+    /// <summary>
+    /// 調整値をまとめて反映する（GameCamera の Inspector の値）
+    /// </summary>
+    void ApplySettings(const ThirdPersonCameraSettings& settings);
+
     void SetOffset(const Tako::Vector3& offset) {
         offset_ = offset;
         offsetOrigin_ = offset;
@@ -82,26 +87,26 @@ private: //メンバー変数
     Tako::Input* input_ = nullptr;
 
     Tako::Vector3 interpolatedTargetPos_ = {};
-    Tako::Vector3 offset_ = {
-        CameraConfig::ThirdPerson::DEFAULT_OFFSET_X,
-        CameraConfig::ThirdPerson::DEFAULT_OFFSET_Y,
-        CameraConfig::ThirdPerson::DEFAULT_OFFSET_Z
-    };
-    Tako::Vector3 offsetOrigin_ = offset_;
+    Tako::Vector3 offset_                = ThirdPersonCameraSettings{}.offset;
+    Tako::Vector3 offsetOrigin_          = offset_;
 
-    float destinationAngleX_ = CameraConfig::ThirdPerson::DEFAULT_ANGLE_X;  // ラジアン
-    float destinationAngleY_ = 0.0f;  // ラジアン
-    float destinationAngleZ_ = 0.0f;  // ラジアン
+    float defaultAngleX_           = ThirdPersonCameraSettings{}.angleX;                   ///< ラジアン
+    float lookDownAngle_           = ThirdPersonCameraSettings{}.lookDownAngle;            ///< ラジアン
+    float gamepadRotateMultiplier_ = ThirdPersonCameraSettings{}.gamepadRotateMultiplier;
 
-    // DEFAULT_ROTATE_SPEED（度）をラジアンに変換
-    float rotateSpeed_       = CameraConfig::ThirdPerson::DEFAULT_ROTATE_SPEED * (std::numbers::pi_v<float> / 180.0f);
-    float followSmoothness_  = CameraConfig::FOLLOW_SMOOTHNESS;
-    float offsetLerpSpeed_   = CameraConfig::OFFSET_LERP_SPEED;
-    float rotationLerpSpeed_ = CameraConfig::ROTATION_LERP_SPEED;
-    float standardFov_       = CameraConfig::STANDARD_FOV;
+    float destinationAngleX_ = defaultAngleX_;  ///< ラジアン
+    float destinationAngleY_ = 0.0f;            ///< ラジアン
+    float destinationAngleZ_ = 0.0f;            ///< ラジアン
+
+    // 設定の回す速さ（度）をラジアンに変換
+    float rotateSpeed_       = ThirdPersonCameraSettings{}.rotateSpeed * (std::numbers::pi_v<float> / 180.0f);
+    float followSmoothness_  = ThirdPersonCameraSettings{}.followSmoothness;
+    float offsetLerpSpeed_   = ThirdPersonCameraSettings{}.offsetLerpSpeed;
+    float rotationLerpSpeed_ = ThirdPersonCameraSettings{}.rotationLerpSpeed;
+    float standardFov_       = ThirdPersonCameraSettings{}.fov;
 
     bool isRotating_ = false;
 
-    const Tako::Transform* secondaryTarget_ = nullptr;  // 注視対象（ボスなど）
-    bool enableLookAtTarget_ = false;
+    const Tako::Transform* secondaryTarget_    = nullptr;  ///< 注視対象（ボスなど）
+    bool                   enableLookAtTarget_ = false;
 };

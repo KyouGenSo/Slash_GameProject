@@ -1,0 +1,98 @@
+{
+  "components": {
+    "ColliderComponent": {
+      "order": 0,
+      "properties": {
+        "layer": 6,
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "radius": 1.0,
+        "shape": "Sphere",
+        "size": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "type": "ColliderComponent"
+    },
+    "Effect": {
+      "order": 2,
+      "properties": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "playOnStart": true,
+        "preset": "boss_bullet_effect"
+      },
+      "type": "ParticleSystemComponent"
+    },
+    "Explode": {
+      "order": 3,
+      "properties": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "playOnStart": false,
+        "preset": "boss_bullet_explode"
+      },
+      "type": "ParticleSystemComponent"
+    },
+    "Script": {
+      "order": 4,
+      "properties": {
+        "affectedByForceField": false,
+        "cancelsOnEnemyBullet": true,
+        "damage": 5.0,
+        "lifetime": 5.0,
+        "maxY": 50.0,
+        "minSpeed": 0.0,
+        "minY": 0.0,
+        "script": "Bullet",
+        "target": "Player"
+      },
+      "type": "ScriptComponent"
+    },
+    "Trail": {
+      "order": 1,
+      "properties": {
+        "offset": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "playOnStart": true,
+        "preset": "boss_bullet"
+      },
+      "type": "ParticleSystemComponent"
+    }
+  },
+  "properties": {
+    "name": "BossBullet",
+    "transform": {
+      "rotate": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "translate": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "type": "Actor"
+}

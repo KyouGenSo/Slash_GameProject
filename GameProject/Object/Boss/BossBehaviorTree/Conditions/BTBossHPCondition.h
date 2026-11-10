@@ -5,7 +5,7 @@
 /// <summary>
 /// 現在 HP を最大 HP に対するパーセンテージで閾値比較する条件ノード
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "HP Condition", Category = "Condition", Color = 0xE68033)
 class BTBossHPCondition : public Tako::BTNode {
     GENERATED_BODY()
 

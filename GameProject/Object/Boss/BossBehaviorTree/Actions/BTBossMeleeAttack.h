@@ -8,7 +8,7 @@ class Boss;
 /// <summary>
 /// 武器ブロックを振る近接攻撃。コンボ抽選で 1 撃または 3 連撃。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Melee Attack", Category = "Action", Color = 0xE6661A)
 class BTBossMeleeAttack : public AttackNode {
     GENERATED_BODY()
 

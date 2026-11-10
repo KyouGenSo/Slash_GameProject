@@ -1,6 +1,5 @@
 #pragma once
 #include "Controller/ICameraController.h"
-#include "CameraConfig.h"
 #include "Camera.h"
 #include "Vector3.h"
 #include <vector>
@@ -140,8 +139,8 @@ private: //メンバー変数
     //カメラシェイク
     bool          isShaking_             = false;
     float         shakeTimer_            = 0.0f;
-    float         shakeDuration_         = CameraConfig::Shake::DEFAULT_DURATION;
-    float         shakeIntensity_        = CameraConfig::Shake::DEFAULT_INTENSITY;  ///< デフォルト強度
-    float         currentShakeIntensity_ = 0.0f;                                    ///< 実行中の強度
+    float         shakeDuration_         = 0.3f;
+    float         shakeIntensity_        = 0.5f;                  ///< デフォルト強度
+    float         currentShakeIntensity_ = 0.0f;                  ///< 実行中の強度
     Tako::Vector3 shakeOffset_           = { 0.0f, 0.0f, 0.0f };
 };

@@ -112,14 +112,13 @@ float BTBossRingShockwave::ComputeCurrentScale() const {
 }
 
 void BTBossRingShockwave::UpdateRingVisual(Boss* boss, float alpha) {
-    Object3d* ring = boss ? boss->GetRingShockwaveModel() : nullptr;
-    if (!ring) return;
+    Tako::Actor* ringActor = boss ? boss->GetRingShockwaveActor() : nullptr;
+    Object3d*    ring      = boss ? boss->GetRingShockwaveModel() : nullptr;
+    if (!ringActor || !ring) return;
 
     const float scale = ComputeCurrentScale();
     const Vector3 pos = originPos_ + lockedDir_ * traveled_;
-    ring->SetTranslate(Vector3(pos.x, spawnHeight_, pos.z));
-    ring->SetRotate(Vector3(0.0f, lockedYaw_, 0.0f));
-    ring->SetScale(Vector3(scale, 1.0f, scale));
+    ringActor->SetTransform({ Vector3(scale, 1.0f, scale), Vector3(0.0f, lockedYaw_, 0.0f), Vector3(pos.x, spawnHeight_, pos.z) });
     // RGB は Object Settings の色のまま、アルファだけ演出で変える
     Vector4 color = ring->GetBaseMaterialColor();
     color.w = alpha;
@@ -128,7 +127,6 @@ void BTBossRingShockwave::UpdateRingVisual(Boss* boss, float alpha) {
     ring->SetUvTransform(Transform{ Vector3(1.0f, 1.0f, 1.0f),
                                     Vector3(0.0f, 0.0f, 0.0f),
                                     Vector3(elapsedTime_ * uvScrollU_, elapsedTime_ * uvScrollV_, 0.0f) });
-    ring->Update();
 }
 
 void BTBossRingShockwave::OnCleanup() {

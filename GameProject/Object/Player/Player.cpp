@@ -1,7 +1,11 @@
 #include <numbers>
 
 #include "Player.h"
+#include "BaseScene.h"
+#include "MeshComponent.h"
+#include "Script/Bullet.h"
 #include "Object3d.h"
+#include "UILayoutComponent.h"
 #include "Input.h"
 #include "Camera.h"
 #include "State/PlayerStateMachine.h"
@@ -48,21 +52,11 @@ Player::~Player()
 {
 }
 
-void Player::Initialize()
+void Player::BeginPlay()
 {
-    model_ = std::make_unique<Object3d>();
-    model_->Initialize();
-    model_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
-    model_->SetName("Player");
-
-    const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
-    transform_.translate = Vector3(0.0f, settings.initialY, settings.initialZ);
-    transform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
-    transform_.scale = Vector3(1.0f, 1.0f, 1.0f);
-
-    model_->SetTransform(transform_);
-
-    hpBar_.Initialize("PlayerHPBar");
+    if (UILayoutComponent* layout = GetOwner()->GetComponent<UILayoutComponent>()) {
+        hpBar_.Bind(&layout->GetLayout());
+    }
 
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);
     stateMachine_->RegisterState("Idle", std::make_unique<IdleState>());
@@ -75,21 +69,41 @@ void Player::Initialize()
     stateMachine_->Initialize();
 
     SetupColliders();
-
-    attackBlock_ = std::make_unique<Object3d>();
-    attackBlock_->Initialize();
-    attackBlock_->SetModel(EnginePaths::ModelPath("white_cube.gltf"));
-    attackBlock_->SetName("PlayerAttackBlock");
+    SetAttackBlockVisible(false);
 }
 
-void Player::Finalize()
+void Player::EndPlay()
 {
-    if (bodyCollider_) {
-        CollisionManager::GetInstance()->RemoveCollider(bodyCollider_.get());
-    }
     if (meleeAttackCollider_) {
         CollisionManager::GetInstance()->RemoveCollider(meleeAttackCollider_.get());
     }
+}
+
+void Player::Tick([[maybe_unused]] float deltaTime)
+{
+    Update();
+}
+
+Tako::Object3d* Player::GetModel() const
+{
+    MeshComponent* mesh = GetOwner()->GetComponent<MeshComponent>();
+    return mesh ? mesh->GetObject3d() : nullptr;
+}
+
+void Player::SetAttackBlockVisible(bool visible)
+{
+    Tako::Actor*   block = GetAttackBlock();
+    MeshComponent* mesh  = block ? block->GetComponent<MeshComponent>() : nullptr;
+    if (mesh) {
+        mesh->SetVisible(visible);
+    }
+}
+
+bool Player::IsAttackBlockVisible() const
+{
+    const Tako::Actor*   block = GetAttackBlock();
+    const MeshComponent* mesh  = block ? block->GetComponent<MeshComponent>() : nullptr;
+    return mesh && mesh->IsVisible();
 }
 
 void Player::Update()
@@ -151,50 +165,33 @@ void Player::UpdateTransform()
         std::max<float>(GameConst::kStageZMin, dynamicBounds_.zMin),
         std::min<float>(GameConst::kStageZMax, dynamicBounds_.zMax));
 
-    transform_.translate = effectiveBounds.Clamp(transform_.translate);
+    GetOwner()->GetTransform().translate = effectiveBounds.Clamp(GetOwner()->GetTransform().translate);
 }
 
 void Player::UpdatePhysics(float deltaTime)
 {
     if (forceFieldManager_) {
         const Vector3 force = forceFieldManager_->EvaluateForceAt(
-            transform_.translate, GameForceField::AffectPlayer);
+            GetOwner()->GetTransform().translate, GameForceField::AffectPlayer);
         externalVelocity_ += force * deltaTime; // 加速度 → 速度
     }
-    transform_.translate.x += externalVelocity_.x * deltaTime;
-    transform_.translate.z += externalVelocity_.z * deltaTime;
+    GetOwner()->GetTransform().translate.x += externalVelocity_.x * deltaTime;
+    GetOwner()->GetTransform().translate.z += externalVelocity_.z * deltaTime;
     externalVelocity_ *= FrameRate::Damping(kExternalVelocityDamping, deltaTime);
 }
 
 void Player::UpdateVisuals(float deltaTime)
 {
-    hitFlashEffect_.Update(deltaTime, model_.get());
+    hitFlashEffect_.Update(deltaTime, GetModel());
 
     shakeEffect_.Update(deltaTime);
 
-    // シェイクオフセットを加えた描画用 Transform
-    Transform renderTransform = transform_;
-    renderTransform.translate += shakeEffect_.GetOffset();
-    model_->SetTransform(renderTransform);
-    model_->Update();
-
-    if (attackBlockVisible_ && attackBlock_) {
-        attackBlock_->Update();
+    // Actor の位置は変えず、見た目だけを揺らす
+    if (MeshComponent* mesh = GetOwner()->GetComponent<MeshComponent>()) {
+        Transform offset = mesh->GetOffset();
+        offset.translate = shakeEffect_.GetOffset();
+        mesh->SetOffset(offset);
     }
-}
-
-void Player::Draw()
-{
-    model_->Draw();
-
-    if (attackBlockVisible_ && attackBlock_) {
-        attackBlock_->Draw();
-    }
-}
-
-void Player::DrawSprite()
-{
-    hpBar_.Draw();
 }
 
 void Player::Move(float deltaTime, float speedMultiplier, bool isApplyDirCalulate)
@@ -218,19 +215,19 @@ void Player::Move(float deltaTime, float speedMultiplier, bool isApplyDirCalulat
     }
 
     // velocity_ は 60fps の 1 フレームあたりの移動量
-    transform_.translate += velocity_ * FrameRate::Frames(deltaTime);
+    GetOwner()->GetTransform().translate += velocity_ * FrameRate::Frames(deltaTime);
 
     // 移動方向を向く
     if (velocity_.Length() > kVelocityEpsilon && isApplyDirCalulate) {
         targetAngle_ = std::atan2(velocity_.x, velocity_.z);
-        transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, FrameRate::LerpFactor(rotationLerpSpeed, deltaTime));
+        GetOwner()->GetTransform().rotate.y = Vec3::LerpShortAngle(GetOwner()->GetTransform().rotate.y, targetAngle_, FrameRate::LerpFactor(rotationLerpSpeed, deltaTime));
     }
 }
 
 void Player::MoveToTarget(const Vector3& targetPos, float deltaTime, float stopDistance)
 {
     if (!attackMover_.IsInitialized()) {
-        Vector3 startPos = transform_.translate;
+        Vector3 startPos = GetOwner()->GetTransform().translate;
         Vector3 toTarget = targetPos - startPos;
         toTarget.y = 0.0f;
         float distance = toTarget.Length();
@@ -253,9 +250,9 @@ void Player::MoveToTarget(const Vector3& targetPos, float deltaTime, float stopD
         }
     }
 
-    transform_.translate = attackMover_.Update(deltaTime);
+    GetOwner()->GetTransform().translate = attackMover_.Update(deltaTime);
 
-    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle_, FrameRate::LerpFactor(attackMoveRotationLerp_, deltaTime));
+    GetOwner()->GetTransform().rotate.y = Vec3::LerpShortAngle(GetOwner()->GetTransform().rotate.y, targetAngle_, FrameRate::LerpFactor(attackMoveRotationLerp_, deltaTime));
 }
 
 void Player::ResetMoveToTarget()
@@ -271,42 +268,26 @@ bool Player::HasReachedTarget() const
 void Player::SetupColliders()
 {
     const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
-    float bodySize = settings.bodyColliderSize;
-
-    // 本体
-    bodyCollider_ = std::make_unique<OBBCollider>();
-    bodyCollider_->SetTransform(&transform_);
-    bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
-    bodyCollider_->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
-    bodyCollider_->SetTypeID(CollisionTypeId::PLAYER);
-    bodyCollider_->SetOwner(this);
 
     // 攻撃範囲
     meleeAttackCollider_ = std::make_unique<MeleeAttackCollider>(this);
-    meleeAttackCollider_->SetTransform(&transform_);
+    meleeAttackCollider_->SetTransform(&GetOwner()->GetTransform());
     meleeAttackCollider_->SetSize(settings.meleeColliderSize);
     meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, settings.meleeColliderOffsetZ));
     meleeAttackCollider_->SetActive(false);
 
-    CollisionManager* collisionManager = CollisionManager::GetInstance();
-    collisionManager->AddCollider(bodyCollider_.get());
-    collisionManager->AddCollider(meleeAttackCollider_.get());
+    CollisionManager::GetInstance()->AddCollider(meleeAttackCollider_.get());
 }
 
 void Player::UpdateCollider()
 {
     const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
 
-    if (!bodyCollider_) return;
-
-    float bodySize = settings.bodyColliderSize;
-    bodyCollider_->SetSize(Vector3(bodySize, bodySize, bodySize));
-
     if (!meleeAttackCollider_) return;
 
     // 攻撃中のみ前方に配置
     if (meleeAttackCollider_->IsActive()) {
-        Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(transform_.rotate.y);
+        Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(GetOwner()->GetTransform().rotate.y);
         meleeAttackCollider_->SetOrientation(rotationMatrix);
 
         meleeAttackCollider_->SetSize(settings.meleeColliderSize);
@@ -316,14 +297,14 @@ void Player::UpdateCollider()
 
 void Player::LookAtBoss(float deltaTime)
 {
-    Vector3 toTarget = targetEnemy_->GetTransform().translate - transform_.translate;
+    Vector3 toTarget = targetEnemy_->GetTransform().translate - GetOwner()->GetTransform().translate;
     toTarget.y = 0.0f;  // Y 軸は無視
 
     if (toTarget.Length() < 0.01f) return;
 
     float targetAngle = std::atan2(toTarget.x, toTarget.z);
 
-    transform_.rotate.y = Vec3::LerpShortAngle(transform_.rotate.y, targetAngle, FrameRate::LerpFactor(bossLookatLerp_, deltaTime));
+    GetOwner()->GetTransform().rotate.y = Vec3::LerpShortAngle(GetOwner()->GetTransform().rotate.y, targetAngle, FrameRate::LerpFactor(bossLookatLerp_, deltaTime));
 }
 
 void Player::OnHit(float damage)
@@ -341,9 +322,9 @@ void Player::OnHit(float damage)
     DamageFeedback::TriggerHitFeedback();
 }
 
-void Player::DrawImGui()
-{
 #ifdef _DEBUG
+bool Player::DrawCustomImGui()
+{
     static int selectedTab = 0;
 
     if (ImGui::BeginTabBar("PlayerDebugTabs", ImGuiTabBarFlags_None)) {
@@ -362,9 +343,9 @@ void Player::DrawImGui()
 
             // Transform
             if (ImGui::TreeNode("Transform")) {
-                ImGui::DragFloat3("Position", &transform_.translate.x, 0.1f);
-                ImGui::DragFloat3("Rotation", &transform_.rotate.x, 0.01f);
-                ImGui::DragFloat3("Scale", &transform_.scale.x, 0.01f);
+                ImGui::DragFloat3("Position", &GetOwner()->GetTransform().translate.x, 0.1f);
+                ImGui::DragFloat3("Rotation", &GetOwner()->GetTransform().rotate.x, 0.01f);
+                ImGui::DragFloat3("Scale", &GetOwner()->GetTransform().scale.x, 0.01f);
                 ImGui::TreePop();
             }
 
@@ -458,31 +439,6 @@ void Player::DrawImGui()
         if (ImGui::BeginTabItem("Combat")) {
             selectedTab = 2;
 
-            // Body Collider
-            if (ImGui::TreeNode("Body Collider")) {
-                if (bodyCollider_) {
-                    bool isActive = bodyCollider_->IsActive();
-                    if (ImGui::Checkbox("Active", &isActive)) {
-                        bodyCollider_->SetActive(isActive);
-                    }
-
-                    Vector3 actualCenter = bodyCollider_->GetCenter();
-                    ImGui::Text("Actual Center: (%.2f, %.2f, %.2f)",
-                        actualCenter.x, actualCenter.y, actualCenter.z);
-
-                    Vector3 offset = bodyCollider_->GetOffset();
-                    if (ImGui::DragFloat3("Offset", &offset.x, 0.1f)) {
-                        bodyCollider_->SetOffset(offset);
-                    }
-
-                    Vector3 size = bodyCollider_->GetSize();
-                    if (ImGui::DragFloat3("Size", &size.x, 0.1f, 0.1f, 10.0f)) {
-                        bodyCollider_->SetSize(size);
-                    }
-                }
-                ImGui::TreePop();
-            }
-
             // Attack Collider
             if (ImGui::TreeNode("Attack Collider")) {
                 if (meleeAttackCollider_) {
@@ -548,13 +504,13 @@ void Player::DrawImGui()
 
             // Target Angle
             ImGui::Text("Target Angle: %.2f degrees", targetAngle_ * 180.0f / std::numbers::pi_v<float>);
-            ImGui::Text("Current Y Rotation: %.2f degrees", transform_.rotate.y * 180.0f / std::numbers::pi_v<float>);
+            ImGui::Text("Current Y Rotation: %.2f degrees", GetOwner()->GetTransform().rotate.y * 180.0f / std::numbers::pi_v<float>);
 
             ImGui::Separator();
 
             // Movement Direction Visualization
             if (ImGui::TreeNode("Movement Visualization")) {
-                float angle = transform_.rotate.y;
+                float angle = GetOwner()->GetTransform().rotate.y;
                 ImDrawList* draw_list = ImGui::GetWindowDrawList();
                 ImVec2 center = ImGui::GetCursorScreenPos();
                 center.x += 50;
@@ -613,11 +569,14 @@ void Player::DrawImGui()
     }
 
     if (isDisModelDebugInfo_) {
-        model_->DrawImGui();
+        if (Tako::Object3d* model = GetModel()) {
+            model->DrawImGui();
+        }
     }
 
-#endif
+    return false;
 }
+#endif
 
 bool Player::CanShoot() const
 {
@@ -644,12 +603,7 @@ void Player::ClearDynamicBounds()
 
 void Player::RequestBulletSpawn(const Vector3& position, const Vector3& velocity)
 {
-    bulletSpawner_.RequestSpawn(position, velocity);
-}
-
-std::vector<BulletSpawnRequest> Player::ConsumePendingBullets()
-{
-    return bulletSpawner_.Consume();
+    Bullet::Spawn(*GetOwner()->GetScene(), "PlayerBullet", position, velocity);
 }
 
 bool Player::IsParrying() const
@@ -711,8 +665,8 @@ void Player::OnParrySuccess()
 Tako::Vector3 Player::GetFrontPosition(float offset) const
 {
     Vector3 forward;
-    forward.x = std::sin(transform_.rotate.y);
+    forward.x = std::sin(GetOwner()->GetTransform().rotate.y);
     forward.y = 0.0f;
-    forward.z = std::cos(transform_.rotate.y);
-    return transform_.translate + forward * offset;
+    forward.z = std::cos(GetOwner()->GetTransform().rotate.y);
+    return GetOwner()->GetTransform().translate + forward * offset;
 }

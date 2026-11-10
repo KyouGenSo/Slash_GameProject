@@ -5,7 +5,7 @@
 /// <summary>
 /// プレイヤーがボス方向へ射撃中かを判定する条件ノード
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Player Shooting Condition", Category = "Condition", Color = 0xE64C80)
 class BTBossPlayerShootingCondition : public Tako::BTNode {
     GENERATED_BODY()
 
@@ -36,5 +36,5 @@ public: //メンバー関数
 
 private: //メンバー変数
     TPROPERTY(Edit, Tooltip = "度", ClampMin = 0, ClampMax = 180, Speed = 1)
-    float angleThreshold_ = 30.0f;    ///< 許容角度（度数法）
+    float angleThreshold_ = 30.0f;  ///< 許容角度（度数法）
 };

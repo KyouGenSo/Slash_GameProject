@@ -16,7 +16,7 @@ class Boss;
 /// <summary>
 /// ボス中心の放射状 Repel 力場。プレイヤー弾は速度逆転で吹き飛び、速度低下で消滅する（PlayerBullet 側で対応）。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Repel Shockwave", Category = "Action", Color = 0x66B2FF)
 class BTBossRepelShockwave : public AttackNode {
     GENERATED_BODY()
 

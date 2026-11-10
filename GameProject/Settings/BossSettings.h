@@ -27,8 +27,6 @@ public: //構造体
     };
 
 public: //メンバー変数
-    TPROPERTY(Edit, Category = "Body", Tooltip = "本体の箱の全長", ClampMin = 0, Speed = 0.05)
-    float         bodyColliderSize  = 3.2f;
     TPROPERTY(Edit, Category = "Body", Tooltip = "被弾で白く光る時間（秒）", ClampMin = 0, Speed = 0.01)
     float         hitEffectDuration = 0.1f;
     TPROPERTY(Edit, Category = "Body", Tooltip = "被弾時の揺れ")
@@ -37,8 +35,4 @@ public: //メンバー変数
     TPROPERTY(Edit, Category = "Attack")
     MeleeCollider melee;
 
-    TPROPERTY(Edit, Category = "Bullet")
-    BulletSettings bullet            = { 10.0f, 5.0f, 1.0f };
-    TPROPERTY(Edit, Category = "Bullet")
-    BulletSettings penetratingBullet = { 15.0f, 5.0f, 1.0f };
 };

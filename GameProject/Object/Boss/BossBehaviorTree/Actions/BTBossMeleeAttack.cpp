@@ -147,7 +147,7 @@ void BTBossMeleeAttack::ProcessPreparePhase(Tako::BTBlackboard* blackboard, floa
     AimAtPlayer(blackboard, deltaTime);
     UpdateBlockPosition(boss);
 
-    Object3d* block = boss->GetMeleeAttackBlock();
+    Tako::Actor* block = boss->GetMeleeAttackBlock();
     if (block) {
         boss->SetAttackSignEmitterPosition(block->GetTransform().translate);
     }
@@ -236,7 +236,7 @@ void BTBossMeleeAttack::InitializeRush(Tako::BTBlackboard* blackboard) {
 }
 
 void BTBossMeleeAttack::UpdateBlockPosition(Boss* boss) {
-    Object3d* block = boss->GetMeleeAttackBlock();
+    Tako::Actor* block = boss->GetMeleeAttackBlock();
     if (!block) return;
 
     Vector3 bossPos = boss->GetTranslate();
@@ -254,7 +254,6 @@ void BTBossMeleeAttack::UpdateBlockPosition(Boss* boss) {
     blockTransform.rotate = { 0.0f, worldAngle, 0.0f };
     blockTransform.scale = { blockScale_, blockScale_, blockScale_ };
     block->SetTransform(blockTransform);
-    block->Update();
 
     BossMeleeAttackCollider* collider = boss->GetMeleeAttackCollider();
     if (collider && colliderActivated_) {

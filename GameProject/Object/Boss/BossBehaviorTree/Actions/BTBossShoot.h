@@ -8,7 +8,7 @@ class Boss;
 /// <summary>
 /// プレイヤー方向へ扇状に複数弾を一斉発射する。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Shoot", Category = "Action", Color = 0xCC4C4C)
 class BTBossShoot : public AttackNode {
     GENERATED_BODY()
 

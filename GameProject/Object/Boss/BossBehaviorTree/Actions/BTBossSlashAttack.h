@@ -12,7 +12,7 @@ class Boss;
 /// <summary>
 /// プレイヤー位置を狙い、円形 Decal で範囲を予告してから斬撃を発動する遠距離攻撃。
 /// </summary>
-TCLASS()
+TCLASS(DisplayName = "Slash Attack", Category = "Action", Color = 0xCC1A99)
 class BTBossSlashAttack : public AttackNode {
     GENERATED_BODY()
 

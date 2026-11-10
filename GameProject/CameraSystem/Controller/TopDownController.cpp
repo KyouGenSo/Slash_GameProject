@@ -6,9 +6,24 @@
 
 using namespace Tako;
 
-TopDownController::TopDownController() {
-    currentHeight_ = CameraConfig::TopDown::INITIAL_HEIGHT;
-    currentBackOffset_ = CameraConfig::TopDown::INITIAL_BACK_OFFSET;
+TopDownController::TopDownController() = default;
+
+void TopDownController::ApplySettings(const TopDownCameraSettings& settings, bool resetsCurrent) {
+    baseHeight_           = settings.baseHeight;
+    heightMultiplier_     = settings.heightMultiplier;
+    minHeight_            = settings.minHeight;
+    maxHeight_            = settings.maxHeight;
+    cameraAngleX_         = settings.angleX;
+    baseBackOffset_       = settings.baseBackOffset;
+    backOffsetMultiplier_ = settings.backOffsetMultiplier;
+    minBackOffset_        = settings.minBackOffset;
+    maxBackOffset_        = settings.maxBackOffset;
+    followSmoothness_     = settings.followSmoothness;
+    standardFov_          = settings.fov;
+    if (resetsCurrent) {
+        currentHeight_     = settings.initialHeight;
+        currentBackOffset_ = settings.initialBackOffset;
+    }
 }
 
 void TopDownController::Update(float deltaTime) {

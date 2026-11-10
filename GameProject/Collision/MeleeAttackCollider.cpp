@@ -1,4 +1,5 @@
 #include "MeleeAttackCollider.h"
+#include "ColliderOwner.h"
 #include "../Object/Player/Player.h"
 #include "../Object/Boss/Boss.h"
 #include "CollisionTypeId.h"
@@ -20,7 +21,7 @@ void MeleeAttackCollider::OnCollisionStay(Collider* other) {
 #endif
 
     if (other->IsType(CollisionTypeId::BOSS)) {
-        Boss* enemy = static_cast<Boss*>(other->GetOwner());
+        Boss* enemy = BossOf(other);
         if (enemy && !detectedEnemy_) {
             detectedEnemy_ = enemy;
             if (canDamage_) {
