@@ -41,8 +41,8 @@ void Bullet::Tick(float deltaTime) {
     position += velocity_ * deltaTime;
     elapsedTime_ += deltaTime;
 
-    const bool isOutside = position.x < GameConst::kStageXMin || position.x > GameConst::kStageXMax
-                        || position.z < GameConst::kStageZMin || position.z > GameConst::kStageZMax
+    const bool isOutside = position.x < GameConst::StageXMin() || position.x > GameConst::StageXMax()
+                        || position.z < GameConst::StageZMin() || position.z > GameConst::StageZMax()
                         || position.y < minY_ || position.y > maxY_;
     const bool isTooSlow = minSpeed_ > 0.0f && velocity_.LengthSquared() < minSpeed_ * minSpeed_;
     if (elapsedTime_ >= lifetime_ || isOutside || isTooSlow) {

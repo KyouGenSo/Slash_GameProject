@@ -1,6 +1,7 @@
 #pragma once
 #include "GameSettings.h"
 #include "SettingsTypes.h"
+#include "Vector2.h"
 
 /// <summary>
 /// 入力・演出など、持ち主が 1 つに決まらない調整値
@@ -10,6 +11,13 @@ class GameplaySettings : public Tako::GameSettings {
     GENERATED_BODY()
 
 public: //メンバー変数
+    TPROPERTY(Edit, Category = "Stage", Tooltip = "ステージの X の範囲（最小, 最大）。プレイヤー・ボス・弾がこの中に収まる", Speed = 1)
+    Tako::Vector2 stageRangeX        = { -100.0f, 100.0f };
+    TPROPERTY(Edit, Category = "Stage", Tooltip = "ステージの Z の範囲（最小, 最大）", Speed = 1)
+    Tako::Vector2 stageRangeZ        = { -140.0f, 60.0f };
+    TPROPERTY(Edit, Category = "Stage", Tooltip = "ボスのフェーズ 2 で戦う範囲の広さ", ClampMin = 0, Speed = 0.5)
+    float         bossPhase2AreaSize = 30.0f;
+
     TPROPERTY(Edit, Category = "Input", Tooltip = "トリガーを押したとみなす深さ", ClampMin = 0, ClampMax = 1, Speed = 0.01)
     float triggerThreshold = 0.5f;
 

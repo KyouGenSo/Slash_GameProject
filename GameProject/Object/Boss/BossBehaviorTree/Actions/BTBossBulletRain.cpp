@@ -176,8 +176,8 @@ Tako::Vector3 BTBossBulletRain::SampleImpactPosition(Player* player) {
     RandomEngine* rng = RandomEngine::GetInstance();
 
     BossMovement::AreaBounds bounds{
-        GameConst::kStageXMin + stageMargin_, GameConst::kStageXMax - stageMargin_,
-        GameConst::kStageZMin + stageMargin_, GameConst::kStageZMax - stageMargin_
+        GameConst::StageXMin() + stageMargin_, GameConst::StageXMax() - stageMargin_,
+        GameConst::StageZMin() + stageMargin_, GameConst::StageZMax() - stageMargin_
     };
 
     const bool aimAtPlayer = player && rng->GetNormalized() < playerAimProbability_;

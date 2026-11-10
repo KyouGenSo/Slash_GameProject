@@ -46,7 +46,8 @@ void GameDirector::BeginPlay()
     GameCamera*  gameCamera  = cameraActor ? cameraActor->GetScript<GameCamera>() : nullptr;
     player_ = playerActor ? playerActor->GetScript<Player>() : nullptr;
     boss_   = bossActor ? bossActor->GetScript<Boss>() : nullptr;
-    // カメラの Actor はシーンの並びで先にあるので、BeginPlay が済んでいる
+    // GameCamera は Order が小さいので、BeginPlay が済んでいる
+    gameCamera_          = gameCamera;
     animationController_ = gameCamera ? gameCamera->GetAnimationController() : nullptr;
     Tako::Actor* controllerUiActor = GetOwner()->Resolve(controllerUiActor_);
     Tako::Actor* pauseMenuActor    = GetOwner()->Resolve(pauseMenuActor_);
@@ -60,9 +61,6 @@ void GameDirector::BeginPlay()
         return;
     }
     cameraManager_ = CameraManager::GetInstance();
-
-    // 他の Actor のコライダーが登録される前（シーンの並びで先頭）に、前のシーンの残りを消す
-    CollisionManager::GetInstance()->Initialize();
 
     Tako::BaseScene* scene = GetOwner()->GetScene();
     emitterManager_    = &scene->GetEmitterManager();
@@ -84,6 +82,7 @@ void GameDirector::BeginPlay()
 
 void GameDirector::EndPlay()
 {
+    // コードが作った当たり判定（BT ノードの物）の残りを消す。コライダーは Awake で登録されるので、BeginPlay では消さない
     CollisionManager::GetInstance()->Reset();
 
     DecalManager::GetInstance()->ClearDecals();
@@ -143,7 +142,7 @@ void GameDirector::UpdateGameFlow()
     if (boss_->IsDead() && !clearEffectManager_->IsPlaying() && !clearEffectManager_->IsComplete()) {
         cameraManager_->DeactivateAllControllers();
         cameraManager_->ActivateController("Animation");
-        animationController_->SwitchAnimation("clear_anim");
+        animationController_->SwitchAnimation(gameCamera_->GetClearAnimation());
         animationController_->Play();
         boss_->SetIsPause(true);
         player_->SetScale(Vector3(0.f, 0.f, 0.f)); // プレイヤーを非表示
@@ -154,7 +153,7 @@ void GameDirector::UpdateGameFlow()
     if (player_->IsDead() && !overEffectManager_->IsPlaying() && !overEffectManager_->IsComplete()) {
         cameraManager_->DeactivateAllControllers();
         cameraManager_->ActivateController("Animation");
-        animationController_->SwitchAnimation("over_anim");
+        animationController_->SwitchAnimation(gameCamera_->GetOverAnimation());
         animationController_->Play();
         boss_->SetIsPause(true);
         overEffectManager_->Start();
@@ -175,12 +174,12 @@ void GameDirector::UpdateEffects()
 
     overEffectManager_->Update(deltaTime);
     if (overEffectManager_->IsComplete()) {
-        SceneManager::GetInstance()->ChangeScene("over", TransitionManager::EffectType::Fade, kFadeDuration);
+        SceneManager::GetInstance()->ChangeScene(overScene_, TransitionManager::EffectType::Fade, kFadeDuration);
     }
 
     clearEffectManager_->Update(deltaTime);
     if (clearEffectManager_->IsComplete()) {
-        SceneManager::GetInstance()->ChangeScene("clear", TransitionManager::EffectType::Fade, kFadeDuration);
+        SceneManager::GetInstance()->ChangeScene(clearScene_, TransitionManager::EffectType::Fade, kFadeDuration);
     }
 }
 
@@ -209,7 +208,7 @@ void GameDirector::UpdateCameraMode()
         cameraMode_ = true;
         // ボス中心の戦闘エリアに移動制限
         Vector3 bossPos = boss_->GetTransform().translate;
-        player_->SetDynamicBoundsFromCenter(bossPos, GameConst::kBossPhase2AreaSize, GameConst::kBossPhase2AreaSize);
+        player_->SetDynamicBoundsFromCenter(bossPos, GameConst::BossPhase2AreaSize(), GameConst::BossPhase2AreaSize());
     }
 
     if (cameraMode_) {
@@ -261,7 +260,7 @@ void GameDirector::InitializeEffectManager()
     clearEffectManager_ = std::make_unique<ClearEffectManager>(emitterManager_);
     clearEffectManager_->SetTarget(boss_);
 
-    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_, GameConst::kBossPhase2AreaSize);
+    bossBorderManager_ = std::make_unique<BossBorderParticleManager>(emitterManager_, GameConst::BossPhase2AreaSize());
 
     dashEffectManager_ = std::make_unique<DashEffectManager>(emitterManager_);
     dashEffectManager_->InitializePosition(player_->GetTranslate());
@@ -289,7 +288,7 @@ void GameDirector::UpdatePause()
         SetPaused(false);
         break;
     case PauseMenu::Action::ToTitle:
-        SceneManager::GetInstance()->ChangeScene("title", TransitionManager::EffectType::Fade, kFadeDuration);
+        SceneManager::GetInstance()->ChangeScene(titleScene_, TransitionManager::EffectType::Fade, kFadeDuration);
         break;
     case PauseMenu::Action::ExitGame:
         // ×ボタンと同じ経路にして、Debug では未保存の変更の確認を通す

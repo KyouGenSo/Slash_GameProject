@@ -1,15 +1,16 @@
 #pragma once
+#include "Settings/GameplaySettings.h"
 
 /// <summary>
-/// 固定値の定数。調整が必要なパラメータは GameSettings（Settings/ の各クラス）を使う
+/// 固定値の定数と、GameplaySettings のステージの値を読む関数。調整が必要なパラメータは GameSettings（Settings/ の各クラス）を使う
 /// </summary>
 namespace GameConst {
 
-    // ステージ範囲
-    inline constexpr float kStageXMin = -100.0f;
-    inline constexpr float kStageXMax = 100.0f;
-    inline constexpr float kStageZMin = -140.0f;
-    inline constexpr float kStageZMax = 60.0f;
+    // ステージ範囲（GameplaySettings の Stage）
+    inline float StageXMin() { return Tako::GameSettings::Get<GameplaySettings>().stageRangeX.x; }
+    inline float StageXMax() { return Tako::GameSettings::Get<GameplaySettings>().stageRangeX.y; }
+    inline float StageZMin() { return Tako::GameSettings::Get<GameplaySettings>().stageRangeZ.x; }
+    inline float StageZMax() { return Tako::GameSettings::Get<GameplaySettings>().stageRangeZ.y; }
 
     /// <summary>
     /// これより短いベクトルは方向なしとみなす閾値
@@ -22,7 +23,7 @@ namespace GameConst {
     inline constexpr float kAreaMargin = 10.0f;
 
     /// <summary>
-    /// ボスフェーズ2の戦闘エリアの範囲
+    /// ボスフェーズ2の戦闘エリアの範囲（GameplaySettings の Stage）
     /// </summary>
-    inline constexpr float kBossPhase2AreaSize = 30.0f;
+    inline float BossPhase2AreaSize() { return Tako::GameSettings::Get<GameplaySettings>().bossPhase2AreaSize; }
 }

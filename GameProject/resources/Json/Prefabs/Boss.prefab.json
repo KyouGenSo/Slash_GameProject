@@ -1,0 +1,438 @@
+{
+  "actors": [
+    {
+      "components": {
+        "Aura": {
+          "order": 5,
+          "properties": {
+            "bindToMesh": true,
+            "emitterName": "boss_aura",
+            "followActor": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "playOnStart": true,
+            "preset": "boss_aura"
+          },
+          "type": "ParticleSystemComponent"
+        },
+        "BehaviorTreeComponent": {
+          "order": 3,
+          "properties": {
+            "autoTick": false,
+            "tree": "BossTree"
+          },
+          "type": "BehaviorTreeComponent"
+        },
+        "Body Particle": {
+          "order": 7,
+          "properties": {
+            "bindToMesh": true,
+            "emitterName": "boss_particle_body",
+            "followActor": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "playOnStart": false,
+            "preset": "boss_particle_body"
+          },
+          "type": "ParticleSystemComponent"
+        },
+        "ColliderComponent": {
+          "order": 1,
+          "properties": {
+            "layer": 4,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": 1.0,
+            "shape": "Box",
+            "size": [
+              3.200000047683716,
+              3.200000047683716,
+              3.200000047683716
+            ]
+          },
+          "type": "ColliderComponent"
+        },
+        "Dark Aura": {
+          "order": 6,
+          "properties": {
+            "bindToMesh": true,
+            "emitterName": "boss_dark_aura",
+            "followActor": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "playOnStart": true,
+            "preset": "boss_dark_aura"
+          },
+          "type": "ParticleSystemComponent"
+        },
+        "MeshComponent": {
+          "order": 0,
+          "properties": {
+            "model": "EngineResources/Model/white_cube.gltf",
+            "offset": {
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "renderSettings": {
+              "MaskId": 1,
+              "Values": {
+                "color": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              }
+            },
+            "visible": true
+          },
+          "type": "MeshComponent"
+        },
+        "Script": {
+          "order": 4,
+          "properties": {
+            "meleeAttackBlock": {
+              "actor": 3
+            },
+            "meleeAttackHitbox": {
+              "actor": 2
+            },
+            "repelShockwaveSphere": {
+              "actor": 4
+            },
+            "ringShockwave": {
+              "actor": 5
+            },
+            "script": "Boss"
+          },
+          "type": "ScriptComponent"
+        },
+        "UILayoutComponent": {
+          "order": 2,
+          "properties": {
+            "layout": "BossHPBar",
+            "sortingOrder": 0,
+            "visible": true
+          },
+          "type": "UILayoutComponent"
+        }
+      },
+      "id": 1,
+      "properties": {
+        "active": true,
+        "name": "Boss",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translate": [
+            0.0,
+            2.5,
+            10.0
+          ]
+        }
+      },
+      "type": "Actor"
+    },
+    {
+      "components": {
+        "ColliderComponent": {
+          "order": 0,
+          "properties": {
+            "layer": 5,
+            "offset": [
+              0.0,
+              0.0,
+              3.0
+            ],
+            "radius": 1.0,
+            "shape": "Box",
+            "size": [
+              2.0,
+              2.0,
+              2.0
+            ]
+          },
+          "type": "ColliderComponent"
+        },
+        "Script": {
+          "order": 1,
+          "properties": {
+            "script": "BossMeleeAttackCollider"
+          },
+          "type": "ScriptComponent"
+        }
+      },
+      "id": 2,
+      "parent": 1,
+      "properties": {
+        "active": true,
+        "name": "Boss Melee Hitbox",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "type": "Actor"
+    },
+    {
+      "components": {
+        "MeshComponent": {
+          "order": 0,
+          "properties": {
+            "model": "EngineResources/Model/white_cube.gltf",
+            "offset": {
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "renderSettings": {
+              "Values": {
+                "color": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              }
+            },
+            "visible": false
+          },
+          "type": "MeshComponent"
+        }
+      },
+      "id": 3,
+      "parent": 1,
+      "properties": {
+        "active": true,
+        "name": "Boss Melee Block",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "type": "Actor"
+    },
+    {
+      "components": {
+        "MeshComponent": {
+          "order": 0,
+          "properties": {
+            "model": "",
+            "offset": {
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "renderSettings": {
+              "CastShadow": false,
+              "Transparent": true,
+              "Values": {
+                "color": [
+                  1.0,
+                  0.0,
+                  0.0,
+                  0.3
+                ],
+                "enableLighting": 0
+              }
+            },
+            "visible": false
+          },
+          "type": "MeshComponent"
+        }
+      },
+      "id": 4,
+      "parent": 1,
+      "properties": {
+        "active": true,
+        "name": "Boss Repel Shockwave",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "type": "Actor"
+    },
+    {
+      "components": {
+        "MeshComponent": {
+          "order": 0,
+          "properties": {
+            "model": "",
+            "offset": {
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "renderSettings": {
+              "CastShadow": false,
+              "Textures": {
+                "gTexture": "red_perlin_noise.png"
+              },
+              "Transparent": true,
+              "Values": {
+                "color": [
+                  1.0,
+                  1.0,
+                  1.0,
+                  1.0
+                ],
+                "enableLighting": 0
+              }
+            },
+            "visible": false
+          },
+          "type": "MeshComponent"
+        },
+        "Shockwave Particle": {
+          "order": 1,
+          "properties": {
+            "bindToMesh": true,
+            "emitterName": "boss_ring_shockwave",
+            "followActor": true,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "playOnStart": false,
+            "preset": "boss_ring_shockwave"
+          },
+          "type": "ParticleSystemComponent"
+        }
+      },
+      "id": 5,
+      "parent": 1,
+      "properties": {
+        "active": true,
+        "name": "Boss Ring Shockwave",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "type": "Actor"
+    }
+  ]
+}

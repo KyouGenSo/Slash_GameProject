@@ -1,42 +1,49 @@
 #include "BossMeleeAttackCollider.h"
-#include "../Object/Boss/Boss.h"
-#include "ColliderOwner.h"
-#include "CollisionTypeId.h"
+#include "../Object/Player/Player.h"
 #include "Settings/BossSettings.h"
+
+#include "Actor.h"
+#include "ColliderComponent.h"
 
 using namespace Tako;
 
-BossMeleeAttackCollider::BossMeleeAttackCollider(Boss* boss)
-    : boss_(boss) {
-    damage_ = Tako::GameSettings::Get<BossSettings>().melee.damage;
-
-    SetTypeID(CollisionTypeId::BOSS_ATTACK);
+void BossMeleeAttackCollider::Awake() {
+    collider_ = GetOwner()->GetComponent<ColliderComponent>();
+    damage_   = Tako::GameSettings::Get<BossSettings>().melee.damage;
     SetActive(false);
 }
 
-void BossMeleeAttackCollider::OnCollisionEnter(Collider* other) {
-    if (!other || hasHitPlayer_) return;
+void BossMeleeAttackCollider::OnCollisionEnter(Actor* other) {
+    if (hasHitPlayer_) return;
 
-    if (other->IsType(CollisionTypeId::PLAYER)) {
-        Player* player = PlayerOf(other);
-        if (!player) return;
+    Player* player = other ? other->GetScript<Player>() : nullptr;
+    if (!player) return;
 
-        if (player->IsParrying()) {
-            player->OnParrySuccess();
-            hasHitPlayer_ = true;
-            return;
-        }
-
-        player->OnHit(damage_);
+    if (player->IsParrying()) {
+        player->OnParrySuccess();
         hasHitPlayer_ = true;
+        return;
     }
-}
 
-void BossMeleeAttackCollider::OnCollisionStay(Collider* other) {
-    // ダメージは1回のみ。継続ヒットなし
-    (void)other;
+    player->OnHit(damage_);
+    hasHitPlayer_ = true;
 }
 
 void BossMeleeAttackCollider::Reset() {
     hasHitPlayer_ = false;
+}
+
+void BossMeleeAttackCollider::SetActive(bool active)
+{
+    if (collider_) { collider_->SetActive(active); }
+}
+
+void BossMeleeAttackCollider::SetSize(const Tako::Vector3& size)
+{
+    if (collider_) { collider_->SetSize(size); }
+}
+
+void BossMeleeAttackCollider::SetOffset(const Tako::Vector3& offset)
+{
+    if (collider_) { collider_->SetOffset(offset); }
 }

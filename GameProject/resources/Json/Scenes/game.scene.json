@@ -4,18 +4,56 @@
       "components": {
         "CameraComponent": {
           "order": 0,
-          "properties": {},
+          "properties": {
+            "farClip": 1000.0,
+            "fovY": 0.44999998807907104,
+            "nearClip": 0.10000000149011612,
+            "priority": 0
+          },
           "type": "CameraComponent"
         },
         "Script": {
           "order": 1,
           "properties": {
+            "clearAnimation": "clear_anim",
+            "overAnimation": "over_anim",
             "script": "GameCamera",
             "secondaryTarget": {
               "actor": 11
             },
+            "startAnimation": "game_start",
             "target": {
               "actor": 7
+            },
+            "thirdPerson": {
+              "angleX": 0.13962633907794952,
+              "followSmoothness": 0.18000000715255737,
+              "fov": 0.44999998807907104,
+              "gamepadRotateMultiplier": 1.0,
+              "lookDownAngle": 0.2617993950843811,
+              "offset": [
+                0.0,
+                2.0,
+                -40.0
+              ],
+              "offsetLerpSpeed": 0.07999999821186066,
+              "rotateSpeed": 0.05000000074505806,
+              "rotationLerpSpeed": 0.15000000596046448
+            },
+            "topDown": {
+              "angleX": 0.4363323152065277,
+              "backOffsetMultiplier": 1.5,
+              "baseBackOffset": -10.0,
+              "baseHeight": 10.0,
+              "followSmoothness": 0.18000000715255737,
+              "fov": 0.44999998807907104,
+              "heightMultiplier": 0.6000000238418579,
+              "initialBackOffset": -205.0,
+              "initialHeight": 88.0,
+              "maxBackOffset": -52.0,
+              "maxHeight": 500.0,
+              "minBackOffset": -500.0,
+              "minHeight": 26.0
             }
           },
           "type": "ScriptComponent"
@@ -23,10 +61,11 @@
       },
       "id": 12,
       "properties": {
+        "active": true,
         "name": "Game Camera",
         "transform": {
           "rotate": [
-            0.4363323,
+            0.4363322854042053,
             0.0,
             0.0
           ],
@@ -48,6 +87,7 @@
       "components": {},
       "id": 13,
       "properties": {
+        "active": true,
         "name": "Effects",
         "transform": {
           "rotate": [
@@ -74,6 +114,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "border1",
             "followActor": true,
             "offset": [
@@ -90,6 +131,7 @@
       "id": 14,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "border1",
         "transform": {
           "rotate": [
@@ -116,6 +158,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "border2",
             "followActor": true,
             "offset": [
@@ -132,6 +175,7 @@
       "id": 15,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "border2",
         "transform": {
           "rotate": [
@@ -158,6 +202,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "border3",
             "followActor": true,
             "offset": [
@@ -174,6 +219,7 @@
       "id": 16,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "border3",
         "transform": {
           "rotate": [
@@ -200,6 +246,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "border4",
             "followActor": true,
             "offset": [
@@ -216,6 +263,7 @@
       "id": 17,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "border4",
         "transform": {
           "rotate": [
@@ -242,6 +290,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_border_back",
             "followActor": false,
             "offset": [
@@ -258,6 +307,7 @@
       "id": 18,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_border_back",
         "transform": {
           "rotate": [
@@ -284,6 +334,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_border_front",
             "followActor": false,
             "offset": [
@@ -300,6 +351,7 @@
       "id": 19,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_border_front",
         "transform": {
           "rotate": [
@@ -326,6 +378,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_border_left",
             "followActor": false,
             "offset": [
@@ -342,6 +395,7 @@
       "id": 20,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_border_left",
         "transform": {
           "rotate": [
@@ -368,6 +422,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_border_right",
             "followActor": false,
             "offset": [
@@ -384,6 +439,7 @@
       "id": 21,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_border_right",
         "transform": {
           "rotate": [
@@ -410,6 +466,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_bullet_sign",
             "followActor": false,
             "offset": [
@@ -426,6 +483,7 @@
       "id": 22,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_bullet_sign",
         "transform": {
           "rotate": [
@@ -452,6 +510,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_melee_attack_sign",
             "followActor": false,
             "offset": [
@@ -468,6 +527,7 @@
       "id": 23,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_melee_attack_sign",
         "transform": {
           "rotate": [
@@ -494,6 +554,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "clear_slash",
             "followActor": false,
             "offset": [
@@ -510,6 +571,7 @@
       "id": 24,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "clear_slash",
         "transform": {
           "rotate": [
@@ -536,6 +598,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "over1",
             "followActor": false,
             "offset": [
@@ -552,6 +615,7 @@
       "id": 25,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "over1",
         "transform": {
           "rotate": [
@@ -578,6 +642,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "over2",
             "followActor": false,
             "offset": [
@@ -594,6 +659,7 @@
       "id": 26,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "over2",
         "transform": {
           "rotate": [
@@ -620,6 +686,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "parry_effect",
             "followActor": false,
             "offset": [
@@ -636,6 +703,7 @@
       "id": 27,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "parry_effect",
         "transform": {
           "rotate": [
@@ -662,6 +730,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "parry_success",
             "followActor": false,
             "offset": [
@@ -678,6 +747,7 @@
       "id": 28,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "parry_success",
         "transform": {
           "rotate": [
@@ -704,6 +774,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "player_dash",
             "followActor": false,
             "offset": [
@@ -720,6 +791,7 @@
       "id": 29,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "player_dash",
         "transform": {
           "rotate": [
@@ -746,6 +818,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "can_attack_sign",
             "followActor": false,
             "offset": [
@@ -762,6 +835,7 @@
       "id": 30,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "can_attack_sign",
         "transform": {
           "rotate": [
@@ -788,6 +862,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_repel_ring",
             "followActor": false,
             "offset": [
@@ -804,6 +879,7 @@
       "id": 31,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_repel_ring",
         "transform": {
           "rotate": [
@@ -830,6 +906,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_repel_flash",
             "followActor": false,
             "offset": [
@@ -846,6 +923,7 @@
       "id": 32,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_repel_flash",
         "transform": {
           "rotate": [
@@ -872,6 +950,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_vortex_0",
             "followActor": false,
             "offset": [
@@ -888,6 +967,7 @@
       "id": 33,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_vortex_0",
         "transform": {
           "rotate": [
@@ -914,6 +994,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_vortex_1",
             "followActor": false,
             "offset": [
@@ -930,6 +1011,7 @@
       "id": 34,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_vortex_1",
         "transform": {
           "rotate": [
@@ -956,6 +1038,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_vortex_2",
             "followActor": false,
             "offset": [
@@ -972,6 +1055,7 @@
       "id": 35,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_vortex_2",
         "transform": {
           "rotate": [
@@ -998,6 +1082,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_vortex_3",
             "followActor": false,
             "offset": [
@@ -1014,6 +1099,7 @@
       "id": 36,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_vortex_3",
         "transform": {
           "rotate": [
@@ -1040,6 +1126,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_tracking_laser",
             "followActor": false,
             "offset": [
@@ -1056,6 +1143,7 @@
       "id": 37,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_tracking_laser",
         "transform": {
           "rotate": [
@@ -1082,6 +1170,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_tracking_laser_charge",
             "followActor": false,
             "offset": [
@@ -1098,6 +1187,7 @@
       "id": 38,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_tracking_laser_charge",
         "transform": {
           "rotate": [
@@ -1124,6 +1214,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_big_explosion_1",
             "followActor": false,
             "offset": [
@@ -1140,6 +1231,7 @@
       "id": 39,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_big_explosion_1",
         "transform": {
           "rotate": [
@@ -1166,6 +1258,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_big_explosion_2",
             "followActor": false,
             "offset": [
@@ -1182,6 +1275,7 @@
       "id": 40,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_big_explosion_2",
         "transform": {
           "rotate": [
@@ -1208,6 +1302,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_big_explosion_3",
             "followActor": false,
             "offset": [
@@ -1224,6 +1319,7 @@
       "id": 41,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_big_explosion_3",
         "transform": {
           "rotate": [
@@ -1250,6 +1346,7 @@
         "ParticleSystemComponent": {
           "order": 0,
           "properties": {
+            "bindToMesh": false,
             "emitterName": "boss_big_explosion_4",
             "followActor": false,
             "offset": [
@@ -1266,6 +1363,7 @@
       "id": 42,
       "parent": 13,
       "properties": {
+        "active": true,
         "name": "boss_big_explosion_4",
         "transform": {
           "rotate": [
@@ -1298,22 +1396,26 @@
             "cameraActor": {
               "actor": 12
             },
+            "clearScene": "clear",
             "controllerUiActor": {
               "actor": 43
             },
+            "overScene": "over",
             "pauseMenuActor": {
               "actor": 44
             },
             "playerActor": {
               "actor": 7
             },
-            "script": "GameDirector"
+            "script": "GameDirector",
+            "titleScene": "title"
           },
           "type": "ScriptComponent"
         }
       },
       "id": 5,
       "properties": {
+        "active": true,
         "name": "Game Director",
         "transform": {
           "rotate": [
@@ -1336,448 +1438,112 @@
       "type": "Actor"
     },
     {
-      "components": {
-        "ColliderComponent": {
-          "order": 1,
-          "properties": {
-            "layer": 1,
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "radius": 1.0,
-            "shape": "Box",
-            "size": [
-              3.200000047683716,
-              3.200000047683716,
-              3.200000047683716
-            ]
-          },
-          "type": "ColliderComponent"
-        },
-        "MeshComponent": {
-          "order": 0,
-          "properties": {
-            "model": "EngineResources/Model/white_cube.gltf",
-            "offset": {
-              "rotate": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "translate": [
-                0.0,
-                0.0,
-                0.0
-              ]
-            },
-            "visible": true
-          },
-          "type": "MeshComponent"
-        },
-        "Script": {
-          "order": 3,
-          "properties": {
-            "attackBlock": {
-              "actor": 6
-            },
-            "script": "Player"
-          },
-          "type": "ScriptComponent"
-        },
-        "UILayoutComponent": {
-          "order": 2,
-          "properties": {
-            "layout": "PlayerHPBar",
-            "sortingOrder": 0
-          },
-          "type": "UILayoutComponent"
-        }
-      },
       "id": 7,
-      "properties": {
-        "name": "Player",
-        "transform": {
-          "rotate": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "translate": [
-            0.0,
-            2.5,
-            -120.0
-          ]
-        }
-      },
-      "type": "Actor"
-    },
-    {
-      "components": {
-        "MeshComponent": {
-          "order": 0,
-          "properties": {
-            "model": "EngineResources/Model/white_cube.gltf",
-            "offset": {
-              "rotate": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "translate": [
-                0.0,
-                0.0,
-                0.0
-              ]
-            },
-            "visible": false
-          },
-          "type": "MeshComponent"
-        }
-      },
-      "id": 6,
-      "properties": {
-        "name": "Player Attack Block",
-        "transform": {
-          "rotate": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "translate": [
-            0.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "type": "Actor"
-    },
-    {
-      "components": {
-        "BehaviorTreeComponent": {
-          "order": 3,
-          "properties": {
-            "autoTick": false,
-            "tree": "BossTree"
-          },
-          "type": "BehaviorTreeComponent"
+      "node": 1,
+      "overrides": [
+        {
+          "op": "replace",
+          "path": "/properties/name",
+          "value": "Player"
         },
-        "ColliderComponent": {
-          "order": 1,
-          "properties": {
-            "layer": 4,
-            "offset": [
+        {
+          "op": "replace",
+          "path": "/properties/transform",
+          "value": {
+            "rotate": [
               0.0,
               0.0,
               0.0
             ],
-            "radius": 1.0,
-            "shape": "Box",
-            "size": [
-              3.200000047683716,
-              3.200000047683716,
-              3.200000047683716
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              2.5,
+              -120.0
             ]
-          },
-          "type": "ColliderComponent"
-        },
-        "MeshComponent": {
-          "order": 0,
-          "properties": {
-            "model": "EngineResources/Model/white_cube.gltf",
-            "offset": {
-              "rotate": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "translate": [
-                0.0,
-                0.0,
-                0.0
-              ]
-            },
-            "renderSettings": {
-              "MaskId": 1,
-              "Values": {
-                "color": [
-                  1.0,
-                  0.0,
-                  0.0,
-                  1.0
-                ]
-              }
-            },
-            "visible": true
-          },
-          "type": "MeshComponent"
-        },
-        "Script": {
-          "order": 4,
-          "properties": {
-            "meleeAttackBlock": {
-              "actor": 8
-            },
-            "repelShockwaveSphere": {
-              "actor": 9
-            },
-            "ringShockwave": {
-              "actor": 10
-            },
-            "script": "Boss"
-          },
-          "type": "ScriptComponent"
-        },
-        "UILayoutComponent": {
-          "order": 2,
-          "properties": {
-            "layout": "BossHPBar",
-            "sortingOrder": 0
-          },
-          "type": "UILayoutComponent"
+          }
         }
-      },
+      ],
+      "prefab": "Player"
+    },
+    {
+      "id": 45,
+      "node": 2,
+      "overrides": [],
+      "prefab": "Player",
+      "root": 7
+    },
+    {
+      "id": 6,
+      "node": 3,
+      "overrides": [],
+      "prefab": "Player",
+      "root": 7
+    },
+    {
       "id": 11,
-      "properties": {
-        "name": "Boss",
-        "transform": {
-          "rotate": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "translate": [
-            0.0,
-            2.5,
-            10.0
-          ]
+      "node": 1,
+      "overrides": [
+        {
+          "op": "replace",
+          "path": "/properties/name",
+          "value": "Boss"
+        },
+        {
+          "op": "replace",
+          "path": "/properties/transform",
+          "value": {
+            "rotate": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "translate": [
+              0.0,
+              2.5,
+              10.0
+            ]
+          }
         }
-      },
-      "type": "Actor"
+      ],
+      "prefab": "Boss"
     },
     {
-      "components": {
-        "MeshComponent": {
-          "order": 0,
-          "properties": {
-            "model": "EngineResources/Model/white_cube.gltf",
-            "offset": {
-              "rotate": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "translate": [
-                0.0,
-                0.0,
-                0.0
-              ]
-            },
-            "renderSettings": {
-              "Values": {
-                "color": [
-                  1.0,
-                  0.0,
-                  0.0,
-                  1.0
-                ]
-              }
-            },
-            "visible": false
-          },
-          "type": "MeshComponent"
-        }
-      },
+      "id": 46,
+      "node": 2,
+      "overrides": [],
+      "prefab": "Boss",
+      "root": 11
+    },
+    {
       "id": 8,
-      "properties": {
-        "name": "Boss Melee Block",
-        "transform": {
-          "rotate": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "translate": [
-            0.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "type": "Actor"
+      "node": 3,
+      "overrides": [],
+      "prefab": "Boss",
+      "root": 11
     },
     {
-      "components": {
-        "MeshComponent": {
-          "order": 0,
-          "properties": {
-            "model": "",
-            "offset": {
-              "rotate": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "translate": [
-                0.0,
-                0.0,
-                0.0
-              ]
-            },
-            "renderSettings": {
-              "CastShadow": false,
-              "Transparent": true,
-              "Values": {
-                "color": [
-                  1.0,
-                  0.0,
-                  0.0,
-                  0.3
-                ],
-                "enableLighting": 0
-              }
-            },
-            "visible": false
-          },
-          "type": "MeshComponent"
-        }
-      },
       "id": 9,
-      "properties": {
-        "name": "Boss Repel Shockwave",
-        "transform": {
-          "rotate": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "translate": [
-            0.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "type": "Actor"
+      "node": 4,
+      "overrides": [],
+      "prefab": "Boss",
+      "root": 11
     },
     {
-      "components": {
-        "MeshComponent": {
-          "order": 0,
-          "properties": {
-            "model": "",
-            "offset": {
-              "rotate": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "translate": [
-                0.0,
-                0.0,
-                0.0
-              ]
-            },
-            "renderSettings": {
-              "CastShadow": false,
-              "Textures": {
-                "gTexture": "red_perlin_noise.png"
-              },
-              "Transparent": true,
-              "Values": {
-                "color": [
-                  1.0,
-                  1.0,
-                  1.0,
-                  1.0
-                ],
-                "enableLighting": 0
-              }
-            },
-            "visible": false
-          },
-          "type": "MeshComponent"
-        }
-      },
       "id": 10,
-      "properties": {
-        "name": "Boss Ring Shockwave",
-        "transform": {
-          "rotate": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "scale": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "translate": [
-            0.0,
-            0.0,
-            0.0
-          ]
-        }
-      },
-      "type": "Actor"
+      "node": 5,
+      "overrides": [],
+      "prefab": "Boss",
+      "root": 11
     },
     {
       "components": {
@@ -1825,13 +1591,15 @@
                   1.0
                 ]
               }
-            }
+            },
+            "visible": true
           },
           "type": "MeshComponent"
         }
       },
       "id": 1,
       "properties": {
+        "active": true,
         "name": "Ground",
         "transform": {
           "rotate": [
@@ -1865,6 +1633,7 @@
       },
       "id": 2,
       "properties": {
+        "active": true,
         "name": "Sky",
         "transform": {
           "rotate": [
@@ -1909,6 +1678,7 @@
       },
       "id": 3,
       "properties": {
+        "active": true,
         "name": "Directional Light",
         "transform": {
           "rotate": [
@@ -1942,6 +1712,7 @@
       },
       "id": 4,
       "properties": {
+        "active": true,
         "name": "Post Process",
         "transform": {
           "rotate": [
@@ -1985,6 +1756,7 @@
       },
       "id": 43,
       "properties": {
+        "active": true,
         "name": "Controller UI",
         "transform": {
           "rotate": [
@@ -2027,6 +1799,7 @@
       },
       "id": 44,
       "properties": {
+        "active": true,
         "name": "Pause Menu",
         "transform": {
           "rotate": [

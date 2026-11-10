@@ -283,7 +283,8 @@ void AttackState::UpdateBlockPosition(Player* player)
 
     blockTransform.scale = { blockScale_, blockScale_, blockScale_ };
 
-    block->SetTransform(blockTransform);
+    // ブロックはプレイヤーの子でもよいよう、ワールドの値で置く
+    block->SetWorldTransform(blockTransform);
 }
 
 //=========================================================================================

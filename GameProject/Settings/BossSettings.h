@@ -27,6 +27,13 @@ public: //構造体
     };
 
 public: //メンバー変数
+    TPROPERTY(Edit, Category = "Health", ClampMin = 1, Speed = 1)
+    float maxHp            = 200.0f;
+    TPROPERTY(Edit, Category = "Health", Tooltip = "HP がこの値以下になるとフェーズ 2 に入る", ClampMin = 0, Speed = 1)
+    float phase2Threshold  = 105.0f;
+    TPROPERTY(Edit, Category = "Health", Tooltip = "フェーズ 2 に入ったときの HP", ClampMin = 0, Speed = 1)
+    float phase2InitialHp  = 100.0f;
+
     TPROPERTY(Edit, Category = "Body", Tooltip = "被弾で白く光る時間（秒）", ClampMin = 0, Speed = 0.01)
     float         hitEffectDuration = 0.1f;
     TPROPERTY(Edit, Category = "Body", Tooltip = "被弾時の揺れ")

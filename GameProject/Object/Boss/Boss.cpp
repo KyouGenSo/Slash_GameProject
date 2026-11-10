@@ -68,11 +68,11 @@ void Boss::BeginPlay()
     ApplyEffectSettings();
     InitializeAI();
     InitializeStateMachine();
+}
 
-    // ボスのモデルとリングの形に沿って出すエミッターは、形（Object3d）を結び付けるのでここで作る
-    InitializeAuraEmitter();
-    InitializeBodyParticleEmitter();
-    InitializeRingShockwaveEmitter();
+float Boss::GetMaxHp()
+{
+    return Tako::GameSettings::Get<BossSettings>().maxHp;
 }
 
 void Boss::InitializeStateMachine()
@@ -113,21 +113,23 @@ void Boss::InitializeHealth()
         hpBar_.Bind(&layout->GetLayout());
     }
 
-    phaseManager_.Initialize(kMaxHp, kPhase2Threshold, kPhase2InitialHp);
+    const BossSettings& settings = Tako::GameSettings::Get<BossSettings>();
+    hp_ = settings.maxHp;
+    phaseManager_.Initialize(settings.maxHp, settings.phase2Threshold, settings.phase2InitialHp);
 }
 
 void Boss::InitializeColliders()
 {
     const BossSettings& settings = Tako::GameSettings::Get<BossSettings>();
 
-    // 近接攻撃コライダー（本体は同じ Actor の ColliderComponent）
-    const BossSettings::MeleeCollider& melee = settings.melee;
-    meleeAttackCollider_ = std::make_unique<BossMeleeAttackCollider>(this);
-    meleeAttackCollider_->SetTransform(&GetOwner()->GetTransform());
-    meleeAttackCollider_->SetSize(melee.size);
-    meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, melee.offsetZ));
-    meleeAttackCollider_->SetOwner(this);
-    CollisionManager::GetInstance()->AddCollider(meleeAttackCollider_.get());
+    // 近接攻撃の当たり判定は子の Actor（本体は同じ Actor の ColliderComponent）
+    const BossSettings::MeleeCollider& melee  = settings.melee;
+    Tako::Actor*                       hitbox = GetOwner()->Resolve(meleeAttackHitbox_);
+    meleeAttackCollider_ = hitbox ? hitbox->GetScript<BossMeleeAttackCollider>() : nullptr;
+    if (meleeAttackCollider_) {
+        meleeAttackCollider_->SetSize(melee.size);
+        meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, melee.offsetZ));
+    }
 }
 
 void Boss::ApplyEffectSettings()
@@ -137,24 +139,6 @@ void Boss::ApplyEffectSettings()
     shakeEffect_.SetDefaultIntensity(shake.intensity);
 }
 
-void Boss::InitializeAuraEmitter()
-{
-    if (!emitterManager_ || !GetModel()) {
-        return;
-    }
-
-    // 二重登録防止
-    if (emitterManager_->HasEmitter(auraEmitterName_)) {
-        emitterManager_->RemoveEmitter(auraEmitterName_);
-    }
-
-    emitterManager_->LoadPreset(auraEmitterName_, auraEmitterName_, GetModel());
-    emitterManager_->LoadPreset(darkAuraEmitterName_, darkAuraEmitterName_, GetModel());
-
-    emitterManager_->SetEmitterActive(auraEmitterName_, !isInRecovery_ && !IsStunned() && !isTeleporting_);
-    emitterManager_->SetEmitterActive(darkAuraEmitterName_, !isInRecovery_ && !IsStunned() && !isTeleporting_);
-}
-
 void Boss::SetAuraEmitterActive(bool active)
 {
     if (!emitterManager_) return;
@@ -162,42 +146,10 @@ void Boss::SetAuraEmitterActive(bool active)
     emitterManager_->SetEmitterActive(darkAuraEmitterName_, active);
 }
 
-void Boss::InitializeBodyParticleEmitter()
-{
-    if (!emitterManager_ || !GetModel()) {
-        return;
-    }
-
-    // 二重登録防止
-    if (emitterManager_->HasEmitter(bodyParticleEmitterName_)) {
-        emitterManager_->RemoveEmitter(bodyParticleEmitterName_);
-    }
-
-    emitterManager_->LoadPreset(bodyParticleEmitterName_, bodyParticleEmitterName_, GetModel());
-
-    emitterManager_->SetEmitterActive(bodyParticleEmitterName_, false);
-}
-
 void Boss::SetBodyParticleEmitterActive(bool active)
 {
     if (!emitterManager_) return;
     emitterManager_->SetEmitterActive(bodyParticleEmitterName_, active);
-}
-
-void Boss::InitializeRingShockwaveEmitter()
-{
-    if (!emitterManager_ || !GetRingShockwaveModel()) {
-        return;
-    }
-
-    // 二重登録防止
-    if (emitterManager_->HasEmitter(ringShockwaveEmitterName_)) {
-        emitterManager_->RemoveEmitter(ringShockwaveEmitterName_);
-    }
-
-    emitterManager_->LoadPreset(ringShockwaveEmitterName_, ringShockwaveEmitterName_, GetRingShockwaveModel());
-
-    emitterManager_->SetEmitterActive(ringShockwaveEmitterName_, false);
 }
 
 void Boss::InitializeAI()
@@ -212,24 +164,7 @@ void Boss::InitializeAI()
 
 void Boss::EndPlay()
 {
-    if (meleeAttackCollider_) {
-        CollisionManager::GetInstance()->RemoveCollider(meleeAttackCollider_.get());
-    }
-
-    if (emitterManager_) {
-        if (emitterManager_->HasEmitter(auraEmitterName_)) {
-            emitterManager_->RemoveEmitter(auraEmitterName_);
-        }
-        if (emitterManager_->HasEmitter(darkAuraEmitterName_)) {
-            emitterManager_->RemoveEmitter(darkAuraEmitterName_);
-        }
-        if (emitterManager_->HasEmitter(bodyParticleEmitterName_)) {
-            emitterManager_->RemoveEmitter(bodyParticleEmitterName_);
-        }
-        if (emitterManager_->HasEmitter(ringShockwaveEmitterName_)) {
-            emitterManager_->RemoveEmitter(ringShockwaveEmitterName_);
-        }
-    }
+    meleeAttackCollider_ = nullptr;
 }
 
 void Boss::Tick(float deltaTime)
@@ -278,7 +213,7 @@ void Boss::SetRingShockwaveVisible(bool visible)
 
 void Boss::Update(float deltaTime)
 {
-    hpBar_.UpdateDual(hp_, kMaxHp, kPhase2Threshold, phaseManager_.GetPhase());
+    hpBar_.UpdateDual(hp_, GetMaxHp(), Tako::GameSettings::Get<BossSettings>().phase2Threshold, phaseManager_.GetPhase());
 
     phaseManager_.Update(hp_);
 
@@ -305,16 +240,19 @@ void Boss::Update(float deltaTime)
         mesh->SetOffset(offset);
     }
 
-    // 衝撃波の球はボスの位置に置き続ける
+    // 衝撃波の球はボスの位置に置き続ける（ボスの子でも、大きさと向きはボスに引きずられない）
     if (Tako::Actor* sphere = GetOwner()->Resolve(repelShockwaveSphere_)) {
-        sphere->GetTransform().translate = GetOwner()->GetTransform().translate;
+        Transform world = sphere->GetWorldTransform();
+        world.translate = GetOwner()->GetWorldPosition();
+        world.rotate    = {};
+        sphere->SetWorldTransform(world);
     }
 }
 
 void Boss::SetRepelShockwaveSphereScale(float radius)
 {
     if (Tako::Actor* sphere = GetOwner()->Resolve(repelShockwaveSphere_)) {
-        sphere->GetTransform().scale = { radius, radius, radius };
+        sphere->SetWorldTransform({ { radius, radius, radius }, {}, GetOwner()->GetWorldPosition() });
     }
 }
 
@@ -352,8 +290,8 @@ bool Boss::DrawCustomImGui()
 
     ImGui::SeparatorText("Basic Status");
 
-    ImGui::Text("HP: %.1f / %.1f (%.1f%%)", hp_, kMaxHp, (hp_ / kMaxHp) * 100.0f);
-    ImGui::ProgressBar(hp_ / kMaxHp, ImVec2(-1.0f, 0.0f), "");
+    ImGui::Text("HP: %.1f / %.1f (%.1f%%)", hp_, GetMaxHp(), (hp_ / GetMaxHp()) * 100.0f);
+    ImGui::ProgressBar(hp_ / GetMaxHp(), ImVec2(-1.0f, 0.0f), "");
 
     ImGui::Text("Life: %d", phaseManager_.GetLife());
     ImGui::Text("Phase: %d", phaseManager_.GetPhase());
@@ -401,20 +339,20 @@ bool Boss::DrawCustomImGui()
     }
 
     float tempHp = hp_;
-    if (ImGui::SliderFloat("Set HP", &tempHp, 0.0f, kMaxHp)) {
-        hp_ = std::clamp(tempHp, 0.0f, kMaxHp);
+    if (ImGui::SliderFloat("Set HP", &tempHp, 0.0f, GetMaxHp())) {
+        hp_ = std::clamp(tempHp, 0.0f, GetMaxHp());
     }
 
     ImVec2 buttonSize(ImGui::GetContentRegionAvail().x * 0.48f, 0);
     if (ImGui::Button("Set Phase 1", buttonSize)) {
         SetPhase(1);
-        hp_ = kMaxHp;
+        hp_ = GetMaxHp();
         phaseManager_.Reset();
     }
     ImGui::SameLine();
     if (ImGui::Button("Set Phase 2", buttonSize)) {
         SetPhase(2);
-        hp_ = kPhase2InitialHp;
+        hp_ = Tako::GameSettings::Get<BossSettings>().phase2InitialHp;
     }
 
     ImGui::Spacing();
@@ -438,7 +376,7 @@ bool Boss::DrawCustomImGui()
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
     if (ImGui::Button("Revive Boss", fullButtonSize)) {
         phaseManager_.Reset();
-        hp_ = kMaxHp;
+        hp_ = GetMaxHp();
     }
     ImGui::PopStyleColor(3);
 
@@ -589,7 +527,7 @@ void Boss::TriggerPhaseTransitionStun() {
 }
 
 void Boss::CompletePhaseTransition() {
-    hp_ = kPhase2InitialHp;
+    hp_ = Tako::GameSettings::Get<BossSettings>().phase2InitialHp;
     phaseManager_.SetPhase(2);
 
     // Normal へ復帰（PhaseTransitionStunState::Exit() でパーティクル無効化）

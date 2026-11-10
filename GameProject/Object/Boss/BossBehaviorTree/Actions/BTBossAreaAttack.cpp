@@ -66,7 +66,7 @@ void BTBossAreaAttack::OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss) 
     SelectRandomQuadrants(blackboard);
 
     Vector3 bossPos = boss->GetTransform().translate;
-    float halfArea = GameConst::kBossPhase2AreaSize * 0.5f;
+    float halfArea = GameConst::BossPhase2AreaSize() * 0.5f;
 
     for (int i = 0; i < kQuadrantCount; ++i) {
         Vector3 center = GetQuadrantCenter(i, bossPos);
@@ -179,7 +179,7 @@ int BTBossAreaAttack::GetPlayerQuadrant(Tako::BTBlackboard* blackboard) const {
 }
 
 Vector3 BTBossAreaAttack::GetQuadrantCenter(int quadrantIndex, const Vector3& bossPos) const {
-    float halfArea = GameConst::kBossPhase2AreaSize * 0.5f;
+    float halfArea = GameConst::BossPhase2AreaSize() * 0.5f;
 
     float xSign = (quadrantIndex % 2 == 0) ? -1.0f : 1.0f;
     float zSign = (quadrantIndex < 2) ? -1.0f : 1.0f;

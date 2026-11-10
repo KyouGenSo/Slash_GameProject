@@ -10,7 +10,7 @@ class Boss;
 /// ゲームパッドの入力状態を表示する UI。同じ Actor の UILayoutComponent の画像を、
 /// ボタン押下で Up/Down、スティック方向で切り替える（配置は resources/Json/UI/ControllerUI.json）
 /// </summary>
-TCLASS()
+TCLASS(Requires = "UILayoutComponent")
 class ControllerUI : public Tako::Script {
     GENERATED_BODY()
 

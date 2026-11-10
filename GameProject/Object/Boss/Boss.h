@@ -36,7 +36,7 @@ class BossMeleeAttackCollider;
 /// <summary>
 /// ボスキャラクター。HP・フェーズ・状態遷移・BehaviorTree・各種エフェクト/当たり判定を統括する
 /// </summary>
-TCLASS()
+TCLASS(Order = -40)
 class Boss : public Tako::Script {
     GENERATED_BODY()
 
@@ -44,9 +44,6 @@ public: //定数
     static constexpr float kRingShockwaveWidthFraction = 0.15f;  ///< リング衝撃波メッシュの帯幅比（外半径 1 基準）
 
 private: //定数
-    static constexpr float kMaxHp = 200.0f;
-    static constexpr float kPhase2Threshold = 105.0f;
-    static constexpr float kPhase2InitialHp = 100.0f;
     static constexpr float kPhaseTransitionStunThreshold = 105.0f;
 
 public: //メンバー関数
@@ -142,21 +139,6 @@ public: //メンバー関数
     /// <param name="value">X スケールの最小・最大に同値で設定する値（Y は 1.0 固定）</param>
     void SetBulletSignEmitterScaleRangeX(float value);
 
-    /// <summary>
-    /// ボスモデルをスポーン形状とする MeshEmitter "boss_aura" を初期化
-    /// </summary>
-    void InitializeAuraEmitter();
-
-    /// <summary>
-    /// ボスモデルをスポーン形状とする MeshEmitter "boss_particle_body" を初期化
-    /// </summary>
-    void InitializeBodyParticleEmitter();
-
-    /// <summary>
-    /// リング衝撃波モデルをスポーン形状とする MeshEmitter "boss_ring_shockwave" を初期化
-    /// </summary>
-    void InitializeRingShockwaveEmitter();
-
     //=================================================================
     //Setter
     //=================================================================
@@ -228,7 +210,10 @@ public: //メンバー関数
     Tako::Vector3 GetRotate() const { return GetOwner()->GetTransform().rotate; }
     Tako::Vector3 GetScale() const { return GetOwner()->GetTransform().scale; }
     float GetHp() const { return hp_; }
-    static constexpr float GetMaxHp() { return kMaxHp; }
+    /// <summary>
+    /// BossSettings の Max Hp
+    /// </summary>
+    static float GetMaxHp();
     uint8_t GetPhase() const { return phaseManager_.GetPhase(); }
     bool IsDead() const { return phaseManager_.IsDead(); }
     BossPhaseManager& GetPhaseManager() { return phaseManager_; }
@@ -242,7 +227,7 @@ public: //メンバー関数
     /// </summary>
     Tako::Actor* GetRingShockwaveActor() const { return GetOwner()->Resolve(ringShockwave_); }
     Tako::Object3d* GetRingShockwaveModel() const;
-    BossMeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
+    BossMeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_; }
     Tako::EmitterManager* GetEmitterManager() const { return emitterManager_; }
     Tako::ForceFieldManager* GetForceFieldManager() const { return forceFieldManager_; }
     const std::string& GetAuraEmitterName() const { return auraEmitterName_; }
@@ -294,7 +279,7 @@ private: //メンバー変数
 
 
     Player*          player_       = nullptr;
-    float            hp_           = kMaxHp;
+    float            hp_           = 0.0f;    ///< BeginPlay で最大値にする
     BossPhaseManager phaseManager_;
     bool             isPause_      = false;
 
@@ -314,17 +299,20 @@ private: //メンバー変数
 
 
     //近接攻撃関連
-    TPROPERTY(Edit, Tooltip = "近接攻撃で振るブロックの Actor（MeshComponent を付ける）")
+    TPROPERTY(Edit, Required, ActorWith = "MeshComponent", Tooltip = "近接攻撃で振るブロックの Actor（MeshComponent を付ける）")
     Tako::ActorRef meleeAttackBlock_;
 
-    TPROPERTY(Edit, Tooltip = "反発の衝撃波の球の Actor（MeshComponent を付ける。モデルはコードが作る）")
+    TPROPERTY(Edit, Required, ActorWith = "BossMeleeAttackCollider", Tooltip = "近接攻撃の当たり判定の Actor（ボスの子に置き、ColliderComponent と BossMeleeAttackCollider を付ける）")
+    Tako::ActorRef meleeAttackHitbox_;
+
+    TPROPERTY(Edit, Required, ActorWith = "MeshComponent", Tooltip = "反発の衝撃波の球の Actor（MeshComponent を付ける。モデルはコードが作る）")
     Tako::ActorRef repelShockwaveSphere_;
 
     //リング衝撃波（BTBossRingShockwave が transform を駆動）
-    TPROPERTY(Edit, Tooltip = "リング衝撃波の Actor（MeshComponent を付ける。モデルはコードが作る）")
+    TPROPERTY(Edit, Required, ActorWith = "MeshComponent", Tooltip = "リング衝撃波の Actor（MeshComponent を付ける。モデルはコードが作る。粒子は Bind To Mesh の ParticleSystemComponent）")
     Tako::ActorRef ringShockwave_;
 
-    std::unique_ptr<BossMeleeAttackCollider> meleeAttackCollider_;
+    BossMeleeAttackCollider* meleeAttackCollider_ = nullptr;  ///< meleeAttackHitbox_ のスクリプト
 
     Tako::EmitterManager* emitterManager_ = nullptr;
 

@@ -7,7 +7,7 @@
 /// ポーズメニュー。Resume/Title/Exit を DPAD で選択、A ボタンで決定。画像は同じ Actor の UILayoutComponent の物を使う。
 /// 自分では Tick せず、ポーズの間だけ進行役（GameDirector）が Update を呼んで結果を受け取る
 /// </summary>
-TCLASS()
+TCLASS(Requires = "UILayoutComponent")
 class PauseMenu : public Tako::Script {
     GENERATED_BODY()
 

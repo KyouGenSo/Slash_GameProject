@@ -118,7 +118,8 @@ void BTBossRingShockwave::UpdateRingVisual(Boss* boss, float alpha) {
 
     const float scale = ComputeCurrentScale();
     const Vector3 pos = originPos_ + lockedDir_ * traveled_;
-    ringActor->SetTransform({ Vector3(scale, 1.0f, scale), Vector3(0.0f, lockedYaw_, 0.0f), Vector3(pos.x, spawnHeight_, pos.z) });
+    // リングはボスの子でも、ワールドの中を進む
+    ringActor->SetWorldTransform({ Vector3(scale, 1.0f, scale), Vector3(0.0f, lockedYaw_, 0.0f), Vector3(pos.x, spawnHeight_, pos.z) });
     // RGB は Object Settings の色のまま、アルファだけ演出で変える
     Vector4 color = ring->GetBaseMaterialColor();
     color.w = alpha;

@@ -206,7 +206,7 @@ void BTBossMeteorRain::GenerateImpactPositions(const Vector3& bossPos) {
     impactPositions_.reserve(impactCount_);
 
     RandomEngine* rng = RandomEngine::GetInstance();
-    float areaSize = GameConst::kBossPhase2AreaSize;
+    float areaSize = GameConst::BossPhase2AreaSize();
 
     float minSeparation = 2.0f * impactRadius_;
     float minSepSq = minSeparation * minSeparation;

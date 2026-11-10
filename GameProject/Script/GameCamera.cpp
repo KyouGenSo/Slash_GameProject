@@ -45,16 +45,16 @@ void GameCamera::BeginPlay() {
     ApplySettings(true);
 
     // 開始の演出を再生し、終わりの演出を読んでおく（それぞれプレイヤーとボスを基準に動く）
-    animationController_->LoadAnimationFromFile("game_start");
+    animationController_->LoadAnimationFromFile(startAnimation_);
     manager->ActivateController("Animation");
-    animationController_->SwitchAnimation("game_start");
+    animationController_->SwitchAnimation(startAnimation_);
     animationController_->Play();
 
-    animationController_->LoadAnimationFromFile("over_anim");
-    animationController_->SetAnimationTargetByName("over_anim", &target->GetTransform());
+    animationController_->LoadAnimationFromFile(overAnimation_);
+    animationController_->SetAnimationTargetByName(overAnimation_, &target->GetTransform());
 
-    animationController_->LoadAnimationFromFile("clear_anim");
-    animationController_->SetAnimationTargetByName("clear_anim", &secondary->GetTransform());
+    animationController_->LoadAnimationFromFile(clearAnimation_);
+    animationController_->SetAnimationTargetByName(clearAnimation_, &secondary->GetTransform());
 }
 
 void GameCamera::EndPlay() {

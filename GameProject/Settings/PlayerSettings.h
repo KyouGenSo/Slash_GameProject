@@ -126,6 +126,9 @@ private: //非公開関数
     }
 
 public: //メンバー変数
+    TPROPERTY(Edit, Category = "Health", ClampMin = 1, Speed = 1)
+    float maxHp = 185.0f;
+
     TPROPERTY(Edit, Category = "Move", Speed = 0.01)
     float speed             = 0.5f;
     TPROPERTY(Edit, Category = "Move", ClampMin = 0, ClampMax = 1, Speed = 0.01)

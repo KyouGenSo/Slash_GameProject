@@ -57,6 +57,7 @@ void Player::BeginPlay()
     if (UILayoutComponent* layout = GetOwner()->GetComponent<UILayoutComponent>()) {
         hpBar_.Bind(&layout->GetLayout());
     }
+    hp_ = Tako::GameSettings::Get<PlayerSettings>().maxHp;
 
     stateMachine_ = std::make_unique<PlayerStateMachine>(this);
     stateMachine_->RegisterState("Idle", std::make_unique<IdleState>());
@@ -74,9 +75,7 @@ void Player::BeginPlay()
 
 void Player::EndPlay()
 {
-    if (meleeAttackCollider_) {
-        CollisionManager::GetInstance()->RemoveCollider(meleeAttackCollider_.get());
-    }
+    meleeAttackCollider_ = nullptr;
 }
 
 void Player::Tick([[maybe_unused]] float deltaTime)
@@ -139,7 +138,7 @@ void Player::UpdateCombat(float deltaTime)
 
     if (hp_ <= 0.0f) isDead_ = true;
 
-    hpBar_.Update(hp_, kMaxHp);
+    hpBar_.Update(hp_, Tako::GameSettings::Get<PlayerSettings>().maxHp);
 }
 
 void Player::UpdateStateMachine(float deltaTime)
@@ -160,10 +159,10 @@ void Player::UpdateTransform()
     // 静的制限と動的制限の交差をとった実効制限
     DynamicBoundary effectiveBounds;
     effectiveBounds.Set(
-        std::max<float>(GameConst::kStageXMin, dynamicBounds_.xMin),
-        std::min<float>(GameConst::kStageXMax, dynamicBounds_.xMax),
-        std::max<float>(GameConst::kStageZMin, dynamicBounds_.zMin),
-        std::min<float>(GameConst::kStageZMax, dynamicBounds_.zMax));
+        std::max<float>(GameConst::StageXMin(), dynamicBounds_.xMin),
+        std::min<float>(GameConst::StageXMax(), dynamicBounds_.xMax),
+        std::max<float>(GameConst::StageZMin(), dynamicBounds_.zMin),
+        std::min<float>(GameConst::StageZMax(), dynamicBounds_.zMax));
 
     GetOwner()->GetTransform().translate = effectiveBounds.Clamp(GetOwner()->GetTransform().translate);
 }
@@ -269,14 +268,14 @@ void Player::SetupColliders()
 {
     const PlayerSettings& settings = Tako::GameSettings::Get<PlayerSettings>();
 
-    // 攻撃範囲
-    meleeAttackCollider_ = std::make_unique<MeleeAttackCollider>(this);
-    meleeAttackCollider_->SetTransform(&GetOwner()->GetTransform());
-    meleeAttackCollider_->SetSize(settings.meleeColliderSize);
-    meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, settings.meleeColliderOffsetZ));
-    meleeAttackCollider_->SetActive(false);
-
-    CollisionManager::GetInstance()->AddCollider(meleeAttackCollider_.get());
+    // 攻撃範囲は子の Actor（プレイヤーの向きに付いていく）
+    Tako::Actor* hitbox = GetOwner()->Resolve(meleeAttackHitbox_);
+    meleeAttackCollider_ = hitbox ? hitbox->GetScript<MeleeAttackCollider>() : nullptr;
+    if (meleeAttackCollider_) {
+        meleeAttackCollider_->SetSize(settings.meleeColliderSize);
+        meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, settings.meleeColliderOffsetZ));
+        meleeAttackCollider_->SetActive(false);
+    }
 }
 
 void Player::UpdateCollider()
@@ -285,11 +284,8 @@ void Player::UpdateCollider()
 
     if (!meleeAttackCollider_) return;
 
-    // 攻撃中のみ前方に配置
+    // 攻撃中は、Engine Settings で変えた大きさをすぐ試せるように読み直す
     if (meleeAttackCollider_->IsActive()) {
-        Matrix4x4 rotationMatrix = Mat4x4::MakeRotateY(GetOwner()->GetTransform().rotate.y);
-        meleeAttackCollider_->SetOrientation(rotationMatrix);
-
         meleeAttackCollider_->SetSize(settings.meleeColliderSize);
         meleeAttackCollider_->SetOffset(Vector3(0.0f, 0.0f, settings.meleeColliderOffsetZ));
     }
@@ -444,20 +440,7 @@ bool Player::DrawCustomImGui()
                 if (meleeAttackCollider_) {
                     bool isActive = meleeAttackCollider_->IsActive();
                     ImGui::Text("Active: %s", isActive ? "YES" : "NO");
-
-                    Vector3 actualCenter = meleeAttackCollider_->GetCenter();
-                    ImGui::Text("Actual Center: (%.2f, %.2f, %.2f)",
-                        actualCenter.x, actualCenter.y, actualCenter.z);
-
-                    Vector3 offset = meleeAttackCollider_->GetOffset();
-                    if (ImGui::DragFloat3("Offset", &offset.x, 0.1f)) {
-                        meleeAttackCollider_->SetOffset(offset);
-                    }
-
-                    Vector3 size = meleeAttackCollider_->GetSize();
-                    if (ImGui::DragFloat3("Size", &size.x, 0.1f, 0.1f, 50.0f)) {
-                        meleeAttackCollider_->SetSize(size);
-                    }
+                    ImGui::TextDisabled("Size / Offset: Engine Settings > Game > PlayerSettings > Collider");
 
                     ImGui::Separator();
                     Boss* detectedEnemy = meleeAttackCollider_->GetDetectedEnemy();
@@ -656,7 +639,7 @@ void Player::StartDashCooldown()
 void Player::OnParrySuccess()
 {
     float healAmount = Tako::GameSettings::Get<PlayerSettings>().parry.successHealAmount;
-    hp_ = std::min<float>(hp_ + healAmount, kMaxHp);
+    hp_ = std::min<float>(hp_ + healAmount, Tako::GameSettings::Get<PlayerSettings>().maxHp);
 
     Vector3 effectPos = GetFrontPosition(2.0f);
     DamageFeedback::TriggerParryFeedback(effectPos, emitterManager_);

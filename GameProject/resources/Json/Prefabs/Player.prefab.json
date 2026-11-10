@@ -1,0 +1,204 @@
+{
+  "actors": [
+    {
+      "components": {
+        "ColliderComponent": {
+          "order": 1,
+          "properties": {
+            "layer": 1,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": 1.0,
+            "shape": "Box",
+            "size": [
+              3.200000047683716,
+              3.200000047683716,
+              3.200000047683716
+            ]
+          },
+          "type": "ColliderComponent"
+        },
+        "MeshComponent": {
+          "order": 0,
+          "properties": {
+            "model": "EngineResources/Model/white_cube.gltf",
+            "offset": {
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "visible": true
+          },
+          "type": "MeshComponent"
+        },
+        "Script": {
+          "order": 3,
+          "properties": {
+            "attackBlock": {
+              "actor": 3
+            },
+            "meleeAttackHitbox": {
+              "actor": 2
+            },
+            "script": "Player"
+          },
+          "type": "ScriptComponent"
+        },
+        "UILayoutComponent": {
+          "order": 2,
+          "properties": {
+            "layout": "PlayerHPBar",
+            "sortingOrder": 0,
+            "visible": true
+          },
+          "type": "UILayoutComponent"
+        }
+      },
+      "id": 1,
+      "properties": {
+        "active": true,
+        "name": "Player",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translate": [
+            0.0,
+            2.5,
+            -120.0
+          ]
+        }
+      },
+      "type": "Actor"
+    },
+    {
+      "components": {
+        "ColliderComponent": {
+          "order": 0,
+          "properties": {
+            "layer": 2,
+            "offset": [
+              0.0,
+              0.0,
+              10.0
+            ],
+            "radius": 1.0,
+            "shape": "Box",
+            "size": [
+              5.0,
+              2.0,
+              17.0
+            ]
+          },
+          "type": "ColliderComponent"
+        },
+        "Script": {
+          "order": 1,
+          "properties": {
+            "script": "MeleeAttackCollider"
+          },
+          "type": "ScriptComponent"
+        }
+      },
+      "id": 2,
+      "parent": 1,
+      "properties": {
+        "active": true,
+        "name": "Player Melee Hitbox",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "type": "Actor"
+    },
+    {
+      "components": {
+        "MeshComponent": {
+          "order": 0,
+          "properties": {
+            "model": "EngineResources/Model/white_cube.gltf",
+            "offset": {
+              "rotate": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "translate": [
+                0.0,
+                0.0,
+                0.0
+              ]
+            },
+            "visible": false
+          },
+          "type": "MeshComponent"
+        }
+      },
+      "id": 3,
+      "parent": 1,
+      "properties": {
+        "active": true,
+        "name": "Player Attack Block",
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "type": "Actor"
+    }
+  ]
+}

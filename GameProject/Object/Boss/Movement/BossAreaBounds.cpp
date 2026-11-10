@@ -8,10 +8,10 @@ namespace BossMovement {
 
     AreaBounds CalcStageBounds() {
         return {
-            GameConst::kStageXMin + GameConst::kAreaMargin,
-            GameConst::kStageXMax - GameConst::kAreaMargin,
-            GameConst::kStageZMin + GameConst::kAreaMargin,
-            GameConst::kStageZMax - GameConst::kAreaMargin,
+            GameConst::StageXMin() + GameConst::kAreaMargin,
+            GameConst::StageXMax() - GameConst::kAreaMargin,
+            GameConst::StageZMin() + GameConst::kAreaMargin,
+            GameConst::StageZMax() - GameConst::kAreaMargin,
         };
     }
 
@@ -19,10 +19,10 @@ namespace BossMovement {
         AreaBounds bounds = CalcStageBounds();
 
         if (boss && boss->GetPhase() == 2) {
-            bounds.xMin += GameConst::kBossPhase2AreaSize;
-            bounds.xMax -= GameConst::kBossPhase2AreaSize;
-            bounds.zMin += GameConst::kBossPhase2AreaSize;
-            bounds.zMax -= GameConst::kBossPhase2AreaSize;
+            bounds.xMin += GameConst::BossPhase2AreaSize();
+            bounds.xMax -= GameConst::BossPhase2AreaSize();
+            bounds.zMin += GameConst::BossPhase2AreaSize();
+            bounds.zMax -= GameConst::BossPhase2AreaSize();
         }
 
         return bounds;

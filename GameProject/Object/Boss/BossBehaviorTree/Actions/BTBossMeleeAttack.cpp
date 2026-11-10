@@ -149,7 +149,7 @@ void BTBossMeleeAttack::ProcessPreparePhase(Tako::BTBlackboard* blackboard, floa
 
     Tako::Actor* block = boss->GetMeleeAttackBlock();
     if (block) {
-        boss->SetAttackSignEmitterPosition(block->GetTransform().translate);
+        boss->SetAttackSignEmitterPosition(block->GetWorldPosition());
     }
 }
 
@@ -253,12 +253,8 @@ void BTBossMeleeAttack::UpdateBlockPosition(Boss* boss) {
     blockTransform.translate = blockPos;
     blockTransform.rotate = { 0.0f, worldAngle, 0.0f };
     blockTransform.scale = { blockScale_, blockScale_, blockScale_ };
-    block->SetTransform(blockTransform);
-
-    BossMeleeAttackCollider* collider = boss->GetMeleeAttackCollider();
-    if (collider && colliderActivated_) {
-        collider->SetOrientation(Mat4x4::MakeRotateY(bossRotY));
-    }
+    // ブロックはボスの子でもよいよう、ワールドの値で置く。当たり判定は子の Actor なので、ボスの向きに付いていく
+    block->SetWorldTransform(blockTransform);
 }
 
 #ifdef _DEBUG

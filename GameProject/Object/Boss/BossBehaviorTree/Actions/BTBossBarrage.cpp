@@ -63,8 +63,8 @@ void BTBossBarrage::OnInitialize(Tako::BTBlackboard* /*blackboard*/, Boss* boss)
     totalDuration_ = moveDuration_ + chargeTime_ + firingDuration_ + recoveryTime_;
 
     startPosition_ = boss->GetTransform().translate;
-    float targetX = (GameConst::kStageXMin + GameConst::kStageXMax) / 2.0f;
-    float targetZ = (GameConst::kStageZMin + GameConst::kStageZMax) / 2.0f;
+    float targetX = (GameConst::StageXMin() + GameConst::StageXMax()) / 2.0f;
+    float targetZ = (GameConst::StageZMin() + GameConst::StageZMax()) / 2.0f;
     targetPosition_ = Vector3(targetX, startPosition_.y, targetZ);
 
     bulletSignEffect_.Start(boss, chargeTime_);

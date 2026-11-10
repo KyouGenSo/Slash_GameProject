@@ -33,7 +33,7 @@ class Boss;
 /// 位置は Actor の Transform、見た目は同じ Actor の MeshComponent、本体の当たり判定は ColliderComponent（層 PLAYER）、
 /// HP バーは UILayoutComponent が持つ
 /// </summary>
-TCLASS()
+TCLASS(Order = -50)
 class Player : public Tako::Script {
     GENERATED_BODY()
 
@@ -45,7 +45,6 @@ private: //定数
     static constexpr float kMoveEasingCoeffA = 3.0f;
     static constexpr float kMoveEasingCoeffB = 2.0f;
     static constexpr float kDirectionEpsilon = 0.01f;
-    static constexpr float kMaxHp = 185.0f;
 
 public: //メンバー関数
     Player();
@@ -206,7 +205,7 @@ public: //メンバー関数
     /// </summary>
     Tako::Object3d* GetModel() const;
     PlayerStateMachine* GetStateMachine() const { return stateMachine_.get(); }
-    MeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_.get(); }
+    MeleeAttackCollider* GetMeleeAttackCollider() const { return meleeAttackCollider_; }
     /// <summary>
     /// 攻撃ブロックの Actor。指していなければ nullptr
     /// </summary>
@@ -281,7 +280,7 @@ private: //メンバー変数
     Tako::ForceFieldManager* forceFieldManager_  = nullptr;  ///< 非所有
     float                    speed_              = 0.5f;
     float                    targetAngle_        = 0.f;
-    float                    hp_                 = kMaxHp;
+    float                    hp_                 = 0.0f;     ///< BeginPlay で最大値にする
     bool                     isDead_             = false;
 
     //フラグ
@@ -297,10 +296,12 @@ private: //メンバー変数
     Tako::EmitterManager*               emitterManager_  = nullptr;
 
     //コライダー（本体は同じ Actor の ColliderComponent）
-    std::unique_ptr<MeleeAttackCollider> meleeAttackCollider_;
+    TPROPERTY(Edit, Required, ActorWith = "MeleeAttackCollider", Tooltip = "近接攻撃の当たり判定の Actor（プレイヤーの子に置き、ColliderComponent と MeleeAttackCollider を付ける）")
+    Tako::ActorRef       meleeAttackHitbox_;
+    MeleeAttackCollider* meleeAttackCollider_ = nullptr;  ///< meleeAttackHitbox_ のスクリプト
 
     //攻撃ブロック
-    TPROPERTY(Edit, Tooltip = "攻撃の間だけ見せる、振る物の Actor（MeshComponent を付ける）")
+    TPROPERTY(Edit, Required, ActorWith = "MeshComponent", Tooltip = "攻撃の間だけ見せる、振る物の Actor（MeshComponent を付ける）")
     Tako::ActorRef attackBlock_;
 
     //攻撃

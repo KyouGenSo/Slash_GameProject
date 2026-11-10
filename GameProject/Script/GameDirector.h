@@ -14,6 +14,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <string>
 
 namespace Tako {
     class EmitterManager;
@@ -23,12 +24,13 @@ namespace Tako {
 
 class CameraManager;
 class CameraAnimationController;
+class GameCamera;
 
 /// <summary>
 /// ゲームのシーンの進行役。プレイヤーとボスの戦闘を組み立て、入力・ポーズ・勝敗・更新の順番を決める。
-/// シーンの並びで先頭の Actor に付ける（他の Actor より先に入力とポーズを決めるため）
+/// プレイヤーとボスより先に入力とポーズを決めるので、Order をそれらより小さくしている（カメラよりは後）
 /// </summary>
-TCLASS()
+TCLASS(Order = -100)
 class GameDirector : public Tako::Script {
     GENERATED_BODY()
 
@@ -38,7 +40,7 @@ public: //メンバー関数
     void EndPlay() override;
 
     /// <summary>
-    /// 入力・ポーズ・勝敗・カメラモード。この後に、シーンの並び順でプレイヤーとボスの Tick が来る
+    /// 入力・ポーズ・勝敗・カメラモード。この後に、プレイヤー、ボスの順で Tick が来る（TCLASS の Order）
     /// </summary>
     void Tick(float deltaTime) override;
 
@@ -98,17 +100,25 @@ private: //メンバー変数
     Tako::EmitterManager*    emitterManager_    = nullptr;  ///< シーン（BaseScene）の物
 
     //シーンオブジェクト
-    TPROPERTY(Edit, Tooltip = "Player のスクリプトを付けた Actor")
+    TPROPERTY(Edit, Required, ActorWith = "Player", Tooltip = "Player のスクリプトを付けた Actor")
     Tako::ActorRef playerActor_;
 
-    TPROPERTY(Edit, Tooltip = "Boss のスクリプトを付けた Actor（シーンの並びで Player の後に置く）")
+    TPROPERTY(Edit, Required, ActorWith = "Boss", Tooltip = "Boss のスクリプトを付けた Actor")
     Tako::ActorRef bossActor_;
-    TPROPERTY(Edit, Tooltip = "GameCamera のスクリプトを付けた Actor（シーンの並びでこの Actor より前に置く）")
+    TPROPERTY(Edit, Required, ActorWith = "GameCamera", Tooltip = "GameCamera のスクリプトを付けた Actor")
     Tako::ActorRef cameraActor_;
-    TPROPERTY(Edit, Tooltip = "ControllerUI のスクリプトを付けた Actor")
+    TPROPERTY(Edit, Required, ActorWith = "ControllerUI", Tooltip = "ControllerUI のスクリプトを付けた Actor")
     Tako::ActorRef controllerUiActor_;
-    TPROPERTY(Edit, Tooltip = "PauseMenu のスクリプトと UILayoutComponent を付けた Actor（ポーズの間だけ出す）")
+    TPROPERTY(Edit, Required, ActorWith = "PauseMenu", Tooltip = "PauseMenu のスクリプトと UILayoutComponent を付けた Actor（ポーズの間だけ出す）")
     Tako::ActorRef pauseMenuActor_;
+
+    //シーンの行き先
+    TPROPERTY(Edit, Category = "Scenes", Asset = "Scene", Tooltip = "ゲームオーバーの演出の後に開く")
+    std::string overScene_  = "over";
+    TPROPERTY(Edit, Category = "Scenes", Asset = "Scene", Tooltip = "クリアの演出の後に開く")
+    std::string clearScene_ = "clear";
+    TPROPERTY(Edit, Category = "Scenes", Asset = "Scene", Tooltip = "ポーズメニューの「タイトルへ」で開く")
+    std::string titleScene_ = "title";
 
     Player*                       player_       = nullptr;  ///< playerActor_ のスクリプト
     Boss*                         boss_         = nullptr;  ///< bossActor_ のスクリプト
@@ -117,6 +127,7 @@ private: //メンバー変数
     //カメラ
     CameraManager*             cameraManager_       = nullptr;
     CameraAnimationController* animationController_ = nullptr;
+    GameCamera*                gameCamera_          = nullptr;  ///< cameraActor_ のスクリプト
     bool                       cameraMode_          = false;    ///< true: ThirdPerson, false: TopDown
 
     //状態
