@@ -13,6 +13,5 @@
     "stageRangeZ": [
         -140.0,
         60.0
-    ],
-    "triggerThreshold": 0.5
+    ]
 }

@@ -16,7 +16,7 @@ void BossDeadState::Update(Boss* boss, float deltaTime)
 {
 	(void)boss;
 	(void)deltaTime;
-	// シーン遷移は GameScene 側で管理
+	// シーン遷移は GameDirector が行う
 }
 
 void BossDeadState::Exit(Boss* boss)

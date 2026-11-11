@@ -160,7 +160,6 @@
     <ClInclude Include="CameraSystem\Controller\TopDownController.h" />
     <ClInclude Include="Collision\BossAttackHitbox.h" />
     <ClInclude Include="Collision\RingColliderGroup.h" />
-    <ClInclude Include="Collision\PlayerHitResolver.h" />
     <ClInclude Include="Collision\BossMeleeAttackCollider.h" />
     <ClInclude Include="Collision\CollisionTypeId.h" />
     <ClInclude Include="Common\CooldownTimer.h" />

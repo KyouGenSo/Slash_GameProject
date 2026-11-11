@@ -242,7 +242,7 @@ public: //メンバー関数
     Tako::Object3d* GetModel() const;
 
     /// <summary>
-    /// ボス本体の素のマテリアル色（Object Settings の Values。テレポートのフェードの基準色）
+    /// ボス本体の素のマテリアル色（MeshComponent の Rendering の Values。テレポートのフェードの基準色）
     /// </summary>
     /// <returns>ボディの基準色 RGBA</returns>
     Tako::Vector4 GetBaseColor() const;

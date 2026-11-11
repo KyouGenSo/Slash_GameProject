@@ -32,13 +32,6 @@
     <Filter Include="CameraSystem\Controller">
       <UniqueIdentifier>{f57ae9da-7b8a-4870-ae5e-44402f6a7ed3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Object\Projectile">
-      <UniqueIdentifier>{93d8772f-6abc-484f-8174-74dbb0339c46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Boss\BossBehaviorTree">
       <UniqueIdentifier>{8fadaa47-22cd-4bb9-8d8f-bdf710112485}</UniqueIdentifier>
     </Filter>
@@ -306,6 +299,7 @@
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\AttackNode.cpp">
       <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="$(IntDir)TakoReflection.gen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Script\GameCamera.h">
@@ -513,9 +507,6 @@
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="Collision\RingColliderGroup.h">
-      <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision\PlayerHitResolver.h">
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="Object\Boss\Movement\BossAreaBounds.h">
