@@ -2,7 +2,6 @@
 #include "../../Boss.h"
 #include "../../../Player/Player.h"
 
-#include "CollisionManager.h"
 #include "EmitterManager.h"
 #include "BoxEmitter.h"
 
@@ -104,13 +103,11 @@ void BTBossTrackingLaser::OnInitialize(Tako::BTBlackboard* blackboard, Boss* bos
     colliderTransform_.rotate = Vector3(0.0f, firedYawRad_, 0.0f);
     colliderTransform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
-    beamCollider_ = std::make_unique<BossAreaAttackCollider>(boss);
-    beamCollider_->SetTransform(&colliderTransform_);
-    beamCollider_->SetSize(Vector3(beamWidth_, colliderHeight_, firedLength_));
-    beamCollider_->SetDamage(damage_);
-    beamCollider_->SetOwner(boss);
-    beamCollider_->SetActive(false);
-    CollisionManager::GetInstance()->AddCollider(beamCollider_.get());
+    beamCollider_.Spawn(boss, hitboxPrefab_, colliderTransform_);
+    if (beamCollider_) {
+        beamCollider_->SetSize(Vector3(beamWidth_, colliderHeight_, firedLength_));
+        beamCollider_->SetDamage(damage_);
+    }
 
     emitterName_       = "boss_tracking_laser";
     chargeEmitterName_ = "boss_tracking_laser_charge";
@@ -172,6 +169,7 @@ void BTBossTrackingLaser::BeginAttackPhase() {
     colliderTransform_.translate = Vector3(firedCenter_.x, beamHeight_, firedCenter_.z);
     colliderTransform_.rotate = Vector3(0.0f, firedYawRad_, 0.0f);
     if (beamCollider_) {
+        beamCollider_->SetTransform(colliderTransform_);
         beamCollider_->SetSize(Vector3(beamWidth_, colliderHeight_, firedLength_));
         beamCollider_->SetActive(true);
     }
@@ -227,10 +225,7 @@ void BTBossTrackingLaser::OnCleanup() {
 
     beamDecal_.reset();
 
-    if (beamCollider_) {
-        CollisionManager::GetInstance()->RemoveCollider(beamCollider_.get());
-        beamCollider_.reset();
-    }
+    beamCollider_.Destroy();
 
     hasBegunAttack_ = false;
     hasEndedAttack_ = false;

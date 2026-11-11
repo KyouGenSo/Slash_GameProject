@@ -1,7 +1,5 @@
 #include "RingColliderGroup.h"
 
-#include "CollisionManager.h"
-
 #include <algorithm>
 #include <cmath>
 
@@ -11,7 +9,7 @@ RingColliderGroup::~RingColliderGroup() {
     Finalize();
 }
 
-void RingColliderGroup::Initialize(Boss* boss, int segmentCount) {
+void RingColliderGroup::Initialize(Boss* boss, const std::string& prefab, int segmentCount) {
     Finalize();
 
     segmentCount_ = std::clamp(segmentCount, kMinSegments, kMaxSegments);
@@ -21,21 +19,16 @@ void RingColliderGroup::Initialize(Boss* boss, int segmentCount) {
         transforms_[i].rotate = Vector3(0.0f, 0.0f, 0.0f);
         transforms_[i].scale = Vector3(1.0f, 1.0f, 1.0f);
 
-        colliders_[i] = std::make_unique<MeteorImpactCollider>(boss);
-        colliders_[i]->SetTransform(&transforms_[i]);
-        colliders_[i]->SetOffset(Vector3(0.0f, 0.0f, 0.0f));
-        colliders_[i]->SetOwner(boss);
-        colliders_[i]->SetSharedHitGuard(&hitGuard_);
-        CollisionManager::GetInstance()->AddCollider(colliders_[i].get());
+        colliders_[i].Spawn(boss, prefab, transforms_[i]);
+        if (colliders_[i]) {
+            colliders_[i]->SetSharedHitGuard(&hitGuard_);
+        }
     }
 }
 
 void RingColliderGroup::Finalize() {
-    for (auto& collider : colliders_) {
-        if (collider) {
-            CollisionManager::GetInstance()->RemoveCollider(collider.get());
-            collider.reset();
-        }
+    for (BossAttackHitboxRef& collider : colliders_) {
+        collider.Destroy();
     }
     hitGuard_ = false;
 }
@@ -66,11 +59,13 @@ void RingColliderGroup::UpdateArc(const Vector3& center, float yawRad, float swe
     const float radius = std::max(bandWidth * 0.5f, rMid * std::sin(thetaSeg * 0.5f)) * kOverlapFactor;
 
     for (int i = 0; i < segmentCount_; ++i) {
-        if (!colliders_[i]) continue;
+        BossAttackHitbox* collider = colliders_[i].Get();
+        if (!collider) continue;
         const float alpha = -sweepRad * 0.5f + thetaSeg * (static_cast<float>(i) + 0.5f);
         const float beta = yawRad + alpha;
         transforms_[i].translate = center + Vector3(std::sin(beta), 0.0f, std::cos(beta)) * rMid;
-        colliders_[i]->SetRadius(radius);
+        collider->SetTransform(transforms_[i]);
+        collider->SetRadius(radius);
     }
 
     prevMidRadius_ = midRadius;

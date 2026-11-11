@@ -92,6 +92,10 @@ private: //非公開関数
     void UpdateRingVisual(Boss* boss, float alpha);
 
 private: //メンバー変数
+    //当たり判定
+    TPROPERTY(Edit, Category = "Collider", Asset = "Prefab", Tooltip = "弧に並べる当たり判定（BossAttackHitbox を付けた球のプレハブ）")
+    std::string hitboxPrefab_ = "BossAttackSphere";
+
     //パラメータ
     TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 5, Speed = 0.05)
     float warningTime_        = 1.0f;

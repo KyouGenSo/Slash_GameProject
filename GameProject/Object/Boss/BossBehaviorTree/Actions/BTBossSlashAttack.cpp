@@ -2,7 +2,6 @@
 #include "../../Boss.h"
 #include "../../../Player/Player.h"
 
-#include "CollisionManager.h"
 #include "EmitterManager.h"
 
 #include <cmath>
@@ -77,13 +76,11 @@ void BTBossSlashAttack::OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss)
     colliderTransform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
     colliderTransform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
-    slashCollider_ = std::make_unique<MeteorImpactCollider>(boss);
-    slashCollider_->SetTransform(&colliderTransform_);
-    slashCollider_->SetRadius(attackRadius_);
-    slashCollider_->SetDamage(damage_);
-    slashCollider_->SetOwner(boss);
-    slashCollider_->SetActive(false);
-    CollisionManager::GetInstance()->AddCollider(slashCollider_.get());
+    slashCollider_.Spawn(boss, hitboxPrefab_, colliderTransform_);
+    if (slashCollider_) {
+        slashCollider_->SetRadius(attackRadius_);
+        slashCollider_->SetDamage(damage_);
+    }
 
     EmitterManager* emitterMgr = boss->GetEmitterManager();
     if (emitterMgr && !particleInitialized_) {
@@ -132,10 +129,7 @@ void BTBossSlashAttack::OnCleanup() {
 
     slashDecal_.reset();
 
-    if (slashCollider_) {
-        CollisionManager::GetInstance()->RemoveCollider(slashCollider_.get());
-        slashCollider_.reset();
-    }
+    slashCollider_.Destroy();
 
     hasBegunAttack_ = false;
     hasEndedAttack_ = false;

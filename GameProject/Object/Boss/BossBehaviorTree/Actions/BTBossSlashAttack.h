@@ -1,6 +1,6 @@
 #pragma once
 #include "AttackNode.h"
-#include "../../../../Collision/MeteorImpactCollider.h"
+#include "../../../../Collision/BossAttackHitbox.h"
 #include "Decal.h"
 #include "Transform.h"
 #include "Vector3.h"
@@ -78,6 +78,10 @@ private: //非公開関数
     void EndAttackPhase(Boss* boss);
 
 private: //メンバー変数
+    //当たり判定
+    TPROPERTY(Edit, Category = "Collider", Asset = "Prefab", Tooltip = "攻撃の間だけ出す当たり判定（BossAttackHitbox を付けた球のプレハブ）")
+    std::string hitboxPrefab_ = "BossAttackSphere";
+
     //パラメータ
     TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0.1, ClampMax = 5, Speed = 0.05)
     float warningDuration_ = 1.0f;
@@ -101,7 +105,7 @@ private: //メンバー変数
 
     //Decal / コライダー / パーティクル
     std::unique_ptr<Tako::Decal>          slashDecal_;
-    std::unique_ptr<MeteorImpactCollider> slashCollider_;
+    BossAttackHitboxRef                   slashCollider_;
     Tako::Transform                       colliderTransform_;
     bool                                  particleInitialized_ = false;
     std::string                           emitterName_;

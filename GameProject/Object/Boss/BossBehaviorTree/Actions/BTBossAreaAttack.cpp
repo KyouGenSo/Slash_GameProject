@@ -4,7 +4,6 @@
 #include "../../../../Common/GameConst.h"
 
 #include "RandomEngine.h"
-#include "CollisionManager.h"
 #include "EmitterManager.h"
 
 #include <cmath>
@@ -89,13 +88,11 @@ void BTBossAreaAttack::OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss) 
         colliderTransforms_[i].rotate = Vector3(0.0f, 0.0f, 0.0f);
         colliderTransforms_[i].scale = Vector3(1.0f, 1.0f, 1.0f);
 
-        quadrantColliders_[i] = std::make_unique<BossAreaAttackCollider>(boss);
-        quadrantColliders_[i]->SetTransform(&colliderTransforms_[i]);
-        quadrantColliders_[i]->SetSize(Vector3(halfArea * 2.0f, kColliderHeight, halfArea * 2.0f));
-        quadrantColliders_[i]->SetDamage(damage_);
-        quadrantColliders_[i]->SetOwner(boss);
-        quadrantColliders_[i]->SetActive(false);
-        CollisionManager::GetInstance()->AddCollider(quadrantColliders_[i].get());
+        quadrantColliders_[i].Spawn(boss, hitboxPrefab_, colliderTransforms_[i]);
+        if (quadrantColliders_[i]) {
+            quadrantColliders_[i]->SetSize(Vector3(halfArea * 2.0f, kColliderHeight, halfArea * 2.0f));
+            quadrantColliders_[i]->SetDamage(damage_);
+        }
     }
 
     EmitterManager* emitterMgr = boss->GetEmitterManager();
@@ -124,10 +121,7 @@ void BTBossAreaAttack::OnCleanup() {
     }
 
     for (int i = 0; i < kQuadrantCount; ++i) {
-        if (quadrantColliders_[i]) {
-            CollisionManager::GetInstance()->RemoveCollider(quadrantColliders_[i].get());
-            quadrantColliders_[i].reset();
-        }
+        quadrantColliders_[i].Destroy();
     }
 
     activeQuadrants_.fill(false);

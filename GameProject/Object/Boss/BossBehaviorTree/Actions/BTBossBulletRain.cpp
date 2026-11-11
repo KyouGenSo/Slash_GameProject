@@ -4,7 +4,6 @@
 #include "../../../Player/Player.h"
 #include "../../../../Common/GameConst.h"
 #include "RandomEngine.h"
-#include "CollisionManager.h"
 
 #include <cmath>
 #include <algorithm>
@@ -85,7 +84,6 @@ void BTBossBulletRain::OnInitialize(Tako::BTBlackboard* /*blackboard*/, Boss* bo
 
     bullets_.assign(poolSize_, Bullet{});
 
-    // コライダーがポインタ参照するため再確保で無効化されないよう事前確保
     colliderTransforms_.clear();
     colliderTransforms_.reserve(poolSize_);
     for (int i = 0; i < poolSize_; ++i) {
@@ -113,14 +111,13 @@ void BTBossBulletRain::OnInitialize(Tako::BTBlackboard* /*blackboard*/, Boss* bo
         decal->SetVisible(false);
         decals_.push_back(std::move(decal));
 
-        auto collider = std::make_unique<MeteorImpactCollider>(boss);
-        collider->SetTransform(&colliderTransforms_[i]);
-        collider->SetRadius(impactRadius_);
-        collider->SetDamage(damage_);
-        collider->SetOwner(boss);
-        collider->SetActive(false);
-        CollisionManager::GetInstance()->AddCollider(collider.get());
-        colliders_.push_back(std::move(collider));
+        BossAttackHitboxRef collider;
+        collider.Spawn(boss, hitboxPrefab_, colliderTransforms_[i]);
+        if (collider) {
+            collider->SetRadius(impactRadius_);
+            collider->SetDamage(damage_);
+        }
+        colliders_.push_back(collider);
     }
 }
 
@@ -132,10 +129,8 @@ void BTBossBulletRain::OnCleanup() {
 
     decals_.clear();
 
-    for (auto& collider : colliders_) {
-        if (collider) {
-            CollisionManager::GetInstance()->RemoveCollider(collider.get());
-        }
+    for (BossAttackHitboxRef& collider : colliders_) {
+        collider.Destroy();
     }
     colliders_.clear();
 
@@ -164,6 +159,9 @@ void BTBossBulletRain::ActivateBullet(int index, Tako::BTBlackboard* blackboard)
     bullets_[index].impactPos = pos;
 
     colliderTransforms_[index].translate = Vector3(pos.x, colliderY_, pos.z);
+    if (colliders_[index]) {
+        colliders_[index]->SetTransform(colliderTransforms_[index]);
+    }
 
     if (decals_[index]) {
         decals_[index]->SetTranslate(Vector3(pos.x, 0.0f, pos.z));

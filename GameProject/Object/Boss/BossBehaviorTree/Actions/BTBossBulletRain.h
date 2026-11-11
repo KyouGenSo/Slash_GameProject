@@ -1,11 +1,12 @@
 #pragma once
 #include "AttackNode.h"
-#include "../../../../Collision/MeteorImpactCollider.h"
+#include "../../../../Collision/BossAttackHitbox.h"
 #include "../../../../Effect/BulletSignEffect.h"
 #include "Decal.h"
 #include "Transform.h"
 #include "Vector3.h"
 #include <memory>
+#include <string>
 #include <vector>
 
 class Boss;
@@ -130,6 +131,10 @@ private: //非公開関数
     void UpdateBullet(int index, Boss* boss, float deltaTime);
 
 private: //メンバー変数
+    //当たり判定
+    TPROPERTY(Edit, Category = "Collider", Asset = "Prefab", Tooltip = "攻撃の間だけ出す当たり判定（BossAttackHitbox を付けた球のプレハブ）")
+    std::string hitboxPrefab_ = "BossAttackSphere";
+
     //パラメータ
     TPROPERTY(Edit, Category = "Phase Timing", ClampMin = 0, ClampMax = 3, Speed = 0.05)
     float chargeTime_           = 0.0f;
@@ -178,6 +183,6 @@ private: //メンバー変数
     //スロットプール
     std::vector<Bullet>                                bullets_;
     std::vector<std::unique_ptr<Tako::Decal>>          decals_;
-    std::vector<std::unique_ptr<MeteorImpactCollider>> colliders_;
+    std::vector<BossAttackHitboxRef>                   colliders_;
     std::vector<Tako::Transform>                       colliderTransforms_;
 };

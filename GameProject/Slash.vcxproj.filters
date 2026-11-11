@@ -237,12 +237,6 @@
     <ClCompile Include="Object\Boss\State\BossStunnedState.cpp">
       <Filter>Object\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="Collision\BossAreaAttackCollider.cpp">
-      <Filter>Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision\MeteorImpactCollider.cpp">
-      <Filter>Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Collision\BossAttackHitbox.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
@@ -514,12 +508,6 @@
     </ClInclude>
     <ClInclude Include="Object\Boss\State\BossStunnedState.h">
       <Filter>Object\Boss\State</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision\BossAreaAttackCollider.h">
-      <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision\MeteorImpactCollider.h">
-      <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="Collision\BossAttackHitbox.h">
       <Filter>Collision</Filter>

@@ -89,7 +89,7 @@ void BTBossRingShockwave::OnInitialize(Tako::BTBlackboard* blackboard, Boss* bos
     travelDuration_ = (moveSpeed_ > 0.0f) ? maxDistance_ / moveSpeed_ : 0.0f;
     totalDuration_ = warningTime_ + travelDuration_ + fadeTime_ + recoveryTime_;
 
-    ringColliders_.Initialize(boss, segmentCount_);
+    ringColliders_.Initialize(boss, hitboxPrefab_, segmentCount_);
     ringColliders_.SetDamage(damage_);
 
     lockedYaw_ = boss->GetRotate().y;

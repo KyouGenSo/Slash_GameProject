@@ -2,7 +2,6 @@
 #include "../../Boss.h"
 #include "../../../Player/Player.h"
 
-#include "CollisionManager.h"
 #include "EmitterManager.h"
 #include "PostEffectManager.h"
 #include "PostEffectStruct.h"
@@ -109,13 +108,11 @@ void BTBossBigExplosion::OnInitialize(Tako::BTBlackboard* blackboard, Boss* boss
     colliderTransform_.rotate = Vector3(0.0f, 0.0f, 0.0f);
     colliderTransform_.scale = Vector3(1.0f, 1.0f, 1.0f);
 
-    collider_ = std::make_unique<MeteorImpactCollider>(boss);
-    collider_->SetTransform(&colliderTransform_);
-    collider_->SetRadius(attackRadius_);
-    collider_->SetDamage(damage_);
-    collider_->SetOwner(boss);
-    collider_->SetActive(false);
-    CollisionManager::GetInstance()->AddCollider(collider_.get());
+    collider_.Spawn(boss, hitboxPrefab_, colliderTransform_);
+    if (collider_) {
+        collider_->SetRadius(attackRadius_);
+        collider_->SetDamage(damage_);
+    }
 }
 
 void BTBossBigExplosion::UpdateBlink(float deltaTime) {
@@ -229,10 +226,7 @@ void BTBossBigExplosion::OnCleanup() {
 
     decal_.reset();
 
-    if (collider_) {
-        CollisionManager::GetInstance()->RemoveCollider(collider_.get());
-        collider_.reset();
-    }
+    collider_.Destroy();
 
     phase_ = Phase::Warning;
     phaseTimer_ = 0.0f;

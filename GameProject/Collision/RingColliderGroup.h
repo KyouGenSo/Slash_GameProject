@@ -1,14 +1,14 @@
 #pragma once
-#include "MeteorImpactCollider.h"
+#include "BossAttackHitbox.h"
 #include "Transform.h"
 #include "Vector3.h"
 #include <array>
-#include <memory>
+#include <string>
 
 class Boss;
 
 /// <summary>
-/// 円弧上に球コライダーを並べてリング状衝撃波の当たり判定を近似するグループ
+/// 円弧上に球の当たり判定（プレハブから出した Actor）を並べて、リング状衝撃波の当たり判定を近似するグループ
 /// </summary>
 class RingColliderGroup {
 public: //定数
@@ -23,14 +23,15 @@ public: //メンバー関数
     ~RingColliderGroup();
 
     /// <summary>
-    /// セグメント数分の球コライダーを生成し CollisionManager へ非アクティブで登録する
+    /// セグメント数分の当たり判定を、当たりを止めた状態でシーンに出す
     /// </summary>
     /// <param name="boss">ダメージ元のボス</param>
+    /// <param name="prefab">BossAttackHitbox を付けた球のプレハブ</param>
     /// <param name="segmentCount">弧上の球数（kMinSegments〜kMaxSegments に clamp）</param>
-    void Initialize(Boss* boss, int segmentCount);
+    void Initialize(Boss* boss, const std::string& prefab, int segmentCount);
 
     /// <summary>
-    /// 全コライダーを CollisionManager から解除して破棄する（二重呼び出し安全）
+    /// 全部の当たり判定をシーンから消す（二重呼び出し安全）
     /// </summary>
     void Finalize();
 
@@ -67,8 +68,8 @@ public: //メンバー関数
 
 private: //メンバー変数
     //コライダー
-    std::array<std::unique_ptr<MeteorImpactCollider>, kMaxSegments> colliders_{};
-    std::array<Tako::Transform, kMaxSegments>                       transforms_{};  ///< 固定長 = SetTransform 先の再確保防止
+    std::array<BossAttackHitboxRef, kMaxSegments> colliders_{};
+    std::array<Tako::Transform, kMaxSegments>     transforms_{};
 
     //配置状態
     int   segmentCount_  = kMaxSegments;

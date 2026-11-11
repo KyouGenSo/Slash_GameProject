@@ -61,8 +61,6 @@
     <ClCompile Include="CameraSystem\CameraManager.cpp" />
     <ClCompile Include="CameraSystem\Controller\ThirdPersonController.cpp" />
     <ClCompile Include="CameraSystem\Controller\TopDownController.cpp" />
-    <ClCompile Include="Collision\BossAreaAttackCollider.cpp" />
-    <ClCompile Include="Collision\MeteorImpactCollider.cpp" />
     <ClCompile Include="Collision\BossAttackHitbox.cpp" />
     <ClCompile Include="Collision\RingColliderGroup.cpp" />
     <ClCompile Include="Collision\BossMeleeAttackCollider.cpp" />
@@ -160,8 +158,6 @@
     <ClInclude Include="CameraSystem\Controller\ThirdPersonController.h" />
     <ClInclude Include="CameraSystem\Controller\ICameraController.h" />
     <ClInclude Include="CameraSystem\Controller\TopDownController.h" />
-    <ClInclude Include="Collision\BossAreaAttackCollider.h" />
-    <ClInclude Include="Collision\MeteorImpactCollider.h" />
     <ClInclude Include="Collision\BossAttackHitbox.h" />
     <ClInclude Include="Collision\RingColliderGroup.h" />
     <ClInclude Include="Collision\PlayerHitResolver.h" />

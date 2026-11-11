@@ -3,7 +3,6 @@
 #include "../../../Player/Player.h"
 #include "../../../../Common/GameConst.h"
 #include "RandomEngine.h"
-#include "CollisionManager.h"
 
 #include <cmath>
 #include <algorithm>
@@ -136,7 +135,6 @@ void BTBossMeteorRain::OnInitialize(Tako::BTBlackboard* /*blackboard*/, Boss* bo
     Vector3 bossPos = boss->GetTransform().translate;
     GenerateImpactPositions(bossPos);
 
-    // コライダーがポインタ参照するため再確保で無効化されないよう事前確保
     colliderTransforms_.clear();
     colliderTransforms_.reserve(impactCount_);
     for (int i = 0; i < impactCount_; ++i) {
@@ -165,14 +163,13 @@ void BTBossMeteorRain::OnInitialize(Tako::BTBlackboard* /*blackboard*/, Boss* bo
         decal->SetVisible(false);
         impactDecals_.push_back(std::move(decal));
 
-        auto collider = std::make_unique<MeteorImpactCollider>(boss);
-        collider->SetTransform(&colliderTransforms_[i]);
-        collider->SetRadius(impactRadius_);
-        collider->SetDamage(damage_);
-        collider->SetOwner(boss);
-        collider->SetActive(false);
-        CollisionManager::GetInstance()->AddCollider(collider.get());
-        impactColliders_.push_back(std::move(collider));
+        BossAttackHitboxRef collider;
+        collider.Spawn(boss, hitboxPrefab_, colliderTransforms_[i]);
+        if (collider) {
+            collider->SetRadius(impactRadius_);
+            collider->SetDamage(damage_);
+        }
+        impactColliders_.push_back(collider);
     }
 }
 
@@ -184,10 +181,8 @@ void BTBossMeteorRain::OnCleanup() {
 
     impactDecals_.clear();
 
-    for (auto& collider : impactColliders_) {
-        if (collider) {
-            CollisionManager::GetInstance()->RemoveCollider(collider.get());
-        }
+    for (BossAttackHitboxRef& collider : impactColliders_) {
+        collider.Destroy();
     }
     impactColliders_.clear();
 
