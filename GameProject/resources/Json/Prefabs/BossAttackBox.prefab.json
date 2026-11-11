@@ -1,0 +1,58 @@
+{
+  "actors": [
+    {
+      "components": {
+        "ColliderComponent": {
+          "order": 0,
+          "properties": {
+            "layer": 5,
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radius": 1.0,
+            "shape": "Box",
+            "size": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "type": "ColliderComponent"
+        },
+        "Script": {
+          "order": 1,
+          "properties": {
+            "script": "BossAttackHitbox"
+          },
+          "type": "ScriptComponent"
+        }
+      },
+      "id": 1,
+      "properties": {
+        "active": true,
+        "name": "BossAttackBox",
+        "tags": [],
+        "transform": {
+          "rotate": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "translate": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "type": "Actor"
+    }
+  ]
+}

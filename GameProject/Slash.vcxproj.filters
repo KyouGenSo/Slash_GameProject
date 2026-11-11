@@ -243,6 +243,9 @@
     <ClCompile Include="Collision\MeteorImpactCollider.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Collision\BossAttackHitbox.cpp">
+      <Filter>Collision</Filter>
+    </ClCompile>
     <ClCompile Include="Collision\RingColliderGroup.cpp">
       <Filter>Collision</Filter>
     </ClCompile>
@@ -516,6 +519,9 @@
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="Collision\MeteorImpactCollider.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision\BossAttackHitbox.h">
       <Filter>Collision</Filter>
     </ClInclude>
     <ClInclude Include="Collision\RingColliderGroup.h">
