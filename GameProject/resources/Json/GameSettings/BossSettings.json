@@ -1,16 +1,19 @@
 {
     "hitEffectDuration": 0.15000000596046448,
-    "shake": {
-        "duration": 0.3,
-        "intensity": 0.2
-    },
+    "maxHp": 200.0,
     "melee": {
         "damage": 10.0,
+        "offsetZ": 8.0,
         "size": [
             8.0,
             3.5,
             8.5
-        ],
-        "offsetZ": 8.0
+        ]
+    },
+    "phase2InitialHp": 100.0,
+    "phase2Threshold": 105.0,
+    "shake": {
+        "duration": 0.30000001192092896,
+        "intensity": 0.20000000298023224
     }
 }

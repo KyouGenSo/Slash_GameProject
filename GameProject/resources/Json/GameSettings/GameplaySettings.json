@@ -1,9 +1,18 @@
 {
-    "triggerThreshold": 0.5,
-    "dashEffectLerpSpeed": 33.5,
+    "bossPhase2AreaSize": 30.0,
     "cameraShake": {
-        "duration": 0.3,
+        "duration": 0.30000001192092896,
         "intensity": 0.5
     },
-    "hitStopDuration": 0.15000000596046448
+    "dashEffectLerpSpeed": 33.5,
+    "hitStopDuration": 0.15000000596046448,
+    "stageRangeX": [
+        -100.0,
+        100.0
+    ],
+    "stageRangeZ": [
+        -140.0,
+        60.0
+    ],
+    "triggerThreshold": 0.5
 }

@@ -1,77 +1,78 @@
 {
-    "speed": 0.5,
-    "moveInputDeadzone": 0.10000000149011612,
-    "rotationLerpSpeed": 0.20000000298023224,
-    "attackStartDistance": 5.5,
+    "attack": {
+        "blockRadius": 4.0,
+        "blockScale": 0.5,
+        "lungeAngle": 60.0,
+        "lungeMaxDistance": 20.0,
+        "moveTime": 0.800000011920929,
+        "recoveryTime": 0.5,
+        "stepDistance": 5.0
+    },
     "attackMoveRotationLerp": 0.5,
-    "bossLookatLerp": 1.149999976158142,
     "attackMoveSpeed": 50.0,
+    "attackStartDistance": 5.5,
+    "bossLookatLerp": 1.149999976158142,
+    "combos": [
+        {
+            "attackDuration": 0.20000000298023224,
+            "axis": "Horizontal",
+            "damage": 3.5,
+            "startAngle": -1.5707999467849731,
+            "swingAngle": 3.141590118408203,
+            "swingDirection": 1.0
+        },
+        {
+            "attackDuration": 0.20000000298023224,
+            "axis": "Horizontal",
+            "damage": 3.5,
+            "startAngle": 1.5707999467849731,
+            "swingAngle": 3.141590118408203,
+            "swingDirection": -1.0
+        },
+        {
+            "attackDuration": 0.25,
+            "axis": "Vertical",
+            "damage": 3.5,
+            "startAngle": 1.5290000438690186,
+            "swingAngle": 3.141590118408203,
+            "swingDirection": -1.0
+        },
+        {
+            "attackDuration": 0.30000001192092896,
+            "axis": "Horizontal",
+            "damage": 5.0,
+            "startAngle": 0.0,
+            "swingAngle": 6.283180236816406,
+            "swingDirection": -1.0
+        }
+    ],
+    "dash": {
+        "cooldown": 0.5,
+        "duration": 0.05000000074505806,
+        "speed": 10.0
+    },
+    "maxHp": 185.0,
+    "meleeColliderOffsetZ": 4.699999809265137,
     "meleeColliderSize": [
         9.0,
         3.5,
         9.899999618530273
     ],
-    "meleeColliderOffsetZ": 4.699999809265137,
-    "attack": {
-        "moveTime": 0.800000011920929,
-        "lungeAngle": 60.0,
-        "lungeMaxDistance": 20.0,
-        "stepDistance": 5.0,
-        "blockRadius": 4.0,
-        "blockScale": 0.5,
-        "recoveryTime": 0.5
-    },
-    "combos": [
-        {
-            "startAngle": -1.5707999467849731,
-            "swingAngle": 3.141590118408203,
-            "swingDirection": 1.0,
-            "attackDuration": 0.20000000298023224,
-            "damage": 3.5,
-            "axis": "Horizontal"
-        },
-        {
-            "startAngle": 1.5707999467849731,
-            "swingAngle": 3.141590118408203,
-            "swingDirection": -1.0,
-            "attackDuration": 0.20000000298023224,
-            "damage": 3.5,
-            "axis": "Horizontal"
-        },
-        {
-            "startAngle": 1.5290000438690186,
-            "swingAngle": 3.141590118408203,
-            "swingDirection": -1.0,
-            "attackDuration": 0.25,
-            "damage": 3.5,
-            "axis": "Vertical"
-        },
-        {
-            "startAngle": 0.0,
-            "swingAngle": 6.283180236816406,
-            "swingDirection": -1.0,
-            "attackDuration": 0.30000001192092896,
-            "damage": 5.0,
-            "axis": "Horizontal"
-        }
-    ],
-    "dash": {
-        "duration": 0.05000000074505806,
-        "speed": 10.0,
-        "cooldown": 0.5
-    },
+    "moveInputDeadzone": 0.10000000149011612,
     "parry": {
+        "cooldown": 0.25,
         "duration": 0.30000001192092896,
-        "successHealAmount": 5.0,
-        "cooldown": 0.25
+        "successHealAmount": 5.0
     },
+    "rotationLerpSpeed": 0.20000000298023224,
     "shoot": {
-        "fireRate": 0.20000000298023224,
-        "moveSpeedMultiplier": 0.6000000238418579,
-        "aimRotationLerp": 1.0,
-        "aimAssistEnabled": true,
         "aimAssistAngle": 25.0,
+        "aimAssistEnabled": true,
         "aimAssistStrength": 0.699999988079071,
-        "bulletSpeed": 180.0
-    }
+        "aimRotationLerp": 1.0,
+        "bulletSpeed": 180.0,
+        "fireRate": 0.20000000298023224,
+        "moveSpeedMultiplier": 0.6000000238418579
+    },
+    "speed": 0.5
 }
