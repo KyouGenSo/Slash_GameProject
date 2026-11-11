@@ -4,10 +4,6 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{e2f7639f-1e92-45f3-a104-223ed8d0ff0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MyGame">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Collision">
       <UniqueIdentifier>{a8b2c4d5-9e7f-4b8c-9a5e-6f8d9c2e1b3a}</UniqueIdentifier>
     </Filter>
@@ -94,10 +90,6 @@
     <ClCompile Include="Script\Spinner.cpp">
       <Filter>Script</Filter>
     </ClCompile>
-    <ClCompile Include="MyGame\MyGame.cpp">
-      <Filter>MyGame</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Object\Player\State\IdleState.cpp">
       <Filter>Object\Player\State</Filter>
     </ClCompile>
@@ -346,9 +338,6 @@
     </ClInclude>
     <ClInclude Include="Collision\CollisionTypeId.h">
       <Filter>Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="MyGame\MyGame.h">
-      <Filter>MyGame</Filter>
     </ClInclude>
     <ClInclude Include="Object\Player\State\IdleState.h">
       <Filter>Object\Player\State</Filter>

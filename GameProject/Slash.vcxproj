@@ -76,8 +76,6 @@
     <ClCompile Include="Effect\OverEffectManager.cpp" />
     <ClCompile Include="Effect\TransitionEffectBase.cpp" />
     <ClCompile Include="Input\InputHandler.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyGame\MyGame.cpp" />
     <ClCompile Include="Object\Boss\Boss.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossAreaAttack.cpp" />
     <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossBarrage.cpp" />
@@ -179,7 +177,6 @@
     <ClInclude Include="Input\InputAction.h" />
     <ClInclude Include="Input\InputAxis.h" />
     <ClInclude Include="Input\InputHandler.h" />
-    <ClInclude Include="MyGame\MyGame.h" />
     <ClInclude Include="Object\Boss\Boss.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossAreaAttack.h" />
     <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossBarrage.h" />
