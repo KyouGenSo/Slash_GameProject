@@ -6,7 +6,7 @@
 #include "EmitterManager.h"
 #include <algorithm>  // for std::min
 #ifdef _DEBUG
-#include "ImGuiManager.h"
+#include "EditorUI.h"
 #endif
 
 using namespace Tako;
@@ -85,7 +85,7 @@ void ParryState::DrawImGui(Player* player)
 
     if (ImGui::TreeNode("Parry Parameters")) {
         float parryDuration = GetParryDuration();
-        if (ImGui::SliderFloat("Parry Duration", &parryDuration, 0.2f, 2.0f, "%.2f sec")) SetParryDuration(parryDuration);
+        if (UI::SliderFloat("Parry Duration", &parryDuration, 0.2f, 2.0f, "%.2f sec")) SetParryDuration(parryDuration);
 
         ImGui::TreePop();
     }

@@ -4,7 +4,7 @@
 #include "Input/InputHandler.h"
 #include "Settings/PlayerSettings.h"
 #ifdef _DEBUG
-#include "ImGuiManager.h"
+#include "EditorUI.h"
 #endif
 
 using namespace Tako;
@@ -74,9 +74,9 @@ void DashState::DrawImGui(Player* player)
 
 	if (ImGui::TreeNode("Dash Parameters")) {
 		float duration = GetDuration();
-		if (ImGui::SliderFloat("Duration", &duration, 0.01f, 0.5f, "%.3f")) SetDuration(duration);
+		if (UI::SliderFloat("Duration", &duration, 0.01f, 0.5f, "%.3f")) SetDuration(duration);
 		float speed = GetSpeed();
-		if (ImGui::SliderFloat("Speed", &speed, 1.0f, 50.0f, "%.1f")) SetSpeed(speed);
+		if (UI::SliderFloat("Speed", &speed, 1.0f, 50.0f, "%.1f")) SetSpeed(speed);
 
 		if (ImGui::Button("Fast Dash")) {
 			SetDuration(0.05f);

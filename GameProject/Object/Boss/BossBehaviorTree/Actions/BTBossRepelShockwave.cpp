@@ -6,7 +6,7 @@
 #include <algorithm>
 
 #ifdef _DEBUG
-#include "ImGuiManager.h"
+#include "EditorUI.h"
 #endif
 
 using namespace Tako;
@@ -174,9 +174,9 @@ void BTBossRepelShockwave::OnCleanup() {
 bool BTBossRepelShockwave::DrawCustomImGui() {
     bool changed = false;
     int maskInt = static_cast<int>(affectMask_);
-    if (ImGui::CheckboxFlags("Affect Bullets", &maskInt, GameForceField::AffectBullets)) changed = true;
-    if (ImGui::CheckboxFlags("Affect Player",  &maskInt, GameForceField::AffectPlayer))  changed = true;
-    if (ImGui::CheckboxFlags("Affect Boss",    &maskInt, GameForceField::AffectBoss))    changed = true;
+    if (UI::CheckboxFlags("Affect Bullets", &maskInt, GameForceField::AffectBullets)) changed = true;
+    if (UI::CheckboxFlags("Affect Player",  &maskInt, GameForceField::AffectPlayer))  changed = true;
+    if (UI::CheckboxFlags("Affect Boss",    &maskInt, GameForceField::AffectBoss))    changed = true;
     affectMask_ = static_cast<uint32_t>(maskInt);
     return changed;
 }

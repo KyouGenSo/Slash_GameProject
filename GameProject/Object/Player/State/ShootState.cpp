@@ -14,7 +14,7 @@
 #include <numbers>
 
 #ifdef _DEBUG
-#include "ImGuiManager.h"
+#include "EditorUI.h"
 #endif
 
 using namespace Tako;
@@ -191,7 +191,7 @@ void ShootState::DrawImGui(Player* player)
 
 	if (ImGui::TreeNode("Shooting Parameters")) {
 		float fireRate = GetFireRate();
-		if (ImGui::SliderFloat("Fire Rate", &fireRate, 0.05f, 2.0f, "%.2f sec")) SetFireRate(fireRate);
+		if (UI::SliderFloat("Fire Rate", &fireRate, 0.05f, 2.0f, "%.2f sec")) SetFireRate(fireRate);
 
 		if (ImGui::Button("Rapid Fire")) {
 			SetFireRate(0.05f);

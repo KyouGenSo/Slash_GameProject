@@ -31,7 +31,7 @@
 #include "../Player/Player.h"
 
 #ifdef _DEBUG
-#include "ImGuiManager.h"
+#include "EditorUI.h"
 #endif
 
 using namespace Tako;
@@ -339,7 +339,7 @@ bool Boss::DrawCustomImGui()
     }
 
     float tempHp = hp_;
-    if (ImGui::SliderFloat("Set HP", &tempHp, 0.0f, GetMaxHp())) {
+    if (UI::SliderFloat("Set HP", &tempHp, 0.0f, GetMaxHp())) {
         hp_ = std::clamp(tempHp, 0.0f, GetMaxHp());
     }
 
@@ -356,7 +356,7 @@ bool Boss::DrawCustomImGui()
     }
 
     ImGui::Spacing();
-    ImGui::Checkbox("Pause Boss", &isPause_);
+    UI::Checkbox("Pause Boss", &isPause_);
 
     ImGui::Spacing();
     ImVec2 fullButtonSize(ImGui::GetContentRegionAvail().x * 0.48f, 0);

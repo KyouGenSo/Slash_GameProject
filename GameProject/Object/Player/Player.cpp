@@ -35,7 +35,7 @@
 #include <algorithm>
 
 #ifdef _DEBUG
-#include "ImGuiManager.h"
+#include "EditorUI.h"
 #endif
 
 using namespace Tako;
@@ -331,23 +331,23 @@ bool Player::DrawCustomImGui()
 
             // HP
             ImGui::Text("Health");
-            ImGui::SliderFloat("HP", &hp_, 0.0f, 200.0f, "%.1f");
+            UI::SliderFloat("HP", &hp_, 0.0f, 200.0f, "%.1f");
             ImGui::ProgressBar(hp_ / 100.0f, ImVec2(-1, 0), "");
-            ImGui::Checkbox("Invincible", &isInvincible_);
+            UI::Checkbox("Invincible", &isInvincible_);
 
             ImGui::Separator();
 
             // Transform
             if (ImGui::TreeNode("Transform")) {
-                ImGui::DragFloat3("Position", &GetOwner()->GetTransform().translate.x, 0.1f);
-                ImGui::DragFloat3("Rotation", &GetOwner()->GetTransform().rotate.x, 0.01f);
-                ImGui::DragFloat3("Scale", &GetOwner()->GetTransform().scale.x, 0.01f);
+                UI::DragFloat3("Position", &GetOwner()->GetTransform().translate.x, 0.1f);
+                UI::DragFloat3("Rotation", &GetOwner()->GetTransform().rotate.x, 0.01f);
+                UI::DragFloat3("Scale", &GetOwner()->GetTransform().scale.x, 0.01f);
                 ImGui::TreePop();
             }
 
             // Speed
             ImGui::Separator();
-            ImGui::SliderFloat("Move Speed", &speed_, 0.0f, 2.0f);
+            UI::SliderFloat("Move Speed", &speed_, 0.0f, 2.0f);
 
             ImGui::EndTabItem();
         }
@@ -368,7 +368,7 @@ bool Player::DrawCustomImGui()
                     static std::string selectedStateName = "Idle";
 
                     auto stateNames = stateMachine_->GetAllStateNames();
-                    if (ImGui::BeginCombo("Select State", selectedStateName.c_str())) {
+                    if (UI::BeginCombo("Select State", selectedStateName.c_str())) {
                         for (const auto& name : stateNames) {
                             bool isSelected = (selectedStateName == name);
 
@@ -457,10 +457,10 @@ bool Player::DrawCustomImGui()
 
             // Combat Parameters
             if (ImGui::TreeNode("Combat Parameters")) {
-                ImGui::SliderFloat("Attack Move Speed", &attackMoveSpeed_, 0.5f, 10.0f);
-                ImGui::SliderFloat("Attack Start Distance", &attackMinDist_, 1.0f, 10.0f);
-                ImGui::SliderFloat("Attack Move Rotation Lerp", &attackMoveRotationLerp_, 0.01f, 1.0f);
-                ImGui::SliderFloat("Boss Lookat Lerp", &bossLookatLerp_, 0.01f, 2.0f);
+                UI::SliderFloat("Attack Move Speed", &attackMoveSpeed_, 0.5f, 10.0f);
+                UI::SliderFloat("Attack Start Distance", &attackMinDist_, 1.0f, 10.0f);
+                UI::SliderFloat("Attack Move Rotation Lerp", &attackMoveRotationLerp_, 0.01f, 1.0f);
+                UI::SliderFloat("Boss Lookat Lerp", &bossLookatLerp_, 0.01f, 2.0f);
                 ImGui::TreePop();
             }
 
