@@ -4,21 +4,22 @@ on:
    branches:
     - master
 
-env: 
+env:
  SOLUTION_FILE_PATH: Slash.sln
  CONFIGURATION: Release
 
-jobs: 
+jobs:
  build:
   runs-on: windows-2025-vs2026
 
   steps:
-   - name: Checkout with Submodules
+   - name: Checkout
      uses: actions/checkout@v4
-     with:                                                                            
-       submodules: recursive
-       token: ${{ secrets.GITHUB_TOKEN }}
-       fetch-depth: 0 
+
+   # .takoproject に書いてあるバージョンの SDK を、エンジンのリリースから Engine/TakoEngine に入れる
+   - name: Install TakoEngine
+     shell: pwsh
+     run: ./UpdateEngine.ps1
 
    - name: Add MSBuild to PATH
      uses: microsoft/setup-msbuild@v2

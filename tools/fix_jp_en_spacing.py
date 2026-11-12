@@ -259,7 +259,7 @@ def main():
     parser.add_argument(
         '--path',
         nargs='+',
-        default=['GameProject', 'Engine/TakoEngine/project/engine'],
+        default=['GameProject'],
         help='対象ディレクトリ（複数指定可）'
     )
     parser.add_argument(
