@@ -1,565 +1,595 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Settings">
-      <UniqueIdentifier>{e2f7639f-1e92-45f3-a104-223ed8d0ff0e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Collision">
-      <UniqueIdentifier>{a8b2c4d5-9e7f-4b8c-9a5e-6f8d9c2e1b3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{c9c423bc-ae11-4ec8-9076-12ef0dc66417}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Player">
-      <UniqueIdentifier>{96f89a17-9a2b-440d-a2aa-684b74ce08fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Player\State">
-      <UniqueIdentifier>{4cb39fb4-efb0-4602-94cf-025f0769bf0e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{450f4fb5-36fd-4024-bcd2-b3db6b3d4f77}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss">
-      <UniqueIdentifier>{2eb72ef7-09cc-4ffc-9df7-2ec9f26636ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CameraSystem">
-      <UniqueIdentifier>{0312f1a8-e010-49cd-8145-fa5b444de6dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CameraSystem\Controller">
-      <UniqueIdentifier>{f57ae9da-7b8a-4870-ae5e-44402f6a7ed3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss\BossBehaviorTree">
-      <UniqueIdentifier>{8fadaa47-22cd-4bb9-8d8f-bdf710112485}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss\BossBehaviorTree\Actions">
-      <UniqueIdentifier>{85eda742-c011-4c2b-9262-01840d23b173}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss\BossBehaviorTree\Conditions">
-      <UniqueIdentifier>{4b1eb71d-c76e-4ef5-83ed-9bdace6a3b5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{2efc4229-8240-4c6f-8339-ac353fe07ab6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI">
-      <UniqueIdentifier>{17e0d532-7c4e-47a4-b507-3c19aeb05ff7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Effect">
-      <UniqueIdentifier>{fd705391-fd52-4064-bca3-6fb63c78106e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss\State">
-      <UniqueIdentifier>{36347a97-464a-45da-bd0b-a4064425c6fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss\Movement">
-      <UniqueIdentifier>{25c158da-6b5c-4fac-9f5e-e540c569d30e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss\BossBehaviorTree\Actions\Move">
-      <UniqueIdentifier>{314a5d58-46e8-49d4-b2b1-70184acdb4b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Boss\BossBehaviorTree\Actions\Attack">
-      <UniqueIdentifier>{c0bb8d4c-7774-4e03-8475-e4f8e5fa7fe5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Script">
       <UniqueIdentifier>{841b436a-130b-406c-8a9e-ee7fe1399829}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Script\CameraSystem">
+      <UniqueIdentifier>{a7eb9bf8-07f4-44ee-ae87-39405d6cf7ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Collision">
+      <UniqueIdentifier>{0680204b-77c8-4ee8-b5d2-0b3c23db2774}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Object">
+      <UniqueIdentifier>{0d13a919-0396-4044-af55-d193da02c10d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Object\Boss">
+      <UniqueIdentifier>{ab25c1c9-f151-4f55-aa92-62b18fa3f40c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Object\Bullet">
+      <UniqueIdentifier>{b58c819a-ce6e-4b3e-8288-05d204140f52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Object\Player">
+      <UniqueIdentifier>{30dbe1fc-08bb-483a-b99e-34b7d6b06106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Sample">
+      <UniqueIdentifier>{482eab20-da4f-4af4-8334-8959469519ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Scene">
+      <UniqueIdentifier>{0faf75fc-6dfb-4bb4-a424-6e82df3f898b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\UI">
+      <UniqueIdentifier>{f97381c9-a5bd-497d-8ca2-d67e2af82360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{d8b1a258-f994-483d-818b-f315c4fc8cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CameraSystem">
+      <UniqueIdentifier>{78e57e0a-2e53-4ac0-9220-2ed86c380fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CameraSystem\Controller">
+      <UniqueIdentifier>{e115c695-751c-48f4-81b4-8a26efe1d337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Collision">
+      <UniqueIdentifier>{4901936c-9534-488b-a8e4-3da0c1159d4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{2b3b236d-e938-43ee-aaff-66cd5295cb50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Effect">
+      <UniqueIdentifier>{6ac8c190-1c39-4e8f-a3f8-21cbb8476640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Input">
+      <UniqueIdentifier>{963ba7e3-3fc8-4105-b16d-eb9097a01cf6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object">
+      <UniqueIdentifier>{cfdd40df-d474-4424-bb9e-029fca3050fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss">
+      <UniqueIdentifier>{4d96d52b-a5ed-4dbd-876f-a91d931a7b12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss\BossBehaviorTree">
+      <UniqueIdentifier>{98c7f4fb-1a1b-492d-9fe7-e2f7bd6ca3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss\BossBehaviorTree\Actions">
+      <UniqueIdentifier>{6ca2addb-0f44-4ab6-9f4d-03a7c136f686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack">
+      <UniqueIdentifier>{f9598ef0-5751-4c03-b367-ac37ff7fa605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss\BossBehaviorTree\Actions\Move">
+      <UniqueIdentifier>{86c25ea2-027f-4c9a-a520-1c74ef4a7408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss\BossBehaviorTree\Conditions">
+      <UniqueIdentifier>{a0e4c6b1-f946-4ade-993f-f9af8d801633}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss\Movement">
+      <UniqueIdentifier>{ebdb4091-c946-4d0a-b57d-09643f97233e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Boss\State">
+      <UniqueIdentifier>{1e5b07b2-ab00-4c06-9417-83f5a63f831b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Player">
+      <UniqueIdentifier>{6b60c226-aa02-42d2-a2e4-a2804b24b484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Player\State">
+      <UniqueIdentifier>{3fff2bce-d020-4955-a41d-5fad07eabbcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Settings">
+      <UniqueIdentifier>{2d20e637-6ecc-44e1-808a-bdca75d9ccc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\UI">
+      <UniqueIdentifier>{a0b937f8-f205-49d9-8d0d-927d0caf2f3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Script\GameCamera.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\CameraSystem\GameCamera.cpp">
+      <Filter>Script\CameraSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Script\Bullet.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Object\Bullet\Bullet.cpp">
+      <Filter>Script\Object\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="Script\GameDirector.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Scene\GameDirector.cpp">
+      <Filter>Script\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Script\ResultScreen.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Scene\ResultScreen.cpp">
+      <Filter>Script\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Script\TitleScreen.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Scene\TitleScreen.cpp">
+      <Filter>Script\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Script\Follow.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Sample\Follow.cpp">
+      <Filter>Script\Sample</Filter>
     </ClCompile>
-    <ClCompile Include="Script\DestroyOnHit.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Sample\DestroyOnHit.cpp">
+      <Filter>Script\Sample</Filter>
     </ClCompile>
-    <ClCompile Include="Script\Mover.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Sample\Mover.cpp">
+      <Filter>Script\Sample</Filter>
     </ClCompile>
-    <ClCompile Include="Script\Spinner.cpp">
-      <Filter>Script</Filter>
+    <ClCompile Include="Script\Sample\Spinner.cpp">
+      <Filter>Script\Sample</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\IdleState.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\IdleState.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\PlayerState.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\PlayerState.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\PlayerStateMachine.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\PlayerStateMachine.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\MoveState.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\MoveState.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\Player.cpp">
-      <Filter>Object\Player</Filter>
+    <ClCompile Include="Script\Object\Player\Player.cpp">
+      <Filter>Script\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\AttackState.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\AttackState.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\DashState.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\DashState.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\ParryState.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\ParryState.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Player\State\ShootState.cpp">
-      <Filter>Object\Player\State</Filter>
+    <ClCompile Include="Source\Object\Player\State\ShootState.cpp">
+      <Filter>Source\Object\Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="Input\InputHandler.cpp">
-      <Filter>Input</Filter>
+    <ClCompile Include="Source\Input\InputHandler.cpp">
+      <Filter>Source\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\Boss.cpp">
-      <Filter>Object\Boss</Filter>
+    <ClCompile Include="Script\Object\Boss\Boss.cpp">
+      <Filter>Script\Object\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossPhaseManager.cpp">
-      <Filter>Object\Boss</Filter>
+    <ClCompile Include="Source\Object\Boss\BossPhaseManager.cpp">
+      <Filter>Source\Object\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\CameraDebugUI.cpp">
-      <Filter>CameraSystem</Filter>
+    <ClCompile Include="Source\CameraSystem\CameraDebugUI.cpp">
+      <Filter>Source\CameraSystem</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\CameraManager.cpp">
-      <Filter>CameraSystem</Filter>
+    <ClCompile Include="Source\CameraSystem\CameraManager.cpp">
+      <Filter>Source\CameraSystem</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\Controller\CameraAnimationController.cpp">
-      <Filter>CameraSystem\Controller</Filter>
+    <ClCompile Include="Source\CameraSystem\Controller\CameraAnimationController.cpp">
+      <Filter>Source\CameraSystem\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\Controller\ThirdPersonController.cpp">
-      <Filter>CameraSystem\Controller</Filter>
+    <ClCompile Include="Source\CameraSystem\Controller\ThirdPersonController.cpp">
+      <Filter>Source\CameraSystem\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="CameraSystem\Controller\TopDownController.cpp">
-      <Filter>CameraSystem\Controller</Filter>
+    <ClCompile Include="Source\CameraSystem\Controller\TopDownController.cpp">
+      <Filter>Source\CameraSystem\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Collision\MeleeAttackCollider.cpp">
-      <Filter>Collision</Filter>
+    <ClCompile Include="Script\Collision\MeleeAttackCollider.cpp">
+      <Filter>Script\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRepelShockwave.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossRepelShockwave.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossDistanceCondition.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossDistanceCondition.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPlayerShootingCondition.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossPlayerShootingCondition.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossHPCondition.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossHPCondition.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClCompile>
-    <ClCompile Include="Collision\BossMeleeAttackCollider.cpp">
-      <Filter>Collision</Filter>
+    <ClCompile Include="Script\Collision\BossMeleeAttackCollider.cpp">
+      <Filter>Script\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Common\CooldownTimer.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="Source\Common\CooldownTimer.cpp">
+      <Filter>Source\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Common\DamageFeedback.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="Source\Common\DamageFeedback.cpp">
+      <Filter>Source\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Common\EasingMover.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="Source\Common\EasingMover.cpp">
+      <Filter>Source\Common</Filter>
     </ClCompile>
-    <ClCompile Include="UI\HPBarUI.cpp">
-      <Filter>UI</Filter>
+    <ClCompile Include="Source\UI\HPBarUI.cpp">
+      <Filter>Source\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\BossBorderParticleManager.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\BossBorderParticleManager.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\ClearEffectManager.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\ClearEffectManager.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\DashEffectManager.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\DashEffectManager.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\OverEffectManager.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\OverEffectManager.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\TransitionEffectBase.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\TransitionEffectBase.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ControllerUI.cpp">
-      <Filter>UI</Filter>
+    <ClCompile Include="Script\UI\ControllerUI.cpp">
+      <Filter>Script\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\BulletSignEffect.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\BulletSignEffect.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\ShakeEffect.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\ShakeEffect.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Effect\HitFlashEffect.cpp">
-      <Filter>Effect</Filter>
+    <ClCompile Include="Source\Effect\HitFlashEffect.cpp">
+      <Filter>Source\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PauseMenu.cpp">
-      <Filter>UI</Filter>
+    <ClCompile Include="Script\UI\PauseMenu.cpp">
+      <Filter>Script\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\State\BossDeadState.cpp">
-      <Filter>Object\Boss\State</Filter>
+    <ClCompile Include="Source\Object\Boss\State\BossDeadState.cpp">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\State\BossNormalState.cpp">
-      <Filter>Object\Boss\State</Filter>
+    <ClCompile Include="Source\Object\Boss\State\BossNormalState.cpp">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\State\BossPhaseTransitionStunState.cpp">
-      <Filter>Object\Boss\State</Filter>
+    <ClCompile Include="Source\Object\Boss\State\BossPhaseTransitionStunState.cpp">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\State\BossRetreatingState.cpp">
-      <Filter>Object\Boss\State</Filter>
+    <ClCompile Include="Source\Object\Boss\State\BossRetreatingState.cpp">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\State\BossStateMachine.cpp">
-      <Filter>Object\Boss\State</Filter>
+    <ClCompile Include="Source\Object\Boss\State\BossStateMachine.cpp">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\State\BossStunnedState.cpp">
-      <Filter>Object\Boss\State</Filter>
+    <ClCompile Include="Source\Object\Boss\State\BossStunnedState.cpp">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClCompile>
-    <ClCompile Include="Collision\BossAttackHitbox.cpp">
-      <Filter>Collision</Filter>
+    <ClCompile Include="Script\Collision\BossAttackHitbox.cpp">
+      <Filter>Script\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Collision\RingColliderGroup.cpp">
-      <Filter>Collision</Filter>
+    <ClCompile Include="Source\Collision\RingColliderGroup.cpp">
+      <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\Movement\BossAreaBounds.cpp">
-      <Filter>Object\Boss\Movement</Filter>
+    <ClCompile Include="Source\Object\Boss\Movement\BossAreaBounds.cpp">
+      <Filter>Source\Object\Boss\Movement</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\Movement\BossRetreatExecutor.cpp">
-      <Filter>Object\Boss\Movement</Filter>
+    <ClCompile Include="Source\Object\Boss\Movement\BossRetreatExecutor.cpp">
+      <Filter>Source\Object\Boss\Movement</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossApproach.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossApproach.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossDash.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossDash.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossIdle.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossIdle.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRetreat.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossRetreat.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossTeleport.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossTeleport.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossAreaAttack.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossAreaAttack.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossBarrage.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossBarrage.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossMeleeAttack.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeteorRain.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossMeteorRain.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossRapidFire.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossShoot.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossShoot.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossSlashAttack.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossSlashAttack.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossTrackingLaser.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossTrackingLaser.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossRingShockwave.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossRingShockwave.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossBigExplosion.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossBigExplosion.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossBulletRain.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossBulletRain.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossVortexTempest.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossVortexTempest.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossWideShoot.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="Object\Boss\BossBehaviorTree\Actions\AttackNode.cpp">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClCompile Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\AttackNode.cpp">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClCompile>
     <ClCompile Include="$(IntDir)TakoReflection.gen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Script\GameCamera.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\CameraSystem\GameCamera.h">
+      <Filter>Script\CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\CameraSettings.h">
-      <Filter>CameraSystem</Filter>
+    <ClInclude Include="Source\CameraSystem\CameraSettings.h">
+      <Filter>Source\CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Script\Bullet.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Object\Bullet\Bullet.h">
+      <Filter>Script\Object\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="Script\GameDirector.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Scene\GameDirector.h">
+      <Filter>Script\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Script\ResultScreen.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Scene\ResultScreen.h">
+      <Filter>Script\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Script\TitleScreen.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Scene\TitleScreen.h">
+      <Filter>Script\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Script\Follow.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Sample\Follow.h">
+      <Filter>Script\Sample</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\SettingsTypes.h">
-      <Filter>Settings</Filter>
+    <ClInclude Include="Source\Settings\SettingsTypes.h">
+      <Filter>Source\Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\PlayerSettings.h">
-      <Filter>Settings</Filter>
+    <ClInclude Include="Source\Settings\PlayerSettings.h">
+      <Filter>Source\Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\GameplaySettings.h">
-      <Filter>Settings</Filter>
+    <ClInclude Include="Source\Settings\GameplaySettings.h">
+      <Filter>Source\Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\BossSettings.h">
-      <Filter>Settings</Filter>
+    <ClInclude Include="Source\Settings\BossSettings.h">
+      <Filter>Source\Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Script\DestroyOnHit.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Sample\DestroyOnHit.h">
+      <Filter>Script\Sample</Filter>
     </ClInclude>
-    <ClInclude Include="Script\Mover.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Sample\Mover.h">
+      <Filter>Script\Sample</Filter>
     </ClInclude>
-    <ClInclude Include="Script\Spinner.h">
-      <Filter>Script</Filter>
+    <ClInclude Include="Script\Sample\Spinner.h">
+      <Filter>Script\Sample</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\CollisionTypeId.h">
-      <Filter>Collision</Filter>
+    <ClInclude Include="Source\Collision\CollisionTypeId.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\IdleState.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\IdleState.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\PlayerState.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\PlayerState.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\PlayerStateMachine.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\PlayerStateMachine.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\MoveState.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\MoveState.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\Player.h">
-      <Filter>Object\Player</Filter>
+    <ClInclude Include="Script\Object\Player\Player.h">
+      <Filter>Script\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\AttackState.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\AttackState.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\DashState.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\DashState.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\ParryState.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\ParryState.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Player\State\ShootState.h">
-      <Filter>Object\Player\State</Filter>
+    <ClInclude Include="Source\Object\Player\State\ShootState.h">
+      <Filter>Source\Object\Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="Input\InputAction.h">
-      <Filter>Input</Filter>
+    <ClInclude Include="Source\Input\InputAction.h">
+      <Filter>Source\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Input\InputAxis.h">
-      <Filter>Input</Filter>
+    <ClInclude Include="Source\Input\InputAxis.h">
+      <Filter>Source\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Input\InputHandler.h">
-      <Filter>Input</Filter>
+    <ClInclude Include="Source\Input\InputHandler.h">
+      <Filter>Source\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\Boss.h">
-      <Filter>Object\Boss</Filter>
+    <ClInclude Include="Script\Object\Boss\Boss.h">
+      <Filter>Script\Object\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossPhaseManager.h">
-      <Filter>Object\Boss</Filter>
+    <ClInclude Include="Source\Object\Boss\BossPhaseManager.h">
+      <Filter>Source\Object\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\CameraDebugUI.h">
-      <Filter>CameraSystem</Filter>
+    <ClInclude Include="Source\CameraSystem\CameraDebugUI.h">
+      <Filter>Source\CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\CameraManager.h">
-      <Filter>CameraSystem</Filter>
+    <ClInclude Include="Source\CameraSystem\CameraManager.h">
+      <Filter>Source\CameraSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\Controller\CameraAnimationController.h">
-      <Filter>CameraSystem\Controller</Filter>
+    <ClInclude Include="Source\CameraSystem\Controller\CameraAnimationController.h">
+      <Filter>Source\CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\Controller\ThirdPersonController.h">
-      <Filter>CameraSystem\Controller</Filter>
+    <ClInclude Include="Source\CameraSystem\Controller\ThirdPersonController.h">
+      <Filter>Source\CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\Controller\ICameraController.h">
-      <Filter>CameraSystem\Controller</Filter>
+    <ClInclude Include="Source\CameraSystem\Controller\ICameraController.h">
+      <Filter>Source\CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="CameraSystem\Controller\TopDownController.h">
-      <Filter>CameraSystem\Controller</Filter>
+    <ClInclude Include="Source\CameraSystem\Controller\TopDownController.h">
+      <Filter>Source\CameraSystem\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\MeleeAttackCollider.h">
-      <Filter>Collision</Filter>
+    <ClInclude Include="Script\Collision\MeleeAttackCollider.h">
+      <Filter>Script\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRepelShockwave.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossRepelShockwave.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossDistanceCondition.h">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossDistanceCondition.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPlayerShootingCondition.h">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossPlayerShootingCondition.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossHPCondition.h">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossHPCondition.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.h">
-      <Filter>Object\Boss\BossBehaviorTree\Conditions</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Conditions\BTBossPhaseCondition.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Conditions</Filter>
     </ClInclude>
-    <ClInclude Include="Common\GameConst.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Source\Common\GameConst.h">
+      <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\ForceFieldAffectMask.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Source\Common\ForceFieldAffectMask.h">
+      <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\BossMeleeAttackCollider.h">
-      <Filter>Collision</Filter>
+    <ClInclude Include="Script\Collision\BossMeleeAttackCollider.h">
+      <Filter>Script\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Common\CooldownTimer.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Source\Common\CooldownTimer.h">
+      <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\DamageFeedback.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Source\Common\DamageFeedback.h">
+      <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\EasingMover.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Source\Common\EasingMover.h">
+      <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Common\DynamicBoundary.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Source\Common\DynamicBoundary.h">
+      <Filter>Source\Common</Filter>
     </ClInclude>
-    <ClInclude Include="UI\HPBarUI.h">
-      <Filter>UI</Filter>
+    <ClInclude Include="Source\UI\HPBarUI.h">
+      <Filter>Source\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\BossBorderParticleManager.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\BossBorderParticleManager.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\ClearEffectManager.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\ClearEffectManager.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\DashEffectManager.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\DashEffectManager.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\OverEffectManager.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\OverEffectManager.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\TransitionEffectBase.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\TransitionEffectBase.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ControllerUI.h">
-      <Filter>UI</Filter>
+    <ClInclude Include="Script\UI\ControllerUI.h">
+      <Filter>Script\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\BulletSignEffect.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\BulletSignEffect.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\ShakeEffect.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\ShakeEffect.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Effect\HitFlashEffect.h">
-      <Filter>Effect</Filter>
+    <ClInclude Include="Source\Effect\HitFlashEffect.h">
+      <Filter>Source\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PauseMenu.h">
-      <Filter>UI</Filter>
+    <ClInclude Include="Script\UI\PauseMenu.h">
+      <Filter>Script\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\State\BossDeadState.h">
-      <Filter>Object\Boss\State</Filter>
+    <ClInclude Include="Source\Object\Boss\State\BossDeadState.h">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\State\BossNormalState.h">
-      <Filter>Object\Boss\State</Filter>
+    <ClInclude Include="Source\Object\Boss\State\BossNormalState.h">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\State\BossPhaseTransitionStunState.h">
-      <Filter>Object\Boss\State</Filter>
+    <ClInclude Include="Source\Object\Boss\State\BossPhaseTransitionStunState.h">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\State\BossRetreatingState.h">
-      <Filter>Object\Boss\State</Filter>
+    <ClInclude Include="Source\Object\Boss\State\BossRetreatingState.h">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\State\BossState.h">
-      <Filter>Object\Boss\State</Filter>
+    <ClInclude Include="Source\Object\Boss\State\BossState.h">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\State\BossStateMachine.h">
-      <Filter>Object\Boss\State</Filter>
+    <ClInclude Include="Source\Object\Boss\State\BossStateMachine.h">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\State\BossStunnedState.h">
-      <Filter>Object\Boss\State</Filter>
+    <ClInclude Include="Source\Object\Boss\State\BossStunnedState.h">
+      <Filter>Source\Object\Boss\State</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\BossAttackHitbox.h">
-      <Filter>Collision</Filter>
+    <ClInclude Include="Script\Collision\BossAttackHitbox.h">
+      <Filter>Script\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Collision\RingColliderGroup.h">
-      <Filter>Collision</Filter>
+    <ClInclude Include="Source\Collision\RingColliderGroup.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\Movement\BossAreaBounds.h">
-      <Filter>Object\Boss\Movement</Filter>
+    <ClInclude Include="Source\Object\Boss\Movement\BossAreaBounds.h">
+      <Filter>Source\Object\Boss\Movement</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\Movement\BossRetreatExecutor.h">
-      <Filter>Object\Boss\Movement</Filter>
+    <ClInclude Include="Source\Object\Boss\Movement\BossRetreatExecutor.h">
+      <Filter>Source\Object\Boss\Movement</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossApproach.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossApproach.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossDash.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossDash.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossIdle.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossIdle.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRetreat.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossRetreat.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossTeleport.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Move</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Move\BTBossTeleport.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Move</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossAreaAttack.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossAreaAttack.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossBarrage.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossBarrage.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeleeAttack.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossMeleeAttack.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossMeteorRain.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossMeteorRain.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRapidFire.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossRapidFire.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossShoot.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossShoot.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossSlashAttack.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossSlashAttack.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossTrackingLaser.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossTrackingLaser.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossRingShockwave.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossRingShockwave.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossBigExplosion.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossBigExplosion.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossBulletRain.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossBulletRain.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossVortexTempest.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossVortexTempest.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\BTBossWideShoot.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\BTBossWideShoot.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="Object\Boss\BossBehaviorTree\Actions\AttackNode.h">
-      <Filter>Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
+    <ClInclude Include="Source\Object\Boss\BossBehaviorTree\Actions\Attack\AttackNode.h">
+      <Filter>Source\Object\Boss\BossBehaviorTree\Actions\Attack</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

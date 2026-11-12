@@ -12,7 +12,7 @@
         "Width": 1920
     },
     "Input": {
-        "ActionNameHeader": "Input/InputAction.h",
+        "ActionNameHeader": "Source/Input/InputAction.h",
         "Actions": {
             "Attack": {
                 "Buttons": [
@@ -63,7 +63,7 @@
                 "Up": "W"
             }
         },
-        "AxisNameHeader": "Input/InputAxis.h",
+        "AxisNameHeader": "Source/Input/InputAxis.h",
         "LeftStickDeadZone": 0.23953978717327118,
         "RightStickDeadZone": 0.26517534255981445
     },
@@ -90,7 +90,7 @@
                 "BOSS_PROJECTILE"
             ]
         ],
-        "LayerEnumHeader": "Collision/CollisionTypeId.h",
+        "LayerEnumHeader": "Source/Collision/CollisionTypeId.h",
         "Layers": [
             "DEFAULT",
             "PLAYER",

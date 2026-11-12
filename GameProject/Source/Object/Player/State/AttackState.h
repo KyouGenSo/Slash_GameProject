@@ -1,0 +1,106 @@
+#pragma once
+#include <vector>
+
+#include "PlayerState.h"
+#include "Source/Settings/PlayerSettings.h"
+
+class Boss;
+
+/// <summary>
+/// 攻撃状態クラス（ボス吸着/前方ステップ→攻撃、コンボ管理、先行入力対応）
+/// </summary>
+class AttackState : public PlayerState
+{
+private: //構造体
+    using SwingAxis = PlayerSettings::SwingAxis;
+    using ComboData = PlayerSettings::ComboStep;
+
+    /// <summary>
+    /// 攻撃フェーズ
+    /// </summary>
+    enum AttackPhase {
+        MoveToTarget,
+        ExecuteAttack,
+        Recovery         ///< コンボ完走時のみ
+    };
+
+public: //メンバー関数
+    AttackState() : PlayerState("Attack") {}
+
+    void Enter(Player* player) override;
+    void Update(Player* player, float deltaTime) override;
+    void Exit(Player* player) override;
+    void HandleInput(Player* player) override;
+    void DrawImGui(Player* player) override;
+
+    //==========================================
+    //Getter
+    //==========================================
+    AttackPhase GetPhase() const { return phase_; }
+    Boss* GetTargetEnemy() const { return targetEnemy_; }
+    float GetPhaseTimer() const { return phaseTimer_; }
+    int GetComboIndex() const { return comboIndex_; }
+    int GetMaxCombo() const { return maxCombo_; }
+    float GetMaxMoveTime() const { return maxMoveTime_; }
+    float GetRecoveryTime() const { return recoveryTime_; }
+    bool HasBufferedInput() const { return hasBufferedInput_; }
+    const ComboData& GetCurrentComboData() const { return combos_[comboIndex_]; }
+
+private: //非公開関数
+    void LoadComboData();
+
+    /// <summary>
+    /// ブロック角度設定、コライダー有効化などのコンボ初期化
+    /// </summary>
+    void InitializeComboAttack(Player* player);
+
+    /// <summary>
+    /// 指定フェーズへ遷移（タイマーリセット込み）
+    /// </summary>
+    void TransitionToPhase(AttackPhase newPhase);
+
+    /// <summary>
+    /// 前方範囲内かつ発動距離内のボスを targetEnemy_ に設定（判定外は nullptr）
+    /// </summary>
+    void SearchForTarget(Player* player);
+
+    void ProcessMoveToTarget(Player* player, float deltaTime);
+    void ProcessExecuteAttack(Player* player, float deltaTime);
+
+    /// <summary>
+    /// 先行入力とコンボ位置から次状態を決定
+    /// </summary>
+    void OnExecuteAttackComplete(Player* player);
+
+    void ProcessRecovery(Player* player, float deltaTime);
+
+    /// <summary>
+    /// コンボの回転軸に応じてブロック位置を計算
+    /// </summary>
+    void UpdateBlockPosition(Player* player);
+
+private: //メンバー変数
+    //フェーズ
+    AttackPhase phase_        = MoveToTarget;
+    class Boss* targetEnemy_  = nullptr;
+    float       phaseTimer_   = 0.0f;          ///< 各フェーズ共用
+    float       maxMoveTime_  = 0.1f;
+    float       recoveryTime_ = 0.5f;          ///< コンボ完走時の硬直
+
+    //踏み込み判定
+    float lungeAngle_       = 60.0f;  ///< 前方範囲の片側角（度）
+    float lungeMaxDistance_ = 20.0f;  ///< 前方範囲の最大距離
+    float stepDistance_     = 5.0f;   ///< 判定外時の前方ステップ距離
+
+    //コンボ
+    int  comboIndex_       = 0;      ///< 0 から maxCombo_ - 1
+    int  maxCombo_         = 4;
+    bool hasBufferedInput_ = false;  ///< 先行入力フラグ
+
+    std::vector<ComboData> combos_;  ///< Enter のたびに PlayerSettings から写す
+
+    //攻撃ブロック回転制御
+    float blockAngle_  = 0.0f;
+    float blockRadius_ = 4.0f;  ///< プレイヤーからの距離
+    float blockScale_  = 0.5f;
+};

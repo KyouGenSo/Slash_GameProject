@@ -1,0 +1,183 @@
+#include "BTBossRepelShockwave.h"
+#include "Script/Object/Boss/Boss.h"
+#include "ForceFieldManager.h"
+#include "EmitterManager.h"
+#include "ParticleStruct.h"
+#include <algorithm>
+
+#ifdef _DEBUG
+#include "EditorUI.h"
+#endif
+
+using namespace Tako;
+
+BTBossRepelShockwave::BTBossRepelShockwave() {
+    name_ = "BossRepelShockwave";
+}
+
+Tako::BTNodeStatus BTBossRepelShockwave::OnExecute(Tako::BTBlackboard* /*blackboard*/, Boss* boss, float deltaTime) {
+    ForceFieldManager* ffm = boss->GetForceFieldManager();
+    if (!ffm) {
+        return Tako::BTNodeStatus::Failure;
+    }
+
+    elapsedTime_ += deltaTime;
+
+    const float warningEnd = warningTime_;
+    const float expandEnd = warningTime_ + expandTime_;
+    const float sustainEnd = expandEnd + sustainTime_;
+
+    // 力場の毎フレーム再構成（位置はボスに追従）
+    ForceFieldData field{};
+    field.type = static_cast<uint32_t>(ForceFieldType::Repel);
+    field.position = boss->GetTransform().translate;
+    field.direction = { 0.0f, 0.0f, 0.0f };
+    field.falloff = falloff_;
+    field.affectMask = affectMask_;
+
+    if (elapsedTime_ < warningEnd) {
+        // Phase 0: 予兆 — 弱い力場
+        field.strength = strength_ * 0.1f;
+        field.radius = maxRadius_ * 0.2f;
+    }
+    else if (elapsedTime_ < expandEnd) {
+        // Phase 1: 展開 — 半径ランプアップ
+        const float t = (elapsedTime_ - warningEnd) / std::max<float>(expandTime_, 0.0001f);
+        field.strength = strength_;
+        field.radius = maxRadius_ * std::clamp(t, 0.0f, 1.0f);
+
+        if (!ringTriggered_) {
+            boss->SetRepelShockwaveSphereVisible(true);
+            ringTriggered_ = true;
+        }
+        boss->SetRepelShockwaveSphereScale(field.radius);
+    }
+    else if (elapsedTime_ < sustainEnd) {
+        // Phase 2: 持続 — 最大半径維持 + Recovery 突入（プレイヤーがスタンを取れる隙）
+        field.strength = strength_;
+        field.radius = maxRadius_;
+        boss->SetRepelShockwaveSphereScale(field.radius);
+        EnterAttackRecovery(boss);
+    }
+    else {
+        // Phase 3: 終了
+        return FinishAttack();
+    }
+
+    if (forceFieldId_ >= 0) {
+        ffm->UpdateForceField(static_cast<uint32_t>(forceFieldId_), field);
+    }
+
+    // Phase 1 以降: バリアパーティクル & 渦力場をボスに追従（Y は 0 固定、半径は field.radius と同期）
+    if (elapsedTime_ >= warningEnd) {
+        const Vector3 bossPosFlat = {
+            boss->GetTransform().translate.x,
+            0.0f,
+            boss->GetTransform().translate.z,
+        };
+
+        if (!barrierActivated_ && cachedEmitterManager_) {
+            cachedEmitterManager_->SetEmitterActive(barrierEmitterInstance_, true);
+            barrierActivated_ = true;
+        }
+
+        // 渦力場（ParticlesOnly）: 位置/半径のみ毎フレーム更新、その他は preset 値維持
+        if (vortexFieldId_ >= 0) {
+            ForceFieldData vf = vortexFieldBase_;
+            vf.position = bossPosFlat;
+            vf.radius = field.radius + 10.0f;
+            ffm->UpdateForceField(static_cast<uint32_t>(vortexFieldId_), vf);
+        }
+
+        if (cachedEmitterManager_) {
+            cachedEmitterManager_->SetEmitterPosition(barrierEmitterInstance_, bossPosFlat);
+            cachedEmitterManager_->SetEmitterRadius(barrierEmitterInstance_, field.radius);
+        }
+    }
+
+    return Tako::BTNodeStatus::Running;
+}
+
+void BTBossRepelShockwave::OnInitialize(Tako::BTBlackboard* /*blackboard*/, Boss* boss) {
+    ringTriggered_ = false;
+    barrierActivated_ = false;
+
+    ForceFieldManager* ffm = boss->GetForceFieldManager();
+    if (!ffm) return;
+
+    cachedForceFieldManager_ = ffm;
+
+    // 強度 0 / 半径ほぼ 0 でスロットだけ確保
+    ForceFieldData field{};
+    field.type = static_cast<uint32_t>(ForceFieldType::Repel);
+    field.position = boss->GetTransform().translate;
+    field.direction = { 0.0f, 0.0f, 0.0f };
+    field.strength = 0.0f;
+    field.radius = 0.001f;
+    field.falloff = falloff_;
+    field.affectMask = affectMask_;
+    forceFieldId_ = ffm->AddForceField(field);
+
+    // ===== バリアパーティクルエミッタ初期化 =====
+    EmitterManager* emitterMgr = boss->GetEmitterManager();
+    if (emitterMgr) {
+        cachedEmitterManager_ = emitterMgr;
+
+        // 初回のみ preset をロード（インスタンス寿命を跨いで再利用）
+        if (!barrierEmitterLoaded_) {
+            emitterMgr->LoadPreset(barrierEmitterPreset_, barrierEmitterInstance_);
+            barrierEmitterLoaded_ = true;
+        }
+        emitterMgr->SetEmitterActive(barrierEmitterInstance_, false);
+    }
+
+    // 渦力場（ParticlesOnly）: 既存 Repel とは独立した別エントリとして登録
+    if (ffm->LoadPresetToData(vortexFieldPreset_, vortexFieldBase_)) {
+        ForceFieldData initial = vortexFieldBase_;
+        initial.position = { boss->GetTransform().translate.x, 0.0f, boss->GetTransform().translate.z };
+        initial.strength = 0.0f;
+        initial.radius = 0.001f;
+        vortexFieldId_ = ffm->AddForceField(initial);
+    }
+}
+
+void BTBossRepelShockwave::OnCleanup() {
+    // preset は emitterMap_ に残し次回再利用
+    if (cachedEmitterManager_) {
+        cachedEmitterManager_->SetEmitterActive(barrierEmitterInstance_, false);
+    }
+    cachedEmitterManager_ = nullptr;
+
+    // erase ベースのため、後から登録した vortex を先に削除する
+    if (cachedForceFieldManager_) {
+        if (vortexFieldId_ >= 0) {
+            cachedForceFieldManager_->RemoveForceField(static_cast<uint32_t>(vortexFieldId_));
+        }
+        if (forceFieldId_ >= 0) {
+            cachedForceFieldManager_->RemoveForceField(static_cast<uint32_t>(forceFieldId_));
+        }
+    }
+    vortexFieldId_ = -1;
+    forceFieldId_ = -1;
+    cachedForceFieldManager_ = nullptr;
+
+    // cachedBoss_ は親 AttackNode で管理
+    if (cachedBoss_) {
+        cachedBoss_->SetRepelShockwaveSphereVisible(false);
+    }
+
+    ringTriggered_ = false;
+    barrierActivated_ = false;
+}
+
+#ifdef _DEBUG
+bool BTBossRepelShockwave::DrawCustomImGui() {
+    bool changed = false;
+    int maskInt = static_cast<int>(affectMask_);
+    if (UI::CheckboxFlags("Affect Bullets", &maskInt, GameForceField::AffectBullets)) changed = true;
+    if (UI::CheckboxFlags("Affect Player",  &maskInt, GameForceField::AffectPlayer))  changed = true;
+    if (UI::CheckboxFlags("Affect Boss",    &maskInt, GameForceField::AffectBoss))    changed = true;
+    affectMask_ = static_cast<uint32_t>(maskInt);
+    return changed;
+}
+#endif
