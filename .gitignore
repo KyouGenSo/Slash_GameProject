@@ -339,7 +339,6 @@ nul
 *.ini
 
 Docs/
-tools/
 
 # エンジン。UpdateEngine.bat が、.takoproject に書いてあるバージョンを入れる
 Engine/
